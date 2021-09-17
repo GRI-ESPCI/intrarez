@@ -1,0 +1,206 @@
+# English translations for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-09-17 15:15+0200\n"
+"PO-Revision-Date: 2021-09-14 21:12+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: app/__init__.py:35
+msgid "Merci de vous connecter pour accéder à cette page."
+msgstr "Please log in to access to this page."
+
+#: app/auth/email.py:15
+msgid "[IntraRez] Réinitialisation du mot de passe"
+msgstr "[IntraRez] Reset your password"
+
+#: app/auth/forms.py:15 app/auth/forms.py:24
+msgid "Nom"
+msgstr "Name"
+
+#: app/auth/forms.py:16 app/auth/forms.py:29
+msgid "Mot de passe"
+msgstr "Password"
+
+#: app/auth/forms.py:18
+msgid "Rester connecté"
+msgstr "Remember me"
+
+#: app/auth/forms.py:19 app/main/forms.py:12 app/templates/auth/login.html:5
+#: app/templates/auth/register.html:13
+#: app/templates/auth/reset_password.html:13
+#: app/templates/auth/reset_password_request.html:13 app/templates/base.html:68
+msgid "Connexion"
+msgstr "Sign in"
+
+#: app/auth/forms.py:26 app/auth/forms.py:39
+msgid "Adresse e-mail"
+msgstr "Mail address"
+
+#: app/auth/forms.py:31
+msgid "Mot de passe (validation)"
+msgstr "Password (validation)"
+
+#: app/auth/forms.py:34
+msgid "Envoyer"
+msgstr "Send"
+
+#: app/auth/forms.py:41
+msgid "Envoyer le mail de réinitialisation"
+msgstr "Send reset mail"
+
+#: app/auth/forms.py:46 app/auth/routes.py:112
+#: app/templates/auth/reset_password.html:5
+msgid "Nouveau mot de passe"
+msgstr "New password"
+
+#: app/auth/forms.py:48
+msgid "Nouveau mot de passe (validation)"
+msgstr "New password (validation)"
+
+#: app/auth/forms.py:51
+msgid "Valider"
+msgstr "Validate"
+
+#: app/auth/routes.py:25
+msgid "Compte créé avec succès, connectez-vous"
+msgstr "Account successfully created, please connect"
+
+#: app/auth/routes.py:30
+msgid "Nouveau compte"
+msgstr "New account"
+
+#: app/auth/routes.py:45
+msgid "Nom d'utilisateur inconnu"
+msgstr "Unknown username"
+
+#: app/auth/routes.py:48
+msgid "Mot de passe incorrect"
+msgstr "Wrong password"
+
+#: app/auth/routes.py:56
+msgid "Connecté !"
+msgstr "Connected!"
+
+#: app/auth/routes.py:81
+msgid ""
+"Un email a été envoyé avec les instructions pour réinitialiser le mot de "
+"passe."
+msgstr "An email has benn send with password reset instructions."
+
+#: app/auth/routes.py:86 app/templates/auth/reset_password_request.html:5
+msgid "Mot de passe oublié"
+msgstr "Password Lost"
+
+#: app/auth/routes.py:93
+msgid "Ce lien n'est pas utilisable en étant authentifié."
+msgstr "This link cannot be used by an authenticated user."
+
+#: app/auth/routes.py:99
+msgid "Lien de réinitialisation invalide ou expiré."
+msgstr "Reset link invalid or expired."
+
+#: app/auth/routes.py:107
+msgid "Le mot de passe a été réinitialisé avec succès."
+msgstr "Your password has been successfully reset."
+
+#: app/main/routes.py:23
+msgid "Oui."
+msgstr "Yes."
+
+#: app/main/routes.py:29 app/templates/base.html:74
+msgid "Profil"
+msgstr "Profile"
+
+#: app/templates/base.html:43
+msgid "Afficher le menu"
+msgstr "Toggle navigation"
+
+#: app/templates/base.html:61 app/templates/errors/404.html:5
+#: app/templates/errors/500.html:6
+msgid "Accueil"
+msgstr "Home"
+
+#: app/templates/auth/login.html:14 app/templates/base.html:71
+msgid "Créer un compte"
+msgstr "Sign up"
+
+#: app/templates/base.html:77
+msgid "Déconnexion"
+msgstr "Sign out"
+
+#: app/templates/auth/login.html:12
+msgid "Pas inscrit ?"
+msgstr "Not registered?"
+
+#: app/templates/auth/login.html:18
+msgid "Mot de passe oublié ?"
+msgstr "Password lost?"
+
+#: app/templates/auth/login.html:20
+msgid "Réinitialiser"
+msgstr "Reset"
+
+#: app/templates/auth/register.html:5
+msgid "Création de compte"
+msgstr "Sign up"
+
+#: app/templates/auth/register.html:12
+msgid "Déjà inscrit ?"
+msgstr "Already registered?"
+
+#: app/templates/auth/reset_password.html:12
+#: app/templates/auth/reset_password_request.html:12
+msgid "Ça t'es revenu ?"
+msgstr "Got it back?"
+
+#: app/templates/errors/404.html:4
+msgid "Page non trouvée"
+msgstr "Page not found"
+
+#: app/templates/errors/500.html:4
+msgid "Une erreur inattendue est survenue."
+msgstr "An unexpected error has occured."
+
+#: app/templates/errors/500.html:5
+msgid "Les GRI ont été informés du problème. Désolés !"
+msgstr "The system admins have been informed of the issue. Sorry!"
+
+#: app/templates/main/index.html:5
+#, python-format
+msgid "Bonjour, %(name)s !"
+msgstr "Hello, %(name)s!"
+
+#: app/templates/main/index.html:7
+msgid "Salutations, inconnu !"
+msgstr "Greetings, stranger!"
+
+#~ msgid "Bonjour, {current_user.username} !"
+#~ msgstr "Hello, {current_user.username}!"
+
+#~ msgid "Ce champ est requis."
+#~ msgstr "This field is required."
+
+#~ msgid "Adresse email invalide."
+#~ msgstr "Invalid email address."
+
+#~ msgid "Valeur différente du champ précédent."
+#~ msgstr "The value differ from the previous field."
+
+#~ msgid "Nom d'utilisateur déjà utilisé."
+#~ msgstr "User name already in use."
+
+#~ msgid "Adresse e-mail déjà liée à un autre compte."
+#~ msgstr "Mail address already linked to an account."
