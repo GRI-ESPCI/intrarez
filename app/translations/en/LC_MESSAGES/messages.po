@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-17 15:15+0200\n"
+"POT-Creation-Date: 2021-09-25 21:50+0200\n"
 "PO-Revision-Date: 2021-09-14 21:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -21,6 +21,22 @@ msgstr ""
 #: app/__init__.py:35
 msgid "Merci de vous connecter pour accéder à cette page."
 msgstr "Please log in to access to this page."
+
+#: app/__init__.py:59
+msgid "Information :"
+msgstr "Information:"
+
+#: app/__init__.py:60
+msgid "Succès :"
+msgstr "Success:"
+
+#: app/__init__.py:61
+msgid "Attention :"
+msgstr "Caution:"
+
+#: app/__init__.py:62
+msgid "Avertissement :"
+msgstr "Warning:"
 
 #: app/auth/email.py:15
 msgid "[IntraRez] Réinitialisation du mot de passe"
@@ -38,10 +54,10 @@ msgstr "Password"
 msgid "Rester connecté"
 msgstr "Remember me"
 
-#: app/auth/forms.py:19 app/main/forms.py:12 app/templates/auth/login.html:5
-#: app/templates/auth/register.html:13
-#: app/templates/auth/reset_password.html:13
-#: app/templates/auth/reset_password_request.html:13 app/templates/base.html:68
+#: app/auth/forms.py:19 app/main/forms.py:12 app/templates/auth/login.html:8
+#: app/templates/auth/register.html:35
+#: app/templates/auth/reset_password.html:29
+#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:62
 msgid "Connexion"
 msgstr "Sign in"
 
@@ -62,7 +78,7 @@ msgid "Envoyer le mail de réinitialisation"
 msgstr "Send reset mail"
 
 #: app/auth/forms.py:46 app/auth/routes.py:112
-#: app/templates/auth/reset_password.html:5
+#: app/templates/auth/reset_password.html:8
 msgid "Nouveau mot de passe"
 msgstr "New password"
 
@@ -100,7 +116,7 @@ msgid ""
 "passe."
 msgstr "An email has benn send with password reset instructions."
 
-#: app/auth/routes.py:86 app/templates/auth/reset_password_request.html:5
+#: app/auth/routes.py:86 app/templates/auth/reset_password_request.html:8
 msgid "Mot de passe oublié"
 msgstr "Password Lost"
 
@@ -116,59 +132,58 @@ msgstr "Reset link invalid or expired."
 msgid "Le mot de passe a été réinitialisé avec succès."
 msgstr "Your password has been successfully reset."
 
-#: app/main/routes.py:23
+#: app/main/routes.py:23 app/main/routes.py:32
 msgid "Oui."
 msgstr "Yes."
 
-#: app/main/routes.py:29 app/templates/base.html:74
+#: app/main/routes.py:38 app/templates/base.html:75
 msgid "Profil"
 msgstr "Profile"
 
-#: app/templates/base.html:43
-msgid "Afficher le menu"
-msgstr "Toggle navigation"
-
-#: app/templates/base.html:61 app/templates/errors/404.html:5
-#: app/templates/errors/500.html:6
-msgid "Accueil"
-msgstr "Home"
-
-#: app/templates/auth/login.html:14 app/templates/base.html:71
+#: app/templates/auth/login.html:32 app/templates/base.html:68
 msgid "Créer un compte"
 msgstr "Sign up"
 
-#: app/templates/base.html:77
+#: app/templates/base.html:81
 msgid "Déconnexion"
 msgstr "Sign out"
 
-#: app/templates/auth/login.html:12
+#: app/templates/base.html:114
+msgid "Fermer"
+msgstr ""
+
+#: app/templates/auth/login.html:29
 msgid "Pas inscrit ?"
 msgstr "Not registered?"
 
-#: app/templates/auth/login.html:18
+#: app/templates/auth/login.html:35
 msgid "Mot de passe oublié ?"
 msgstr "Password lost?"
 
-#: app/templates/auth/login.html:20
+#: app/templates/auth/login.html:38
 msgid "Réinitialiser"
 msgstr "Reset"
 
-#: app/templates/auth/register.html:5
+#: app/templates/auth/register.html:8
 msgid "Création de compte"
 msgstr "Sign up"
 
-#: app/templates/auth/register.html:12
+#: app/templates/auth/register.html:32
 msgid "Déjà inscrit ?"
 msgstr "Already registered?"
 
-#: app/templates/auth/reset_password.html:12
-#: app/templates/auth/reset_password_request.html:12
+#: app/templates/auth/reset_password.html:26
+#: app/templates/auth/reset_password_request.html:23
 msgid "Ça t'es revenu ?"
 msgstr "Got it back?"
 
 #: app/templates/errors/404.html:4
 msgid "Page non trouvée"
 msgstr "Page not found"
+
+#: app/templates/errors/404.html:5 app/templates/errors/500.html:6
+msgid "Accueil"
+msgstr "Home"
 
 #: app/templates/errors/500.html:4
 msgid "Une erreur inattendue est survenue."
@@ -204,3 +219,6 @@ msgstr "Greetings, stranger!"
 
 #~ msgid "Adresse e-mail déjà liée à un autre compte."
 #~ msgstr "Mail address already linked to an account."
+
+#~ msgid "Afficher le menu"
+#~ msgstr "Toggle navigation"

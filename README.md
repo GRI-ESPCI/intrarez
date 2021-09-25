@@ -139,7 +139,7 @@ l'appréhension du code par d'éventuels GRI futurs.
 
 ### Début de l'installation
 
-11/09/2021 - Loïc 137
+### 11/09/2021 - Loïc 137
 
 Tout a été créé en suivant ce tutoriel :
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
@@ -180,3 +180,19 @@ Application bilingue (utilisant Flask-Babel) : lorsque le code est modifié,
   sont indiquées avec ``#, fuzzy`` : **supprimer ce commentaire** après
   avoir vérifié qu'il n'y avait pas d'erreur / modifié la traduction ;
 * Exécuter ``flask translate compile``.
+
+
+### 20/09/21 - Loïc 137
+
+Abandon de Flask-Bootstrap, qui est sur Bootstrap 3 et assez restreignant.
+
+À la place, je crée le template de base à la main (en créant à peu près
+les blocs que Flask-Bootstrap créait), de même pour le template des forms.
+
+J'ai repris le code de Flask-Bootstrap pour ce qui est de la gestion des
+forms, directement dans [`app/templates/_form.html`](app/templates/_form.html).
+
+Utilisation des icônes SVG [Bootstrap Icons](https://icons.getbootstrap.com/),
+directement dans app/static/svg. Voir le code d'affichage des notifications
+dans [`app/templates/base.php`](app/templates/base.php) pour savoir comment
+utiliser ces icônes (rechercher `svg`).

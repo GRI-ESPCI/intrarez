@@ -1,103 +1,133 @@
-{% extends "bootstrap/base.html" %}
-
-{% block scripts %}
-    {{ super() }}
-    {{ moment.include_moment() }}
-    <script>
-        moment.locale(window.navigator.userLanguage
-                      || window.navigator.language)
-    </script>
-{% endblock %}
-
-{# Code ci-dessous extrait du site du Bar (Samuel 136, à adapter ?) #}
-{# {% block styles %}
-    {{ super() }}
-    <!-- Bootstrap 4.2.1 core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
-    <!-- Material Design icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!-- Custom styles and favicon -->
-    <link href="{{ url_for("static", filename="css/style.css") }}" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ url_for("static", filename="favicon.ico") }}">
-{% endblock styles %} #}
-
-
-{% block title %}
-    {% if title %}
-    {{ title }} – IntraRez
-    {% else %}
-    IntraRez
-    {% endif %}
-{% endblock %}
-
-{% block navbar %}
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed"
-                        data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1"
-                        aria-expanded="false">
-                    <span class="sr-only">{{ _("Afficher le menu") }}</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for("main.index") }}">
-                    <span style="white-space: nowrap">
+{% block doc %}
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+    {% block html %}
+    <head>
+        {% block head %}
+        {% block metas %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% endblock metas %}
+        <title>
+            {% block title %}
+            {% if title %}{{ title }} – IntraRez{% else %}IntraRez{% endif %}
+            {% endblock %}
+        </title>
+        {% block styles %}
+        <!-- Bootstrap 5.0.2 core CSS -->
+        <link href="{{ url_for("static", filename="css/bootstrap.min.css") }}"
+              rel="stylesheet" />
+        {% endblock styles %}
+        <link href="{{ url_for("static", filename="favicon.ico") }}"
+              rel="icon" />
+        {% block scripts %}
+        <!-- Bootstrap 5.0.2 Bundle with Popper (loaded asynchroniously) -->
+        <script src="{{ url_for("static",
+            filename="js/bootstrap.bundle.min.js") }}" defer></script>
+        {{ moment.include_moment() }}
+        <script>
+            moment.locale(window.navigator.userLanguage
+                          || window.navigator.language)
+        </script>
+        {% endblock scripts %}
+        {% endblock head %}
+    </head>
+    <body{% block body_attribs %}{% endblock body_attribs %}>
+        {% block body %}
+        {% block navbar %}
+        <nav class="navbar navbar-expand-sm navbar-light mb-4 py-0"
+             style="background-color: #64b9e9;
+                    border-bottom: 2px solid #152f4e;">
+            <div class="container-fluid ps-0">
+                <a class="navbar-brand p-0" href="{{ url_for("main.index") }}">
                     <img src="{{ url_for("static", filename="img/gri.png") }}"
-                         width="60" height="60"
-                         class="d-inline-block align-top" alt="">
-                    &nbsp;/&nbsp;IntraRez
-                    </span>
+                         width="80" height="80"
+                         class="d-inline-block m-0" alt="GRI">
+                    <span class="align-text-top">/&nbsp;<b>IntraRez</b></span>
                 </a>
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar navbar-collapse"
+                     id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-12 mb-1sm-0">
+                        {% if current_user.is_anonymous %}
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary mx-2 my-1"
+                               href="{{ url_for("auth.login") }}">
+                                {{ _("Connexion") }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary mx-2 my-1"
+                               href="{{ url_for("auth.register") }}">
+                                {{ _("Créer un compte") }}
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary mx-2 my-1"
+                               href="{{ url_for("main.profile") }}">
+                                {{ _("Profil") }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-secondary mx-2 my-1"
+                               href="{{ url_for("auth.logout") }}">
+                                {{ _("Déconnexion") }}
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
-            <div class="collapse navbar-collapse"
-                 id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav" style="transform: translateY(39%);">
-                    <li><a href="{{ url_for("main.index") }}">
-                        {{ _("Accueil") }}
-                    </a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right"
-                    style="transform: translateY(39%);">
-                    {% if current_user.is_anonymous %}
-                    <li><a href="{{ url_for("auth.login") }}">
-                        {{ _("Connexion") }}
-                    </a></li>
-                    <li><a href="{{ url_for("auth.register") }}">
-                        {{ _("Créer un compte") }}</a></li>
-                    {% else %}
-                    <li><a href="{{ url_for("main.profile") }}">
-                        {{ _("Profil") }}
-                    </a></li>
-                    <li><a href="{{ url_for("auth.logout") }}">
-                        {{ _("Déconnexion") }}
-                    </a></li>
-                    {% endif %}
-                </ul>
-            </div>
+        </nav>
+        {% endblock navbar %}
+        {% block content %}
+        <div class="container">
+            {% block app_content %}{% endblock app_content %}
         </div>
-        <hr>
-    </nav>
 
-{% endblock %}
-
-{% block content %}
-    <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <ul>
+        <div class="toast-container position-absolute top-0 start-50 p-3 mt-5">
             {% for category, message in messages %}
-            <div class="alert alert-{{ category }}" role="alert">
-                {{ message }}
+            <div class="toast" role="alert" aria-live="assertive"
+                 aria-atomic="true">
+                <div class="toast-header text-white bg-{{ category }}">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24"
+                         role="img" aria-label="{{ alert_labels[category] }}">
+                        <use href="{{ url_for("static",
+                                filename="svg/bootstrap-icons.svg")
+                            }}#{{ alert_symbols[category] }}" />
+                    </svg>
+                    <strong class="me-auto">
+                        {{ alert_labels[category] }}
+                    </strong>
+                    <small></small>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="toast"
+                            aria-label="{{ _("Fermer") }}">
+                    </button>
+                </div>
+                <div class="toast-body">
+                    {{ message }}
+                </div>
             </div>
             {% endfor %}
-        </ul>
+        </div>
+        <script src="{{ url_for("static", filename="js/toasts.js") }}" defer>
+        </script>
         {% endif %}
         {% endwith %}
-        {% block app_content %}{% endblock %}
-    </div>
-{% endblock %}
+
+        {% endblock content %}
+        {% endblock body %}
+    </body>
+    {% endblock html %}
+</html>
+{% endblock doc %}

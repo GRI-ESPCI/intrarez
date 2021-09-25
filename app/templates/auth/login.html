@@ -1,24 +1,42 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% import "_form.html" as wtf %}
 
 {% block app_content %}
-    <h1>{{ _("Connexion") }}</h1>
-    <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
+
+    <div class="row mb-2">
+        <div class="col">
+            <h1>{{ _("Connexion") }}</h1>
         </div>
     </div>
-    <p>
+    <div class="row mb-4">
+        <form action="" method="post" role="form">
+            {{ form.hidden_tag() }}
+            <div class="form-floating mb-3">
+                {{ wtf.form_field(form.username) }}
+            </div>
+            <div class="form-floating mb-3">
+                {{ wtf.form_field(form.password) }}
+            </div>
+            <div class="form-check form-switch mb-3 ms-1">
+                {{ wtf.form_field(form.remember_me) }}
+            </div>
+            <div>
+                {{ wtf.form_field(form.submit) }}
+            </div>
+        </form>
+    </div>
+    <div class="row"><p>
         {{ _("Pas inscrit ?") }}
-        <a href="{{ url_for("auth.register") }}">
+        <a class="btn btn-outline-primary ms-2"
+           href="{{ url_for("auth.register") }}">
             {{ _("Créer un compte") }}
         </a>
-    </p>
-    <p>
+    </p><p>
         {{ _("Mot de passe oublié ?") }}
-        <a href="{{ url_for("auth.reset_password_request") }}">
+        <a class="btn btn-outline-secondary ms-2"
+           href="{{ url_for("auth.reset_password_request") }}">
             {{ _("Réinitialiser") }}
         </a>
-    </p>
+    </p></div>
 
 {% endblock %}
