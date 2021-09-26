@@ -77,7 +77,7 @@ def test():
         if not callable(obj):
             pt[name] = obj
 
-    caller = flask.request.headers.get("HTTP_X_REAL_IP")
+    caller = flask.request.headers.get("X-Real-Ip")
     if not caller:
         flask.flash("No caller (test mode?)", "danger")
     else:
