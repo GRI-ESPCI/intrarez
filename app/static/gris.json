@@ -1,0 +1,104 @@
+[
+    {
+        "name": "Louis 139",
+        "role": {
+            "fr": "Responsable Opérationnel",
+            "en": "Chief Operating Officier"
+        },
+        "room": 324,
+        "messenger": {
+            "name": "Louis Destruel",
+            "id": 100009330929622
+        },
+        "discord": {
+            "name": "Le chauve capé",
+            "discriminant": 2190,
+            "id": 283607513751093248
+        }
+    },
+    {
+        "name": "Tom 138",
+        "role": {
+            "fr": "Responsable Technologies",
+            "en": "Chief Technology Officier"
+        },
+        "room": 214,
+        "messenger": {
+            "name": "Tom Lacoma",
+            "id": 100014975710770
+        },
+        "discord": {
+            "name": "TaupeOrAfk",
+            "discriminant": 3218,
+            "id": 176763552202358785
+        }
+    },
+    {
+        "name": "Loïc 137",
+        "role": {
+            "fr": "Responsable Sagesse",
+            "en": "Chief Wisdom Officier"
+        },
+        "room": 310,
+        "messenger": {
+            "name": "Loïc Simon",
+            "id": 100013717094493
+        },
+        "discord": {
+            "name": "La Carpe",
+            "discriminant": 1674,
+            "id": 891447961362509825
+        }
+    },
+    {
+        "name": "Arthur 139",
+        "role": {
+            "fr": "Responsable Bonkage",
+            "en": "Chief Bonking Officier"
+        },
+        "room": null,
+        "messenger": {
+            "name": "Arthur Fruh",
+            "id": 100010591357225
+        },
+        "discord": {
+            "name": "afrok68",
+            "discriminant": 5057,
+            "id": 308237556116357120
+        }
+    },
+    {
+        "name": "PE 138",
+        "role": {
+            "fr": "Responsable Pizzas",
+            "en": "Chief Pizza Officier"
+        },
+        "room": null,
+        "messenger": {
+            "name": "PierreEm Bes",
+            "id": 100014822678869
+        },
+        "discord": {
+            "name": "Calwik",
+            "discriminant": 1980,
+            "id": 335557989249449985
+        }
+    },
+    {
+        "name": "Antoine B. 138",
+        "role": {
+            "fr": "Envoyé spécial",
+            "en": "Special Correspondant"
+        },
+        "room": null,
+        "messenger": {
+            "name": "Antoine Baron",
+            "id": 100048168460748
+        },
+        "discord": {
+            "name": "The Reader",
+            "discriminant": 1980,
+            "id": 627141677504528404
+        }
+    }
+]

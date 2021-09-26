@@ -5,8 +5,8 @@ from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 
 from app.models import User
-from app._tools.validators import (DataRequired, Email, EqualTo,
-                                   NewUsername, NewEmail)
+from app.tools.validators import (DataRequired, Email, EqualTo,
+                                  NewUsername, NewEmail)
 
 
 

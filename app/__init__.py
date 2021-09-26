@@ -7,7 +7,7 @@ __title__ = "intrarez"
 __author__ = "Loïc Simon & other GRIs"
 __license__ = "MIT"
 __copyright__ = "Copyright 2021 GRIs – ESPCI Paris - PSL"
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 __all__ = ["app"]
 
 
@@ -24,7 +24,7 @@ from flask_babel import lazy_gettext as _l
 import wtforms
 
 from config import Config
-from app._tools import loggers
+from app.tools import loggers
 
 
 # Load extensions
@@ -53,6 +53,7 @@ def create_app(config_class=Config):
     moment.init_app(app)
     babel.init_app(app)
     app.jinja_env.add_extension("jinja2.ext.do")
+    app.jinja_env.globals["__version__"] = __version__
     app.jinja_env.globals["get_locale"] = get_locale
     app.jinja_env.globals["alert_labels"] = {
         "info": _l("Information :"),

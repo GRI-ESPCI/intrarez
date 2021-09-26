@@ -17,6 +17,8 @@ class CustomValidator():
             raise wtforms.validators.ValidationError(self._message)
 
 
+Optional = wtforms.validators.Optional
+
 class DataRequired(wtforms.validators.DataRequired):
     def __init__(self, message=None):
         if message is None:
@@ -44,3 +46,14 @@ class NewEmail(CustomValidator):
     message = _l("Adresse e-mail déjà liée à un autre compte.")
     def validate(self, form, field):
         return (User.query.filter_by(email=field.data).first() is None)
+
+class ValidRoom(CustomValidator):
+    message = _l("Numéro de chambre invalide.")
+    def validate(self, form, field):
+        return (101 <= field.data <= 126
+                or 201 <= field.data <= 226
+                or 301 <= field.data <= 326
+                or 401 <= field.data <= 426
+                or 501 <= field.data <= 526
+                or 601 <= field.data <= 626
+                or 701 <= field.data <= 726)

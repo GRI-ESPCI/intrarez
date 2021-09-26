@@ -32,7 +32,7 @@
         {% endblock scripts %}
         {% endblock head %}
     </head>
-    <body{% block body_attribs %}{% endblock body_attribs %}>
+    <body{% block body_attribs %}{% endblock body_attribs %} class="d-flex flex-column min-vh-100">
         {% block body %}
         {% block navbar %}
         <nav class="navbar navbar-expand-sm navbar-light mb-4 py-0"
@@ -45,7 +45,7 @@
                          class="d-inline-block m-0" alt="GRI">
                     <span class="align-text-top">/&nbsp;<b>IntraRez</b></span>
                 </a>
-                <button class="navbar-toggler" type="button"
+                <button class="navbar-toggler m-2" type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent"
@@ -76,7 +76,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-outline-secondary mx-2 my-1"
+                            <a class="btn btn-outline-dark mx-2 my-1"
                                href="{{ url_for("auth.logout") }}">
                                 {{ _("Déconnexion") }}
                             </a>
@@ -126,6 +126,44 @@
         {% endwith %}
 
         {% endblock content %}
+        {% block footer %}
+        <footer class="bd-footer pt-3 mt-5 bg-light">
+            <div class="container py-3"><div class="row gx-4">
+                <div class="col-lg-auto">
+                    <a class="d-inline-flex align-items-center mb-2
+                              link-dark text-decoration-none fs-5"
+                       href="{{ url_for("main.index") }}"
+                       aria-label="Intranet de la Rez">
+                        Intranet de la Rez
+                    </a>
+                    <div class="small text-muted mb-3">
+                        &copy;&nbsp;2021 GRI ESPCI –
+                        {{ _("Version") }} {{ __version__ }}
+                    </div>
+                </div>
+                <div class="col-6 col-lg-auto offset-lg-1 mb-2 me-lg-4">
+                    <a href="{{ url_for("main.index") }}">
+                        {{ _("Accueil") }}
+                    </a>
+                </div>
+                <div class="col-6 col-lg-auto mb-2 me-lg-4">
+                    <a href="{{ url_for("main.contact") }}">
+                        {{ _("Nous contacter") }}
+                    </a>
+                </div>
+                <div class="col-6 col-lg-auto mb-2 me-lg-4">
+                    <a href="https://github.com/GRI-ESPCI/intrarez">
+                        {{ _("Code source") }}
+                    </a>
+                </div>
+                <div class="col-6 col-lg-auto mb-2 me-lg-4">
+                    <a href="{{ url_for("main.legal") }}">
+                        {{ _("Mentions légales") }}
+                    </a>
+                </div>
+            </div></div>
+        </footer>
+        {% endblock footer %}
         {% endblock body %}
     </body>
     {% endblock html %}

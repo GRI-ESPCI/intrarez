@@ -56,7 +56,7 @@ def login():
         flask.flash(_("Connecté !"), "success")
         return flask.redirect(next_page)
 
-    return flask.render_template("auth/login.html", title="Connexion",
+    return flask.render_template("auth/login.html", title=_("Connexion"),
                                  form=form)
 
 
@@ -64,6 +64,7 @@ def login():
 def logout():
     """IntraRez logout page."""
     flask_login.logout_user()
+    flask.flash(_("Vous avez été déconnecté."), "success")
     return flask.redirect(flask.url_for("main.index"))
 
 

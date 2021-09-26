@@ -44,3 +44,5 @@ class Config():
     ADMINS = ["your-email@example.com"]
 
     ERROR_WEBHOOK = os.environ.get("ERROR_WEBHOOK")
+    MESSAGE_WEBHOOK = os.environ.get("MESSAGE_WEBHOOK")
+    GRI_ROLE_ID = os.environ.get("GRI_ROLE_ID")

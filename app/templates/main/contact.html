@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% import "_form.html" as wtf %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("Pour toute question, n'hésitez pas à nous contacter :") }}
+</p></div>
+<div class="row mb-4">
+    <form action="" method="post" role="form">
+        {{ form.hidden_tag() }}
+        <div class="form-floating mb-3">
+            {% if current_user.is_authenticated %}
+            {{ wtf.form_field(form.name, value=current_user.username) }}
+            {% else %}
+            {{ wtf.form_field(form.name) }}
+            {% endif %}
+        </div>
+        <div class="form-floating mb-3">
+            {{ wtf.form_field(form.email) }}
+        </div>
+        <div class="form-floating mb-3">
+            {{ wtf.form_field(form.room, type="number") }}
+        </div>
+        <div class="form-floating mb-3">
+            {{ wtf.form_field(form.title) }}
+        </div>
+        <div class="form-floating mb-3">
+            {{ wtf.form_field(form.message, style="height: 150px;") }}
+        </div>
+        <div>
+            {{ wtf.form_field(form.submit) }}
+        </div>
+    </form>
+</div>
+<div class="row mt-5 mb-2">
+    <h2>{{ _("Les GRIs") }}</h2>
+</div>
+<div class="row row-cols g-4 mb-3">
+    {# Ami GRI, si tu cherches à modifier la liste des GRIs affichée, ça se
+       passe dans app/static/gris.json ! #}
+    {% for gri in gris %}
+    <div class="col"><div class="card" style="width: 16rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ gri["name"] }}</h5>
+            <h6 class="card-subtitle text-muted">
+                {% if gri["role"] %}
+                {{ gri["role"].get(get_locale(), gri["role"]["fr"]) }}
+                {% endif %}
+            </h6>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                {% if gri["room"] %}
+                {{ _("Chambre") }} <b>{{ gri["room"] }}</b></li>
+                {% else %}
+                <i class="text-muted">{{ _("Pas à la Rez") }}</i>
+                {% endif %}
+            <li class="list-group-item">
+                {% if gri["messenger"] %}
+                <a class="card-link text-decoration-none"
+                   href="https://www.facebook.com/messages/t/{{
+                       gri["messenger"]["id"] }}">
+                    <img src="{{ url_for("static",
+                                         filename="img/messenger.png") }}"
+                         width="18px" class="me-1" />
+                    {{ gri["messenger"]["name"] }}
+                </a>
+                {% else %}
+                <i class="text-muted">{{ _("Pas sur Messenger") }}</i>
+                {% endif %}
+            </li>
+            <li class="list-group-item">
+                {% if gri["discord"] %}
+                <a class="card-link text-decoration-none"
+                   href="https://discord.com/users/{{ gri["discord"]["id"] }}">
+                    <img src="{{ url_for("static",
+                                         filename="img/discord.png") }}"
+                         width="18px" class="me-1" />
+                    @{{ gri["discord"]["name"] }}#{{
+                        gri["discord"]["discriminant"] }}
+                </a>
+                {% else %}
+                <i class="text-muted">{{ _("Pas sur Discord") }}</i>
+                {% endif %}
+            </li>
+        </ul>
+    </div></div>
+    {% endfor %}
+</div>
+<div class="row fst-italic"><p>
+    {{ _("N'hésitez pas notemment à nous contacter pour nous rappeler de "
+         "mettre à jour cette liste. On va 100 %% oublier.") }}
+</p></div>
+
+{% endblock %}
