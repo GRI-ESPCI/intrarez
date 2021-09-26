@@ -78,7 +78,6 @@ def test():
             pt[name] = obj
 
     caller = flask.request.headers.get("HTTP_X_REAL_IP")
-    caller = "127.0.0.1"
     if not caller:
         flask.flash("No caller (test mode?)", "danger")
     else:
@@ -89,7 +88,7 @@ def test():
         mtch = re.search(rf"^.*? \({caller}\) at ([0-9a-f:]{{17}}) .*",
                          result.stdout.decode(), re.M)
         if mtch:
-            flask.flash(f"Your MAC address is: {mtch.group(1)}", "danger")
+            flask.flash(f"Your MAC address is: {mtch.group(1)}", "success")
         else:
             flask.flash("Unable to find your MAC adress :(", "warning")
 
