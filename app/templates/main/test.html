@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    {% if current_user.is_authenticated %}
+    <h1>{{ _("Bonjour, %(name)s !", name=current_user.username) }}</h1>
+    {% else %}
+    <h1>{{ _("Salutations, inconnu !") }}</h1>
+    {% endif %}
+    <ul>
+    {% for name, obj in pt.items() %}
+        <li><code>{{ name }}</code>: <code>{{ obj }}</code></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

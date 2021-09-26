@@ -2,6 +2,8 @@
 
 import datetime
 import json
+import subprocess
+import re
 
 import flask
 import flask_login
@@ -59,6 +61,39 @@ def legal():
     """IntraRez legal page."""
     return flask.render_template("main/legal.html",
                                  title=_("Mentions légales"))
+
+@bp.route("/test")
+def test():
+    """Test page."""
+    # flask.flash("Succès", "success")
+    # flask.flash("Info", "info")
+    # flask.flash("Warning", "warning")
+    # flask.flash("Danger", "danger")
+    pt = {}
+    for name in dir(flask.request):
+        if name.startswith("_"):
+            continue
+        obj = getattr(flask.request, name)
+        if not callable(obj):
+            pt[name] = obj
+
+    caller = flask.request.headers.get("HTTP_X_REAL_IP")
+    caller = "127.0.0.1"
+    if not caller:
+        flask.flash("No caller (test mode?)", "danger")
+    else:
+        result = subprocess.run(["/sbin/arp", "-a"], capture_output=True)
+        flask.flash(flask.Markup(
+            "<code>arp-a</code> result:<br/>"
+            f"<pre>{result}</pre>"), "info")
+        mtch = re.search(rf"^.*? \({caller}\) at ([0-9a-f:]{{17}}) .*",
+                         result.stdout.decode(), re.M)
+        if mtch:
+            flask.flash(f"Your MAC address is: {mtch.group(1)}", "danger")
+        else:
+            flask.flash("Unable to find your MAC adress :(", "warning")
+
+    return flask.render_template("main/test.html", title=_("Test"), pt=pt)
 
 @bp.route("/profile")
 @flask_login.login_required

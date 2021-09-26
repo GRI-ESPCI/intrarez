@@ -177,6 +177,10 @@ msgstr "Contact"
 msgid "Mentions légales"
 msgstr "Legal notice"
 
+#: app/main/routes.py:70
+msgid "Test"
+msgstr "Test"
+
 #: app/main/routes.py:76 app/templates/base.html:75
 msgid "Profil"
 msgstr "Profile"
