@@ -20,7 +20,6 @@ import flask_login
 import flask_mail
 import flask_moment
 import flask_babel
-import flask_scss
 from flask_babel import lazy_gettext as _l
 import wtforms
 
@@ -53,7 +52,6 @@ def create_app(config_class=Config):
     mail.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
-    scss = flask_scss.Scss(app, asset_dir='app/static/scss', static_dir="app/static/css")
     app.jinja_env.add_extension("jinja2.ext.do")
     app.jinja_env.globals["__version__"] = __version__
     app.jinja_env.globals["get_locale"] = get_locale

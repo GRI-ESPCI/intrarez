@@ -66,6 +66,12 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
   flask translate compile
   ```
 
+* Installer les dépendances bower
+
+  ```
+  bower install
+  ```
+
 L'application peut alors normalement être lancée avec ``flask run``.
 
 On a alors une version de développement installée : ``flask run`` n'est pas

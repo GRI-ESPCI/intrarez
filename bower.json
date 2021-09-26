@@ -1,0 +1,21 @@
+{
+    "name": "intrarez",
+    "authors": [
+        "GRI"
+    ],
+    "description": "",
+    "main": "",
+    "license": "MIT",
+    "homepage": "",
+    "directory": "app/static/bower_components",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "boostrap": "latest"   
+    }
+}

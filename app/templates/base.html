@@ -15,7 +15,7 @@
         </title>
         {% block styles %}
         <!-- Bootstrap 5.0.2 core CSS -->
-        <link href="{{ url_for("static", filename="css/bootstrap.min.css") }}"
+        <link href="{{ url_for("static", filename="bower_components/boostrap/dist/css/bootstrap.min.css") }}"
               rel="stylesheet" />
         {% endblock styles %}
         <link href="{{ url_for("static", filename="favicon.ico") }}"
@@ -23,7 +23,7 @@
         {% block scripts %}
         <!-- Bootstrap 5.0.2 Bundle with Popper (loaded asynchroniously) -->
         <script src="{{ url_for("static",
-            filename="js/bootstrap.bundle.min.js") }}" defer></script>
+            filename="bower_components/boostrap/dist/js/bootstrap.bundle.min.js") }}" defer></script>
         {{ moment.include_moment() }}
         <script>
             moment.locale(window.navigator.userLanguage
