@@ -16,6 +16,6 @@
         "tests"
     ],
     "dependencies": {
-        "boostrap": "latest"   
+        "bootstrap": "latest"   
     }
 }
