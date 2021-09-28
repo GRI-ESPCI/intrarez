@@ -3,40 +3,40 @@
 
 {% block app_content %}
 
-    <div class="row mb-3">
-        <div class="col">
-            <h1>{{ title }}</h1>
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row mb-4">
+    <form action="" method="post" role="form">
+        {{ form.hidden_tag() }}
+        <div class="form-floating mb-3">
+            {{ wtf.form_field(form.login) }}
         </div>
-    </div>
-    <div class="row mb-4">
-        <form action="" method="post" role="form">
-            {{ form.hidden_tag() }}
-            <div class="form-floating mb-3">
-                {{ wtf.form_field(form.username) }}
-            </div>
-            <div class="form-floating mb-3">
-                {{ wtf.form_field(form.password) }}
-            </div>
-            <div class="form-check form-switch mb-3 ms-1">
-                {{ wtf.form_field(form.remember_me) }}
-            </div>
-            <div>
-                {{ wtf.form_field(form.submit) }}
-            </div>
-        </form>
-    </div>
-    <div class="row"><p>
-        {{ _("Pas inscrit ?") }}
-        <a class="btn btn-outline-primary ms-2"
-           href="{{ url_for("auth.register") }}">
-            {{ _("Créer un compte") }}
-        </a>
-    </p><p>
-        {{ _("Mot de passe oublié ?") }}
-        <a class="btn btn-outline-secondary ms-2"
-           href="{{ url_for("auth.reset_password_request") }}">
-            {{ _("Réinitialiser") }}
-        </a>
-    </p></div>
+        <div class="form-floating mb-3">
+            {{ wtf.form_field(form.password) }}
+        </div>
+        <div class="form-check form-switch mb-3 ms-1">
+            {{ wtf.form_field(form.remember_me) }}
+        </div>
+        <div>
+            {{ wtf.form_field(form.submit) }}
+        </div>
+    </form>
+</div>
+<div class="row"><p>
+    {{ _("Pas inscrit ?") }}
+    <a class="btn btn-outline-primary ms-2"
+       href="{{ url_for("auth.register", **request.args) }}">
+        {{ _("Créer un compte") }}
+    </a>
+</p><p>
+    {{ _("Mot de passe oublié ?") }}
+    <a class="btn btn-outline-secondary ms-2"
+       href="{{ url_for("auth.reset_password_request") }}">
+        {{ _("Réinitialiser") }}
+    </a>
+</p></div>
 
 {% endblock %}

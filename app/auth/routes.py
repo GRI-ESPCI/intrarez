@@ -3,11 +3,25 @@
 import flask
 import flask_login
 from flask_babel import _
-from werkzeug import urls as wku
+import unidecode
 
 from app import db
 from app.auth import bp, forms, email
 from app.models import User
+from app.tools.utils import redirect_to_next
+
+
+def new_username(form):
+    """Create a user unique username from a registration form."""
+    pnom = form.prenom.data.lower()[0] + form.nom.data.lower()[:7]
+    base_username = unidecode.unidecode(pnom)
+    # Check if username already exists
+    username = base_username
+    discr = 0
+    while User.query.filter_by(username=username).first():
+        discr += 1
+        username = base_username + str(discr)
+    return username
 
 
 @bp.route("/register", methods=["GET", "POST"])
@@ -18,17 +32,20 @@ def register():
 
     form = forms.RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        username = new_username(form)
+        user = User(
+            username=username, nom=form.nom.data, prenom=form.prenom.data,
+            promo=form.promo.data, email=form.email.data
+        )
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         flask.flash(_("Compte créé avec succès, connectez-vous"), "success")
-        return flask.redirect(flask.url_for("auth.login"),
-                              **flask.request.args)
+        return flask.redirect(flask.url_for("auth.login",
+                                            **flask.request.args))
 
     return flask.render_template("auth/register.html",
-                                 title=_("Nouveau compte"),
-                                 form=form)
+                                 title=_("Nouveau compte"), form=form)
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -40,7 +57,8 @@ def login():
     form = forms.LoginForm()
     if form.validate_on_submit():
         # Check user / password
-        user = User.query.filter_by(username=form.username.data).first()
+        user = (User.query.filter_by(username=form.login.data).first()
+            or User.query.filter_by(email=form.login.data).first())
         if user is None:
             flask.flash(_("Nom d'utilisateur inconnu"), "danger")
             return flask.redirect(flask.url_for("auth.login"))
@@ -49,12 +67,8 @@ def login():
             return flask.redirect(flask.url_for("auth.login"))
         # OK
         flask_login.login_user(user, remember=form.remember_me.data)
-        next_page = flask.request.args.get("next")
-        if not next_page or wku.url_parse(next_page).netloc != "":
-            # Do not redirect to absolute links (possible attack)
-            next_page = flask.url_for("main.index")
         flask.flash(_("Connecté !"), "success")
-        return flask.redirect(next_page)
+        return redirect_to_next()
 
     return flask.render_template("auth/login.html", title=_("Connexion"),
                                  form=form)

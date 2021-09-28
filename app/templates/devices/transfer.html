@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% import "_form.html" as wtf %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("L'appareil à partir duquel vous accédez à cette page est enregistré "
+         "comme <stong>appartenent à un autre utilisateur</stong>.") }}
+</p></div>
+<div class="row"><p>
+    {{ _("Si vous venez de récupérer l'appareil (un routeur par exemple), "
+         "pas de soucis ! Il suffit simplement de transférer l'appareil sur "
+         "votre compte à l'aide du formulaire ci-dessous.") }}
+</p></div>
+<div class="row mb-3"><p>
+    {{ _("Sinon, n'hésitez pas à changer de compte pour accéder au compte "
+         "possédant l'appareil :") }}         <a class="link-danger ms-1"
+                         href="{{ url_for("auth.logout", **request.args) }}">
+                     {{ _("Déconnexion") }}
+                 </a>
+
+</p></div>
+<div class="row  mb-4">
+    <form action="" method="post" role="form">
+        {{ form.hidden_tag() }}
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.nom, value=device.name) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.type, value=device.type) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.mac, value=device.mac_address,
+                              readonly=True) }}
+        </div></div>
+        <div>
+            {{ wtf.form_field(form.submit) }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

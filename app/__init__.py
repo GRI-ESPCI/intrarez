@@ -8,7 +8,7 @@ __author__ = "Loïc Simon & other GRIs"
 __license__ = "MIT"
 __copyright__ = "Copyright 2021 GRIs – ESPCI Paris - PSL"
 __version__ = "0.2.0"
-__all__ = ["app"]
+__all__ = "create_app"
 
 
 import flask
@@ -69,11 +69,12 @@ def create_app(config_class=Config):
         lambda field: isinstance(field, wtforms.fields.HiddenField)
     )
 
-    # ! Keep import here to avoid circular import issues !
-    from app import errors, main, auth
+    # ! Keep imports here to avoid circular import issues !
+    from app import errors, main, auth, devices
     app.register_blueprint(errors.bp)
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
+    app.register_blueprint(devices.bp, url_prefix="/devices")
 
     # Set up error handling
     if not app.debug and not app.testing:

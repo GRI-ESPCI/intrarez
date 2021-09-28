@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-26 04:47+0200\n"
+"POT-Creation-Date: 2021-09-28 23:20+0200\n"
 "PO-Revision-Date: 2021-09-14 21:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/__init__.py:35
+#: app/__init__.py:34
 msgid "Merci de vous connecter pour accéder à cette page."
 msgstr "Please log in to access to this page."
 
-#: app/__init__.py:59
+#: app/__init__.py:58
 msgid "Information :"
 msgstr "Information:"
 
-#: app/__init__.py:60
+#: app/__init__.py:59
 msgid "Succès :"
 msgstr "Success:"
 
-#: app/__init__.py:61
+#: app/__init__.py:60
 msgid "Attention :"
 msgstr "Caution:"
 
-#: app/__init__.py:62
+#: app/__init__.py:61
 msgid "Avertissement :"
 msgstr "Warning:"
 
@@ -42,98 +42,215 @@ msgstr "Warning:"
 msgid "[IntraRez] Réinitialisation du mot de passe"
 msgstr "[IntraRez] Reset your password"
 
-#: app/auth/forms.py:15 app/auth/forms.py:24 app/main/forms.py:18
-msgid "Nom"
-msgstr "Name"
+#: app/auth/forms.py:26
+msgid "Locataire non-ESPCI"
+msgstr "Not ESPCI tenant"
 
-#: app/auth/forms.py:16 app/auth/forms.py:29
+#: app/auth/forms.py:27
+msgid "Sous-locataire"
+msgstr "Subtenant"
+
+#: app/auth/forms.py:32
+msgid "Nom d'utilisateur / Adresse e-mail"
+msgstr "Username / Mail address"
+
+#: app/auth/forms.py:34 app/auth/forms.py:51
 msgid "Mot de passe"
 msgstr "Password"
 
-#: app/auth/forms.py:18
+#: app/auth/forms.py:36
 msgid "Rester connecté"
 msgstr "Remember me"
 
-#: app/auth/forms.py:19 app/auth/routes.py:59
-#: app/templates/auth/register.html:35
+#: app/auth/forms.py:37 app/auth/routes.py:73
+#: app/templates/auth/register.html:41
 #: app/templates/auth/reset_password.html:29
 #: app/templates/auth/reset_password_request.html:26 app/templates/base.html:62
+#: app/templates/devices/auth_needed.html:22
 msgid "Connexion"
 msgstr "Sign in"
 
-#: app/auth/forms.py:26 app/auth/forms.py:39
+#: app/auth/forms.py:42 app/main/forms.py:18
+msgid "Nom"
+msgstr "Last name"
+
+#: app/auth/forms.py:44
+msgid "Prénom"
+msgstr "First name"
+
+#: app/auth/forms.py:46
+msgid "Promotion"
+msgstr "Promotion"
+
+#: app/auth/forms.py:48 app/auth/forms.py:61
 msgid "Adresse e-mail"
 msgstr "Mail address"
 
-#: app/auth/forms.py:31
+#: app/auth/forms.py:53
 msgid "Mot de passe (validation)"
 msgstr "Password (validation)"
 
-#: app/auth/forms.py:34 app/main/forms.py:13 app/main/forms.py:25
-msgid "Envoyer"
-msgstr "Send"
+#: app/auth/forms.py:56
+msgid "Créer mon compte"
+msgstr "Sign up"
 
-#: app/auth/forms.py:41
+#: app/auth/forms.py:63
 msgid "Envoyer le mail de réinitialisation"
 msgstr "Send reset mail"
 
-#: app/auth/forms.py:46 app/auth/routes.py:113
+#: app/auth/forms.py:68 app/auth/routes.py:127
 msgid "Nouveau mot de passe"
 msgstr "New password"
 
-#: app/auth/forms.py:48
+#: app/auth/forms.py:70
 msgid "Nouveau mot de passe (validation)"
 msgstr "New password (validation)"
 
-#: app/auth/forms.py:51
+#: app/auth/forms.py:73
 msgid "Valider"
 msgstr "Validate"
 
-#: app/auth/routes.py:25
+#: app/auth/routes.py:43
 msgid "Compte créé avec succès, connectez-vous"
 msgstr "Account successfully created, please connect"
 
-#: app/auth/routes.py:30
+#: app/auth/routes.py:48
 msgid "Nouveau compte"
 msgstr "New account"
 
-#: app/auth/routes.py:45
+#: app/auth/routes.py:63
 msgid "Nom d'utilisateur inconnu"
 msgstr "Unknown username"
 
-#: app/auth/routes.py:48
+#: app/auth/routes.py:66
 msgid "Mot de passe incorrect"
 msgstr "Wrong password"
 
-#: app/auth/routes.py:56
+#: app/auth/routes.py:70
 msgid "Connecté !"
 msgstr "Connected!"
 
-#: app/auth/routes.py:67
+#: app/auth/routes.py:81
 msgid "Vous avez été déconnecté."
 msgstr "You have been signed out."
 
-#: app/auth/routes.py:82
+#: app/auth/routes.py:96
 msgid ""
 "Un email a été envoyé avec les instructions pour réinitialiser le mot de "
 "passe."
 msgstr "An email has benn send with password reset instructions."
 
-#: app/auth/routes.py:87
+#: app/auth/routes.py:101
 msgid "Mot de passe oublié"
 msgstr "Password Lost"
 
-#: app/auth/routes.py:94
+#: app/auth/routes.py:108
 msgid "Ce lien n'est pas utilisable en étant authentifié."
 msgstr "This link cannot be used by an authenticated user."
 
-#: app/auth/routes.py:100
+#: app/auth/routes.py:114
 msgid "Lien de réinitialisation invalide ou expiré."
 msgstr "Reset link invalid or expired."
 
-#: app/auth/routes.py:108
+#: app/auth/routes.py:122
 msgid "Le mot de passe a été réinitialisé avec succès."
 msgstr "Your password has been successfully reset."
+
+#: app/devices/forms.py:15 app/devices/forms.py:26
+msgid "Nom (optionnel)"
+msgstr "Name (optional)"
+
+#: app/devices/forms.py:17
+msgid "Adresse MAC*"
+msgstr "MAC address*"
+
+#: app/devices/forms.py:19 app/devices/forms.py:30
+msgid "Type (optionnel)"
+msgstr "Type (optional)"
+
+#: app/devices/forms.py:21 app/devices/routes.py:132
+msgid "Enregistrer l'appareil"
+msgstr "Register device"
+
+#: app/devices/forms.py:28
+msgid "Adresse MAC"
+msgstr "MAC address"
+
+#: app/devices/forms.py:32 app/devices/routes.py:163
+msgid "Transférer l'appareil"
+msgstr "Transfer device"
+
+#: app/devices/routes.py:106
+msgid "Bienvenue sur l'IntraRez !"
+msgstr "Welcome on the IntraRez!"
+
+#: app/devices/routes.py:117
+msgid "Cet appareil est déjà enregistré !"
+msgstr "This device is already registered!"
+
+#: app/devices/routes.py:127
+msgid "Appareil enregistré avec succès !"
+msgstr "Device successfully registered!"
+
+#: app/devices/routes.py:144
+msgid "Cet appareil n'est pas encore enregistré !"
+msgstr "This device is not already registered!"
+
+#: app/devices/routes.py:147
+msgid "Cet appareil vous appartient déjà !"
+msgstr "This device already belong to you!"
+
+#: app/devices/routes.py:152
+msgid "Appareil transféré avec succès !"
+msgstr "Device successfully transfered!"
+
+#: app/devices/routes.py:177
+msgid "Hmm, ça n'a pas marché..."
+msgstr "Hmm, it didn't work..."
+
+#: app/devices/routes.py:178
+msgid "Non, toujours pas..."
+msgstr "No, still not..."
+
+#: app/devices/routes.py:179
+msgid "Ah ! Ah non, non plus..."
+msgstr "Oh! Oh no, no more..."
+
+#: app/devices/routes.py:180
+msgid "Nan mais quand ça veut pas, ça veut pas..."
+msgstr "You know, when it won't, it won't..."
+
+#: app/devices/routes.py:181
+msgid "Ça va sinon ?"
+msgstr "How are you, btw?"
+
+#: app/devices/routes.py:182
+msgid "Il ne va plus se passer grand chose, hein, je pense."
+msgstr "No much more to come, I think."
+
+#: app/devices/routes.py:183
+msgid "Après on sait jamais, sur un malentendu..."
+msgstr "But you never know, on a misunderstanding..."
+
+#: app/devices/routes.py:184
+msgid "zzzzzzzzzzzzzzzzzzzzzzzzz"
+msgstr "zzzzzzzzzzzzzzzzzzzzzzzzz"
+
+#: app/devices/routes.py:185
+msgid "Attention, je vais commencer à dire des choses aléatoires."
+msgstr "Careful, I'll start saying random things."
+
+#: app/devices/routes.py:186
+msgid "Je vous aurai prévenu !"
+msgstr "I'll have warned you!"
+
+#: app/devices/routes.py:197
+msgid "Détection d'appareil impossible"
+msgstr "Device detection impossible"
+
+#: app/main/forms.py:13 app/main/forms.py:25
+msgid "Envoyer"
+msgstr "Send"
 
 #: app/main/forms.py:19
 msgid "Adresse e-mail (optionnel)"
@@ -151,13 +268,13 @@ msgstr "Title"
 msgid "Message"
 msgstr "Message"
 
-#: app/main/routes.py:25 app/templates/base.html:146
+#: app/main/routes.py:28 app/templates/base.html:146
 #: app/templates/errors/404.html:5 app/templates/errors/405.html:5
 #: app/templates/errors/500.html:6
 msgid "Accueil"
 msgstr "Home"
 
-#: app/main/routes.py:44
+#: app/main/routes.py:47
 msgid ""
 "Oh non ! Le message n'a pas pu être transmis. N'hésitez pas à contacter "
 "un GRI aux coordonnées en bas de page.<br/>(Type d'erreur : "
@@ -165,27 +282,32 @@ msgstr ""
 "O no! The message could not be transmitted. Please feel free to reach GRI"
 " at the contact information below.<br/>(Error type: "
 
-#: app/main/routes.py:51
+#: app/main/routes.py:54
 msgid "Message transmis !"
 msgstr "Message transmitted!"
 
-#: app/main/routes.py:54
+#: app/main/routes.py:57
 msgid "Contact"
 msgstr "Contact"
 
-#: app/main/routes.py:61 app/templates/base.html:161
+#: app/main/routes.py:64 app/templates/base.html:161
 msgid "Mentions légales"
 msgstr "Legal notice"
 
-#: app/main/routes.py:76 app/templates/base.html:75
+#: app/main/routes.py:82
+msgid "Test"
+msgstr "Test"
+
+#: app/main/routes.py:88 app/templates/base.html:75
 msgid "Profil"
 msgstr "Profile"
 
 #: app/templates/auth/login.html:32 app/templates/base.html:68
+#: app/templates/devices/auth_needed.html:26
 msgid "Créer un compte"
 msgstr "Sign up"
 
-#: app/templates/base.html:81
+#: app/templates/base.html:81 app/templates/devices/transfer.html:24
 msgid "Déconnexion"
 msgstr "Sign out"
 
@@ -197,7 +319,8 @@ msgstr ""
 msgid "Version"
 msgstr "Version"
 
-#: app/templates/base.html:151
+#: app/templates/auth/reset_password_request.html:33
+#: app/templates/base.html:151 app/templates/devices/register.html:229
 msgid "Nous contacter"
 msgstr "Contact us"
 
@@ -217,7 +340,7 @@ msgstr "Password lost?"
 msgid "Réinitialiser"
 msgstr "Reset"
 
-#: app/templates/auth/register.html:32
+#: app/templates/auth/register.html:38
 msgid "Déjà inscrit ?"
 msgstr "Already registered?"
 
@@ -225,6 +348,376 @@ msgstr "Already registered?"
 #: app/templates/auth/reset_password_request.html:23
 msgid "Ça t'es revenu ?"
 msgstr "Got it back?"
+
+#: app/templates/auth/reset_password_request.html:30
+#, fuzzy
+msgid "Adresse e-mail oubliée ? Autre soucis ?"
+msgstr "Forget your email? Other issue?"
+
+#: app/templates/devices/auth_needed.html:11
+msgid "Un compte est nécessaire pour enregistrer l'appareil et accéder au réseau."
+msgstr "An account is necessary to register the device and access the network."
+
+#: app/templates/devices/auth_needed.html:15
+msgid "Merci de créer un compte par personne souhaitant accéder au réseau."
+msgstr "Please create an account per person wishing to access the network."
+
+#: app/templates/devices/auth_needed.html:31
+msgid "En cas de problème, n'hésitez pas à "
+msgstr "If any problem, do not hesitate to "
+
+#: app/templates/devices/auth_needed.html:32
+msgid "nous contacter"
+msgstr "contact us"
+
+#: app/templates/devices/error.html:11
+msgid ""
+"Oh ! Nous ne pouvons pas détecter l'appareil utilisé pour accéder à ce "
+"site."
+msgstr "Oh! We can't detect the device used to access this site."
+
+#: app/templates/devices/error.html:15
+msgid "Malheureusement, cela est nécessaire pour pouvoir accéder au réseau."
+msgstr "Unfortunately, this is necessary to grant access to the network."
+
+#: app/templates/devices/error.html:19
+msgid "Cela peut être dû à une erreur temporaire."
+msgstr "This may be due to a temporary issue."
+
+#: app/templates/devices/error.html:20
+msgid "Attendez un peu et réessayez."
+msgstr "Wait a litte and try again."
+
+#: app/templates/devices/error.html:28
+msgid "Recharger la page"
+msgstr "Reload page"
+
+#: app/templates/devices/error.html:38
+msgid "Si le problème persiste, "
+msgstr "If the issue goes on, "
+
+#: app/templates/devices/error.html:39
+msgid "contactez-nous"
+msgstr "contact us"
+
+#: app/templates/devices/error.html:40
+msgid "pour voir ensemble comment résoudre ce problème."
+msgstr "so we can see together how to address this issue."
+
+#: app/templates/devices/error.html:43
+msgid "Code erreur :"
+msgstr "Error code:"
+
+#: app/templates/devices/register.html:12
+msgid "Enregistrer un appareil lui permet de se connecter au réseau."
+msgstr "Register a device grants it access to the network."
+
+#: app/templates/devices/register.html:15
+msgid ""
+"Il n'est pas obligatoire de le nommer, mais cela permet d'y voir plus "
+"clair si vous avez plusieurs appareils (téléphone et ordinateur, par "
+"exemple)."
+msgstr "It is not mandatory to name it, but it makes it clearer if you have "
+"several devices (phone and computer, for example)."
+
+#: app/templates/devices/register.html:20
+msgid ""
+"De même, le type d'appareil peut aider les GRI à comprendre ce qu'il se "
+"passe plus rapidement en cas de problème."
+msgstr "Similarly, the type of device can help GRIs to understand what is "
+"going on more quickly in a problem occurs."
+
+#: app/templates/devices/register.html:46
+msgid ""
+"*Si l'adresse MAC n'est pas détectée automatiquement, ou que vous "
+"souhaitez enregistrer manuellement un autre appareil, voici quelques "
+"informations sur comment la trouver :"
+msgstr "*If the MAC address is not detected automatically, or if you want to "
+"manually register another device, here is some information on how to find it:"
+
+#: app/templates/devices/register.html:57
+msgid "Généralités"
+msgstr "General information"
+
+#: app/templates/devices/register.html:63
+msgid ""
+"Chaque appareil est identifié par une <strong>adresse\n"
+"MAC</strong> (<em>Media Access Control</em>), ou adresse physique, qui "
+"lui est\n"
+"théoriquement unique. Tous les appareils accédant à un réseau "
+"informatique,\n"
+"même les plus basiques, disposent d'une telle adresse. Votre ordinateur "
+"peut\n"
+"même en avoir plusieurs, si différent composants lui permettent d'accéder"
+"\n"
+"à Internet."
+msgstr ""
+"Each device is identified by a <strong>MAC address</strong> (<em>Media "
+"Access Control</em>), or physical address, which is theoretically unique "
+"to it. Each device accessing an IT network, even the simplest ones, "
+"have such an address. Your computer can even have several addresses, "
+"if different components can make it access to the Internet."
+
+#: app/templates/devices/register.html:69
+msgid ""
+"Ces adresses ont une longeur de 6 octets (48 bits) et\n"
+"sont généralement représentées sous forme hexadécimale, en séparant les "
+"octets\n"
+"deux-points :"
+msgstr ""
+"These addresses are 6 bytes (48 bits) long and are usually represented "
+"in hexadecimal form, separating bytes with colons:"
+
+#: app/templates/devices/register.html:72
+msgid ""
+"Contrairement à l'adresse IP, qui identifie votre\n"
+"point d'accès au réseau, votre adresse MAC n'est pas accessible depuis "
+"les\n"
+"sites que vous visitez. Nous ne pouvons la détecter que grâce un tour de\n"
+"passe-passe, faisable uniquement en réseau local."
+msgstr ""
+"Unlike IP address, which identifies your access point to the network, "
+"your MAC address cannot be accessed by the websites you visit. We can "
+"detect it only thanks to a sleight-of-hand only feasible on a local network."
+
+#: app/templates/devices/register.html:76
+msgid "Pour en savoir plus :"
+msgstr "For more information:"
+
+#: app/templates/devices/register.html:77
+msgid "https://fr.wikipedia.org/wiki/Adresse_MAC"
+msgstr "https://en.wikipedia.org/wiki/MAC_address"
+
+#: app/templates/devices/register.html:78
+msgid "Adresse MAC — Wikipédia</a>"
+msgstr "MAC address — Wikipedia"
+
+#: app/templates/devices/register.html:88
+msgid "Windows"
+msgstr "Windows"
+
+#: app/templates/devices/register.html:95
+msgid ""
+"Clic droit sur le <strong>Menu Démarrer</strong>\n"
+"> <strong>Invite de commandes</strong> (ou <kbd>Win</kbd> + <kbd>R</kbd>)"
+msgstr ""
+"Right-click on the <strong>Start Menu</strong> > "
+"<strong>Command Prompt</strong> (or <kbd>Win</kbd> + <kbd>R</kbd>)"
+
+#: app/templates/devices/register.html:98
+msgid ""
+"Taper\n"
+"<strong><code>ipconfig /all</code></strong>"
+msgstr "Type <strong><code>ipconfig /all</code></strong>"
+
+#: app/templates/devices/register.html:100
+msgid ""
+"Repérer la ligne <strong><code>Adresse\n"
+"physique</code></strong>. Si plusieurs interfaces s'affichent, repérer "
+"celle\n"
+"représentant la carte Ethernet ou la carte Wi-Fi, selon les cas."
+msgstr ""
+"Locate the line <strong><code>physical address</code></strong>. "
+"If several interfaces are shown, locate the one representing "
+"the Ethernet adapter or Wi-Fi adapter."
+
+#: app/templates/devices/register.html:112
+msgid "Mac OS"
+msgstr "Mac OS"
+
+#: app/templates/devices/register.html:118
+msgid ""
+"Contrairement à ce qu'on pourrait penser, il n'est pas\n"
+"particulièrement plus facile de trouver l'adresse MAC d'un Mac."
+msgstr ""
+"Contrary to what one might think, it is not particularly easier to find the "
+"MAC address of a Mac."
+
+#: app/templates/devices/register.html:121
+msgid ""
+"Menu <strong>Apple</strong> > <strong>Préférences\n"
+"système</strong> > <strong>Réseau</strong>"
+msgstr ""
+"<strong>Apple</strong> Menu > <strong>System Preferences</strong> > "
+"<strong>Network</strong>"
+
+#: app/templates/devices/register.html:123
+msgid "Pour les connexions sans-fil :"
+msgstr "For wireless connections:"
+
+#: app/templates/devices/register.html:125
+msgid ""
+"Choisir <strong>AirPort</strong> /\n"
+"<strong>Wi-Fi</strong>"
+msgstr "Chose <strong>AirPort</strong> / <strong>Wi-Fi</strong>"
+
+#: app/templates/devices/register.html:127
+#: app/templates/devices/register.html:135
+msgid "Cliquer sur <strong>Avancé</strong>"
+msgstr "Click on <strong>Avanced</strong>"
+
+#: app/templates/devices/register.html:128
+msgid ""
+"Repérer la ligne <strong>ID AirPort</strong>\n"
+"ou <strong>Adresse Wi-Fi</strong>"
+msgstr ""
+"Locate the line <strong>AirPort ID</strong>\n"
+"or <strong>Wi-Fi Address</strong>"
+
+#: app/templates/devices/register.html:131
+msgid "Pour les connexions filaires :"
+msgstr "For wired connections:"
+
+#: app/templates/devices/register.html:133
+msgid ""
+"Choisir\n"
+"<strong>Ethernet intégré</strong>"
+msgstr ""
+"Chose <strong>Built-in Ethernet</strong>"
+
+#: app/templates/devices/register.html:136
+msgid ""
+"Repérer la ligne\n"
+"<strong>ID Ethernet</strong>"
+msgstr ""
+"Locate the line <strong>Ethernet ID</strong>"
+
+#: app/templates/devices/register.html:148
+msgid "Linux"
+msgstr "Linux"
+
+#: app/templates/devices/register.html:154
+msgid ""
+"La méthode peut varier selon la distribution\n"
+"installée et sa version."
+msgstr ""
+
+#: app/templates/devices/register.html:157
+msgid "Ouvrir un terminal"
+msgstr "The method may vary depending on the installed distribution and on "
+"its version."
+
+#: app/templates/devices/register.html:158
+msgid ""
+"Taper <strong><code>ifconfig</code></strong>\n"
+"<em>(ou <code>/sbin/ifconfig</code>)</em>"
+msgstr ""
+"Type <strong><code>ifconfig</code></strong>\n"
+"<em>(or <code>/sbin/ifconfig</code>)</em>"
+
+#: app/templates/devices/register.html:160
+msgid ""
+"Repérer la ligne <strong><code>ether</code>\n"
+"</strong> ou <strong><code>wlan</code></strong>. Si plusieurs interfaces\n"
+"s'affichent, repérer celle représentant la carte Ethernet ou la carte Wi-"
+"Fi\n"
+"utilisée."
+msgstr ""
+"Locate the line <strong><code>ether</code>\n </strong> or "
+"<strong><code>wlan</code></strong>. If several interfaces are shown, locate "
+"the one representing the Ethernet or Wi-Fi adapter us use."
+
+#: app/templates/devices/register.html:173
+msgid "Android"
+msgstr "Android"
+
+#: app/templates/devices/register.html:179
+msgid ""
+"La méthode exacte peut varier selon\n"
+"l'appareil."
+msgstr ""
+"The exact method may vary depending on the device."
+
+#: app/templates/devices/register.html:182
+msgid ""
+"Ouvrir <strong>Paramètres</strong> (>\n"
+"<strong>Général</strong>)"
+msgstr ""
+"Open <strong>Settings</strong> (>\n"
+"<strong>General</strong>)"
+
+#: app/templates/devices/register.html:184
+msgid ""
+"Aller dans <strong>À propos</strong> (du\n"
+"téléphone)"
+msgstr ""
+"Go to <strong>About</strong> (the smartphone)"
+
+#: app/templates/devices/register.html:186
+msgid ""
+"Repérer la ligne <strong>Adresse MAC</strong>,\n"
+"<strong>Adresse Wi-Fi</strong> (du téléphone) ou équivalent."
+msgstr ""
+"Locate the line <strong>MAC Address</strong>,\n"
+"<strong>Wi-Fi Address</strong> (of the smartphone) or equivalent."
+
+#: app/templates/devices/register.html:197
+msgid "iPhone"
+msgstr "iPhone"
+
+#: app/templates/devices/register.html:204
+msgid ""
+"Ouvrir <strong>Paramètres</strong> >\n"
+"<strong>Général</strong>"
+msgstr ""
+"Open <strong>Settings</strong> >\n"
+"<strong>General</strong>"
+
+#: app/templates/devices/register.html:206
+msgid "Aller dans <strong>À propos</strong>"
+msgstr "Go to <strong>About</strong>"
+
+#: app/templates/devices/register.html:207
+msgid ""
+"Repérer la liste\n"
+"<strong>Adresse Wi-Fi</strong>."
+msgstr ""
+"Locate the line <strong>Wi-Fi Address</strong>."
+
+#: app/templates/devices/register.html:218
+msgid "Autres appareils"
+msgstr "Other devices"
+
+#: app/templates/devices/register.html:224
+msgid ""
+"De manière générale, l'adresse MAC est indiquée dans\n"
+"les informations système / matérielles de l'appareil. Il arrive aussi "
+"qu'elle\n"
+"soit indiquée sur un autocollant au dos de l'appareil."
+msgstr ""
+"In general, the MAC address is indicated in the the system/hardware "
+"information about the device. It can also be on on a sticker on the back "
+"of the device."
+
+#: app/templates/devices/register.html:227
+msgid ""
+"N'hésitez pas à nous demander de l'aide si vous êtes\n"
+"bloqué :"
+msgstr ""
+"Don't hesitate to ask us for help if you are stuck:"
+
+#: app/templates/devices/transfer.html:12
+msgid ""
+"L'appareil à partir duquel vous accédez à cette page est enregistré comme"
+" <stong>appartenent à un autre utilisateur</stong>."
+msgstr "The device you access this page from is registered as "
+"<strong>belonging to another user</strong>."
+
+#: app/templates/devices/transfer.html:16
+msgid ""
+"Si vous venez de récupérer l'appareil (un routeur par exemple), pas de "
+"soucis ! Il suffit simplement de transférer l'appareil sur votre compte à"
+" l'aide du formulaire ci-dessous."
+msgstr ""
+"If you have just recieved the device (like a router), no worries! You just "
+"have to transfer the device to your account thanks to the form below."
+
+#: app/templates/devices/transfer.html:21
+msgid ""
+"Sinon, n'hésitez pas à changer de compte pour accéder au compte possédant"
+" l'appareil :"
+msgstr ""
+"Otherwise, do not hesitate to switch to the account owning the device:"
 
 #: app/templates/errors/404.html:4
 msgid "Page non trouvée"
@@ -275,12 +768,12 @@ msgstr ""
 "Please especially feel free to contact us to remind us to update this "
 "list. We'll 100 %% forget."
 
-#: app/templates/main/index.html:5
+#: app/templates/main/index.html:5 app/templates/main/test.html:5
 #, python-format
 msgid "Bonjour, %(name)s !"
 msgstr "Hello, %(name)s!"
 
-#: app/templates/main/index.html:7
+#: app/templates/main/index.html:7 app/templates/main/test.html:7
 msgid "Salutations, inconnu !"
 msgstr "Greetings, stranger!"
 
@@ -314,14 +807,33 @@ msgstr "Invalid email address."
 msgid "Valeur différente du champ précédent."
 msgstr "The value differ from the previous field."
 
-#: app/tools/validators.py:41
+#: app/tools/validators.py:43
+msgid "Adresse MAC invalide (format attendu : xx:xx:xx:xx:xx:xx)."
+msgstr "Invalid MAC address (expected format: xx:xx:xx:xx:xx:xx)."
+
+#: app/tools/validators.py:54
+#, python-format
+msgid "Doit faire moins de %(max)d caractères."
+msgstr "Must be less than %(max)d characters long."
+
+#: app/tools/validators.py:57
+#, python-format
+msgid "Doit faire au moins %(min)d caractères."
+msgstr "Must be at least %(min)d characters long."
+
+#: app/tools/validators.py:60
+#, python-format
+msgid "Doit faire entre %(min)d et %(max)d caractères."
+msgstr "Must be between %(min)d and %(max)d characters."
+
+#: app/tools/validators.py:65
 msgid "Nom d'utilisateur déjà utilisé."
 msgstr "User name already in use."
 
-#: app/tools/validators.py:46
+#: app/tools/validators.py:70
 msgid "Adresse e-mail déjà liée à un autre compte."
 msgstr "Mail address already linked to an account."
 
-#: app/tools/validators.py:51
+#: app/tools/validators.py:75
 msgid "Numéro de chambre invalide."
 msgstr "Invalid room number."

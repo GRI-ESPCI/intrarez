@@ -170,15 +170,28 @@ Installation d'un virtual env fresh
 
 Utilisation de SQLAlchemy 1.4 (2.x pas prêt)
 
-Gestion des migrations de db : lors du développement d'une nouvelle version
-modifiant le modèle de données,
-* En local : ``flask db migrate -m "Migration to <version>"`` ;
-* Vérifier le fichier créé dans ``migrations/versions`` ;
-* ``flask db upgrade`` pour appliquer localement ;
-* (autres modifs hors db)
-* Release de la version ;
-* En prod : pull puis ``flask db upgrade``.
+#### Gestion des migrations de db
 
+Lors du développement d'une nouvelle version modifiant le modèle de données :
+  * En local : ``flask db migrate -m "Migration to <version>"`` ;
+  * Vérifier le fichier créé dans ``migrations/versions``.
+    **ATTENTION** : notemment, si on crée une nouvelle colonne non-nullable,
+    il faut modifier le code généré automatiquement :
+    ```py
+        op.add_column('table', sa.Column('col', sa.Boolean(), nullable=False))
+    ```
+    devient
+    ```py
+        op.add_column('table', sa.Column('col', sa.Boolean(), nullable=True))
+        op.execute("UPDATE table SET col = false")      # Ou autre valeur
+        op.alter_column('table', 'col', type_=sa.Boolean(), nullable=False)
+    ```
+  * ``flask db upgrade`` pour appliquer localement ;
+  * (autres modifs hors db)
+  * Release de la version.
+
+
+#### Spécificités
 
 Je pars sur une structure en modules (basée sur les *blueprints* Flask),
 détaillée au chapitre XV du tuto :

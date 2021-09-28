@@ -2,14 +2,16 @@
 
 import datetime
 import json
+import subprocess
+import re
 
 import flask
-import flask_login
 from flask_babel import _
 from discord_webhook import DiscordWebhook
 
 from app import db
 from app.main import bp, forms
+from app.devices import check_device
 
 
 # @bp.before_app_request
@@ -20,6 +22,7 @@ from app.main import bp, forms
 
 @bp.route("/")
 @bp.route("/index")
+@check_device
 def index():
     """IntraRez home page."""
     return flask.render_template("main/index.html", title=_("Accueil"))
@@ -60,8 +63,26 @@ def legal():
     return flask.render_template("main/legal.html",
                                  title=_("Mentions légales"))
 
+@bp.route("/test")
+@check_device
+def test():
+    """Test page."""
+    # flask.flash("Succès", "success")
+    # flask.flash("Info", "info")
+    # flask.flash("Warning", "warning")
+    # flask.flash("Danger", "danger")
+    pt = {}
+    for name in dir(flask.request):
+        if name.startswith("_"):
+            continue
+        obj = getattr(flask.request, name)
+        if not callable(obj):
+            pt[name] = obj
+
+    return flask.render_template("main/test.html", title=_("Test"), pt=pt)
+
 @bp.route("/profile")
-@flask_login.login_required
+@check_device
 def profile():
     """IntraRez profile page."""
     return flask.render_template("main/index.html", title=_("Profil"))
