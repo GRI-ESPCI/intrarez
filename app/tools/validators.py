@@ -37,6 +37,30 @@ class EqualTo(wtforms.validators.EqualTo):
             message = _l("Valeur différente du champ précédent.")
         super().__init__(fieldname, message)
 
+class MacAddress(wtforms.validators.MacAddress):
+    def __init__(self, message=None):
+        if message is None:
+            message = _l("Adresse MAC invalide (format attendu :"
+                         " xx:xx:xx:xx:xx:xx).")
+        super().__init__(message)
+
+class Length(wtforms.validators.Length):
+    def __init__(self, min=-1, max=-1, message=None):
+        if min < 0 and max < 0:
+            raise ValueError("Length validator cannot have both min and max "
+                             "arguments not set or < 0.")
+        if message is None:
+            if min < 0:
+                message = _l("Doit faire moins de %(max)d caractères.",
+                             max=max)
+            elif max < 0:
+                message = _l("Doit faire au moins %(min)d caractères.",
+                             min=min)
+            else:
+                message = _l("Doit faire entre %(min)d et %(max)d caractères.",
+                             min=min, max=max)
+        super().__init__(min, max, message)
+
 class NewUsername(CustomValidator):
     message = _l("Nom d'utilisateur déjà utilisé.")
     def validate(self, form, field):

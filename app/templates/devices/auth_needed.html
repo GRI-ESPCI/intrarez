@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("Un compte est nécessaire pour enregistrer l'appareil "
+         "et accéder au réseau.") }}
+</p></div>
+<div class="row"><p>
+    {{ _("Merci de créer un compte par personne souhaitant accéder au "
+         "réseau.") }}
+</p></div>
+<div class="row mt-3 mb-5">
+    <div>
+        <a class="btn btn-primary ms-3"
+                href="{{ url_for("auth.login", **request.args) }}">
+            {{ _("Connexion") }}
+        </a>
+        <a class="btn btn-primary ms-5"
+                href="{{ url_for("auth.register", **request.args) }}">
+            {{ _("Créer un compte") }}
+        </a>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("En cas de problème, n'hésitez pas à ") }}
+    <a href="{{ url_for("main.contact") }}">{{ _("nous contacter") }}</a>.
+</p></div>
+
+{% endblock %}

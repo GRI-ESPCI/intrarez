@@ -3,37 +3,43 @@
 
 {% block app_content %}
 
-    <div class="row mb-3">
-        <div class="col">
-            <h1>{{ title }}</h1>
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<form action="" method="post" role="form">
+    {{ form.hidden_tag() }}
+    <div class="row row-cols-1 row-cols-lg-2 mb-4">
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.prenom) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.nom) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.promo) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.email) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.password) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.password2) }}
+        </div></div>
+        <div>
+            {{ wtf.form_field(form.submit) }}
         </div>
     </div>
-    <div class="row mb-4">
-        <form action="" method="post" role="form">
-            {{ form.hidden_tag() }}
-            <div class="form-floating mb-3">
-                {{ wtf.form_field(form.username) }}
-            </div>
-            <div class="form-floating mb-3">
-                {{ wtf.form_field(form.email) }}
-            </div>
-            <div class="form-floating mb-3">
-                {{ wtf.form_field(form.password) }}
-            </div>
-            <div class="form-floating mb-3">
-                {{ wtf.form_field(form.password2) }}
-            </div>
-            <div>
-                {{ wtf.form_field(form.submit) }}
-            </div>
-        </form>
-    </div>
-    <div class="row"><p>
-        {{ _("Déjà inscrit ?") }}
-        <a class="btn btn-outline-primary ms-2"
-           href="{{ url_for("auth.login") }}">
-            {{ _("Connexion") }}
-        </a>
+</form>
+<div class="row"><p>
+    {{ _("Déjà inscrit ?") }}
+    <a class="btn btn-outline-primary ms-2"
+       href="{{ url_for("auth.login", **request.args) }}">
+        {{ _("Connexion") }}
+    </a>
     </p></div>
 
 {% endblock %}

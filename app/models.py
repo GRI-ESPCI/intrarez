@@ -23,10 +23,16 @@ class User(flask_login.UserMixin, db.Model):
         * get_id(): a method that returns a unique identifier for the
             user as a string.
     """
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(64), unique=True)
+    nom = db.Column(db.String(64))
+    prenom = db.Column(db.String(64))
+    promo = db.Column(db.String(8))
     email = db.Column(db.String(120), unique=True)
+    is_gri = db.Column(db.Boolean(), nullable=False, default=False)
     _password_hash = db.Column(db.String(128))
+
+    devices = db.relationship("Device", back_populates="user")
 
     def __repr__(self):
         """Returns repr(self)."""
@@ -93,6 +99,22 @@ class User(flask_login.UserMixin, db.Model):
         except Exception:
             return
         return cls.query.get(id)
+
+
+class Device(db.Model):
+    """A device of a Rezident."""
+    id = db.Column(db.Integer(), primary_key=True)
+    _user_id = db.Column(db.ForeignKey("user.id"), nullable=False)
+    user = db.relationship("User", back_populates="devices")
+    name = db.Column(db.String(64))
+    mac_address = db.Column(db.String(17), nullable=False, unique=True)
+    type = db.Column(db.String(64))
+    registered = db.Column(db.DateTime(), nullable=False)
+    last_seen = db.Column(db.DateTime(), nullable=False)
+
+    def __repr__(self):
+        """Returns repr(self)."""
+        return f"<Device '{self.name}' of {self.user} ({self.mac_address})>"
 
 
 @login.user_loader

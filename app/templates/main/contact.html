@@ -31,7 +31,7 @@
             {{ wtf.form_field(form.title) }}
         </div>
         <div class="form-floating mb-3">
-            {{ wtf.form_field(form.message, style="height: 150px;") }}
+            {{ wtf.form_field(form.message, class="lines-6") }}
         </div>
         <div>
             {{ wtf.form_field(form.submit) }}
@@ -41,11 +41,11 @@
 <div class="row mt-5 mb-2">
     <h2>{{ _("Les GRIs") }}</h2>
 </div>
-<div class="row row-cols g-4 mb-3">
+<div class="row row-cols row-cols-lg-3 g-4 mb-3">
     {# Ami GRI, si tu cherches à modifier la liste des GRIs affichée, ça se
        passe dans app/static/gris.json ! #}
     {% for gri in gris %}
-    <div class="col"><div class="card" style="width: 16rem;">
+    <div class="col"><div class="card gri-card">
         <div class="card-body">
             <h5 class="card-title">{{ gri["name"] }}</h5>
             <h6 class="card-subtitle text-muted">

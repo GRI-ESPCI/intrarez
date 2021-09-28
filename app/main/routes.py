@@ -6,12 +6,12 @@ import subprocess
 import re
 
 import flask
-import flask_login
 from flask_babel import _
 from discord_webhook import DiscordWebhook
 
 from app import db
 from app.main import bp, forms
+from app.devices import check_device
 
 
 # @bp.before_app_request
@@ -22,6 +22,7 @@ from app.main import bp, forms
 
 @bp.route("/")
 @bp.route("/index")
+@check_device
 def index():
     """IntraRez home page."""
     return flask.render_template("main/index.html", title=_("Accueil"))
@@ -63,6 +64,7 @@ def legal():
                                  title=_("Mentions légales"))
 
 @bp.route("/test")
+@check_device
 def test():
     """Test page."""
     # flask.flash("Succès", "success")
@@ -77,25 +79,10 @@ def test():
         if not callable(obj):
             pt[name] = obj
 
-    caller = flask.request.headers.get("X-Real-Ip")
-    if not caller:
-        flask.flash("No caller (test mode?)", "danger")
-    else:
-        result = subprocess.run(["/sbin/arp", "-a"], capture_output=True)
-        flask.flash(flask.Markup(
-            "<code>arp-a</code> result:<br/>"
-            f"<pre>{result}</pre>"), "info")
-        mtch = re.search(rf"^.*? \({caller}\) at ([0-9a-f:]{{17}}) .*",
-                         result.stdout.decode(), re.M)
-        if mtch:
-            flask.flash(f"Your MAC address is: {mtch.group(1)}", "success")
-        else:
-            flask.flash("Unable to find your MAC adress :(", "warning")
-
     return flask.render_template("main/test.html", title=_("Test"), pt=pt)
 
 @bp.route("/profile")
-@flask_login.login_required
+@check_device
 def profile():
     """IntraRez profile page."""
     return flask.render_template("main/index.html", title=_("Profil"))

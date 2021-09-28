@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% import "_form.html" as wtf %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("Enregistrer un appareil lui permet de se connecter au réseau.") }}
+</p></div>
+<div class="row"><p>
+    {{ _("Il n'est pas obligatoire de le nommer, mais cela permet d'y voir "
+         "plus clair si vous avez plusieurs appareils (téléphone et "
+         "ordinateur, par exemple).") }}
+</p></div>
+<div class="row mb-3"><p>
+    {{ _("De même, le type d'appareil peut aider les GRI à comprendre "
+         "ce qu'il se passe plus rapidement en cas de problème.") }}
+</p></div>
+<div class="row  mb-4">
+    <form action="" method="post" role="form">
+        {{ form.hidden_tag() }}
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.nom) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.type) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {% if request.args.get("mac") %}
+                {{ wtf.form_field(form.mac, value=request.args.get("mac"),
+                                  readonly=True) }}
+            {% else %}
+                {{ wtf.form_field(form.mac) }}
+            {% endif %}
+        </div></div>
+        <div>
+            {{ wtf.form_field(form.submit) }}
+        </div>
+    </form>
+</div>
+<div class="row"><p>
+    {{ _("*Si l'adresse MAC n'est pas détectée automatiquement, ou "
+         "que vous souhaitez enregistrer manuellement un autre appareil, "
+         "voici quelques informations sur comment la trouver :") }}
+</p></div>
+
+<div class="accordion" id="accordeon">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="accordeon-gen">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapse-gen"
+                    aria-expanded="true" aria-controls="collapse-gen">
+                {{ _("Généralités") }}
+            </button>
+        </h2>
+        <div id="collapse-gen" class="accordion-collapse collapse"
+             aria-labelledby="accordeon-gen" data-bs-parent="#accordeon">
+            <div class="accordion-body">
+                <p>{{ _("Chaque appareil est identifié par une <strong>adresse
+MAC</strong> (<em>Media Access Control</em>), ou adresse physique, qui lui est
+théoriquement unique. Tous les appareils accédant à un réseau informatique,
+même les plus basiques, disposent d'une telle adresse. Votre ordinateur peut
+même en avoir plusieurs, si différent composants lui permettent d'accéder
+à Internet.") }}</p>
+                <p>{{ _("Ces adresses ont une longeur de 6 octets (48 bits) et
+sont généralement représentées sous forme hexadécimale, en séparant les octets
+deux-points :") }} <code>xx:xx:xx:xx:xx:xx</code>.</p>
+                <p>{{ _("Contrairement à l'adresse IP, qui identifie votre
+point d'accès au réseau, votre adresse MAC n'est pas accessible depuis les
+sites que vous visitez. Nous ne pouvons la détecter que grâce un tour de
+passe-passe, faisable uniquement en réseau local.") }}</p>
+                <p><em>{{ _("Pour en savoir plus :") }}</em>
+                <a href="{{ _("https://fr.wikipedia.org/wiki/Adresse_MAC") }}"
+                   target="_blank" rel="noopener noreferrer">
+                    {{ _("Adresse MAC — Wikipédia</a>") }}
+                </a></p>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="accordeon-win">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapse-win"
+                    aria-expanded="true" aria-controls="collapse-win">
+                {{ _("Windows") }}
+            </button>
+        </h2>
+        <div id="collapse-win" class="accordion-collapse collapse"
+             aria-labelledby="accordeon-win" data-bs-parent="#accordeon">
+            <div class="accordion-body">
+                <ol>
+                    <li>{{ _("Clic droit sur le <strong>Menu Démarrer</strong>
+> <strong>Invite de commandes</strong> (ou <kbd>Win</kbd> + <kbd>R</kbd>)") }}
+                    </li>
+                    <li>{{ _("Taper
+<strong><code>ipconfig /all</code></strong>") }}</li>
+                    <li>{{ _("Repérer la ligne <strong><code>Adresse
+physique</code></strong>. Si plusieurs interfaces s'affichent, repérer celle
+représentant la carte Ethernet ou la carte Wi-Fi, selon les cas.") }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="accordeon-mac">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapse-mac"
+                    aria-expanded="true" aria-controls="collapse-mac">
+                {{ _("Mac OS") }}
+            </button>
+        </h2>
+        <div id="collapse-mac" class="accordion-collapse collapse"
+             aria-labelledby="accordeon-mac" data-bs-parent="#accordeon">
+            <div class="accordion-body">
+                <p>{{ _("Contrairement à ce qu'on pourrait penser, il n'est pas
+particulièrement plus facile de trouver l'adresse MAC d'un Mac.") }}</p>
+                <ol>
+                    <li>{{ _("Menu <strong>Apple</strong> > <strong>Préférences
+système</strong> > <strong>Réseau</strong>") }}</li>
+                    <li>{{ _("Pour les connexions sans-fil :") }}
+                    <ol>
+                        <li>{{ _("Choisir <strong>AirPort</strong> /
+<strong>Wi-Fi</strong>") }}</li>
+                        <li>{{ _("Cliquer sur <strong>Avancé</strong>") }}</li>
+                        <li>{{ _("Repérer la ligne <strong>ID AirPort</strong>
+ou <strong>Adresse Wi-Fi</strong>") }}</li>
+                    </ol></li>
+                    <li>{{ _("Pour les connexions filaires :") }}
+                    <ol>
+                        <li>{{ _("Choisir
+<strong>Ethernet intégré</strong>") }}</li>
+                        <li>{{ _("Cliquer sur <strong>Avancé</strong>") }}</li>
+                        <li>{{ _("Repérer la ligne
+<strong>ID Ethernet</strong>") }}</li>
+                    </ol></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="accordeon-linux">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapse-linux"
+                    aria-expanded="true" aria-controls="collapse-linux">
+                {{ _("Linux") }}
+            </button>
+        </h2>
+        <div id="collapse-linux" class="accordion-collapse collapse"
+             aria-labelledby="accordeon-linux" data-bs-parent="#accordeon">
+            <div class="accordion-body">
+                <p><em>{{ _("La méthode peut varier selon la distribution
+installée et sa version.") }}</em></p>
+                <ol>
+                    <li>{{ _("Ouvrir un terminal") }}</li>
+                    <li>{{ _("Taper <strong><code>ifconfig</code></strong>
+<em>(ou <code>/sbin/ifconfig</code>)</em>") }}</li>
+                    <li>{{ _("Repérer la ligne <strong><code>ether</code>
+</strong> ou <strong><code>wlan</code></strong>. Si plusieurs interfaces
+s'affichent, repérer celle représentant la carte Ethernet ou la carte Wi-Fi
+utilisée.") }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="accordeon-android">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapse-android"
+                    aria-expanded="true" aria-controls="collapse-android">
+                {{ _("Android") }}
+            </button>
+        </h2>
+        <div id="collapse-android" class="accordion-collapse collapse"
+             aria-labelledby="accordeon-android" data-bs-parent="#accordeon">
+            <div class="accordion-body">
+                <p><em>{{ _("La méthode exacte peut varier selon
+l'appareil.") }}</em></p>
+                <ol>
+                    <li>{{ _("Ouvrir <strong>Paramètres</strong> (>
+<strong>Général</strong>)") }}</li>
+                    <li>{{ _("Aller dans <strong>À propos</strong> (du
+téléphone)") }}</li>
+                    <li>{{ _("Repérer la ligne <strong>Adresse MAC</strong>,
+<strong>Adresse Wi-Fi</strong> (du téléphone) ou équivalent.") }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="accordeon-iphone">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapse-iphone"
+                    aria-expanded="true" aria-controls="collapse-iphone">
+                {{ _("iPhone") }}
+            </button>
+        </h2>
+        <div id="collapse-iphone" class="accordion-collapse collapse"
+             aria-labelledby="accordeon-iphone" data-bs-parent="#accordeon">
+            <div class="accordion-body">
+                <ol>
+                    <li>{{ _("Ouvrir <strong>Paramètres</strong> >
+<strong>Général</strong>") }}</li>
+                    <li>{{ _("Aller dans <strong>À propos</strong>") }}</li>
+                    <li>{{ _("Repérer la ligne
+<strong>Adresse Wi-Fi</strong>.") }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="accordeon-other">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapse-other"
+                    aria-expanded="true" aria-controls="collapse-other">
+                {{ _("Autres appareils") }}
+            </button>
+        </h2>
+        <div id="collapse-other" class="accordion-collapse collapse"
+             aria-labelledby="accordeon-other" data-bs-parent="#accordeon">
+            <div class="accordion-body">
+                <p>{{ _("De manière générale, l'adresse MAC est indiquée dans
+les informations système / matérielles de l'appareil. Il arrive aussi qu'elle
+soit indiquée sur un autocollant au dos de l'appareil.") }}</p>
+                <p>{{ _("N'hésitez pas à nous demander de l'aide si vous êtes
+bloqué :") }} <a href="{{ url_for("main.contact") }}">
+{{ _("Nous contacter") }}</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

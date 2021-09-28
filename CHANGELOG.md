@@ -5,6 +5,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 0.3.0 - 2021-09-29
+
+# Added
+
+  * Device detection, registration and transfer (new ``Device`` model).
+  * Device check on each request, redirecting to the appropriate page.
+  * Extended ``User`` model with first / last names and promotion.
+  * Automatic username construction form first and last names.
+  * Automatic promotion list built from current year.
+  * Utility function ``tools.utils.redirect_to_next``.
+  * MAC address and Length form validators.
+
+# Changed
+
+  * External links now open in a new tab.
+
+# Fixed
+
+  * Form input custom classes were ignored in some cases.
+
+
 ## 0.2.0 - 2021-09-26
 
 # Added

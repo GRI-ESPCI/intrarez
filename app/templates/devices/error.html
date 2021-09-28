@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("Oh ! Nous ne pouvons pas détecter l'appareil utilisé pour "
+         "accéder à ce site.") }}
+</p></div>
+<div class="row"><p>
+    {{ _("Malheureusement, cela est nécessaire pour pouvoir accéder "
+         "au réseau.") }}
+</p></div>
+<div class="row"><p>
+    {{ _("Cela peut être dû à une erreur temporaire.") }}
+    {{ _("Attendez un peu et réessayez.") }}
+</p></div>
+<div class="row mt-2 mb-4">
+    <script src={{ url_for("static", filename="js/device-error-reload.js")}}
+            defer></script>
+    <div>
+        <button type="button" class="btn btn-outline-primary"
+                onClick="reload();">
+            {{ _("Recharger la page") }}
+        </button>
+        {% if message %}
+        <div class=" btn btn-link text-decoration-none text-muted">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("Si le problème persiste, ") }}
+    <a href="{{ url_for("main.contact") }}">{{ _("contactez-nous") }}</a>
+    {{ _("pour voir ensemble comment résoudre ce problème.") }}
+</p></div>
+<div class="row mt-3 text-muted"><p>
+    {{ _("Code erreur :") }} <code class="ms-1">{{ reason }}</code>
+</p></div>
+
+{% endblock %}
