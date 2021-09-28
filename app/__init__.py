@@ -11,8 +11,6 @@ __version__ = "0.2.0"
 __all__ = "create_app"
 
 
-import logging
-
 import flask
 import flask_sqlalchemy
 import flask_migrate

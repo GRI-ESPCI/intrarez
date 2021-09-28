@@ -12,6 +12,7 @@ def _send_email(app, msg):
     with app.app_context():
         mail.send(msg)
 
+
 def send_email(subject, sender, recipients, text_body, html_body):
     """Send an email using Flask-Mail, asynchroniously.
 

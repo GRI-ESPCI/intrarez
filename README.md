@@ -5,7 +5,7 @@ Application Flask de l'Intranet de la Rez.
 ## Exigences
 
 * Python : Probablement >= 3.10 à terme, pour l'instant >= 3.8 suffit ;
-* Autres packages Linux : ``mysql-server postfix git``, plus pour le
+* Autres packages Linux : ``mysql-server postfix git bower sass``, plus pour le
   déploiement : ``supervisor nginx`` ;
 * Packages Python : Voir [`requirements.txt`](requirements.txt), plus pour le
   déploiement : ``gunicorn pymysql cryptography`` ;
@@ -64,6 +64,18 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
 
   ```
   flask translate compile
+  ```
+
+* Installer les dépendances bower
+
+  ```
+  bower install
+  ```
+
+* Compiler les fichiers SASS
+
+  ```
+  flask sass compile
   ```
 
 L'application peut alors normalement être lancée avec ``flask run``.
