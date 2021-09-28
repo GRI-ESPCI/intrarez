@@ -75,10 +75,8 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
 * Compiler les fichiers SASS
 
   ```
-  sass fichier.scss fichier.css
+  flask sass compile
   ```
-
-  TODO : automatiser cette tâche dans flask
 
 L'application peut alors normalement être lancée avec ``flask run``.
 
