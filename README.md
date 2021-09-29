@@ -5,8 +5,10 @@ Application Flask de l'Intranet de la Rez.
 ## Exigences
 
 * Python : Probablement >= 3.10 à terme, pour l'instant >= 3.8 suffit ;
-* Autres packages Linux : ``mysql-server postfix git bower sass``, plus pour le
+* Autres packages Linux : ``mysql-server postfix git sass``, plus pour le
   déploiement : ``supervisor nginx`` ;
+* Package npm : ``bower``
+    * Package Bower : ``bootstrap``
 * Packages Python : Voir [`requirements.txt`](requirements.txt), plus pour le
   déploiement : ``gunicorn pymysql cryptography`` ;
 * Pour le déploiement : un utilisateur Linux ``intrarez`` dédié.
@@ -17,6 +19,13 @@ Application Flask de l'Intranet de la Rez.
 
 Je reprends pour l'essentiel le déploiement conseillé dans le tutoriel :
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deployment-on-linux
+
+* Installer les dépendences :
+
+  ```
+  sudo apt install mariadb-server postfix git sass [supervisor nginx]
+  sudo npm -g install bower
+  ```
 
 * Installer l'application :
 
@@ -66,13 +75,13 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
   flask translate compile
   ```
 
-* Installer les dépendances bower
+* Installer les dépendances Bower (Bootstrap) :
 
   ```
   bower install
   ```
 
-* Compiler les fichiers SASS
+* Compiler les fichiers SASS :
 
   ```
   flask sass compile
@@ -133,9 +142,10 @@ Pour mettre à jour l'application, dans le dossier ``intrarez`` :
 ```bash
 git pull
 source env/bin/activate
-supervisorctl stop intrarez
+sudo supervisorctl stop intrarez
 flask db upgrade
 flask translate compile
+flask sass compile
 sudo supervisorctl start intrarez
 ```
 

@@ -41,46 +41,44 @@ def register(app):
         if os.system("pybabel compile -d app/translations"):
             raise RuntimeError("compile command failed")
 
+
     @app.cli.group()
     def sass():
-        """Gestion des scripts sass et scss"""
+        """Commandes de gestion des scripts SASS et SCSS."""
         pass
 
     @sass.command()
     def compile():
-        """
-        Compilation des scripts scss file en css
-        Les fichiers dans app/static/src/scss/*.scss
-        sont compilés dans app/static/css/compiled/*.css.
-        """
+        """Compilation des scripts SCSS en CSS.
 
+        Les fichiers SCSS dans app/static/scss sont
+        compilés dans app/static/css/compiled/*.css.
+        """
         if which("sass") is None:
-            print("La commande sass n'est pas installée. Imposssible de compiler le scss.")
+            print("La commande 'sass' n'est pas installée. "
+                  "Impossible de compiler le SCSS.")
             return -1
 
-        scss_files = [a for a in os.listdir("app/static/src/scss/") if a.endswith('.scss')]
+        source_folder = "app/static/scss/"
+        compiled_folder = "app/static/css/compiled/"
+        if not os.path.exists(compiled_folder):
+            os.mkdir(compiled_folder)
+
+        scss_files = [a for a in os.listdir(source_folder)
+                      if a.endswith(".scss")]
         length = len(scss_files)
 
-        print("Compilation des fichiers scss")
-        printProgressBar(0, length, prefix='Progression :', length=50)
+        print("Compilation des fichiers SCSS")
+        printProgressBar(0, length, prefix="Progression :", length=50)
         for i, file in enumerate(scss_files):
             filename = os.path.splitext(file)[0]
-            scss_path = os.path.join(
-                'app/static/src/scss/',
-                f'{filename}.scss'
-            )
-            css_path = os.path.join(
-                'app/static/css/compiled/',
-                f"{filename}.css"
-            )
-            process = subprocess.run(
-                ['sass', scss_path, css_path],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True
-            )
+            scss_path = os.path.join(source_folder, f"{filename}.scss")
+            css_path = os.path.join(compiled_folder, f"{filename}.css")
+            result = subprocess.run(["sass", scss_path, css_path],
+                                    capture_output=True)
 
-            printProgressBar(i + 1, length, prefix='Progression :', length=50)
+            printProgressBar(i + 1, length, prefix="Progression :", length=50)
 
-            if process.returncode != 0:
-                print(f"Erreur lors de la compilation de {scss_path}.\n")
+            if result.returncode != 0:
+                print(f"Erreur lors de la compilation de '{scss_path}' :")
+                print(f"\033[91m{result.stderr.decode()}\033[0m")

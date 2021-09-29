@@ -3,10 +3,10 @@
     "authors": [
         "GRI"
     ],
-    "description": "",
+    "description": "Intranet de la Rez Flask Web App",
     "main": "",
     "license": "MIT",
-    "homepage": "",
+    "homepage": "https://github.com/GRI-ESPCI/intrarez",
     "directory": "app/static/bower_components",
     "ignore": [
         "**/.*",
@@ -16,6 +16,6 @@
         "tests"
     ],
     "dependencies": {
-        "bootstrap": "latest"   
+        "bootstrap": "latest"
     }
 }

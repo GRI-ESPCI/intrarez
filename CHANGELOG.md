@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 # Changed
 
   * External links now open in a new tab.
+  * Bootstrap is now provided as an external dependency, not included.
+  * CSS is now generated from SCSS files, allowing Bootstrap customization.
 
 # Fixed
 

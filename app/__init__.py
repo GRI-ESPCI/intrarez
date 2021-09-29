@@ -4,10 +4,10 @@ See github.com/GRI-ESPCI/intrarez for informations.
 """
 
 __title__ = "intrarez"
-__author__ = "Loïc Simon & other GRIs"
+__author__ = "Loïc Simon, Louis Destruel & other GRIs"
 __license__ = "MIT"
 __copyright__ = "Copyright 2021 GRIs – ESPCI Paris - PSL"
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 __all__ = "create_app"
 
 
