@@ -1,8 +1,8 @@
 /* Custom stylesheet */
 
-nav {
-    background-color: #64b9e9;          /* Bleu clair PC2 */
-    border-bottom: 2px solid #152f4e;   /* Bleu PC1 */
+a[target="_blank"]::after {
+  content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+  margin: 0 3px 0 5px;
 }
 
 .gri-card {

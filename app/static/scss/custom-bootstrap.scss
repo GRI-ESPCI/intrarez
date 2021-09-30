@@ -1,6 +1,11 @@
 @import "../bower_components/bootstrap/scss/functions";
 
 // Écraser les variables bootstrap ici
+$primary:   #64b9e9;        // PC2 (bleu clair)
+$secondary: #152f4e;        // PC1 (bleu foncé)
+// $warning:   #ff585d;        // PC4 (pêche)
+$danger:    #e40046;        // PC3 (framboise)
+// $info:      #d5c0a9;        // PC5 (panais)
 
 @import "../bower_components/bootstrap/scss/variables";
 @import "../bower_components/bootstrap/scss/mixins";

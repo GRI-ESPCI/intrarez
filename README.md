@@ -5,7 +5,7 @@ Application Flask de l'Intranet de la Rez.
 ## Exigences
 
 * Python : Probablement >= 3.10 à terme, pour l'instant >= 3.8 suffit ;
-* Autres packages Linux : ``mysql-server postfix git sass``, plus pour le
+* Autres packages Linux : ``mysql-server postfix git npm sass``, plus pour le
   déploiement : ``supervisor nginx`` ;
 * Package npm : ``bower``
     * Package Bower : ``bootstrap``
@@ -23,7 +23,7 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
 * Installer les dépendences :
 
   ```
-  sudo apt install mariadb-server postfix git sass [supervisor nginx]
+  sudo apt install mariadb-server postfix git npm sass [supervisor nginx]
   sudo npm -g install bower
   ```
 

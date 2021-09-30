@@ -1,5 +1,6 @@
 """Useful miscellaneous functions."""
 
+import werkzeug
 from werkzeug import urls as wku
 import flask
 
@@ -12,7 +13,11 @@ def redirect_to_next():
     Returns:
         The result of :func:`flask.redirect`.
     """
-    next_page = flask.url_for(flask.request.args.get("next", ""))
+    next = flask.request.args.get("next", "")
+    try:
+        next_page = flask.url_for(next)
+    except werkzeug.routing.BuildError:
+        next_page = ""
     if not next_page or wku.url_parse(next_page).netloc != "":
         # Do not redirect to absolute links (possible attack)
         next_page = flask.url_for("main.index")
