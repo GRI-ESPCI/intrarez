@@ -16,6 +16,7 @@
         "tests"
     ],
     "dependencies": {
-        "bootstrap": "latest"
+        "bootstrap": "latest",
+        "web-pingjs": "latest",
     }
 }

@@ -6,17 +6,11 @@
     <div class="col">
         <p><img src="{{ url_for("static", filename="img/error.png") }}" /></p>
         <h1 class="text-danger fw-bold">{{ _("Oh non !")}}</h1>
-        <h2>> {{ _("Cette page a visiblement disparu.") }}</h2>
+        <h2>> {{ _("Une erreur inattendue est survenue.") }}</h2>
     </div>
 </div>
 <div class="row"><p>
-    {{ _("Si vous venez d'un lien externe, favori..., essayez d'accéder à "
-         "la page voulu en navigant dans l'application.") }}
-</p></div>
-<div class="row mb-2"><p>
-    {{ _("Si cette page s'affiche en suivant un lien ou bouton interne au "
-         "site, n'hésitez pas à ") }}
-    <a href={{ url_for("main.contact") }}>{{ _("nous en informer") }}</a>.
+    {{ _("Les GRI ont été informés du problème. Désolés !") }}
 </p></div>
 <div class="row mb-3"><p>
     <a href="{{ url_for("main.index") }}" class="btn btn-primary">

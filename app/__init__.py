@@ -7,7 +7,7 @@ __title__ = "intrarez"
 __author__ = "Loïc Simon, Louis Grandvaux & other GRIs"
 __license__ = "MIT"
 __copyright__ = "Copyright 2021 GRIs – ESPCI Paris - PSL"
-__version__ = "0.3.1"
+__version__ = "0.4.0"
 __all__ = "create_app"
 
 
@@ -22,7 +22,7 @@ from flask_babel import lazy_gettext as _l
 import wtforms
 
 from config import Config
-from app.tools import loggers
+from app.tools import loggers, utils
 
 
 # Load extensions
@@ -65,16 +65,18 @@ def create_app(config_class=Config):
         "danger": "exclamation-triangle-fill",
         "warning": "exclamation-triangle-fill",
     }
+    app.jinja_env.globals["bootstrap_icon"] = utils.get_bootstrap_icon
     app.jinja_env.globals['bootstrap_is_hidden_field'] = (
         lambda field: isinstance(field, wtforms.fields.HiddenField)
     )
 
     # ! Keep imports here to avoid circular import issues !
-    from app import errors, main, auth, devices
+    from app import errors, main, auth, devices, rooms
     app.register_blueprint(errors.bp)
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(devices.bp, url_prefix="/devices")
+    app.register_blueprint(rooms.bp, url_prefix="/rooms")
 
     # Set up error handling
     if not app.debug and not app.testing:

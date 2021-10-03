@@ -14,12 +14,6 @@ from app.main import bp, forms
 from app.devices import check_device
 
 
-# @bp.before_app_request
-# def before_request():
-#     if current_user.is_authenticated:
-#         current_user.last_seen = datetime.datetime.utcnow()
-#         db.session.commit()
-
 @bp.route("/")
 @bp.route("/index")
 @check_device
@@ -67,6 +61,9 @@ def legal():
 @check_device
 def test():
     """Test page."""
+    # return flask.render_template("errors/other.html")
+    # flask.abort(500)
+    # raise RuntimeError("obanon")
     # flask.flash("Succès", "success")
     # flask.flash("Info", "info")
     # flask.flash("Warning", "warning")
@@ -86,3 +83,10 @@ def test():
 def profile():
     """IntraRez profile page."""
     return flask.render_template("main/index.html", title=_("Profil"))
+
+
+@bp.route("/home")
+@check_device
+def rickroll():
+    """The old good days..."""
+    return flask.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")

@@ -20,7 +20,7 @@
         <link href="{{ url_for("static", filename="css/compiled/custom-bootstrap.css") }}"
               rel="stylesheet" />
         {% endblock styles %}
-        <link href="{{ url_for("static", filename="favicon.ico") }}"
+        <link href="{{ url_for("static", filename="favicon.png") }}"
               rel="icon" />
         {% block scripts %}
         <!-- Bootstrap 5.0.2 Bundle with Popper (loaded asynchroniously) -->
@@ -102,9 +102,7 @@
                 <div class="toast-header text-white bg-{{ category }}">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24"
                          role="img" aria-label="{{ alert_labels[category] }}">
-                        <use href="{{ url_for("static",
-                                filename="svg/bootstrap-icons.svg")
-                            }}#{{ alert_symbols[category] }}" />
+                        {{ bootstrap_icon(alert_symbols[category]) }}
                     </svg>
                     <strong class="me-auto">
                         {{ alert_labels[category] }}

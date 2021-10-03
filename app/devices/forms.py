@@ -1,6 +1,4 @@
-"""Intranet de la Rez - Authentication Forms"""
-
-import datetime
+"""Intranet de la Rez - Devices-related Forms"""
 
 import wtforms
 from flask_babel import lazy_gettext as _l

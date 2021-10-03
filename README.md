@@ -8,7 +8,7 @@ Application Flask de l'Intranet de la Rez.
 * Autres packages Linux : ``mysql-server postfix git npm sass``, plus pour le
   déploiement : ``supervisor nginx`` ;
 * Package npm : ``bower``
-    * Package Bower : ``bootstrap``
+    * Package Bower : ``bootstrap webping-js``
 * Packages Python : Voir [`requirements.txt`](requirements.txt), plus pour le
   déploiement : ``gunicorn pymysql cryptography`` ;
 * Pour le déploiement : un utilisateur Linux ``intrarez`` dédié.

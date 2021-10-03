@@ -1,8 +1,8 @@
 """Useful miscellaneous functions."""
 
+import flask
 import werkzeug
 from werkzeug import urls as wku
-import flask
 
 
 def redirect_to_next():
@@ -22,6 +22,19 @@ def redirect_to_next():
         # Do not redirect to absolute links (possible attack)
         next_page = flask.url_for("main.index")
     return flask.redirect(next_page)
+
+
+def get_bootstrap_icon(name):
+    """Build the SVG code used to include a Bootstrap icon.
+
+    Args:
+        name (str): the name of the Bootstrap icon.
+
+    return:
+        A :class:`flask.Markup` with the SVG code to include the icon.
+    """
+    file = flask.url_for("static", filename="svg/bootstrap-icons.svg")
+    return flask.Markup(f"<use href=\"{file}#{name}\" />")
 
 
 def printProgressBar(iteration, total, prefix='', suffix='', decimals=1,

@@ -60,21 +60,23 @@ def check_device(routine):
         next = flask.request.endpoint
 
         remote_ip = flask.request.headers.get("X-Real-Ip")
-        remote_ip = "127.0.0.1"
         if not remote_ip:
             # Header X-Real-Ip non présent : il est créé par Nginx en
             # transférant la requête, donc on doit être en mode test
             return _redirect_if_safe("devices.error", next=next, reason="ip")
 
         mac = get_mac(remote_ip)
-        mac = "d8:cb:8a:9c:52:cc"
         if not mac:
             # MAC non présente dans la table ARP : ???
             return _redirect_if_safe("devices.error", next=next, reason="mac")
 
-        # Pour la suite, on a besoin que l'utilisateur soit connecté
+        # Pour la suite, on a besoin que l'utilisateur soit connecté...
         if not flask_login.current_user.is_authenticated:
             return _redirect_if_safe("devices.auth_needed", next=next)
+
+        # ...et qu'il ait une location en cours
+        if not flask_login.current_user.has_a_room:
+            return _redirect_if_safe("rooms.room_needed", next=next)
 
         # On cherche l'appareil avec cette adresse MAC
         device = Device.query.filter_by(mac_address=mac).first()
@@ -126,7 +128,8 @@ def register():
             db.session.commit()
             flask.flash(_("Appareil enregistré avec succès !"), "success")
             # OK
-            return redirect_to_next()
+            return flask.redirect(flask.url_for("devices.connect_check",
+                                                **flask.request.args))
 
     return flask.render_template("devices/register.html",
                                  title=_("Enregistrer l'appareil"), form=form)
@@ -197,3 +200,11 @@ def error():
                                  title=_("Détection d'appareil impossible"),
                                  reason=messages.get(reason, "Unknown"),
                                  message=blabla[step])
+
+
+@bp.route("/connect_check")
+@check_device
+def connect_check():
+    """Connect check page."""
+    return flask.render_template("devices/connect_check.html",
+                                 title=_("Accès à Internet"))

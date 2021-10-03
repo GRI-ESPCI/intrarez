@@ -1,9 +1,11 @@
 """Intranet de la Rez - Custom Flask Forms Validators"""
 
+import datetime
+
 import wtforms
 from flask_babel import lazy_gettext as _l
 
-from app.models import User
+from app.models import User, Room
 
 
 class CustomValidator():
@@ -42,12 +44,14 @@ class EqualTo(wtforms.validators.EqualTo):
             message = _l("Valeur différente du champ précédent.")
         super().__init__(fieldname, message)
 
+
 class MacAddress(wtforms.validators.MacAddress):
     def __init__(self, message=None):
         if message is None:
             message = _l("Adresse MAC invalide (format attendu :"
                          " xx:xx:xx:xx:xx:xx).")
         super().__init__(message)
+
 
 class Length(wtforms.validators.Length):
     def __init__(self, min=-1, max=-1, message=None):
@@ -65,6 +69,7 @@ class Length(wtforms.validators.Length):
                 message = _l("Doit faire entre %(min)d et %(max)d caractères.",
                              min=min, max=max)
         super().__init__(min, max, message)
+
 
 class NewUsername(CustomValidator):
     message = _l("Nom d'utilisateur déjà utilisé.")
@@ -84,10 +89,18 @@ class ValidRoom(CustomValidator):
     message = _l("Numéro de chambre invalide.")
 
     def validate(self, form, field):
-        return (101 <= field.data <= 126
-                or 201 <= field.data <= 226
-                or 301 <= field.data <= 326
-                or 401 <= field.data <= 426
-                or 501 <= field.data <= 526
-                or 601 <= field.data <= 626
-                or 701 <= field.data <= 726)
+        return bool(Room.query.get(field.data))
+
+
+class PastDate(CustomValidator):
+    message = _l("Cette date doit être dans le passé !")
+
+    def validate(self, form, field):
+        return (field.data <= datetime.date.today())
+
+
+class FutureDate(CustomValidator):
+    message = _l("Cette date doit être dans le futur !")
+
+    def validate(self, form, field):
+        return (field.data >= datetime.date.today())

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import "_form.html" as wtf %}
+
+{% block app_content %}
+
+<div class="row mt-3 mb-5">
+    <div class="col"><div class="progress registration-steps fs-5">
+        <div class="progress-bar w-25 bg-success bg-gradient">
+            {{ _("Compte") }}
+        </div>
+        <div class="progress-bar w-25 bg-secondary bg-gradient border-start">
+            {{ _("Chambre") }}
+        </div>
+        <div class="progress-bar w-25 bg-light text-muted border-start">
+            {{ _("Appareil") }}
+        </div>
+        <div class="progress-bar w-25 bg-light text-muted border-start">
+            {{ _("Internet") }}
+        </div>
+    </div></div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("Merci de renseigner ta chambre actuelle, ainsi que le début de la "
+          "location (approximativent).") }}
+</p></div>
+<div class="row"><p>
+    {{ _("La date de fin n'est pas obligatoire.") }}
+</p></div>
+<div class="row">
+    <form action="" method="post" role="form">
+        {{ form.hidden_tag() }}
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.room) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.start) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.end) }}
+        </div></div>
+        <div>
+            {{ wtf.form_field(form.submit) }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

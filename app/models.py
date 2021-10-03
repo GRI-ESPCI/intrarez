@@ -1,10 +1,12 @@
 """Intranet de la Rez Flask App - Database Models"""
 
 import time
+import datetime
 
 import jwt
 import flask
 import flask_login
+from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug import security as wzs
 
 from app import db, login
@@ -33,10 +35,41 @@ class User(flask_login.UserMixin, db.Model):
     _password_hash = db.Column(db.String(128))
 
     devices = db.relationship("Device", back_populates="user")
+    rentals = db.relationship("Rental", back_populates="user")
 
     def __repr__(self):
         """Returns repr(self)."""
-        return f"<User '{self.username}'>"
+        return f"<User #{self.id} ('{self.username}')>"
+
+    @property
+    def current_room(self):
+        """:class:`Room`: The users's current room, or ``None``."""
+        try:
+            return next(rent for rent in self.rentals if rent.is_current)
+        except StopIteration:
+            return None
+
+    @hybrid_property
+    def has_a_room(self):
+        """:class:`bool` (instance)
+        / :class:`sqlalchemy.sql.selectable.Exists` (class):
+        Whether the user has currently a room rented.
+
+        Hybrid property (:class:`sqlalchemy.ext.hybrid.hybrid_property`):
+            - On the instance, returns directly the boolean value;
+            - On the class, returns the clause to use to filter users that
+              have a room.
+
+        Examples::
+
+            user.has_a_room         # bool
+            User.query.filter(User.has_a_room).all()
+        """
+        return (self.current_room is not None)
+
+    @has_a_room.expression
+    def has_a_room(cls):
+        return cls.rentals.any(Rental.is_current)
 
     def set_password(self, password):
         """Save or modify user password.
@@ -114,7 +147,97 @@ class Device(db.Model):
 
     def __repr__(self):
         """Returns repr(self)."""
-        return f"<Device '{self.name}' of {self.user} ({self.mac_address})>"
+        return f"<Device #{self.id} ('{self.name}') of {self.user}>"
+
+
+class Rental(db.Model):
+    """A rental of a Rezidence room by a Rezident."""
+    id = db.Column(db.Integer(), primary_key=True)
+    _user_id = db.Column(db.ForeignKey("user.id"), nullable=False)
+    user = db.relationship("User", back_populates="rentals")
+    _room_num = db.Column(db.ForeignKey("room.num"), nullable=False)
+    room = db.relationship("Room", back_populates="rentals")
+    start = db.Column(db.Date(), nullable=False)
+    end = db.Column(db.Date())
+
+    def __repr__(self):
+        """Returns repr(self)."""
+        return f"<Rental #{self.id} of {self.room} by {self.user}>"
+
+    @hybrid_property
+    def is_current(self):
+        """:class:`bool` (instance)
+        / :class:`sqlalchemy.sql.selectable.Exists` (class):
+        Whether the rental is current.
+
+        Hybrid property (see :meth:`User.has_a_room`).
+        """
+        today = datetime.date.today()
+        return (self.end is None) or (self.end > today)
+
+    @is_current.expression
+    def is_current(cls):
+        today = datetime.date.today()
+        return ((self.end.is_(None)) | (self.end > today))
+
+
+class Room(db.Model):
+    """A Rezidence room."""
+    num = db.Column(db.Integer(), primary_key=True)
+    floor = db.Column(db.Integer())
+    base_ip = db.Column(db.String(4))
+
+    rentals = db.relationship("Rental", back_populates="room")
+
+    def __repr__(self):
+        """Returns repr(self)."""
+        return f"<Room {self.num}>"
+
+    @property
+    def current_rental(self):
+        """:class:`Rental`: The room current rental, or ``None``."""
+        try:
+            return next(rent for rent in self.rentals if rent.is_current)
+        except StopIteration:
+            return None
+
+    @hybrid_property
+    def is_currently_rented(self):
+        """:class:`bool` (instance)
+        / :class:`sqlalchemy.sql.selectable.Exists` (class):
+        Whether the room is currently rented.
+
+        Hybrid property (see :meth:`User.has_a_room`).
+        """
+        return (self.current_rental is not None)
+
+    @is_currently_rented.expression
+    def is_currently_rented(cls):
+        return cls.rentals.any(Rental.is_current)
+
+    @classmethod
+    def create_rez_rooms(cls):
+        """Create the list of existing Rezidence rooms.
+
+        Returns:
+            list[Room]
+        """
+        doors_per_floor = {
+            1: 16,
+            2: 26,
+            3: 26,
+            4: 26,
+            5: 26,
+            6: 20,
+            7: 20,
+        }
+        rooms = []
+        for floor, max_door in doors_per_floor.items():
+            for door in range(1, max_door + 1):
+                rooms.append(cls(num=100*floor + door, floor=floor,
+                                 base_ip=f"{floor}.{door}"))
+        return rooms
+
 
 
 @login.user_loader

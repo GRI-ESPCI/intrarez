@@ -9,13 +9,17 @@ from discord_webhook import DiscordWebhook
 
 
 class DiscordHandler(StreamHandler):
-    def __init__(self, webhook):
+    def __init__(self, webhook, role_id=None):
         super().__init__()
         self.webhook = webhook
+        self.gri_mention = f"<@&{role_id}> " if role_id else ""
 
     def emit(self, record):
         msg = self.format(record)
-        webhook = DiscordWebhook(url=self.webhook, content=msg)
+        if len(msg) > 1900:     # Discord limitation
+            msg = "[...]\n" + msg[-1900:]
+        content = f"{self.gri_mention}ALED ça a planté !\n```{msg}```"
+        webhook = DiscordWebhook(url=self.webhook, content=content)
         webhook.execute()
 
 
@@ -40,7 +44,8 @@ def set_handlers(logger, config):
 
     if config["ERROR_WEBHOOK"]:
         # Alert webhooks
-        discord_handler = DiscordHandler(config["ERROR_WEBHOOK"])
+        discord_handler = DiscordHandler(config["ERROR_WEBHOOK"],
+                                         config.get("GRI_ROLE_ID"))
         discord_handler.setLevel(logging.ERROR)
         logger.addHandler(discord_handler)
 
