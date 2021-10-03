@@ -5,6 +5,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 0.5.0 - 2021-10-04
+
+# Added
+
+  * New Index page.
+  * New Profile page listing account information, rooms and devices.
+  * New convenience properties ``User.full_name``, ``User.current_device``,
+    ``User.other_devices``, ``User.current_rental`` and ``User.old_rentals``.
+  * Added ESPCI colors to Bootstrap-customized main colors.
+
+# Changed
+
+  * Login is now automatic on registration.
+  * Automatically override names case when creating account.
+  * Show registration progress bar on device transfer page, and not if
+    ``force`` argument is set.
+  * Replaces some basic fields with HTML5 fields.
+
+# Fixed
+
+  * Some endpoints were erroneous during registration process.
+  * ``User.current_room`` returned a ``Rental`` and not a ``Room``.
+
+
 ## 0.4.0 - 2021-10-03
 
 # Added

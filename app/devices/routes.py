@@ -76,7 +76,7 @@ def check_device(routine):
 
         # ...et qu'il ait une location en cours
         if not flask_login.current_user.has_a_room:
-            return _redirect_if_safe("rooms.room_needed", next=next)
+            return _redirect_if_safe("rooms.register", next=next)
 
         # On cherche l'appareil avec cette adresse MAC
         device = Device.query.filter_by(mac_address=mac).first()
@@ -118,7 +118,7 @@ def register():
         if Device.query.filter_by(mac_address=form.mac.data).first():
             flask.flash(_("Cet appareil est déjà enregistré !"), "danger")
         else:
-            now = datetime.datetime.now()
+            now = datetime.datetime.now(datetime.timezone.utc)
             device = Device(
                 user=flask_login.current_user, name=form.nom.data,
                 mac_address=form.mac.data, type=form.type.data,
@@ -128,6 +128,8 @@ def register():
             db.session.commit()
             flask.flash(_("Appareil enregistré avec succès !"), "success")
             # OK
+            if flask.request.args.get("force"):
+                return redirect_to_next()
             return flask.redirect(flask.url_for("devices.connect_check",
                                                 **flask.request.args))
 
@@ -149,18 +151,23 @@ def transfer():
         elif device.user == flask_login.current_user:
             flask.flash(_("Cet appareil vous appartient déjà !"), "danger")
         else:
-            now = datetime.datetime.now()
             device.user = flask_login.current_user
             db.session.commit()
             flask.flash(_("Appareil transféré avec succès !"), "success")
             # OK
-            return redirect_to_next()
+            if flask.request.args.get("force"):
+                return redirect_to_next()
+            else:
+                return flask.redirect(flask.url_for("devices.connect_check",
+                                                    **flask.request.args))
 
     mac = flask.request.args.get("mac", "")
     device = Device.query.filter_by(mac_address=mac).first()
     if not device:
         # Block accessing this form to transfer a non-existing device
         flask.redirect(flask.url_for("main.index"))
+    elif device.user == flask_login.current_user:
+        return redirect_to_next()
 
     return flask.render_template("devices/transfer.html",
                                  title=_("Transférer l'appareil"),

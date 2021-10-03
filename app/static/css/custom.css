@@ -6,14 +6,22 @@ a[target="_blank"]::after {
   margin: 0 3px 0 5px;
 }
 
+/* Process enregistrement */
 .registration-steps {
     height: 40px !important;
 }
 
+/* Nous contacter */
 .gri-card {
     width: 16rem;
 }
 
+/* Profil */
+.p-card {
+    width: 22rem;
+}
+
+/* Textarea */
 .lines-6 {
     height: 150px !important;
 }

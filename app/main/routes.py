@@ -82,7 +82,7 @@ def test():
 @check_device
 def profile():
     """IntraRez profile page."""
-    return flask.render_template("main/index.html", title=_("Profil"))
+    return flask.render_template("main/profile.html", title=_("Profil"))
 
 
 @bp.route("/home")

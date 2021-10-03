@@ -42,12 +42,44 @@ class User(flask_login.UserMixin, db.Model):
         return f"<User #{self.id} ('{self.username}')>"
 
     @property
-    def current_room(self):
-        """:class:`Room`: The users's current room, or ``None``."""
+    def full_name(self):
+        """:class:`str`: The users's first + last names."""
+        return f"{self.prenom} {self.nom}"
+
+    @property
+    def current_device(self):
+        """:class:`Device`: The users's last seen device, or ``None``."""
+        if not self.devices:
+            return None
+        return max(self.devices, key=lambda device: device.last_seen)
+
+    @property
+    def other_devices(self):
+        """:class:`list[Device]`: The users's non-current devices.
+
+        Sorted from most recently seen to latest seen.
+        """
+        return sorted(self.devices, key=lambda device: device.last_seen,
+                      reverse=True)[1:]
+
+    @property
+    def current_rental(self):
+        """:class:`Rental`: The users's current rental, or ``None``."""
         try:
             return next(rent for rent in self.rentals if rent.is_current)
         except StopIteration:
             return None
+
+    @property
+    def old_rentals(self):
+        """:class:`list[Rental]`: The users's non-current rentals."""
+        return [rental for rental in self.rentals if not rental.is_current]
+
+    @property
+    def current_room(self):
+        """:class:`Room`: The users's current room, or ``None``."""
+        current_rental = self.current_rental
+        return current_rental.room if current_rental else None
 
     @hybrid_property
     def has_a_room(self):
@@ -65,7 +97,7 @@ class User(flask_login.UserMixin, db.Model):
             user.has_a_room         # bool
             User.query.filter(User.has_a_room).all()
         """
-        return (self.current_room is not None)
+        return (self.current_rental is not None)
 
     @has_a_room.expression
     def has_a_room(cls):

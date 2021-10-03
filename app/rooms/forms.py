@@ -13,9 +13,9 @@ from app.tools.validators import (DataRequired, Optional, ValidRoom, PastDate,
 class RentalRegistrationForm(FlaskForm):
     """WTForm used to register a room rental."""
     room = html5.IntegerField(_l("Chambre"),
-                               validators=[DataRequired(), ValidRoom()])
-    start = html5.DateField("Début de la location",
-                              validators=[DataRequired(), PastDate()])
+                              validators=[DataRequired(), ValidRoom()])
+    start = html5.DateField(_l("Début de la location"),
+                            validators=[DataRequired(), PastDate()])
     end = html5.DateField(_l("Fin de la location (optionnel)"),
-                            validators=[Optional(), FutureDate()])
+                          validators=[Optional(), FutureDate()])
     submit = wtforms.SubmitField(_l("Enregistrer"))

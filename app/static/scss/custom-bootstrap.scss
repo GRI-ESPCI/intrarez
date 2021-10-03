@@ -7,9 +7,41 @@ $secondary: #152f4e;        // PC1 (bleu foncé)
 $danger:    #e40046;        // PC3 (framboise)
 // $info:      #d5c0a9;        // PC5 (panais)
 
+// Add PC colors
+$custom-colors: (
+  "pc1": #152f4e,
+  "pc2": #64b9e9,
+  "pc3": #e40046,
+  "pc4": #ff585d,
+  "pc5": #d5c0a9
+);
+
 @import "../bower_components/bootstrap/scss/variables";
+
+// Add PC colors to theme colors (buttons, links...)
+$theme-colors: map-merge($theme-colors, $custom-colors);
+$utilities-bg-colors: $theme-colors;
+
 @import "../bower_components/bootstrap/scss/mixins";
 @import "../bower_components/bootstrap/scss/utilities";
+
+// Add PC colors to utilities classes (text, borders...)
+$utilities: map-merge(
+  $utilities,
+  (
+    "color": map-merge(
+      map-get($utilities, "color"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "color"), "values"),
+          (
+            $theme-colors
+          ),
+        ),
+      ),
+    ),
+  )
+);
 
 @import "../bower_components/bootstrap/scss/root";
 @import "../bower_components/bootstrap/scss/reboot";

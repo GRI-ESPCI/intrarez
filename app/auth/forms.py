@@ -3,6 +3,7 @@
 import datetime
 
 import wtforms
+from wtforms.fields import html5
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 
@@ -45,9 +46,9 @@ class RegistrationForm(FlaskForm):
                                                            Length(max=64)])
     promo = wtforms.SelectField(_l("Promotion"), choices=promotions_list(),
                                 validators=[DataRequired()])
-    email = wtforms.StringField(_l("Adresse e-mail"),
-                                validators=[DataRequired(), Length(max=120),
-                                            Email(), NewEmail()])
+    email = html5.EmailField(_l("Adresse e-mail"),
+                             validators=[DataRequired(), Length(max=120),
+                                         Email(), NewEmail()])
     password = wtforms.PasswordField(_l("Mot de passe"),
                                      validators=[DataRequired()])
     password2 = wtforms.PasswordField(_l("Mot de passe (validation)"),
@@ -58,8 +59,8 @@ class RegistrationForm(FlaskForm):
 
 class ResetPasswordRequestForm(FlaskForm):
     """WTForm used to request a user password request."""
-    email = wtforms.StringField(_l("Adresse e-mail"), validators=[DataRequired(),
-                                                              Email()])
+    email = html5.EmailField(_l("Adresse e-mail"), validators=[DataRequired(),
+                                                               Email()])
     submit = wtforms.SubmitField(_l("Envoyer le mail de réinitialisation"))
 
 

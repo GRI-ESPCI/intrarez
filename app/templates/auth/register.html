@@ -3,6 +3,7 @@
 
 {% block app_content %}
 
+{% if not request.args.get("force") %}
 <div class="row mt-3 mb-5">
     <div class="col"><div class="progress registration-steps fs-5">
         <div class="progress-bar w-25 bg-secondary bg-gradient">
@@ -19,6 +20,7 @@
         </div>
     </div></div>
 </div>
+{% endif %}
 <div class="row mb-3">
     <div class="col">
         <h1>{{ title }}</h1>

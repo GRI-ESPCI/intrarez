@@ -3,6 +3,24 @@
 
 {% block app_content %}
 
+{% if not request.args.get("force") %}
+<div class="row mt-3 mb-5">
+    <div class="col"><div class="progress registration-steps fs-5">
+        <div class="progress-bar w-25 bg-success bg-gradient">
+            {{ _("Compte") }}
+        </div>
+        <div class="progress-bar w-25 bg-success bg-gradient border-start">
+            {{ _("Chambre") }}
+        </div>
+        <div class="progress-bar w-25 bg-secondary bg-gradient border-start">
+            {{ _("Appareil") }}
+        </div>
+        <div class="progress-bar w-25 bg-light text-muted border-start">
+            {{ _("Internet") }}
+        </div>
+    </div></div>
+</div>
+{% endif %}
 <div class="row mb-3">
     <div class="col">
         <h1>{{ title }}</h1>

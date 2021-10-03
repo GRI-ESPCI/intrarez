@@ -74,7 +74,7 @@ def register(app):
             filename = os.path.splitext(file)[0]
             scss_path = os.path.join(source_folder, f"{filename}.scss")
             css_path = os.path.join(compiled_folder, f"{filename}.css")
-            result = subprocess.run(["sass", scss_path, css_path],
+            result = subprocess.run(["sass", "--trace", scss_path, css_path],
                                     capture_output=True)
 
             printProgressBar(i + 1, length, prefix="Progression :", length=50)

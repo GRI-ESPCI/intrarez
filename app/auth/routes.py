@@ -34,15 +34,16 @@ def register():
     if form.validate_on_submit():
         username = new_username(form)
         user = User(
-            username=username, nom=form.nom.data, prenom=form.prenom.data,
+            username=username, nom=form.nom.data.title(),
+            prenom=form.prenom.data.title(),
             promo=form.promo.data, email=form.email.data
         )
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flask.flash(_("Compte créé avec succès, connectez-vous"), "success")
-        return flask.redirect(flask.url_for("auth.login",
-                                            **flask.request.args))
+        flask.flash(_("Compte créé avec succès !"), "success")
+        flask_login.login_user(user, remember=False)
+        return redirect_to_next()
 
     return flask.render_template("auth/register.html",
                                  title=_("Nouveau compte"), form=form)

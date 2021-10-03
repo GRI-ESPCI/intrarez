@@ -9,23 +9,32 @@
     </div>
 </div>
 <div class="row"><p>
-    {{ _("Pour toute question, n'hésitez pas à nous contacter :") }}
+    {{ _("Pour toute question, remarque ou suggestion, n'hésitez pas à "
+         "nous contacter :") }}
 </p></div>
 <div class="row mb-4">
     <form action="" method="post" role="form">
         {{ form.hidden_tag() }}
         <div class="form-floating mb-3">
             {% if current_user.is_authenticated %}
-            {{ wtf.form_field(form.name, value=current_user.username) }}
+            {{ wtf.form_field(form.name, value=current_user.full_name) }}
             {% else %}
             {{ wtf.form_field(form.name) }}
             {% endif %}
         </div>
         <div class="form-floating mb-3">
-            {{ wtf.form_field(form.email) }}
+            {% if current_user.is_authenticated %}
+            {{ wtf.form_field(form.name, value=current_user.email) }}
+            {% else %}
+            {{ wtf.form_field(form.name) }}
+            {% endif %}
         </div>
         <div class="form-floating mb-3">
-            {{ wtf.form_field(form.room, type="number") }}
+            {% if current_user.has_a_room %}
+            {{ wtf.form_field(form.room, value=current_user.current_room.num)}}
+            {% else %}
+            {{ wtf.form_field(form.room) }}
+            {% endif %}
         </div>
         <div class="form-floating mb-3">
             {{ wtf.form_field(form.title) }}

@@ -1,6 +1,7 @@
 """Intranet de la Rez - Main Pages Forms"""
 
 import wtforms
+from wtforms.fields import html5
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 from discord_webhook import DiscordEmbed
@@ -8,18 +9,13 @@ from discord_webhook import DiscordEmbed
 from app.tools.validators import DataRequired, Optional, Email, ValidRoom
 
 
-class EmptyForm(FlaskForm):
-    """WTForm used to absolutely nothing."""
-    submit = wtforms.SubmitField(_l("Envoyer"))
-
-
 class ContactForm(FlaskForm):
     """WTForm used to send a contact request to Discord."""
     name = wtforms.StringField(_l("Nom"), validators=[DataRequired()])
-    email = wtforms.StringField(_l("Adresse e-mail (optionnel)"),
-                                validators=[Optional(), Email()])
-    room = wtforms.IntegerField(_l("Chambre (optionnel)"),
-                                validators=[Optional(), ValidRoom()])
+    email = html5.EmailField(_l("Adresse e-mail (optionnel)"),
+                             validators=[Optional(), Email()])
+    room = html5.IntegerField(_l("Chambre (optionnel)"),
+                              validators=[Optional(), ValidRoom()])
     title = wtforms.StringField(_l("Titre"), validators=[DataRequired()])
     message = wtforms.TextAreaField(_l("Message"), validators=[DataRequired()])
     submit = wtforms.SubmitField(_l("Envoyer"))

@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<script src="{{ url_for("static", filename="js/main-profile.js") }}"
+        defer></script>
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row row-cols row-cols-xl-3 gy-4 gx-1">
+    <div class="col"><div class="card p-card bg-pc5 border-pc4 border-2 h-100">
+        <div class="card-body d-flex align-items-center mb-2">
+            <h3 class="card-title me-auto my-0">{{ _("Compte") }}</h3>
+                <svg class="bi flex-shrink-0" width="36" height="36"
+                     role="img">{{ bootstrap_icon("person-badge") }}
+                </svg>
+        </div>
+        <div class="h-100">
+            <table class="table table-striped table-borderless"><tbody>
+                <tr><th scope="row" class="ps-4">{{ _("Identifiant") }}</th>
+                    <td>{{ current_user.username }}</td></tr>
+                <tr><th scope="row" class="ps-4">{{ _("Nom") }}</th>
+                    <td class="text-break">{{ current_user.nom }}</td></tr>
+                <tr><th scope="row" class="ps-4">{{ _("Prénom") }}</th>
+                    <td class="text-break">{{ current_user.prenom }}</td></tr>
+                <tr><th scope="row" class="ps-4">{{ _("Promotion") }}</th>
+                    <td>{{ current_user.promo }}</td></tr>
+                <tr><th scope="row" class="ps-4">{{ _("Email") }}</th>
+                    <td class="text-break">{{ current_user.email }}</td></tr>
+            </tbody></table>
+        </div>
+        <div class="card-body">
+            <div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+                 title="{{ _("Fonctionnalité à venir") }}">
+                <button class="btn btn-outline-dark" disabled>
+                    {{ _("Modifier une information") }}
+                </button>
+            </div>
+            <div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+                 title="{{ _("Fonctionnalité à venir") }}">
+                <button class="btn btn-outline-dark" disabled>
+                    {{ _("Changer de mot de passe") }}
+                </button>
+            </div>
+        </div>
+    </div></div>
+
+    <div class="col"><div class="card p-card bg-pc5 border-pc4 border-2 h-100">
+        <div class="card-body d-flex align-items-center mb-2">
+            <h3 class="card-title me-auto my-0">{{ _("Chambre") }}</h3>
+                <svg class="bi flex-shrink-0" width="36" height="36"
+                     role="img">{{ bootstrap_icon("door-closed") }}
+                </svg>
+        </div>
+        <table class="table table-striped table-borderless"><tbody>
+            {% with rental = current_user.current_rental %}
+            <tr><th scope="row" class="ps-4">{{ _("Location actuelle") }}</th>
+                <td class="text-break">Chambre {{ rental.room.num }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Depuis le") }}</th>
+                <td class="text-break">
+                {{ moment(rental.start).format("LL") }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Jusqu'au") }}</th>
+                <td class="text-break">
+                {{ moment(rental.end).format("LL") if rental.end else "?" }}
+                </td></tr>
+            {% endwith %}
+        </tbody></table>
+        <div class="card-body h-100"><div class="accordion" id="acco-room">
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="acco-room-h">
+                    <button class="accordion-button collapsed bg-pc5 text-dark"
+                            type="button" data-bs-toggle="collapse"
+                            data-bs-target="#coll-room-h"
+                            aria-expanded="true" aria-controls="coll-room-h">
+                        {{ _("Anciennes locations :") }}&nbsp;<strong>
+                        {{ len(current_user.old_rentals) }}</strong>
+                    </button>
+                </h3>
+                <div id="coll-room-h" class="accordion-collapse collapse"
+                     aria-labelledby="acco-room-h"
+                     data-bs-parent="#acco-room">
+                    <div class="accordion-body bg-pc5 p-0">
+                        {% if current_user.old_rentals %}
+                        <table class="table table-striped table-borderless
+                                      mb-0"><tbody>
+                            <tr><th scope="col" class="ps-3">
+                                    {{ _("Chambre") }}</th>
+                                <th scope="col">{{ _("Période") }}</th>
+                                </tr>
+                            {% for rental in current_user.old_rentals %}
+                            <tr><td class="ps-3">{{ rental.room.num }}</td>
+                                <td class="text-break">
+                                    {{ moment(rental.start).format("L") }} –
+                                    {{ moment(rental.end).format("L") }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody></table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div></div>
+        <div class="card-body px-auto">
+            <div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+                 title="{{ _("Fonctionnalité à venir") }}">
+                <button class="btn btn-outline-dark" disabled>
+                    {{ _("Modifier les dates") }}
+                </button>
+            </div>
+            <div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+                 title="{{ _("Fonctionnalité à venir") }}">
+                <button class="btn btn-outline-dark" disabled>
+                    {{ _("Changer de chambre") }}
+                </button>
+            </div>
+        </div>
+    </div></div>
+
+    <div class="col"><div class="card p-card bg-pc5 border-pc4 border-2 h-100">
+        <div class="card-body d-flex align-items-center mb-2">
+            <h3 class="card-title me-auto my-0">{{ _("Appareils") }}</h3>
+                <svg class="bi flex-shrink-0" width="36" height="36"
+                     role="img">{{ bootstrap_icon("laptop") }}
+                </svg>
+        </div>
+        <table class="table table-striped table-borderless"><tbody>
+            {% with device = current_user.current_device %}
+            <tr><th scope="row" class="ps-4">{{ _("Appareil actuel") }}</th>
+                <td class="text-break">{{ device.name }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Type") }}</th>
+                <td class="text-break">{{ device.type }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Adresse MAC") }}</th>
+                <td class="text-break">{{ device.mac_address }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Enregistrement") }}</th>
+                <td class="text-break">
+                {{ moment(device.registered).format("LL") }}
+                </td></tr>
+            {% endwith %}
+        </tbody></table>
+        <div class="card-body h-100"><div class="accordion" id="acco-dev">
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="acco-dev-h">
+                    <button class="accordion-button collapsed bg-pc5 text-dark"
+                            type="button" data-bs-toggle="collapse"
+                            data-bs-target="#coll-dev-h"
+                            aria-expanded="true" aria-controls="coll-dev-h">
+                        {{ _("Autres appareils :") }}&nbsp;<strong>
+                        {{ len(current_user.other_devices) }}</strong>
+                    </button>
+                </h3>
+                <div id="coll-dev-h" class="accordion-collapse collapse"
+                     aria-labelledby="acco-dev-h"
+                     data-bs-parent="#acco-dev">
+                    <div class="accordion-body bg-pc5 p-0">
+                        {% if current_user.other_devices %}
+                        <table class="table table-striped table-borderless
+                                      mb-0"><tbody>
+                            <tr><th scope="col" class="ps-3">
+                                    {{ _("Nom") }}
+                                </th>
+                                <th scope="col" colspan=2>
+                                    {{ _("Dernière connexion") }}
+                                </th>
+                            </tr>
+                            {% for device in current_user.other_devices %}
+                            <tr class="align-middle">
+                                <td class="text-break ps-3">
+                                    {{ device.name }}
+                                </td>
+                                <td>
+                                    {{ moment(device.last_seen).fromNow() }}
+                                </td>
+                                <td class="text-end">
+                                    <button type="button" class="btn p-0 me-1"
+                                            data-bs-target="#mo{{ device.id }}"
+                                            data-bs-toggle="modal">
+                                    <svg class="bi flex-shrink-0" width="24"
+                                         height="24" role="img"
+                                         aria-label="{{ _("Détails") }}">
+                                        {{ bootstrap_icon("eye") }}
+                                    </svg>
+                                </button></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody></table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div></div>
+        <div class="card-body px-auto">
+            <div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+                 title="{{ _("Fonctionnalité à venir") }}">
+                <button class="btn btn-outline-dark" disabled>
+                    {{ _("Modifier l'appareil") }}
+                </button>
+            </div>
+            <a class="btn btn-outline-dark"
+               href="{{ url_for("devices.register", force=True,
+                                next=request.url_rule.endpoint) }}">
+                {{ _("Nouvel appareil") }}
+            </a>
+        </div>
+    </div></div>
+</div>
+
+<!-- Modals devices -->
+{% for device in current_user.other_devices %}
+<div class="modal fade" id="mo{{ device.id }}" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ _("Appareil") }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="{{ _("Fermer") }}"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped table-borderless"><tbody>
+            <tr><th scope="row" class="ps-4">{{ _("Nom") }}</th>
+                <td class="text-break">{{ device.name }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Type") }}</th>
+                <td class="text-break">{{ device.type }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Adresse MAC") }}</th>
+                <td class="text-break">{{ device.mac_address }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Enregistrement") }}</th>
+                <td class="text-break">
+                    {{ moment(device.registered).format("LL") }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Dernière connexion") }}</th>
+                <td class="text-break">
+                    {{ moment(device.registered).fromNow() }}
+                </td></tr>
+        </tbody></table>
+      </div>
+      <div class="modal-footer">
+        <div class="d-inline-block" data-bs-toggle="tooltip"
+             data-bs-placement="top"
+             title="{{ _("Fonctionnalité à venir") }}">
+            <button class="btn btn-outline-dark" disabled>
+                {{ _("Modifier l'appareil") }}
+            </button>
+        </div>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+            {{ _("Fermer") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}

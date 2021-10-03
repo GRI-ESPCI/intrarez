@@ -7,7 +7,7 @@ __title__ = "intrarez"
 __author__ = "Loïc Simon, Louis Grandvaux & other GRIs"
 __license__ = "MIT"
 __copyright__ = "Copyright 2021 GRIs – ESPCI Paris - PSL"
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 __all__ = "create_app"
 
 
@@ -51,6 +51,7 @@ def create_app(config_class=Config):
     moment.init_app(app)
     babel.init_app(app)
     app.jinja_env.add_extension("jinja2.ext.do")
+    app.jinja_env.globals.update(**__builtins__)
     app.jinja_env.globals["__version__"] = __version__
     app.jinja_env.globals["get_locale"] = get_locale
     app.jinja_env.globals["alert_labels"] = {
