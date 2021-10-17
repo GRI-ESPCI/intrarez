@@ -10,7 +10,7 @@ def send_password_reset_email(user):
     """Send a password reset email.
 
     Args:
-        user (models.User): the user to reset password of.
+        user (models.Rezident): the user to reset password of.
     """
     subject = _l("[IntraRez] Réinitialisation du mot de passe")
     sender = "noreply@intrarez"

@@ -18,6 +18,6 @@
     "dependencies": {
         "bootstrap": "latest",
         "web-pingjs": "latest",
-        "moment": "lastest"
+        "moment": "latest"
     }
 }

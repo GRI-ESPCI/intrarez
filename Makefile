@@ -66,7 +66,7 @@ update:
 	# Update dependencies
 	env/bin/pip install -r requirements.txt
 	npm install
-	bower instll
+	bower install
 	# Upgrade application
 	@echo "Stopping application before critical updates..."
 	sudo supervisorctl stop intrarez

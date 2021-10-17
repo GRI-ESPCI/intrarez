@@ -11,16 +11,16 @@ import flask_login
 from flask_babel import _
 
 from app import db
-from app.models import User, Device
+from app.models import Device
 from app.devices import bp, forms
 from app.tools.utils import redirect_to_next
 
 
 def get_mac(remote_ip):
-    """Fetch the remote user MAC address from the ARP table.
+    """Fetch the remote rezident MAC address from the ARP table.
 
     Args:
-        remote_ip: The IP of the remote user.
+        remote_ip: The IP of the remote rezident.
 
     Returns:
         The corresponding MAC address, or ``None`` if not in the list.
@@ -85,7 +85,7 @@ def check_device(routine):
             return _redirect_if_safe("devices.register", mac=mac, next=next)
 
         # L'appareil est enregistré : on vérifie son propriétaire
-        if flask_login.current_user != device.user:
+        if flask_login.current_user != device.rezident:
             # Appareil lié à un autre utilisateur => Transférer
             return _redirect_if_safe("devices.transfer", mac=mac, next=next)
 
@@ -121,7 +121,7 @@ def register():
         else:
             now = datetime.datetime.now(datetime.timezone.utc)
             device = Device(
-                user=flask_login.current_user, name=form.nom.data,
+                rezident=flask_login.current_user, name=form.nom.data,
                 mac_address=form.mac.data, type=form.type.data,
                 registered=now, last_seen=now,
             )
@@ -149,10 +149,10 @@ def transfer():
         if not device:
             flask.flash(_("Cet appareil n'est pas encore enregistré !"),
                         "danger")
-        elif device.user == flask_login.current_user:
+        elif device.rezident == flask_login.current_user:
             flask.flash(_("Cet appareil vous appartient déjà !"), "danger")
         else:
-            device.user = flask_login.current_user
+            device.rezident = flask_login.current_user
             db.session.commit()
             flask.flash(_("Appareil transféré avec succès !"), "success")
             # OK
@@ -167,7 +167,7 @@ def transfer():
     if not device:
         # Block accessing this form to transfer a non-existing device
         flask.redirect(flask.url_for("main.index"))
-    elif device.user == flask_login.current_user:
+    elif device.rezident == flask_login.current_user:
         return redirect_to_next()
 
     return flask.render_template("devices/transfer.html",

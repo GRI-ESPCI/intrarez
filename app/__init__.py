@@ -135,11 +135,11 @@ def load_user(id):
         id (str): the ID of the connected user (stored in the session).
 
     Returns:
-        :class:`User`
+        :class:`Rezident`
     """
     if not id.isdigit():
         return False
-    user = models.User.query.get(int(id))
+    user = models.Rezident.query.get(int(id))
     if user:
         # Update user current device "last seen" timestamp
         user.update_last_seen()

@@ -7,7 +7,7 @@ import unidecode
 
 from app import db
 from app.auth import bp, forms, email
-from app.models import User
+from app.models import Rezident
 from app.tools.utils import redirect_to_next
 
 
@@ -18,7 +18,7 @@ def new_username(form):
     # Check if username already exists
     username = base_username
     discr = 0
-    while User.query.filter_by(username=username).first():
+    while Rezident.query.filter_by(username=username).first():
         discr += 1
         username = base_username + str(discr)
     return username
@@ -33,7 +33,7 @@ def register():
     form = forms.RegistrationForm()
     if form.validate_on_submit():
         username = new_username(form)
-        user = User(
+        user = Rezident(
             username=username, nom=form.nom.data.title(),
             prenom=form.prenom.data.title(),
             promo=form.promo.data, email=form.email.data
@@ -58,8 +58,8 @@ def login():
     form = forms.LoginForm()
     if form.validate_on_submit():
         # Check user / password
-        user = (User.query.filter_by(username=form.login.data).first()
-            or User.query.filter_by(email=form.login.data).first())
+        user = (Rezident.query.filter_by(username=form.login.data).first()
+            or Rezident.query.filter_by(email=form.login.data).first())
         if user is None:
             flask.flash(_("Nom d'utilisateur inconnu"), "danger")
             return flask.redirect(flask.url_for("auth.login"))
@@ -91,7 +91,7 @@ def reset_password_request():
 
     form = forms.ResetPasswordRequestForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = Rezident.query.filter_by(email=form.email.data).first()
         if user:
             email.send_password_reset_email(user)
         flask.flash(_("Un email a été envoyé avec les instructions pour "
@@ -110,7 +110,7 @@ def reset_password(token):
                     "warning")
         return flask.redirect(flask.url_for("main.index"))
 
-    user = User.verify_reset_password_token(token)
+    user = Rezident.verify_reset_password_token(token)
     if not user:
         flask.flash(_("Lien de réinitialisation invalide ou expiré."),
                     "danger")

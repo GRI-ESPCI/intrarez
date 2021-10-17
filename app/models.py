@@ -12,18 +12,18 @@ from werkzeug import security as wzs
 from app import db
 
 
-class User(flask_login.UserMixin, db.Model):
+class Rezident(flask_login.UserMixin, db.Model):
     """A Rezident.
 
     :class:`flask_login.UserMixin` adds the following properties and methods:
-        * is_authenticated: a property that is True if the user has
+        * is_authenticated: a property that is True if the rezident has
             valid credentials or False otherwise.
-        * is_active: a property that is True if the user's account is
+        * is_active: a property that is True if the rezident's account is
             active or False otherwise.
-        * is_anonymous: a property that is False for regular users, and
-            True for a special, anonymous user.
+        * is_anonymous: a property that is False for regular rezidents, and
+            True for a special, anonymous rezident.
         * get_id(): a method that returns a unique identifier for the
-            user as a string.
+            rezident as a string.
     """
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(64), unique=True)
@@ -34,28 +34,28 @@ class User(flask_login.UserMixin, db.Model):
     is_gri = db.Column(db.Boolean(), nullable=False, default=False)
     _password_hash = db.Column(db.String(128))
 
-    devices = db.relationship("Device", back_populates="user")
-    rentals = db.relationship("Rental", back_populates="user")
+    devices = db.relationship("Device", back_populates="rezident")
+    rentals = db.relationship("Rental", back_populates="rezident")
 
     def __repr__(self):
         """Returns repr(self)."""
-        return f"<User #{self.id} ('{self.username}')>"
+        return f"<Rezident #{self.id} ('{self.username}')>"
 
     @property
     def full_name(self):
-        """:class:`str`: The users's first + last names."""
+        """:class:`str`: The rezidents's first + last names."""
         return f"{self.prenom} {self.nom}"
 
     @property
     def current_device(self):
-        """:class:`Device`: The users's last seen device, or ``None``."""
+        """:class:`Device`: The rezidents's last seen device, or ``None``."""
         if not self.devices:
             return None
         return max(self.devices, key=lambda device: device.last_seen)
 
     @property
     def other_devices(self):
-        """:class:`list[Device]`: The users's non-current devices.
+        """:class:`list[Device]`: The rezidents's non-current devices.
 
         Sorted from most recently seen to latest seen.
         """
@@ -63,9 +63,9 @@ class User(flask_login.UserMixin, db.Model):
                       reverse=True)[1:]
 
     def update_last_seen(self):
-        """Update :meth:`Device.last_seen` timestamp of user current device.
+        """Update :meth:`Device.last_seen` timestamp of rezident last device.
 
-        Do nothing if the user has no devices or if the current
+        Do nothing if the rezident has no devices or if the current
         timestamp is less than 60 seconds old.
         """
         utcnow = datetime.datetime.utcnow()
@@ -76,7 +76,7 @@ class User(flask_login.UserMixin, db.Model):
 
     @property
     def current_rental(self):
-        """:class:`Rental`: The users's current rental, or ``None``."""
+        """:class:`Rental`: The rezidents's current rental, or ``None``."""
         try:
             return next(rent for rent in self.rentals if rent.is_current)
         except StopIteration:
@@ -84,12 +84,12 @@ class User(flask_login.UserMixin, db.Model):
 
     @property
     def old_rentals(self):
-        """:class:`list[Rental]`: The users's non-current rentals."""
+        """:class:`list[Rental]`: The rezidents's non-current rentals."""
         return [rental for rental in self.rentals if not rental.is_current]
 
     @property
     def current_room(self):
-        """:class:`Room`: The users's current room, or ``None``."""
+        """:class:`Room`: The rezidents's current room, or ``None``."""
         current_rental = self.current_rental
         return current_rental.room if current_rental else None
 
@@ -97,17 +97,17 @@ class User(flask_login.UserMixin, db.Model):
     def has_a_room(self):
         """:class:`bool` (instance)
         / :class:`sqlalchemy.sql.selectable.Exists` (class):
-        Whether the user has currently a room rented.
+        Whether the rezident has currently a room rented.
 
         Hybrid property (:class:`sqlalchemy.ext.hybrid.hybrid_property`):
             - On the instance, returns directly the boolean value;
-            - On the class, returns the clause to use to filter users that
+            - On the class, returns the clause to use to filter rezidents that
               have a room.
 
         Examples::
 
-            user.has_a_room         # bool
-            User.query.filter(User.has_a_room).all()
+            rezident.has_a_room         # bool
+            Rezident.query.filter(Rezident.has_a_room).all()
         """
         return (self.current_rental is not None)
 
@@ -116,7 +116,7 @@ class User(flask_login.UserMixin, db.Model):
         return cls.rentals.any(Rental.is_current)
 
     def set_password(self, password):
-        """Save or modify user password.
+        """Save or modify rezident password.
 
         Relies on :func:`werkzeug.security.generate_password_hash` to
         store a password hash only.
@@ -127,7 +127,7 @@ class User(flask_login.UserMixin, db.Model):
         self._password_hash = wzs.generate_password_hash(password)
 
     def check_password(self, password):
-        """Check that a given password matches stored user password.
+        """Check that a given password matches stored rezident password.
 
         Relies on :func:`werkzeug.security.check_password_hash` to
         compare tested password with stored password hash.
@@ -141,7 +141,7 @@ class User(flask_login.UserMixin, db.Model):
         return wzs.check_password_hash(self._password_hash, password)
 
     def get_reset_password_token(self, expires_in=600):
-        """Forge a JWT reset password token for the user.
+        """Forge a JWT reset password token for the rezident.
 
         Relies on :func:`jwt.encode`.
 
@@ -159,7 +159,7 @@ class User(flask_login.UserMixin, db.Model):
 
     @classmethod
     def verify_reset_password_token(cls, token):
-        """Verify a user password reset token (class method).
+        """Verify a rezident password reset token (class method).
 
         Relies on :func:`jwt.decode`.
 
@@ -167,8 +167,8 @@ class User(flask_login.UserMixin, db.Model):
             token (str): The JWT token to decode.
 
         Returns:
-            The user to reset password of if the token is valid and the
-            user exists, else ``None``.
+            The rezident to reset password of if the token is valid and the
+            rezident exists, else ``None``.
         """
         try:
             id = jwt.decode(token, flask.current_app.config["SECRET_KEY"],
@@ -181,8 +181,8 @@ class User(flask_login.UserMixin, db.Model):
 class Device(db.Model):
     """A device of a Rezident."""
     id = db.Column(db.Integer(), primary_key=True)
-    _user_id = db.Column(db.ForeignKey("user.id"), nullable=False)
-    user = db.relationship("User", back_populates="devices")
+    _rezident_id = db.Column(db.ForeignKey("rezident.id"), nullable=False)
+    rezident = db.relationship("Rezident", back_populates="devices")
     name = db.Column(db.String(64))
     mac_address = db.Column(db.String(17), nullable=False, unique=True)
     type = db.Column(db.String(64))
@@ -191,14 +191,14 @@ class Device(db.Model):
 
     def __repr__(self):
         """Returns repr(self)."""
-        return f"<Device #{self.id} ('{self.name}') of {self.user}>"
+        return f"<Device #{self.id} ('{self.name}') of {self.rezident}>"
 
 
 class Rental(db.Model):
     """A rental of a Rezidence room by a Rezident."""
     id = db.Column(db.Integer(), primary_key=True)
-    _user_id = db.Column(db.ForeignKey("user.id"), nullable=False)
-    user = db.relationship("User", back_populates="rentals")
+    _rezident_id = db.Column(db.ForeignKey("rezident.id"), nullable=False)
+    rezident = db.relationship("Rezident", back_populates="rentals")
     _room_num = db.Column(db.ForeignKey("room.num"), nullable=False)
     room = db.relationship("Room", back_populates="rentals")
     start = db.Column(db.Date(), nullable=False)
@@ -206,7 +206,7 @@ class Rental(db.Model):
 
     def __repr__(self):
         """Returns repr(self)."""
-        return f"<Rental #{self.id} of {self.room} by {self.user}>"
+        return f"<Rental #{self.id} of {self.room} by {self.rezident}>"
 
     @hybrid_property
     def is_current(self):
@@ -214,7 +214,7 @@ class Rental(db.Model):
         / :class:`sqlalchemy.sql.selectable.Exists` (class):
         Whether the rental is current.
 
-        Hybrid property (see :meth:`User.has_a_room`).
+        Hybrid property (see :meth:`Rezident.has_a_room`).
         """
         today = datetime.date.today()
         return (self.end is None) or (self.end > today)
@@ -251,7 +251,7 @@ class Room(db.Model):
         / :class:`sqlalchemy.sql.selectable.Exists` (class):
         Whether the room is currently rented.
 
-        Hybrid property (see :meth:`User.has_a_room`).
+        Hybrid property (see :meth:`Rezident.has_a_room`).
         """
         return (self.current_rental is not None)
 

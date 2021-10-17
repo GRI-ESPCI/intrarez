@@ -551,7 +551,7 @@ msgstr ""
 
 #: app/templates/devices/connect_check.html:34
 msgid ""
-"Cette opération peut prendre quelqeues minutes. Cette page indiquera "
+"Cette opération peut prendre quelques minutes. Cette page indiquera "
 "automatiquement quand ce sera bon !"
 msgstr ""
 "This operation may take a few minutes. This page will show automatically "

@@ -10,7 +10,7 @@ from app import db
 from app.gris import bp, forms
 from app.devices import check_device
 from app.tools.utils import redirect_to_next
-from app.models import User
+from app.models import Rezident
 
 
 def gris_only(routine):
@@ -44,5 +44,5 @@ def gris_only(routine):
 def rezidents():
     """Users list page."""
     return flask.render_template("gris/rezidents.html",
-                                 users=User.query.all(),
+                                 users=Rezident.query.all(),
                                  title=_("Liste des Rezidents"))

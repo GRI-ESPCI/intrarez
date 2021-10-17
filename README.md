@@ -162,7 +162,7 @@ git pull
 source env/bin/activate
 pip install -r requirements.txt
 npm install
-bower instll
+bower install
 sudo supervisorctl stop intrarez
 flask db upgrade
 flask translate compile

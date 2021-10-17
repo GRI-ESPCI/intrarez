@@ -26,12 +26,12 @@ def upgrade():
     )
     op.create_table('rental',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('_user_id', sa.Integer(), nullable=False),
+    sa.Column('_rezident_id', sa.Integer(), nullable=False),
     sa.Column('_room_num', sa.Integer(), nullable=False),
     sa.Column('start', sa.Date(), nullable=False),
     sa.Column('end', sa.Date(), nullable=True),
     sa.ForeignKeyConstraint(['_room_num'], ['room.num'], ),
-    sa.ForeignKeyConstraint(['_user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['_rezident_id'], ['rezident.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

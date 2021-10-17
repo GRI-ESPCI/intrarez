@@ -7,7 +7,7 @@ import flask_login
 from flask_babel import _
 
 from app import db
-from app.models import User, Room, Rental
+from app.models import Room, Rental
 from app.rooms import bp, forms
 from app.devices import check_device
 from app.tools.utils import redirect_to_next
@@ -34,7 +34,7 @@ def register():
     form = forms.RentalRegistrationForm()
     if form.validate_on_submit():
         rental = Rental(
-            user=flask_login.current_user,
+            rezident=flask_login.current_user,
             room=Room.query.get(form.room.data),
             start=form.start.data, end=form.end.data,
         )
