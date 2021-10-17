@@ -1,0 +1,23 @@
+{
+  "name": "intrarez",
+  "version": "0.6.0",
+  "description": "Intranet de la Rez Flask Web App",
+  "main": "n/a",
+  "scripts": {
+    "test": "n/a"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GRI-ESPCI/intrarez.git"
+  },
+  "author": "GRIs – ESPCI Paris - PSL",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GRI-ESPCI/intrarez/issues"
+  },
+  "homepage": "https://github.com/GRI-ESPCI/intrarez#readme",
+  "dependencies": {
+    "bower": "^1.8.12",
+    "sass": "^1.42.1"
+  }
+}

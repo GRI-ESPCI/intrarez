@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<script src="{{ url_for("static", filename="js/gris-rezidents.js") }}"
+        defer></script>
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col table-responsive">
+        <table class="table table-striped"><tbody>
+            <tr>
+                <th scope="col">{{ _("ID") }}</th>
+                <th scope="col" colspan=2>{{ _("Compte") }}</th>
+                <th scope="col" colspan=2>{{ _("Chambre") }}</th>
+                <th scope="col" colspan=2>{{ _("Appareils") }}</th>
+                <th scope="col">{{ _("Dernière connexion") }}</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.prenom }} {{ user.nom }} {{ user.promo }}</td>
+                <td>
+                    <button type="button" class="btn p-0 me-1 d-inline-block"
+                            data-bs-target="#mo-account-{{ user.id }}"
+                            data-bs-toggle="modal">
+                    <svg class="bi flex-shrink-0" width="24" height="24"
+                         role="img" aria-label="{{ _("Compte") }}">
+                        {{ bootstrap_icon("person-badge") }}
+                    </svg>
+                    </button>
+                </td>
+                <td>
+                    {% if user.current_room %}
+                        {{ user.current_room.num }}
+                        {% if user.old_rentals %}
+                            (+{{ len(user.old_rentals) }})
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    <button type="button" class="btn p-0 me-1 d-inline-block"
+                            data-bs-target="#mo-room-{{ user.id }}"
+                            data-bs-toggle="modal"
+                            {% if not user.current_room %} disabled{% endif %}>
+                    <svg class="bi flex-shrink-0" width="24" height="24"
+                         role="img" aria-label="{{ _("Chambre") }}">
+                        {{ bootstrap_icon("door-closed") }}
+                    </svg>
+                    </button>
+                </td>
+                <td>{{ len(user.devices) }}</td>
+                <td>
+                    <button type="button" class="btn p-0 me-1 d-inline-block"
+                            data-bs-target="#mo-device-{{ user.id }}"
+                            data-bs-toggle="modal"
+                            {% if not user.current_device %} disabled
+                            {% endif %}>
+                    <svg class="bi flex-shrink-0" width="24" height="24"
+                         role="img" aria-label="{{ _("Appareil") }}">
+                        {{ bootstrap_icon("laptop") }}
+                    </svg>
+                    </button>
+                </td>
+                <td>
+                {% if user.current_device %}
+                    <span title="{{ user.current_device.last_seen }} UTC">
+                    {{ moment(user.current_device.last_seen).format("LLL") }}
+                    </span>
+                {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody></table>
+    </div>
+</div>
+
+<!-- Modals -->
+{% for user in users %}
+<div class="modal fade" id="mo-account-{{ user.id }}" tabindex="-1"
+     aria-labelledby="mo-account-lab" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="mo-account-lab">{{ _("Compte") }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="{{ _("Fermer") }}"></button>
+        </div>
+        <div class="modal-body">
+            {% include "cards/account.html" %}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                {{ _("Fermer") }}
+            </button>
+        </div>
+    </div></div>
+</div>
+
+{% if user.current_room %}
+<div class="modal fade" id="mo-room-{{ user.id }}" tabindex="-1"
+     aria-labelledby="mo-room-lab" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="mo-room-lab">{{ _("Chambre") }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="{{ _("Fermer") }}"></button>
+        </div>
+        <div class="modal-body">
+            {% include "cards/room.html" %}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                {{ _("Fermer") }}
+            </button>
+        </div>
+    </div></div>
+</div>
+{% endif %}
+
+{% if user.current_device %}
+<div class="modal fade" id="mo-device-{{ user.id }}" tabindex="-1"
+     aria-labelledby="mo-device-lab" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="mo-device-lab">{{ _("Appareil") }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="{{ _("Fermer") }}"></button>
+        </div>
+        <div class="modal-body">
+            {% include "cards/device.html" %}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                {{ _("Fermer") }}
+            </button>
+        </div>
+    </div></div>
+</div>
+{% endif %}
+
+<!-- Modals devices -->
+{% for device in user.other_devices %}
+{% include "cards/device_modal.html" %}
+{% endfor %}
+{% endfor %}
+
+{% endblock %}

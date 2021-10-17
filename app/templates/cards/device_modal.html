@@ -1,0 +1,49 @@
+<div class="modal fade" id="mo-device-{{ user.id }}-{{ device.id }}"
+     tabindex="-1" aria-labelledby="modalabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalabel">{{ _("Appareil") }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="{{ _("Fermer") }}"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped table-borderless"><tbody>
+            <tr><th scope="row" class="ps-4">{{ _("Nom") }}</th>
+                <td class="text-break">{{ device.name }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Type") }}</th>
+                <td class="text-break">{{ device.type }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Adresse MAC") }}</th>
+                <td class="text-break">{{ device.mac_address }}
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Enregistrement") }}</th>
+                <td class="text-break">
+                    <span title="{{ device.registered }} UTC">
+                    {{ moment(device.registered).format("LL") }}
+                    </span>
+                </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("Dernière connexion") }}</th>
+                <td class="text-break">
+                    <span title="{{ device.last_seen }} UTC">
+                    {{ moment(device.last_seen).fromNow() }}
+                    </span>
+                </td></tr>
+        </tbody></table>
+      </div>
+      <div class="modal-footer">
+        <div class="d-inline-block" data-bs-toggle="tooltip"
+             data-bs-placement="top"
+             title="{{ _("Fonctionnalité à venir") }}">
+            <button class="btn btn-outline-dark" disabled>
+                {{ _("Modifier l'appareil") }}
+            </button>
+        </div>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+            {{ _("Fermer") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

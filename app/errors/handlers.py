@@ -3,16 +3,27 @@
 import traceback
 
 import flask
+from flask_babel import _
 from werkzeug.exceptions import HTTPException
 
 from app import db
 from app.errors import bp
 
 
+@bp.app_errorhandler(403)
+def unauthorized_error(error):
+    err_name = f"{error.code} {error.name}"
+    err_descr = error.description
+    flask.current_app.logger.error(f"{err_name} -- {flask.request}")
+    return flask.render_template("errors/403.html", err_name=err_name,
+                                 err_descr=err_descr,
+                                 title=_("Accès restreint")), 403
+
 @bp.app_errorhandler(404)
 def not_found_error(error):
     err_name = f"{error.code} {error.name}"
     err_descr = error.description
+    flask.current_app.logger.error(f"{err_name} -- {flask.request}")
     return flask.render_template("errors/404.html", err_name=err_name,
                                  err_descr=err_descr, title=err_name), 404
 
@@ -26,6 +37,7 @@ def other_error(error):
         code = error.code
         err_name = f"{error.code} {error.name}"
         err_descr = error.description
+        flask.current_app.logger.error(f"{err_name} -- {flask.request}")
     else:
         code = 500
         err_name = "Python Exception"
@@ -36,6 +48,7 @@ def other_error(error):
             err_descr = "[debug mode - traceback below]" + flask.Markup(
                 flask.render_template("errors/_tb.html", tb=tb)
             )
+        flask.current_app.logger.error(traceback.format_exc())
     db.session.rollback()
     return flask.render_template("errors/other.html", err_name=err_name,
                                  err_descr=err_descr, title=err_name), code

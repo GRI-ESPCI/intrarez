@@ -23,42 +23,62 @@ class DiscordHandler(StreamHandler):
         webhook.execute()
 
 
-def set_handlers(logger, config):
-    if config["MAIL_SERVER"]:
+# Custom formatter
+class InfoErrorFormatter(logging.Formatter):
+    def __init__(self, info_fmt, error_fmt, *args, **kwargs):
+        super().__init__(info_fmt, *args, **kwargs)
+        self.info_fmt = info_fmt
+        self.error_fmt = error_fmt
+
+    def format(self, record):
+        format_orig = self._fmt
+        if record.levelno > logging.INFO:
+            self._fmt = self.error_fmt
+        else:
+            self._fmt = self.info_fmt
+        result = super().format(record)
+        self._fmt = format_orig
+        return result
+
+
+def set_handlers(app):
+    if app.config["MAIL_SERVER"] and not (app.debug or app.testing):
         # Alert mails
-        server = config["MAIL_SERVER"]
+        server = app.config["MAIL_SERVER"]
         auth = None
-        if config["MAIL_USERNAME"] or config["MAIL_PASSWORD"]:
-            auth = (config["MAIL_USERNAME"], config["MAIL_PASSWORD"])
-        secure = () if config["MAIL_USE_TLS"] else None
+        if app.config["MAIL_USERNAME"] or app.config["MAIL_PASSWORD"]:
+            auth = (app.config["MAIL_USERNAME"], app.config["MAIL_PASSWORD"])
+        secure = () if app.config["MAIL_USE_TLS"] else None
         mail_handler = SMTPHandler(
-            mailhost=(server, config["MAIL_PORT"]),
+            mailhost=(server, app.config["MAIL_PORT"]),
             fromaddr=f"no-reply@{server}",
-            toaddrs=config["ADMINS"],
+            toaddrs=app.config["ADMINS"],
             subject="IntraRez Internal Error",
             credentials=auth,
             secure=secure
         )
         mail_handler.setLevel(logging.ERROR)
-        logger.addHandler(mail_handler)
+        app.logger.addHandler(mail_handler)
 
-    if config["ERROR_WEBHOOK"]:
+    if app.config["ERROR_WEBHOOK"] and not (app.debug or app.testing):
         # Alert webhooks
-        discord_handler = DiscordHandler(config["ERROR_WEBHOOK"],
-                                         config.get("GRI_ROLE_ID"))
+        discord_handler = DiscordHandler(app.config["ERROR_WEBHOOK"],
+                                         app.config.get("GRI_ROLE_ID"))
         discord_handler.setLevel(logging.ERROR)
-        logger.addHandler(discord_handler)
+        app.logger.addHandler(discord_handler)
 
     # File logs
     if not os.path.exists("logs"):
         os.mkdir("logs")
     file_handler = RotatingFileHandler("logs/intrarez.log", maxBytes=10240,
                                        backupCount=100)
-    file_handler.setFormatter(logging.Formatter(
-        "%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]"
+    file_handler.setFormatter(InfoErrorFormatter(
+        "{asctime} {levelname}: {message}",
+        "{asctime} {levelname}: {message} [in {pathname}:{lineno}]",
+        style="{",
     ))
     file_handler.setLevel(logging.INFO)
-    logger.addHandler(file_handler)
+    app.logger.addHandler(file_handler)
 
     # Start logs
-    logger.setLevel(logging.INFO)
+    app.logger.setLevel(logging.INFO)

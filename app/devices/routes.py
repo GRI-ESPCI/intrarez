@@ -91,7 +91,8 @@ def check_device(routine):
 
         # L'appareil est lié à l'utilisateur connecté => OK !
         if (flask.request.endpoint.startswith("devices.")
-            and not flask.request.args.get("force")):
+            and not flask.request.args.get("force")
+            and not flask.request.endpoint.endswith("connect_check")):
             # Si procédure d'enrgistrement d'appareil en cours, on dégage
             return _redirect_if_safe("main.index")
 

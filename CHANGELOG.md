@@ -5,6 +5,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 0.6.0 - 2021-10-17
+
+# Added
+
+  * Makefile rules for automatic installation (beta).
+  * IntraRez is now a npm local package (easier dependencies installations).
+  * Added custom logging messages on each request.
+  * GRIs-only menu with users list.
+  * New custom error page for 403 (GRI-only pages).
+  * User last device last seen timestamp is now updated at each request.
+
+# Changed
+
+  * Application version is now retrieved from npm package information.
+  * Different favicon depending on user permissions.
+  * Moment.js is now a local dependency (instead of a web-loaded file).
+
+# Fixed
+
+  * Wrong label for "contact us" page email field.
+
+
 ## 0.5.0 - 2021-10-04
 
 # Added

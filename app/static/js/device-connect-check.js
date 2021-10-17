@@ -2,7 +2,7 @@
 /* Check Internet connection every 2s until established */
 async function check() {
     url = "https://www.google.com/"
-    result = document.getElementById("result");
+    oks = document.getElementsByClassName("cc-ok");
     spinner = document.getElementById("spinner");
     last = document.getElementById("last");
     connected = false;
@@ -14,14 +14,18 @@ async function check() {
             spinner.style.setProperty("border-right-color", "inherit");
             spinner.classList.replace("text-primary", "text-success");
             spinner.classList.add("bg-success");
-            result.style.setProperty("transition", "all 1s");
-            result.style.setProperty("opacity", "1", "important");
-            last.style.setProperty("transition", "all 1s");
-            last.classList.replace("bg-secondary", "bg-success");
+            for (var i = 0; i < oks.length; i++) {
+                oks[i].style.setProperty("transition", "all 1s");
+                oks[i].style.setProperty("opacity", "1", "important");
+            }
+            if (last) {
+                last.style.setProperty("transition", "all 1s");
+                last.classList.replace("bg-secondary", "bg-success");
+            }
             connected = true;
         }).catch(function(err) {
             // Error: not connected, retry
-            console.log("err")
+            console.log(err)
         });
         await new Promise(r => setTimeout(r, 2000));
     }

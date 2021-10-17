@@ -46,15 +46,13 @@
             <div class="spinner-border text-primary mx-3" id="spinner">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <span id="result" class="text-success fw-bold opacity-0">
-                <span class="me-3">{{ _("Connecté !") }}
-                </span>>
-                <a href={{ url_for("main.rickroll") }}>
-                    {{ _("Accéder à l'IntraRez") }}
-                </a>
-                </span>
+            <span class="cc-ok text-success fw-bold mx-3 opacity-0">
+                {{ _("Connecté !") }}
             </span>
-
+            <a class="cc-ok btn btn-success opacity-0"
+               href={{ url_for("main.rickroll") }}>
+                {{ _("Accéder à Internet") }}
+            </a>
         </div>
     </div>
 </div>

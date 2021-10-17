@@ -57,6 +57,7 @@ coverage.xml
 
 # Django stuff:
 *.log
+*.log.*
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -132,4 +133,6 @@ dmypy.json
 .sass-cache/
 
 # Dependecies
+node_modules/
+package-lock.json
 bower_components/

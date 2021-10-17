@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-04 01:15+0200\n"
+"POT-Creation-Date: 2021-10-17 21:55+0200\n"
 "PO-Revision-Date: 2021-09-14 21:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/__init__.py:33
+#: app/__init__.py:37
 msgid "Merci de vous connecter pour accéder à cette page."
 msgstr "Please log in to access to this page."
 
-#: app/__init__.py:58
+#: app/__init__.py:62
 msgid "Information :"
 msgstr "Information:"
 
-#: app/__init__.py:59
+#: app/__init__.py:63
 msgid "Succès :"
 msgstr "Success:"
 
-#: app/__init__.py:60
+#: app/__init__.py:64
 msgid "Attention :"
 msgstr "Caution:"
 
-#: app/__init__.py:61
+#: app/__init__.py:65
 msgid "Avertissement :"
 msgstr "Warning:"
 
@@ -65,21 +65,22 @@ msgstr "Remember me"
 #: app/auth/forms.py:38 app/auth/routes.py:74
 #: app/templates/auth/register.html:59
 #: app/templates/auth/reset_password.html:29
-#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:63
+#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:97
 #: app/templates/devices/auth_needed.html:22
 msgid "Connexion"
 msgstr "Sign in"
 
-#: app/auth/forms.py:43 app/main/forms.py:14 app/templates/main/profile.html:25
-#: app/templates/main/profile.html:172 app/templates/main/profile.html:236
+#: app/auth/forms.py:43 app/main/forms.py:14
+#: app/templates/cards/account.html:12 app/templates/cards/device.html:46
+#: app/templates/cards/device_modal.html:12
 msgid "Nom"
 msgstr "Last name"
 
-#: app/auth/forms.py:45 app/templates/main/profile.html:27
+#: app/auth/forms.py:45 app/templates/cards/account.html:14
 msgid "Prénom"
 msgstr "First name"
 
-#: app/auth/forms.py:47 app/templates/main/profile.html:29
+#: app/auth/forms.py:47 app/templates/cards/account.html:16
 msgid "Promotion"
 msgstr "Promotion"
 
@@ -169,12 +170,12 @@ msgstr "MAC address*"
 msgid "Type (optionnel)"
 msgstr "Type (optional)"
 
-#: app/devices/forms.py:19 app/devices/routes.py:139
+#: app/devices/forms.py:19 app/devices/routes.py:140
 msgid "Enregistrer l'appareil"
 msgstr "Register device"
 
-#: app/devices/forms.py:26 app/templates/main/profile.html:144
-#: app/templates/main/profile.html:242
+#: app/devices/forms.py:26 app/templates/cards/device.html:16
+#: app/templates/cards/device_modal.html:18
 msgid "Adresse MAC"
 msgstr "MAC address"
 
@@ -182,23 +183,23 @@ msgstr "MAC address"
 msgid "Transférer l'appareil"
 msgstr "Transfer device"
 
-#: app/devices/routes.py:110
+#: app/devices/routes.py:111
 msgid "Bienvenue sur l'IntraRez !"
 msgstr "Welcome on the IntraRez!"
 
-#: app/devices/routes.py:121
+#: app/devices/routes.py:122
 msgid "Cet appareil est déjà enregistré !"
 msgstr "This device is already registered!"
 
-#: app/devices/routes.py:131
+#: app/devices/routes.py:132
 msgid "Appareil enregistré avec succès !"
 msgstr "Device successfully registered!"
 
-#: app/devices/routes.py:151
+#: app/devices/routes.py:152
 msgid "Cet appareil n'est pas encore enregistré !"
 msgstr "This device is not already registered!"
 
-#: app/devices/routes.py:154
+#: app/devices/routes.py:155
 msgid "Cet appareil vous appartient déjà !"
 msgstr "This device already belong to you!"
 
@@ -254,6 +255,14 @@ msgstr "Device detection impossible"
 msgid "Accès à Internet"
 msgstr "Internet Access"
 
+#: app/errors/handlers.py:20 app/templates/errors/403.html:8
+msgid "Accès restreint"
+msgstr "Access restricted"
+
+#: app/gris/routes.py:48
+msgid "Liste des Rezidents"
+msgstr "Rezidents list"
+
 #: app/main/forms.py:15
 msgid "Adresse e-mail (optionnel)"
 msgstr "Mail address (optional)"
@@ -274,8 +283,9 @@ msgstr "Message"
 msgid "Envoyer"
 msgstr "Send"
 
-#: app/main/routes.py:22 app/templates/base.html:145
-#: app/templates/errors/404.html:23 app/templates/errors/other.html:17
+#: app/main/routes.py:22 app/templates/base.html:180
+#: app/templates/errors/403.html:26 app/templates/errors/404.html:23
+#: app/templates/errors/other.html:17
 msgid "Accueil"
 msgstr "Home"
 
@@ -295,24 +305,25 @@ msgstr "Message transmitted!"
 msgid "Contact"
 msgstr "Contact"
 
-#: app/main/routes.py:58 app/templates/base.html:161
+#: app/main/routes.py:58 app/templates/base.html:199
 msgid "Mentions légales"
 msgstr "Legal notice"
 
-#: app/main/routes.py:79
+#: app/main/routes.py:81
 msgid "Test"
 msgstr "Test"
 
-#: app/main/routes.py:85 app/templates/base.html:76
+#: app/main/routes.py:87 app/templates/base.html:110
 msgid "Profil"
 msgstr "Profile"
 
 #: app/rooms/forms.py:15 app/templates/auth/register.html:13
+#: app/templates/cards/room.html:3 app/templates/cards/room.html:42
 #: app/templates/devices/connect_check.html:12
 #: app/templates/devices/register.html:13
-#: app/templates/devices/transfer.html:13 app/templates/main/contact.html:69
-#: app/templates/main/profile.html:55 app/templates/main/profile.html:94
-#: app/templates/rooms/register.html:13
+#: app/templates/devices/transfer.html:13 app/templates/gris/rezidents.html:19
+#: app/templates/gris/rezidents.html:51 app/templates/gris/rezidents.html:108
+#: app/templates/main/contact.html:69 app/templates/rooms/register.html:13
 msgid "Chambre"
 msgstr "Room"
 
@@ -336,30 +347,45 @@ msgstr "Room successfully registered!"
 msgid "Nouvelle location"
 msgstr "New rental"
 
-#: app/templates/auth/login.html:32 app/templates/base.html:69
+#: app/templates/base.html:78
+msgid "Menu GRI"
+msgstr "GRI menu"
+
+#: app/templates/base.html:83
+msgid "Rezidents"
+msgstr "Rezidents"
+
+#: app/templates/base.html:86
+msgid "À venir..."
+msgstr "Coming soon"
+
+#: app/templates/auth/login.html:32 app/templates/base.html:103
 #: app/templates/devices/auth_needed.html:26
 msgid "Créer un compte"
 msgstr "Sign up"
 
-#: app/templates/base.html:82 app/templates/devices/transfer.html:42
+#: app/templates/base.html:116 app/templates/devices/transfer.html:42
 msgid "Déconnexion"
 msgstr "Sign out"
 
-#: app/templates/base.html:113 app/templates/main/profile.html:232
-#: app/templates/main/profile.html:264
+#: app/templates/base.html:147 app/templates/cards/device_modal.html:8
+#: app/templates/cards/device_modal.html:44
+#: app/templates/gris/rezidents.html:90 app/templates/gris/rezidents.html:97
+#: app/templates/gris/rezidents.html:110 app/templates/gris/rezidents.html:117
+#: app/templates/gris/rezidents.html:131 app/templates/gris/rezidents.html:138
 msgid "Fermer"
 msgstr "Close"
 
-#: app/templates/base.html:140
+#: app/templates/base.html:174
 msgid "Version"
 msgstr "Version"
 
 #: app/templates/auth/reset_password_request.html:33
-#: app/templates/base.html:150 app/templates/devices/register.html:248
+#: app/templates/base.html:186 app/templates/devices/register.html:248
 msgid "Nous contacter"
 msgstr "Contact us"
 
-#: app/templates/base.html:156
+#: app/templates/base.html:193
 msgid "Code source"
 msgstr "Source code"
 
@@ -375,19 +401,20 @@ msgstr "Password lost?"
 msgid "Réinitialiser"
 msgstr "Reset"
 
-#: app/templates/auth/register.html:10
+#: app/templates/auth/register.html:10 app/templates/cards/account.html:3
 #: app/templates/devices/connect_check.html:9
 #: app/templates/devices/register.html:10
-#: app/templates/devices/transfer.html:10 app/templates/main/profile.html:16
+#: app/templates/devices/transfer.html:10 app/templates/gris/rezidents.html:18
+#: app/templates/gris/rezidents.html:32 app/templates/gris/rezidents.html:88
 #: app/templates/rooms/register.html:10
 msgid "Compte"
 msgstr "Account"
 
-#: app/templates/auth/register.html:16
+#: app/templates/auth/register.html:16 app/templates/cards/device_modal.html:6
 #: app/templates/devices/connect_check.html:15
 #: app/templates/devices/register.html:16
-#: app/templates/devices/transfer.html:16 app/templates/main/profile.html:230
-#: app/templates/rooms/register.html:16
+#: app/templates/devices/transfer.html:16 app/templates/gris/rezidents.html:64
+#: app/templates/gris/rezidents.html:129 app/templates/rooms/register.html:16
 msgid "Appareil"
 msgstr "Device"
 
@@ -410,6 +437,93 @@ msgstr "Got it back?"
 #: app/templates/auth/reset_password_request.html:30
 msgid "Adresse e-mail oubliée ? Autre soucis ?"
 msgstr "Forget your email? Other issue?"
+
+#: app/templates/cards/account.html:10
+msgid "Identifiant"
+msgstr "ID"
+
+#: app/templates/cards/account.html:18
+msgid "Email"
+msgstr "Mail"
+
+#: app/templates/cards/account.html:25 app/templates/cards/account.html:32
+#: app/templates/cards/device.html:81 app/templates/cards/device_modal.html:38
+#: app/templates/cards/room.html:62 app/templates/cards/room.html:69
+msgid "Fonctionnalité à venir"
+msgstr "Upcoming feature"
+
+#: app/templates/cards/account.html:27
+msgid "Modifier une information"
+msgstr "Edit an information"
+
+#: app/templates/cards/account.html:34
+msgid "Changer de mot de passe"
+msgstr "Change password"
+
+#: app/templates/cards/device.html:3 app/templates/gris/rezidents.html:20
+msgid "Appareils"
+msgstr "Devices"
+
+#: app/templates/cards/device.html:10
+msgid "Appareil actuel"
+msgstr "Actual device"
+
+#: app/templates/cards/device.html:13 app/templates/cards/device_modal.html:15
+msgid "Type"
+msgstr "Type"
+
+#: app/templates/cards/device.html:19 app/templates/cards/device_modal.html:21
+msgid "Enregistrement"
+msgstr "Register"
+
+#: app/templates/cards/device.html:34
+msgid "Autres appareils :"
+msgstr "Other devices:"
+
+#: app/templates/cards/device.html:49 app/templates/cards/device_modal.html:27
+#: app/templates/gris/rezidents.html:21
+msgid "Dernière connexion"
+msgstr "Last connection"
+
+#: app/templates/cards/device.html:66
+msgid "Détails"
+msgstr "Details"
+
+#: app/templates/cards/device.html:83 app/templates/cards/device_modal.html:40
+msgid "Modifier l'appareil"
+msgstr "Edit device"
+
+#: app/templates/cards/device.html:89
+msgid "Nouvel appareil"
+msgstr "New device"
+
+#: app/templates/cards/room.html:10
+msgid "Location actuelle"
+msgstr "Current rental"
+
+#: app/templates/cards/room.html:13
+msgid "Depuis le"
+msgstr "From"
+
+#: app/templates/cards/room.html:17
+msgid "Jusqu'au"
+msgstr "To"
+
+#: app/templates/cards/room.html:30
+msgid "Anciennes locations :"
+msgstr "Former rentals:"
+
+#: app/templates/cards/room.html:43
+msgid "Période"
+msgstr "Dates"
+
+#: app/templates/cards/room.html:64
+msgid "Modifier les dates"
+msgstr "Edit dates"
+
+#: app/templates/cards/room.html:71
+msgid "Changer de chambre"
+msgstr "Change room"
 
 #: app/templates/devices/auth_needed.html:11
 msgid "Un compte est nécessaire pour enregistrer l'appareil et accéder au réseau."
@@ -447,11 +561,11 @@ msgstr ""
 msgid "Test de la connexion..."
 msgstr "Testing connection..."
 
-#: app/templates/devices/connect_check.html:53
-msgid "Accéder à l'IntraRez"
-msgstr "Enter the IntraRez"
+#: app/templates/devices/connect_check.html:54
+msgid "Accéder à Internet"
+msgstr "Access the Internet"
 
-#: app/templates/devices/connect_check.html:62
+#: app/templates/devices/connect_check.html:60
 msgid ""
 "Si il n'y a toujours rien après 10 minutes, essayez de débrancher / "
 "rebrancher l'appareil, puis de le redémarrer."
@@ -459,17 +573,17 @@ msgstr ""
 "If there is still nothing after 10 minutes, try unplugging / replugging "
 "the device, then rebooting it."
 
-#: app/templates/devices/connect_check.html:66
+#: app/templates/devices/connect_check.html:64
 #: app/templates/devices/error.html:39
 msgid "Si le problème persiste, "
 msgstr "If the issue goes on, "
 
-#: app/templates/devices/connect_check.html:67
+#: app/templates/devices/connect_check.html:65
 #: app/templates/devices/error.html:40
 msgid "contactez-nous"
 msgstr "contact us"
 
-#: app/templates/devices/connect_check.html:68
+#: app/templates/devices/connect_check.html:66
 #: app/templates/devices/error.html:41
 msgid "pour voir ensemble comment résoudre ce problème."
 msgstr "so we can see together how to address this issue."
@@ -813,6 +927,34 @@ msgid ""
 " l'appareil :"
 msgstr "Otherwise, do not hesitate to switch to the account owning the device:"
 
+#: app/templates/errors/403.html:9
+msgid "Cette page est réservée aux GRIs."
+msgstr "This page is for GRIs only."
+
+#: app/templates/errors/403.html:13
+msgid ""
+"Si vous pensez avoir le droit d'accéder à cette page, alors vous savez à "
+"qui demander l'accès."
+msgstr ""
+"If you think you are legitimate to access this page, then you know who "
+"ask the access to."
+
+#: app/templates/errors/403.html:17
+msgid "Dans le cas contraire, passez votre chemin, vil personnage !"
+msgstr "If not, go away, you vile character!"
+
+#: app/templates/errors/403.html:20 app/templates/errors/404.html:17
+msgid ""
+"Si cette page s'affiche en suivant un lien ou bouton interne au site, "
+"n'hésitez pas à "
+msgstr ""
+"If this page is shown after following an internal link or button, do not "
+"hesitate to "
+
+#: app/templates/errors/403.html:22 app/templates/errors/404.html:19
+msgid "nous en informer"
+msgstr "report us about it"
+
 #: app/templates/errors/404.html:8 app/templates/errors/other.html:8
 msgid "Oh non !"
 msgstr "Oh no!"
@@ -829,18 +971,6 @@ msgstr ""
 "If you come from an external link, boolmark..., try accessing to the page"
 " you want through the application menus."
 
-#: app/templates/errors/404.html:17
-msgid ""
-"Si cette page s'affiche en suivant un lien ou bouton interne au site, "
-"n'hésitez pas à "
-msgstr ""
-"If this page is shown after following an internal link or button, do not "
-"hesitate to "
-
-#: app/templates/errors/404.html:19
-msgid "nous en informer"
-msgstr "report us about it"
-
 #: app/templates/errors/other.html:9
 msgid "Une erreur inattendue est survenue."
 msgstr "An unexpected error has occured."
@@ -849,12 +979,17 @@ msgstr "An unexpected error has occured."
 msgid "Les GRI ont été informés du problème. Désolés !"
 msgstr "The system admins have been informed of the issue. Sorry!"
 
+#: app/templates/gris/rezidents.html:17
+msgid "ID"
+msgstr "ID"
+
 #: app/templates/main/contact.html:12
 msgid ""
 "Pour toute question, remarque ou suggestion, n'hésitez pas à nous "
 "contacter :"
-msgstr "If you have any question, comment or suggestion, please feel free "
-"to contact us:"
+msgstr ""
+"If you have any question, comment or suggestion, please feel free to "
+"contact us:"
 
 #: app/templates/main/contact.html:51
 msgid "Les GRIs"
@@ -892,9 +1027,10 @@ msgid ""
 "d'enregistrement que vous avez peut-être connu n'en est encore qu'à ses "
 "balbutiements, et nous avons plein d'idées de fonctionnalités qui "
 "devraient voir le jour sous peu."
-msgstr "Welcome on the IntraRez! This new version of the old registration "
-"site you may have known is still in its infancy, and we have a lot of "
-"new features ideas that should be available soon."
+msgstr ""
+"Welcome on the IntraRez! This new version of the old registration site "
+"you may have known is still in its infancy, and we have a lot of new "
+"features ideas that should be available soon."
 
 #: app/templates/main/index.html:23
 msgid "Une idée, un commentaire ? N'hésitez pas à "
@@ -945,92 +1081,6 @@ msgstr "Contact us"
 #: app/templates/main/legal.html:19
 msgid "pour toute question relative à la gestion de vos données."
 msgstr "for every question about the management of your data."
-
-#: app/templates/main/profile.html:23
-msgid "Identifiant"
-msgstr "Username"
-
-#: app/templates/main/profile.html:31
-msgid "Email"
-msgstr "Mail address"
-
-#: app/templates/main/profile.html:38 app/templates/main/profile.html:45
-#: app/templates/main/profile.html:114 app/templates/main/profile.html:121
-#: app/templates/main/profile.html:207 app/templates/main/profile.html:258
-msgid "Fonctionnalité à venir"
-msgstr "Upcoming feature"
-
-#: app/templates/main/profile.html:40
-msgid "Modifier une information"
-msgstr "Edit an information"
-
-#: app/templates/main/profile.html:47
-msgid "Changer de mot de passe"
-msgstr "Change password"
-
-#: app/templates/main/profile.html:62
-msgid "Location actuelle"
-msgstr "Current rental"
-
-#: app/templates/main/profile.html:65
-msgid "Depuis le"
-msgstr "From"
-
-#: app/templates/main/profile.html:69
-msgid "Jusqu'au"
-msgstr "To"
-
-#: app/templates/main/profile.html:82
-msgid "Anciennes locations :"
-msgstr "Old rentals:"
-
-#: app/templates/main/profile.html:95
-msgid "Période"
-msgstr "Time period"
-
-#: app/templates/main/profile.html:116
-msgid "Modifier les dates"
-msgstr "Change dates"
-
-#: app/templates/main/profile.html:123
-msgid "Changer de chambre"
-msgstr "Change room"
-
-#: app/templates/main/profile.html:131
-msgid "Appareils"
-msgstr "Devices"
-
-#: app/templates/main/profile.html:138
-msgid "Appareil actuel"
-msgstr "Current device"
-
-#: app/templates/main/profile.html:141 app/templates/main/profile.html:239
-msgid "Type"
-msgstr "Type"
-
-#: app/templates/main/profile.html:147 app/templates/main/profile.html:245
-msgid "Enregistrement"
-msgstr "Registration"
-
-#: app/templates/main/profile.html:160
-msgid "Autres appareils :"
-msgstr "Other devices"
-
-#: app/templates/main/profile.html:175 app/templates/main/profile.html:249
-msgid "Dernière connexion"
-msgstr "Last connection"
-
-#: app/templates/main/profile.html:192
-msgid "Détails"
-msgstr "Details"
-
-#: app/templates/main/profile.html:209 app/templates/main/profile.html:260
-msgid "Modifier l'appareil"
-msgstr "Edit device"
-
-#: app/templates/main/profile.html:215
-msgid "Nouvel appareil"
-msgstr "New device"
 
 #: app/templates/main/test.html:7
 msgid "Salutations, inconnu !"

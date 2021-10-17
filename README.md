@@ -5,9 +5,9 @@ Application Flask de l'Intranet de la Rez.
 ## Exigences
 
 * Python : Probablement >= 3.10 à terme, pour l'instant >= 3.8 suffit ;
-* Autres packages Linux : ``mysql-server postfix git npm sass``, plus pour le
+* Autres packages Linux : ``mysql-server postfix git npm``, plus pour le
   déploiement : ``supervisor nginx`` ;
-* Package npm : ``bower``
+* Package npm : ``bower sass``
     * Package Bower : ``bootstrap webping-js``
 * Packages Python : Voir [`requirements.txt`](requirements.txt), plus pour le
   déploiement : ``gunicorn pymysql cryptography`` ;
@@ -23,8 +23,7 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
 * Installer les dépendences :
 
   ```
-  sudo apt install mariadb-server postfix git npm sass [supervisor nginx]
-  sudo npm -g install bower
+  sudo apt install mariadb-server postfix git npm [supervisor nginx]
   ```
 
 * Installer l'application :
@@ -33,6 +32,7 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
   cd /home/intrarez
   git clone https://github.com/GRI-ESPCI/intrarez
   cd intrarez
+  npm install
   python3 -m venv env
   source env/bin/activate
   pip install -r requirements.txt
@@ -40,18 +40,31 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
   cp .conf_models/model.env .env
   ```
 
-* Créer et initialiser la base de données MySQL :
+* Créer et initialiser la base de données :
 
-  ```
-  sudo mysql -u root
-  ```
-  ```sql
-  CREATE DATABASE intrarez CHARACTER SET utf8 COLLATE utf8_bin;
-  CREATE USER 'intrarez'@'localhost' IDENTIFIED BY '<mdp-db>';
-  GRANT ALL PRIVILEGES ON intrarez.* TO 'intrarez'@'localhost';
-  FLUSH PRIVILEGES;
-  QUIT;
-  ```
+   * PostgreSQL (recommandé) :
+     ```
+     sudo su postgres -c psql
+     ```
+     ```sql
+     CREATE ROLE intrarez WITH LOGIN md5 '<mdp-db>';
+     CREATE DATABASE intrarez OWNER intrarez ENCODING "UTF8";
+     EXIT;
+     ```
+
+   * MySQL :
+      ```
+      sudo mysql -u root
+      ```
+      ```sql
+      CREATE DATABASE intrarez CHARACTER SET utf8 COLLATE utf8_bin;
+      CREATE USER 'intrarez'@'localhost' IDENTIFIED BY '<mdp-db>';
+      GRANT ALL PRIVILEGES ON intrarez.* TO 'intrarez'@'localhost';
+      FLUSH PRIVILEGES;
+      QUIT;
+      ```
+
+  Puis
   ```
   flask db upgrade
   ```
@@ -95,6 +108,11 @@ depuis l'extérieur (même si c'est un extérieur interne, dans notre cas).
 
 
 ### Passage en production
+
+La première chose à faire est d'utiliser le `.flaskenv` approprié :
+```
+cp .conf_models/prod.flaskenv .flaskenv
+```
 
 On utilise Gunicorn en interne : le serveur Python n'est pas accessible de
 l'extérieur, c'est Nginx qui lui servira les requêtes non-statiques.
@@ -142,6 +160,9 @@ Pour mettre à jour l'application, dans le dossier ``intrarez`` :
 ```bash
 git pull
 source env/bin/activate
+pip install -r requirements.txt
+npm install
+bower instll
 sudo supervisorctl stop intrarez
 flask db upgrade
 flask translate compile

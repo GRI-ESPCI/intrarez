@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <p><img src="{{ url_for("static", filename="img/error.png") }}" /></p>
+        <h1 class="text-danger fw-bold">{{ _("Accès restreint")}}</h1>
+        <h2>> {{ _("Cette page est réservée aux GRIs.") }}</h2>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("Si vous pensez avoir le droit d'accéder à cette page, alors vous "
+         "savez à qui demander l'accès.") }}
+</p></div>
+<div class="row"><p>
+    {{ _("Dans le cas contraire, passez votre chemin, vil personnage !") }}
+</p></div>
+<div class="row mb-2"><p>
+    {{ _("Si cette page s'affiche en suivant un lien ou bouton interne au "
+         "site, n'hésitez pas à ") }}
+    <a href={{ url_for("main.contact") }}>{{ _("nous en informer") }}</a>.
+</p></div>
+<div class="row mb-3"><p>
+    <a href="{{ url_for("main.index") }}" class="btn btn-primary">
+        {{ _("Accueil") }}
+    </a>
+</p></div>
+<div class="row text-muted"><p>
+    <div class="col-auto d-flex align-items-center pe-0 text-muted">
+        <svg class="bi flex-shrink-0 me-2" width="36" height="36"
+             role="img" aria-label="Bug">{{ bootstrap_icon("bug-fill") }}</svg>
+    </div>
+    <div class="col d-flex align-items-center ps-2">
+        <span><strong>{{ err_name }}:</strong> {{ err_descr }}</span>
+    </div>
+</p></div>
+
+{% endblock %}

@@ -24,9 +24,9 @@
         </div>
         <div class="form-floating mb-3">
             {% if current_user.is_authenticated %}
-            {{ wtf.form_field(form.name, value=current_user.email) }}
+            {{ wtf.form_field(form.email, value=current_user.email) }}
             {% else %}
-            {{ wtf.form_field(form.name) }}
+            {{ wtf.form_field(form.email) }}
             {% endif %}
         </div>
         <div class="form-floating mb-3">

@@ -9,7 +9,7 @@ import flask_login
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug import security as wzs
 
-from app import db, login
+from app import db
 
 
 class User(flask_login.UserMixin, db.Model):
@@ -61,6 +61,18 @@ class User(flask_login.UserMixin, db.Model):
         """
         return sorted(self.devices, key=lambda device: device.last_seen,
                       reverse=True)[1:]
+
+    def update_last_seen(self):
+        """Update :meth:`Device.last_seen` timestamp of user current device.
+
+        Do nothing if the user has no devices or if the current
+        timestamp is less than 60 seconds old.
+        """
+        utcnow = datetime.datetime.utcnow()
+        device = self.current_device
+        if device and (utcnow - device.last_seen).total_seconds() >= 60:
+            device.last_seen = utcnow
+            db.session.commit()
 
     @property
     def current_rental(self):
@@ -269,17 +281,3 @@ class Room(db.Model):
                 rooms.append(cls(num=100*floor + door, floor=floor,
                                  base_ip=f"{floor}.{door}"))
         return rooms
-
-
-
-@login.user_loader
-def load_user(id):
-    """Function used by Flask-login to get the connected user.
-
-    Args:
-        id (str): the ID of the connected user (stored in the session).
-
-    Returns:
-        :class:`User`
-    """
-    return User.query.get(int(id))

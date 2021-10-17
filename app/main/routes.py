@@ -62,13 +62,15 @@ def legal():
 def test():
     """Test page."""
     # return flask.render_template("errors/other.html")
-    # flask.abort(500)
+    flask.abort(403)
     # raise RuntimeError("obanon")
     # flask.flash("Succès", "success")
     # flask.flash("Info", "info")
     # flask.flash("Warning", "warning")
     # flask.flash("Danger", "danger")
     pt = {}
+    pt["BRF"] = flask.current_app.before_request_funcs
+    pt["ARF"] = flask.current_app.after_request_funcs
     for name in dir(flask.request):
         if name.startswith("_"):
             continue

@@ -20,13 +20,27 @@
         <link href="{{ url_for("static", filename="css/compiled/custom-bootstrap.css") }}"
               rel="stylesheet" />
         {% endblock styles %}
+
+        {% if current_user.is_authenticated %}
+        {% if current_user.is_gri %}
+        <link href="{{ url_for("static", filename="favicon_gri.png") }}"
+              rel="icon" />
+        {% else %}
+        <link href="{{ url_for("static", filename="favicon_user.png") }}"
+              rel="icon" />
+        {% endif %}
+        {% else %}
         <link href="{{ url_for("static", filename="favicon.png") }}"
               rel="icon" />
+        {% endif %}
+
         {% block scripts %}
         <!-- Bootstrap 5.0.2 Bundle with Popper (loaded asynchroniously) -->
         <script src="{{ url_for("static",
             filename="bower_components/bootstrap/dist/js/bootstrap.bundle.min.js") }}" defer></script>
-        {{ moment.include_moment() }}
+        {{ moment.include_moment(local_js=url_for("static",
+            filename="bower_components/moment/min/moment-with-locales.min.js"))
+        }}
         <script>
             moment.locale(window.navigator.userLanguage
                           || window.navigator.language)
@@ -55,6 +69,26 @@
                 </button>
                 <div class="collapse navbar navbar-collapse"
                      id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto mb-12 mb-1sm-0">
+                        {% if current_user.is_gri %}
+                        <li class="nav-item dropdown me-auto">
+                            <button type="button" data-bs-toggle="dropdown"
+                                class="btn btn-outline-danger dropdown-toggle"
+                                id="m_gri" aria-expanded="false">
+                                {{ _("Menu GRI") }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="m_gri">
+                                <li><a class="dropdown-item"
+                                       href="{{ url_for("gris.rezidents") }}">
+                                    {{ _("Rezidents") }}
+                                </a></li>
+                                <li><a class="dropdown-item disabled" href="#">
+                                    {{ _("À venir...") }}
+                                </a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    </ul>
                     <ul class="navbar-nav ms-auto mb-12 mb-1sm-0">
                         {% if current_user.is_anonymous %}
                         <li class="nav-item">
@@ -141,23 +175,27 @@
                     </div>
                 </div>
                 <div class="col-6 col-lg-auto offset-lg-1 mb-2 me-lg-4">
-                    <a href="{{ url_for("main.index") }}" class="link-secondary">
+                    <a href="{{ url_for("main.index") }}"
+                       class="link-secondary">
                         {{ _("Accueil") }}
                     </a>
                 </div>
                 <div class="col-6 col-lg-auto mb-2 me-lg-4">
-                    <a href="{{ url_for("main.contact") }}" class="link-secondary">
+                    <a href="{{ url_for("main.contact") }}"
+                       class="link-secondary">
                         {{ _("Nous contacter") }}
                     </a>
                 </div>
                 <div class="col-6 col-lg-auto mb-2 me-lg-4">
-                    <a href="https://github.com/GRI-ESPCI/intrarez" class="link-secondary"
+                    <a href="https://github.com/GRI-ESPCI/intrarez"
+                       class="link-secondary"
                        target="_blank" rel="noopener noreferrer">
                         {{ _("Code source") -}}
                     </a>
                 </div>
                 <div class="col-6 col-lg-auto mb-2 me-lg-4">
-                    <a href="{{ url_for("main.legal") }}" class="link-secondary">
+                    <a href="{{ url_for("main.legal") }}"
+                       class="link-secondary">
                         {{ _("Mentions légales") }}
                     </a>
                 </div>

@@ -7,9 +7,13 @@ __title__ = "intrarez"
 __author__ = "Loïc Simon, Louis Grandvaux & other GRIs"
 __license__ = "MIT"
 __copyright__ = "Copyright 2021 GRIs – ESPCI Paris - PSL"
-__version__ = "0.5.0"
 __all__ = "create_app"
 
+
+import json
+
+with open("package.json", "r") as fp:
+    __version__ = json.load(fp).get("version", "Undefined")
 
 import flask
 import flask_sqlalchemy
@@ -72,17 +76,39 @@ def create_app(config_class=Config):
     )
 
     # ! Keep imports here to avoid circular import issues !
-    from app import errors, main, auth, devices, rooms
+    from app import errors, main, auth, devices, rooms, gris
     app.register_blueprint(errors.bp)
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(devices.bp, url_prefix="/devices")
     app.register_blueprint(rooms.bp, url_prefix="/rooms")
+    app.register_blueprint(gris.bp, url_prefix="/gris")
 
     # Set up error handling
-    if not app.debug and not app.testing:
-        loggers.set_handlers(app.logger, app.config)
-        app.logger.info("Intrarez startup")
+    loggers.set_handlers(app)
+    app.logger.info("Intrarez startup")
+
+    # Set up custom logging
+    @app.after_request
+    def logafter(response):
+        """Add a logging entry describing the response served."""
+        if flask.request.endpoint != "static":
+            endpoint = flask.request.endpoint or "<no page>"
+            if response.status_code < 400:          # Success
+                msg = f"Served '{endpoint}'"
+                if response.status_code >= 300:     # Redirect
+                    msg += " [redirecting]"
+            else:                                   # Error
+                msg = f"Served error page ({flask.request}: {response.status})"
+
+            remote_ip = flask.request.headers.get("X-Real-Ip", "<unknown IP>")
+            if flask_login.current_user.is_authenticated:
+                user = repr(flask_login.current_user)
+            else:
+                user = "<anonymous>"
+            msg += f" to {remote_ip} ({user})"
+            app.logger.info(msg)
+        return response
 
     return app
 
@@ -99,3 +125,22 @@ def get_locale():
 # Import application models
 # ! Keep at the bottom to avoid circular import issues !
 from app import models
+
+# Set up user loader locale
+@login.user_loader
+def load_user(id):
+    """Function used by Flask-login to get the connected user.
+
+    Args:
+        id (str): the ID of the connected user (stored in the session).
+
+    Returns:
+        :class:`User`
+    """
+    if not id.isdigit():
+        return False
+    user = models.User.query.get(int(id))
+    if user:
+        # Update user current device "last seen" timestamp
+        user.update_last_seen()
+    return user
