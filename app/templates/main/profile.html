@@ -20,7 +20,9 @@
 
 <!-- Modals devices -->
 {% for device in current_user.other_devices %}
+{% with user = current_user %}
 {% include "cards/device_modal.html" %}
+{% endwith %}
 {% endfor %}
 
 {% endblock %}

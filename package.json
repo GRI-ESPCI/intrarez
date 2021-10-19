@@ -1,6 +1,6 @@
 {
   "name": "intrarez",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Intranet de la Rez Flask Web App",
   "main": "n/a",
   "scripts": {

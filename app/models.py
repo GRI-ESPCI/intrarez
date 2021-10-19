@@ -34,7 +34,8 @@ class Rezident(flask_login.UserMixin, db.Model):
     is_gri = db.Column(db.Boolean(), nullable=False, default=False)
     _password_hash = db.Column(db.String(128))
 
-    devices = db.relationship("Device", back_populates="rezident")
+    devices = db.relationship("Device", back_populates="rezident",
+                              order_by="Device.id")
     rentals = db.relationship("Rental", back_populates="rezident")
 
     def __repr__(self):

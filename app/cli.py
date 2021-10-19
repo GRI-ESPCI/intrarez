@@ -5,7 +5,7 @@ import subprocess
 from shutil import which
 
 import click
-from app.tools.utils import printProgressBar
+from app.tools.utils import print_progressbar, run_script
 
 
 def register(app):
@@ -69,7 +69,7 @@ def register(app):
         length = len(scss_files)
 
         print("Compilation des fichiers SCSS")
-        printProgressBar(0, length, prefix="Progression :", length=50)
+        print_progressbar(0, length, prefix="Progression :", length=50)
         for i, file in enumerate(scss_files):
             filename = os.path.splitext(file)[0]
             scss_path = os.path.join(source_folder, f"{filename}.scss")
@@ -77,8 +77,15 @@ def register(app):
             result = subprocess.run(["sass", "--trace", scss_path, css_path],
                                     capture_output=True)
 
-            printProgressBar(i + 1, length, prefix="Progression :", length=50)
+            print_progressbar(i + 1, length, prefix="Progression :", length=50)
 
             if result.returncode != 0:
                 print(f"Erreur lors de la compilation de '{scss_path}' :")
                 print(f"\033[91m{result.stderr.decode()}\033[0m")
+
+
+    @app.cli.command()
+    @click.argument("name")
+    def script(name):
+        """Run the script <NAME> in the application context."""
+        run_script(name)

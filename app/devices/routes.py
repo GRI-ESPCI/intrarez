@@ -13,7 +13,7 @@ from flask_babel import _
 from app import db
 from app.models import Device
 from app.devices import bp, forms
-from app.tools.utils import redirect_to_next
+from app.tools.utils import redirect_to_next, run_script
 
 
 def get_mac(remote_ip):
@@ -127,6 +127,7 @@ def register():
             )
             db.session.add(device)
             db.session.commit()
+            run_script("gen_dhcp.py")       # Update DHCP rules
             flask.flash(_("Appareil enregistré avec succès !"), "success")
             # OK
             if flask.request.args.get("force"):
@@ -154,6 +155,7 @@ def transfer():
         else:
             device.rezident = flask_login.current_user
             db.session.commit()
+            run_script("gen_dhcp.py")       # Update DHCP rules
             flask.flash(_("Appareil transféré avec succès !"), "success")
             # OK
             if flask.request.args.get("force"):

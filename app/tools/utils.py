@@ -1,5 +1,8 @@
 """Useful miscellaneous functions."""
 
+import os
+import importlib
+
 import flask
 import werkzeug
 from werkzeug import urls as wku
@@ -37,24 +40,43 @@ def get_bootstrap_icon(name):
     return flask.Markup(f"<use href=\"{file}#{name}\" />")
 
 
-def printProgressBar(iteration, total, prefix='', suffix='', decimals=1,
-                     length=100, fill='█', printEnd="\r"):
+def run_script(name):
+    """Run an IntraRez script.
+
+    Args:
+        name (str): the name of a file in scripts/, with or without the .py
+
+    Raises:
+        FileNotFoundError: if the given name is not an existing script.
     """
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+    if name.endswith(".py"):
+        name = name[:-3]
+    file = os.path.join("scripts", f"{name}.py")
+    if not os.path.isfile(file):
+        raise FileNotFoundError(
+            f"Script '{name}' not found (should be '{os.path.abspath(file)}')"
+        )
+    importlib.import_module(f"scripts.{name}")
+
+
+def print_progressbar(iteration, total, prefix='', suffix='', decimals=1,
+                      length=100, fill='█', print_end="\r"):
+    """Call in a loop to create a terminal progress bar.
+
+    Args:
+        iteration (int): current iteration.
+        total (int): total iterations.
+        prefix (str): prefix string.
+        suffix (str): suffix string.
+        decimals (int): positive number of decimals in percent complete.
+        length (int): character length of bar.
+        fill (str): bar fill character.
+        print_end (str): end character (e.g. "\r", "\r\n").
     """
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filledLength = int(length * iteration // total)
-    bar = fill * filledLength + '-' * (length - filledLength)
-    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=printEnd)
-    # Print New Line on Complete
+    percent = f"{{0:.{decimals}f}}".format(100 * (iteration / float(total)))
+    filled_length = int(length * iteration // total)
+    bar = fill * filled_length + '-' * (length - filled_length)
+    print(f"\r{prefix} |{bar}| {percent}% {suffix}", end=print_end)
+    # Print new line on complete
     if iteration == total:
         print()
