@@ -4,24 +4,21 @@ Pour toutes les chambres, attribue une adresse IP aux appareils de
 l'occupant actuel.
 
 Ce script peut uniquement être appelé depuis Flask :
-    cd /home/intrarez/intrarez
-    source env/bin/activate
-    flask script gen_dhcp.py
+/home/intrarez/intrarez/env/bin/flask script gen_dhcp.py
 
 10/2021 Loïc 137
 """
 
+import os
 import sys
 
 try:
     from app.models import Room
 except ImportError:
-    sys.stderr.write("""--- ERREUR ---
-Ce script peut uniquement être appelé depuis Flask :
-    cd /home/intrarez/intrarez
-    source env/bin/activate
-    flask script gen_dhcp.py
-""")
+    sys.stderr.write(
+        "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
+        "/home/intrarez/intrarez/env/bin/flask script gen_dhcp.py\n"
+    )
     sys.exit(1)
 
 
@@ -47,5 +44,22 @@ for room in rooms:
         )
 
 # Écriture dans le fichier
-with open("../watched/dhcp_hosts", "w") as fp:
+file = os.getenv("DHCP_HOSTS_FILE")
+if not os.path.isfile(file):
+    raise FileNotFoundError(f"Le ficher d'hôtes DHCP '{file}' n'existe pas "
+                            "(variable d'environment DHCP_HOSTS_FILE)")
+
+with open(file, "w") as fp:
+    fp.write(
+        "# Ce fichier est généré automatiquement par gen_dhcp.py\n"
+        f"# ({__file__}).\n"
+        "# Ne PAS le modifier à la main, ce serait écrasé !\n#\n"
+        "#   * Pour ajouter un appareil à un Rezident,\n"
+        "#       - utiliser l'interface en ligne\n"
+        "#       - OU utiliser `flask shell` pour ajouter l'entrée en base,\n"
+        "#         puis regénérer le fichier avec `flask script gen_dhcp.py`\n"
+        "#         (flask = /home/intrarez/intrarez/env/bin/flask)\n#\n"
+        "#   * Pour ajouter toute autre règle, modifier directement\n"
+        "#     /env/dhcp/dhcpd.conv\n#\n"
+    )
     fp.write(rules)

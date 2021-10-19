@@ -62,8 +62,8 @@ def legal():
 def test():
     """Test page."""
     # return flask.render_template("errors/other.html")
-    flask.abort(403)
-    # raise RuntimeError("obanon")
+    # flask.abort(403)
+    raise RuntimeError("obanon")
     # flask.flash("Succès", "success")
     # flask.flash("Info", "info")
     # flask.flash("Warning", "warning")

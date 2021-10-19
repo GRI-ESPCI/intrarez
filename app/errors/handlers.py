@@ -4,6 +4,7 @@ import traceback
 
 import flask
 from flask_babel import _
+import flask_login
 from werkzeug.exceptions import HTTPException
 
 from app import db
@@ -42,7 +43,14 @@ def other_error(error):
         code = 500
         err_name = "Python Exception"
         err_descr = "A Python exception stopped the execution of the request."
-        if flask.current_app.debug:
+        gri = False
+        try:
+            user = flask_login.current_user
+            gri = user.is_authenticated and user.is_gri
+        except Exception:
+            pass
+        if gri:
+            # GRI: show traceback
             tb = str(flask.escape(traceback.format_exc()))
             tb = flask.Markup(tb.replace("\n", "<br/>").replace(" ", "&nbsp;"))
             err_descr = "[debug mode - traceback below]" + flask.Markup(

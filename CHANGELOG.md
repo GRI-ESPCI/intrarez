@@ -5,6 +5,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 0.7.0 - 2021-10-20
+
+# Added
+
+  * Watcher script for reloading DHCP server (new environment variable
+    ``DHCP_HOSTS_FILE``, watcher job configuration in Supervisor
+    configuration model).
+  * Added an information message before DHCP rules.
+
+# Changed
+
+  * Traceback is now shown on error page depending on user status (GRI or
+    not), regardless the app debug value.
+
+
 ## 0.7.0 - 2021-10-19
 
 # Added
