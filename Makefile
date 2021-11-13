@@ -74,5 +74,5 @@ update:
 	env/bin/flask translate compile
 	env/bin/flask sass compile
 	@echo "Starting application..."
-	sudo supervisorctl restart intrarez
+	sudo supervisorctl start intrarez
 	@echo "Update live!"

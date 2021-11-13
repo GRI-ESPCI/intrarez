@@ -2,6 +2,20 @@
 
 Application Flask de l'Intranet de la Rez.
 
+
+## Quoi de neuf dans l'IntraRez ?
+
+Seules les fonctionnalités majeures sont listées ici ; voir
+[`CHANGELOG.md`](CHANGELOG.md) pour les détails.
+
+### 1.0
+
+* Release initiale, fonctionnalités de base :
+  * Connexion des rezidents, chambres et appareils (détection automatique),
+  * Génération des règes DHCP pour chaque chambre et script de mise à jour,
+  * Menu GRI avec liste des rezidents.
+
+
 ## Exigences
 
 * Python : Probablement >= 3.10 à terme, pour l'instant >= 3.8 suffit ;
@@ -12,7 +26,6 @@ Application Flask de l'Intranet de la Rez.
 * Packages Python : Voir [`requirements.txt`](requirements.txt), plus pour le
   déploiement : ``gunicorn pymysql cryptography`` ;
 * Pour le déploiement : un utilisateur Linux ``intrarez`` dédié.
-
 
 
 ## Installation
@@ -47,7 +60,7 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
      sudo su postgres -c psql
      ```
      ```sql
-     CREATE ROLE intrarez WITH LOGIN md5 '<mdp-db>';
+     CREATE ROLE intrarez WITH LOGIN PASSWORD '<mdp-db>';
      CREATE DATABASE intrarez OWNER intrarez ENCODING "UTF8";
      EXIT;
      ```

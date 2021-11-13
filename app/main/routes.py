@@ -6,6 +6,7 @@ import subprocess
 import re
 
 import flask
+import flask_login
 from flask_babel import _
 from discord_webhook import DiscordWebhook
 
@@ -91,4 +92,7 @@ def profile():
 @check_device
 def rickroll():
     """The old good days..."""
+    with open("logs/rickrolled.log", "a") as fh:
+        fh.write(f"{datetime.datetime.now()}: rickrolled "
+                 f"{flask_login.current_user.full_name}\n")
     return flask.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")

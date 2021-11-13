@@ -7,6 +7,7 @@ Il surveille le fichier contenant les règles DHCP (variable d'environment
 DHCP_HOSTS_FILE, voir .env) et relance le serveur DHCP dès qu'il est modifié.
 """
 
+import logging
 import os
 import subprocess
 import time
@@ -15,6 +16,8 @@ from dotenv import load_dotenv
 import pyinotify
 
 
+logging.basicConfig(level=logging.DEBUG, style="{",
+                    format="{asctime} {levelname}:{name}:{message}")
 load_dotenv()
 file = os.getenv("DHCP_HOSTS_FILE")
 if not os.path.isfile(file):
@@ -31,19 +34,21 @@ def restart_dhpc_server(event):
         # Ignorer les doubles appels (trop rapprochés)
         return
     last_event = now
-    print(f"File modification detected, restarting DHCP server...")
+    logging.info(f"File modification detected, restarting DHCP server...")
     try:
         retcode = subprocess.call(["systemctl", "restart", "isc-dhcp-server"])
         if retcode < 0:
-            print("ERROR - Restart order was terminated by signal", -retcode)
+            logging.error(f"ERROR - Restart terminated by signal {-retcode}")
         elif retcode == 0:
-            print(f"DHCP server restarted!")
+            logging.info(f"DHCP server restarted!")
         else:
-            print("ERROR - Restart order returned", retcode)
+            logging.error(f"ERROR - Restart order returned {retcode}")
     except OSError as exc:
-        print("ERROR - Restart order execution failed:", exc)
+        logging.error(f"ERROR - Restart order execution failed: {exc}")
 
 
 wm = pyinotify.WatchManager()
 wm.add_watch(file, pyinotify.IN_MODIFY, restart_dhpc_server)
+logging.info(f"Started watching {file}...")
 pyinotify.Notifier(wm).loop()
+logging.info(f"Sopped watching {file}.")
