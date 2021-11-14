@@ -46,3 +46,7 @@ class Config():
     ERROR_WEBHOOK = os.environ.get("ERROR_WEBHOOK")
     MESSAGE_WEBHOOK = os.environ.get("MESSAGE_WEBHOOK")
     GRI_ROLE_ID = os.environ.get("GRI_ROLE_ID")
+
+    NETLOCS = os.environ.get("NETLOCS")
+    if NETLOCS is not None:
+        NETLOCS = NETLOCS.split(";")

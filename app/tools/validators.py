@@ -48,8 +48,8 @@ class EqualTo(wtforms.validators.EqualTo):
 class MacAddress(wtforms.validators.MacAddress):
     def __init__(self, message=None):
         if message is None:
-            message = _l("Adresse MAC invalide (format attendu :"
-                         " xx:xx:xx:xx:xx:xx).")
+            message = _l("Adresse MAC invalide (format attendu : "
+                         "xx:xx:xx:xx:xx:xx).")
         super().__init__(message)
 
 
@@ -96,6 +96,8 @@ class PastDate(CustomValidator):
     message = _l("Cette date doit être dans le passé !")
 
     def validate(self, form, field):
+        if not field.data:
+            return True
         return (field.data <= datetime.date.today())
 
 
@@ -103,4 +105,6 @@ class FutureDate(CustomValidator):
     message = _l("Cette date doit être dans le futur !")
 
     def validate(self, form, field):
+        if not field.data:
+            return True
         return (field.data >= datetime.date.today())

@@ -1,6 +1,7 @@
 """Useful miscellaneous functions."""
 
 import os
+import sys
 import importlib
 
 import flask
@@ -56,7 +57,8 @@ def run_script(name):
         raise FileNotFoundError(
             f"Script '{name}' not found (should be '{os.path.abspath(file)}')"
         )
-    importlib.import_module(f"scripts.{name}")
+    script = importlib.import_module(f"scripts.{name}")
+    script.main()
 
 
 def print_progressbar(iteration, total, prefix='', suffix='', decimals=1,

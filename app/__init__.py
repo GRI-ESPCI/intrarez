@@ -23,6 +23,7 @@ import flask_mail
 import flask_moment
 import flask_babel
 from flask_babel import lazy_gettext as _l
+from werkzeug import urls as wku
 import wtforms
 
 from config import Config
@@ -42,7 +43,12 @@ babel = flask_babel.Babel()
 
 
 def create_app(config_class=Config):
-    """Create and initialize a new Flask application instance."""
+    """Create and initialize a new Flask application instance.
+
+    Args:
+        config_class (type): The configuration class to use.
+            Default: :class:`.config.Config`.
+    """
     # Initialize application
     app = flask.Flask(__name__)
     app.config.from_object(config_class)
@@ -88,12 +94,29 @@ def create_app(config_class=Config):
     loggers.set_handlers(app)
     app.logger.info("Intrarez startup")
 
+    # Set up captive portal
+    @app.before_request
+    def captive_portal():
+        """Captive portal: redirect external requests to homepage."""
+        netlocs = app.config["NETLOCS"]
+        if netlocs is None:# or app.debug or app.testing:
+            # Captive portal disabled or testing: process all requests
+            return None
+        if flask.request.endpoint == "main.index":
+            # No infinite redirections loop
+            return None
+        if wku.url_parse(flask.request.url).netloc not in netlocs:
+            # Requested URL not in netlocs: redirect
+            return flask.redirect(flask.url_for("main.index"))
+        # Valid URL
+        return None
+
     # Set up custom logging
     @app.after_request
     def logafter(response):
         """Add a logging entry describing the response served."""
         if flask.request.endpoint != "static":
-            endpoint = flask.request.endpoint or "<no page>"
+            endpoint = flask.request.endpoint or f"[CP:<{flask.request.url}>]"
             if response.status_code < 400:          # Success
                 msg = f"Served '{endpoint}'"
                 if response.status_code >= 300:     # Redirect

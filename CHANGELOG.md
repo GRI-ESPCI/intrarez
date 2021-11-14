@@ -5,6 +5,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 1.1.0 - 2021-11-14
+
+# Added
+
+  * Captive portal: serving homepage for requests to domains not
+    in new environment variable ``NETLOCS``.
+
+# Changed
+
+  * Scripts now need to provide a ``main()`` function called by
+    ``flask script``.
+
+# Fixed
+
+  * Generated usernames could contain non-alphanumeric characters;
+  * Scripts were only run once (no re-import);
+  * PastDate and FutureDate validators did not handle empty fields;
+  * Typos in Makefile.
+
+
 ## 1.0.0 - 2021-11-13
 
 # Added

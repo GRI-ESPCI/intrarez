@@ -1,5 +1,7 @@
 """Intranet de la Rez - Authentication Routes"""
 
+import re
+
 import flask
 import flask_login
 from flask_babel import _
@@ -14,7 +16,7 @@ from app.tools.utils import redirect_to_next
 def new_username(form):
     """Create a user unique username from a registration form."""
     pnom = form.prenom.data.lower()[0] + form.nom.data.lower()[:7]
-    base_username = unidecode.unidecode(pnom)
+    base_username = re.sub(r"\W", "", unidecode.unidecode(pnom), re.A)
     # Check if username already exists
     username = base_username
     discr = 0

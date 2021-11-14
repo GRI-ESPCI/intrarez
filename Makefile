@@ -19,9 +19,9 @@ install:
 	K := $(foreach exec,$(EXECUTABLES),\
 	    $(if $(shell which $(exec)),some string,$(error "No $(exec) in PATH")))
 	# Install dependecies
-   python3 -m venv env
-   env/bin/pip install -r requirements.txt
-   env/bin/pip install pymysql cryptography
+	python3 -m venv env
+	env/bin/pip install -r requirements.txt
+	env/bin/pip install pymysql cryptography
 	npm install
 	# Configure .env
 	cp .conf_models/.model.env .env
