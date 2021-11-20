@@ -99,10 +99,10 @@ def create_app(config_class=Config):
     def captive_portal():
         """Captive portal: redirect external requests to homepage."""
         netlocs = app.config["NETLOCS"]
-        if netlocs is None:# or app.debug or app.testing:
+        if netlocs is None or app.debug or app.testing:
             # Captive portal disabled or testing: process all requests
             return None
-        if flask.request.endpoint == "main.index":
+        if flask.request.endpoint:
             # No infinite redirections loop
             return None
         if wku.url_parse(flask.request.url).netloc not in netlocs:
@@ -163,7 +163,4 @@ def load_user(id):
     if not id.isdigit():
         return False
     user = models.Rezident.query.get(int(id))
-    if user:
-        # Update user current device "last seen" timestamp
-        user.update_last_seen()
     return user

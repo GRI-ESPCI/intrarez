@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-17 21:55+0200\n"
+"POT-Creation-Date: 2021-11-20 15:53+0100\n"
 "PO-Revision-Date: 2021-09-14 21:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/__init__.py:37
+#: app/__init__.py:38
 msgid "Merci de vous connecter pour accéder à cette page."
 msgstr "Please log in to access to this page."
 
-#: app/__init__.py:62
+#: app/__init__.py:68
 msgid "Information :"
 msgstr "Information:"
 
-#: app/__init__.py:63
+#: app/__init__.py:69
 msgid "Succès :"
 msgstr "Success:"
 
-#: app/__init__.py:64
+#: app/__init__.py:70
 msgid "Attention :"
 msgstr "Caution:"
 
-#: app/__init__.py:65
+#: app/__init__.py:71
 msgid "Avertissement :"
 msgstr "Warning:"
 
@@ -62,7 +62,7 @@ msgstr "Password"
 msgid "Rester connecté"
 msgstr "Remember me"
 
-#: app/auth/forms.py:38 app/auth/routes.py:74
+#: app/auth/forms.py:38 app/auth/routes.py:76
 #: app/templates/auth/register.html:59
 #: app/templates/auth/reset_password.html:29
 #: app/templates/auth/reset_password_request.html:26 app/templates/base.html:97
@@ -100,7 +100,7 @@ msgstr "Sign up"
 msgid "Envoyer le mail de réinitialisation"
 msgstr "Send reset mail"
 
-#: app/auth/forms.py:69 app/auth/routes.py:128
+#: app/auth/forms.py:69 app/auth/routes.py:130
 msgid "Nouveau mot de passe"
 msgstr "New password"
 
@@ -112,74 +112,74 @@ msgstr "New password (validation)"
 msgid "Valider"
 msgstr "Validate"
 
-#: app/auth/routes.py:44
+#: app/auth/routes.py:46
 msgid "Compte créé avec succès !"
 msgstr "Account successfully created!"
 
-#: app/auth/routes.py:49
+#: app/auth/routes.py:51
 msgid "Nouveau compte"
 msgstr "New account"
 
-#: app/auth/routes.py:64
+#: app/auth/routes.py:66
 msgid "Nom d'utilisateur inconnu"
 msgstr "Unknown username"
 
-#: app/auth/routes.py:67
+#: app/auth/routes.py:69
 msgid "Mot de passe incorrect"
 msgstr "Wrong password"
 
-#: app/auth/routes.py:71 app/templates/devices/connect_check.html:50
+#: app/auth/routes.py:73 app/templates/devices/connect_check.html:50
 msgid "Connecté !"
 msgstr "Connected!"
 
-#: app/auth/routes.py:82
+#: app/auth/routes.py:84
 msgid "Vous avez été déconnecté."
 msgstr "You have been signed out."
 
-#: app/auth/routes.py:97
+#: app/auth/routes.py:99
 msgid ""
 "Un email a été envoyé avec les instructions pour réinitialiser le mot de "
 "passe."
 msgstr "An email has benn send with password reset instructions."
 
-#: app/auth/routes.py:102
+#: app/auth/routes.py:104
 msgid "Mot de passe oublié"
 msgstr "Password Lost"
 
-#: app/auth/routes.py:109
+#: app/auth/routes.py:111
 msgid "Ce lien n'est pas utilisable en étant authentifié."
 msgstr "This link cannot be used by an authenticated user."
 
-#: app/auth/routes.py:115
+#: app/auth/routes.py:117
 msgid "Lien de réinitialisation invalide ou expiré."
 msgstr "Reset link invalid or expired."
 
-#: app/auth/routes.py:123
+#: app/auth/routes.py:125
 msgid "Le mot de passe a été réinitialisé avec succès."
 msgstr "Your password has been successfully reset."
 
-#: app/devices/forms.py:13 app/devices/forms.py:24
+#: app/devices/forms.py:12 app/devices/forms.py:23
 msgid "Nom (optionnel)"
 msgstr "Name (optional)"
 
-#: app/devices/forms.py:15
+#: app/devices/forms.py:14
 msgid "Adresse MAC*"
 msgstr "MAC address*"
 
-#: app/devices/forms.py:17 app/devices/forms.py:28
+#: app/devices/forms.py:16 app/devices/forms.py:27
 msgid "Type (optionnel)"
 msgstr "Type (optional)"
 
-#: app/devices/forms.py:19 app/devices/routes.py:140
+#: app/devices/forms.py:18 app/devices/routes.py:141
 msgid "Enregistrer l'appareil"
 msgstr "Register device"
 
-#: app/devices/forms.py:26 app/templates/cards/device.html:16
+#: app/devices/forms.py:25 app/templates/cards/device.html:16
 #: app/templates/cards/device_modal.html:18
 msgid "Adresse MAC"
 msgstr "MAC address"
 
-#: app/devices/forms.py:30 app/devices/routes.py:176
+#: app/devices/forms.py:29 app/devices/routes.py:178
 msgid "Transférer l'appareil"
 msgstr "Transfer device"
 
@@ -191,71 +191,71 @@ msgstr "Welcome on the IntraRez!"
 msgid "Cet appareil est déjà enregistré !"
 msgstr "This device is already registered!"
 
-#: app/devices/routes.py:132
+#: app/devices/routes.py:133
 msgid "Appareil enregistré avec succès !"
 msgstr "Device successfully registered!"
 
-#: app/devices/routes.py:152
+#: app/devices/routes.py:153
 msgid "Cet appareil n'est pas encore enregistré !"
 msgstr "This device is not already registered!"
 
-#: app/devices/routes.py:155
+#: app/devices/routes.py:156
 msgid "Cet appareil vous appartient déjà !"
 msgstr "This device already belong to you!"
 
-#: app/devices/routes.py:159
+#: app/devices/routes.py:161
 msgid "Appareil transféré avec succès !"
 msgstr "Device successfully transfered!"
 
-#: app/devices/routes.py:190
+#: app/devices/routes.py:192
 msgid "Hmm, ça n'a pas marché..."
 msgstr "Hmm, it didn't work..."
 
-#: app/devices/routes.py:191
+#: app/devices/routes.py:193
 msgid "Non, toujours pas..."
 msgstr "No, still not..."
 
-#: app/devices/routes.py:192
+#: app/devices/routes.py:194
 msgid "Ah ! Ah non, non plus..."
 msgstr "Oh! Oh no, no more..."
 
-#: app/devices/routes.py:193
+#: app/devices/routes.py:195
 msgid "Nan mais quand ça veut pas, ça veut pas..."
 msgstr "You know, when it won't, it won't..."
 
-#: app/devices/routes.py:194
+#: app/devices/routes.py:196
 msgid "Ça va sinon ?"
 msgstr "How are you, btw?"
 
-#: app/devices/routes.py:195
+#: app/devices/routes.py:197
 msgid "Il ne va plus se passer grand chose, hein, je pense."
 msgstr "No much more to come, I think."
 
-#: app/devices/routes.py:196
+#: app/devices/routes.py:198
 msgid "Après on sait jamais, sur un malentendu..."
 msgstr "But you never know, on a misunderstanding..."
 
-#: app/devices/routes.py:197
+#: app/devices/routes.py:199
 msgid "zzzzzzzzzzzzzzzzzzzzzzzzz"
 msgstr "zzzzzzzzzzzzzzzzzzzzzzzzz"
 
-#: app/devices/routes.py:198
+#: app/devices/routes.py:200
 msgid "Attention, je vais commencer à dire des choses aléatoires."
 msgstr "Careful, I'll start saying random things."
 
-#: app/devices/routes.py:199
+#: app/devices/routes.py:201
 msgid "Je vous aurai prévenu !"
 msgstr "I'll have warned you!"
 
-#: app/devices/routes.py:210
+#: app/devices/routes.py:212
 msgid "Détection d'appareil impossible"
 msgstr "Device detection impossible"
 
-#: app/devices/routes.py:220
+#: app/devices/routes.py:222
 msgid "Accès à Internet"
 msgstr "Internet Access"
 
-#: app/errors/handlers.py:20 app/templates/errors/403.html:8
+#: app/errors/handlers.py:21 app/templates/errors/403.html:8
 msgid "Accès restreint"
 msgstr "Access restricted"
 
@@ -283,13 +283,13 @@ msgstr "Message"
 msgid "Envoyer"
 msgstr "Send"
 
-#: app/main/routes.py:22 app/templates/base.html:180
+#: app/main/routes.py:23 app/templates/base.html:180
 #: app/templates/errors/403.html:26 app/templates/errors/404.html:23
 #: app/templates/errors/other.html:17
 msgid "Accueil"
 msgstr "Home"
 
-#: app/main/routes.py:41
+#: app/main/routes.py:42
 msgid ""
 "Oh non ! Le message n'a pas pu être transmis. N'hésitez pas à contacter "
 "un GRI aux coordonnées en bas de page.<br/>(Type d'erreur : "
@@ -297,27 +297,27 @@ msgstr ""
 "O no! The message could not be transmitted. Please feel free to reach GRI"
 " at the contact information below.<br/>(Error type: "
 
-#: app/main/routes.py:48
+#: app/main/routes.py:49
 msgid "Message transmis !"
 msgstr "Message transmitted!"
 
-#: app/main/routes.py:51
+#: app/main/routes.py:52
 msgid "Contact"
 msgstr "Contact"
 
-#: app/main/routes.py:58 app/templates/base.html:199
+#: app/main/routes.py:59 app/templates/base.html:199
 msgid "Mentions légales"
 msgstr "Legal notice"
 
-#: app/main/routes.py:81
+#: app/main/routes.py:82
 msgid "Test"
 msgstr "Test"
 
-#: app/main/routes.py:87 app/templates/base.html:110
+#: app/main/routes.py:88 app/templates/base.html:110
 msgid "Profil"
 msgstr "Profile"
 
-#: app/rooms/forms.py:15 app/templates/auth/register.html:13
+#: app/rooms/forms.py:14 app/templates/auth/register.html:13
 #: app/templates/cards/room.html:3 app/templates/cards/room.html:42
 #: app/templates/devices/connect_check.html:12
 #: app/templates/devices/register.html:13
@@ -327,15 +327,15 @@ msgstr "Profile"
 msgid "Chambre"
 msgstr "Room"
 
-#: app/rooms/forms.py:17
+#: app/rooms/forms.py:16
 msgid "Début de la location"
 msgstr "Rental start date"
 
-#: app/rooms/forms.py:19
+#: app/rooms/forms.py:18
 msgid "Fin de la location (optionnel)"
 msgstr "Rental end date (optional)"
 
-#: app/rooms/forms.py:21
+#: app/rooms/forms.py:20
 msgid "Enregistrer"
 msgstr "Register"
 
@@ -369,10 +369,10 @@ msgid "Déconnexion"
 msgstr "Sign out"
 
 #: app/templates/base.html:147 app/templates/cards/device_modal.html:8
-#: app/templates/cards/device_modal.html:44
+#: app/templates/cards/device_modal.html:48
 #: app/templates/gris/rezidents.html:90 app/templates/gris/rezidents.html:97
 #: app/templates/gris/rezidents.html:110 app/templates/gris/rezidents.html:117
-#: app/templates/gris/rezidents.html:131 app/templates/gris/rezidents.html:138
+#: app/templates/gris/rezidents.html:132 app/templates/gris/rezidents.html:139
 msgid "Fermer"
 msgstr "Close"
 
@@ -414,7 +414,7 @@ msgstr "Account"
 #: app/templates/devices/connect_check.html:15
 #: app/templates/devices/register.html:16
 #: app/templates/devices/transfer.html:16 app/templates/gris/rezidents.html:64
-#: app/templates/gris/rezidents.html:129 app/templates/rooms/register.html:16
+#: app/templates/rooms/register.html:16
 msgid "Appareil"
 msgstr "Device"
 
@@ -447,7 +447,7 @@ msgid "Email"
 msgstr "Mail"
 
 #: app/templates/cards/account.html:25 app/templates/cards/account.html:32
-#: app/templates/cards/device.html:81 app/templates/cards/device_modal.html:38
+#: app/templates/cards/device.html:87 app/templates/cards/device_modal.html:42
 #: app/templates/cards/room.html:62 app/templates/cards/room.html:69
 msgid "Fonctionnalité à venir"
 msgstr "Upcoming feature"
@@ -461,6 +461,7 @@ msgid "Changer de mot de passe"
 msgstr "Change password"
 
 #: app/templates/cards/device.html:3 app/templates/gris/rezidents.html:20
+#: app/templates/gris/rezidents.html:129
 msgid "Appareils"
 msgstr "Devices"
 
@@ -485,15 +486,19 @@ msgstr "Other devices:"
 msgid "Dernière connexion"
 msgstr "Last connection"
 
-#: app/templates/cards/device.html:66
+#: app/templates/cards/device.html:63 app/templates/cards/device_modal.html:34
+msgid "Jamais"
+msgstr "Never"
+
+#: app/templates/cards/device.html:72
 msgid "Détails"
 msgstr "Details"
 
-#: app/templates/cards/device.html:83 app/templates/cards/device_modal.html:40
+#: app/templates/cards/device.html:89 app/templates/cards/device_modal.html:44
 msgid "Modifier l'appareil"
 msgstr "Edit device"
 
-#: app/templates/cards/device.html:89
+#: app/templates/cards/device.html:95
 msgid "Nouvel appareil"
 msgstr "New device"
 
@@ -1145,6 +1150,6 @@ msgstr "Invalid room number."
 msgid "Cette date doit être dans le passé !"
 msgstr "This date must be in the past!"
 
-#: app/tools/validators.py:103
+#: app/tools/validators.py:105
 msgid "Cette date doit être dans le futur !"
 msgstr "This date must be in the future!"

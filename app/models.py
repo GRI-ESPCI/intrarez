@@ -52,7 +52,7 @@ class Rezident(flask_login.UserMixin, db.Model):
         """:class:`Device`: The rezidents's last seen device, or ``None``."""
         if not self.devices:
             return None
-        return max(self.devices, key=lambda device: device.last_seen)
+        return max(self.devices, key=lambda device: device.last_seen_time)
 
     @property
     def other_devices(self):
@@ -60,20 +60,8 @@ class Rezident(flask_login.UserMixin, db.Model):
 
         Sorted from most recently seen to latest seen.
         """
-        return sorted(self.devices, key=lambda device: device.last_seen,
+        return sorted(self.devices, key=lambda device: device.last_seen_time,
                       reverse=True)[1:]
-
-    def update_last_seen(self):
-        """Update :meth:`Device.last_seen` timestamp of rezident last device.
-
-        Do nothing if the rezident has no devices or if the current
-        timestamp is less than 60 seconds old.
-        """
-        utcnow = datetime.datetime.utcnow()
-        device = self.current_device
-        if device and (utcnow - device.last_seen).total_seconds() >= 60:
-            device.last_seen = utcnow
-            db.session.commit()
 
     @property
     def current_rental(self):
@@ -188,11 +176,22 @@ class Device(db.Model):
     mac_address = db.Column(db.String(17), nullable=False, unique=True)
     type = db.Column(db.String(64))
     registered = db.Column(db.DateTime(), nullable=False)
-    last_seen = db.Column(db.DateTime(), nullable=False)
+    last_seen = db.Column(db.DateTime(), nullable=True)
 
     def __repr__(self):
         """Returns repr(self)."""
         return f"<Device #{self.id} ('{self.name}') of {self.rezident}>"
+
+    @property
+    def last_seen_time(self):
+        """:class:`datetime.datetime`: Same as :attr:`.Device.last_seen`
+        with very old timestamp instead ``None`` (if never seen)."""
+        return self.last_seen or datetime.datetime(1, 1, 1)
+
+    def update_last_seen(self):
+        """Update :attr:`.Device.last_seen` timestamp."""
+        self.last_seen = datetime.datetime.utcnow()
+        db.session.commit()
 
 
 class Rental(db.Model):

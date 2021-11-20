@@ -54,9 +54,15 @@
                             <td class="text-break ps-3">
                                 {{ device.name }}
                             </td>
-                            <td><span title="{{ device.last_seen }} UTC">
-                                {{ moment(device.last_seen).fromNow() }}
-                            </span></td>
+                            <td>
+                               {% if device.last_seen %}
+                               <span title="{{ device.last_seen }} UTC">
+                                   {{ moment(device.last_seen).fromNow() }}
+                               </span>
+                               {% else %}
+                               <span>{{ _("Jamais") }}</span>
+                               {% endif %}
+                            </td>
                             <td class="text-end">
                                 <button type="button" class="btn p-0 me-1"
                                         data-bs-target="#mo-device-{{ user.id }}-{{ device.id }}"

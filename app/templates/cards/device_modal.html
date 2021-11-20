@@ -26,9 +26,13 @@
                 </td></tr>
             <tr><th scope="row" class="ps-4">{{ _("Dernière connexion") }}</th>
                 <td class="text-break">
+                    {% if device.last_seen %}
                     <span title="{{ device.last_seen }} UTC">
-                    {{ moment(device.last_seen).fromNow() }}
+                        {{ moment(device.last_seen).fromNow() }}
                     </span>
+                    {% else %}
+                    <span>{{ _("Jamais") }}</span>
+                    {% endif %}
                 </td></tr>
         </tbody></table>
       </div>

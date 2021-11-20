@@ -36,7 +36,6 @@ def get_mac(remote_ip):
         return None
 
 
-
 def check_device(routine):
     """Route function decorator to check the current device status is OK.
 
@@ -80,6 +79,7 @@ def check_device(routine):
 
         # On cherche l'appareil avec cette adresse MAC
         device = Device.query.filter_by(mac_address=mac).first()
+        device.update_last_seen()
         if not device:
             # Appareil inconnu => enregistrer l'appareil
             return _redirect_if_safe("devices.register", mac=mac, next=next)
@@ -122,8 +122,8 @@ def register():
             now = datetime.datetime.now(datetime.timezone.utc)
             device = Device(
                 rezident=flask_login.current_user, name=form.nom.data,
-                mac_address=form.mac.data, type=form.type.data,
-                registered=now, last_seen=now,
+                mac_address=form.mac.data.lower(), type=form.type.data,
+                registered=now, last_seen=None,
             )
             db.session.add(device)
             db.session.commit()
