@@ -46,3 +46,21 @@ def rezidents():
     return flask.render_template("gris/rezidents.html",
                                  users=Rezident.query.all(),
                                  title=_("Liste des Rezidents"))
+
+
+@bp.route("/monitoring_ds")
+@check_device
+@gris_only
+def monitoring_ds():
+    """Integration of Darkstat network monitoring."""
+    return flask.render_template("gris/monitoring_ds.html",
+                                 title=_("Darkstat network monitoring"))
+
+
+@bp.route("/monitoring_bw")
+@check_device
+@gris_only
+def monitoring_bw():
+    """Integration of Bandwidthd network monitoring."""
+    return flask.render_template("gris/monitoring_bw.html",
+                                 title=_("Bandwidthd network monitoring"))

@@ -48,7 +48,8 @@
         {% endblock scripts %}
         {% endblock head %}
     </head>
-    <body{% block body_attribs %}{% endblock body_attribs %} class="d-flex flex-column min-vh-100">
+    <body {% block body_attribs %}{% endblock body_attribs %}
+          class="d-flex flex-column min-vh-100">
         {% block body %}
         {% block navbar %}
         <nav class="navbar navbar-expand-sm navbar-light mb-4 py-0
@@ -71,22 +72,7 @@
                      id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto mb-12 mb-1sm-0">
                         {% if current_user.is_gri %}
-                        <li class="nav-item dropdown me-auto">
-                            <button type="button" data-bs-toggle="dropdown"
-                                class="btn btn-outline-danger dropdown-toggle"
-                                id="m_gri" aria-expanded="false">
-                                {{ _("Menu GRI") }}
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="m_gri">
-                                <li><a class="dropdown-item"
-                                       href="{{ url_for("gris.rezidents") }}">
-                                    {{ _("Rezidents") }}
-                                </a></li>
-                                <li><a class="dropdown-item disabled" href="#">
-                                    {{ _("À venir...") }}
-                                </a></li>
-                            </ul>
-                        </li>
+                        {% include "gris/menu.html" %}
                         {% endif %}
                     </ul>
                     <ul class="navbar-nav ms-auto mb-12 mb-1sm-0">

@@ -1,0 +1,24 @@
+<li class="nav-item dropdown me-auto">
+    <button type="button" data-bs-toggle="dropdown"
+        class="btn btn-outline-danger dropdown-toggle"
+        id="m_gri" aria-expanded="false">
+        {{ _("Menu GRI") }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="m_gri">
+        <li><a class="dropdown-item"
+               href="{{ url_for("gris.rezidents") }}">
+            {{ _("Rezidents") }}
+        </a></li>
+        <li><a class="dropdown-item"
+               href="{{ url_for("gris.monitoring_ds") }}">
+            {{ _("Monitoring (Darkstat)") }}
+        </a></li>
+        <li><a class="dropdown-item"
+               href="{{ url_for("gris.monitoring_bw") }}">
+            {{ _("Monitoring (Bandwidthd)") }}
+        </a></li>
+        <li><a class="dropdown-item disabled" href="#">
+            {{ _("À venir...") }}
+        </a></li>
+    </ul>
+</li>

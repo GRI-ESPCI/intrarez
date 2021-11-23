@@ -10,74 +10,135 @@
         <h1>{{ title }}</h1>
     </div>
 </div>
-<div class="row mb-3">
-    <div class="col table-responsive">
-        <table class="table table-striped"><tbody>
-            <tr>
-                <th scope="col">{{ _("ID") }}</th>
-                <th scope="col" colspan=2>{{ _("Compte") }}</th>
-                <th scope="col" colspan=2>{{ _("Chambre") }}</th>
-                <th scope="col" colspan=2>{{ _("Appareils") }}</th>
-                <th scope="col">{{ _("Dernière connexion") }}</th>
-            </tr>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.prenom }} {{ user.nom }} {{ user.promo }}</td>
-                <td>
+<div class="row mb-3"><div class="col table-responsive">
+    <table class="table table-striped table-hover table-bordered"><thead>
+        <tr>
+            <th scope="col"><span class="d-flex" onclick="sort('id');">
+                <span>{{ _("ID") }}</span>
+                <span class="mx-auto">
+                    <svg class="bi flex-shrink-0" width="16" height="16"
+                         id="sort-svg-id">
+                        <!-- Sort button insered through JS -->
+                    </svg>
+                </span>
+            </span></th>
+            <th scope="col"><span class="d-flex" onclick="sort('user');">
+                <span>{{ _("Compte") }}</span>
+                <span class="mx-auto">
+                    <svg class="bi flex-shrink-0" width="16" height="16"
+                         id="sort-svg-user">
+                        <!-- Sort button insered through JS -->
+                    </svg>
+                </span>
+            </span></th>
+            <th scope="col"><span class="d-flex" onclick="sort('room');">
+                <span>{{ _("Chambre") }}</span>
+                <span class="mx-auto">
+                    <svg class="bi flex-shrink-0" width="16" height="16"
+                         id="sort-svg-room">
+                        <!-- Sort button insered through JS -->
+                    </svg>
+                </span>
+            </span></th>
+            <th scope="col"><span class="d-flex" onclick="sort('dev');">
+                <span>{{ _("Appareils") }}</span>
+                <span class="mx-auto">
+                    <svg class="bi flex-shrink-0" width="16" height="16"
+                         id="sort-svg-dev">
+                        <!-- Sort button insered through JS -->
+                    </svg>
+                </span>
+            </span></th>
+            <th scope="col"><span class="d-flex" onclick="sort('ls');">
+                <span>{{ _("Dernière connexion") }}</span>
+                <spa class="mx-auto"n>
+                    <svg class="bi flex-shrink-0" width="16" height="16"
+                         id="sort-svg-ls">
+                        <!-- Sort button insered through JS -->
+                    </svg>
+                </span>
+            </span></th>
+        </tr></thead>
+        <tbody id="rezidents-table">
+        {% for user in users %}
+        <tr data-id="{{ user.id }}"
+            data-user="{{ user.full_name }}"
+            data-room="{{ user.current_room.num if user.current_room else 0 }}"
+            data-dev="{{ len(user.devices) }}"
+            data-ls="{{ user.last_seen.timestamp() if user.last_seen else 0 }}"
+        >
+            <td{% if user.is_gri %} class="text-danger fw-bold"{% endif %}>
+                {{ user.id }}
+            </td>
+
+            <td><span class="d-flex">
+                <span>
+                    {{ user.prenom }} {{ user.nom }} {{ user.promo }}
+                </span>
+                <span class="ms-auto">
                     <button type="button" class="btn p-0 me-1 d-inline-block"
                             data-bs-target="#mo-account-{{ user.id }}"
                             data-bs-toggle="modal">
-                    <svg class="bi flex-shrink-0" width="24" height="24"
-                         role="img" aria-label="{{ _("Compte") }}">
-                        {{ bootstrap_icon("person-badge") }}
-                    </svg>
+                        <svg class="bi flex-shrink-0" width="24" height="24"
+                                role="img" aria-label="{{ _("Compte") }}">
+                                {{ bootstrap_icon("person-badge") }}
+                        </svg>
                     </button>
-                </td>
-                <td>
+                </span>
+            </span></td>
+
+            <td><span class="d-flex">
+                <span>
                     {% if user.current_room %}
-                        {{ user.current_room.num }}
-                        {% if user.old_rentals %}
-                            (+{{ len(user.old_rentals) }})
-                        {% endif %}
+                    {{ user.current_room.num }}
+                    {% if user.old_rentals %}
+                    (+{{ len(user.old_rentals) }})
                     {% endif %}
-                </td>
-                <td>
+                    {% endif %}
+                </span>
+                <span class="ms-auto">
                     <button type="button" class="btn p-0 me-1 d-inline-block"
                             data-bs-target="#mo-room-{{ user.id }}"
                             data-bs-toggle="modal"
                             {% if not user.current_room %} disabled{% endif %}>
-                    <svg class="bi flex-shrink-0" width="24" height="24"
-                         role="img" aria-label="{{ _("Chambre") }}">
-                        {{ bootstrap_icon("door-closed") }}
-                    </svg>
+                        <svg class="bi flex-shrink-0" width="24" height="24"
+                                role="img" aria-label="{{ _("Chambre") }}">
+                            {{ bootstrap_icon("door-closed") }}
+                        </svg>
                     </button>
-                </td>
-                <td>{{ len(user.devices) }}</td>
-                <td>
+                </span>
+            </span></td>
+
+            <td><span class="d-flex">
+                <span>
+                    {{ len(user.devices) }}
+                </span>
+                <span class="ms-auto">
                     <button type="button" class="btn p-0 me-1 d-inline-block"
                             data-bs-target="#mo-device-{{ user.id }}"
                             data-bs-toggle="modal"
                             {% if not user.current_device %} disabled
                             {% endif %}>
-                    <svg class="bi flex-shrink-0" width="24" height="24"
-                         role="img" aria-label="{{ _("Appareil") }}">
-                        {{ bootstrap_icon("laptop") }}
-                    </svg>
+                        <svg class="bi flex-shrink-0" width="24" height="24"
+                                role="img" aria-label="{{ _("Appareil") }}">
+                            {{ bootstrap_icon("laptop") }}
+                        </svg>
                     </button>
-                </td>
-                <td>
-                {% if user.current_device %}
-                    <span title="{{ user.current_device.last_seen }} UTC">
-                    {{ moment(user.current_device.last_seen).format("LLL") }}
-                    </span>
-                {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody></table>
-    </div>
-</div>
+                </span>
+            </td>
+
+            <td colspan=2>
+            {% if user.current_device %}
+                <span title="{{ user.current_device.last_seen }} UTC">
+                {{ moment(user.current_device.last_seen).format("LLL") }}
+                </span>
+            {% endif %}
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody></table>
+</div></div>
 
 <!-- Modals -->
 {% for user in users %}
@@ -147,6 +208,15 @@
 {% for device in user.other_devices %}
 {% include "cards/device_modal.html" %}
 {% endfor %}
-{% endfor %}
+{% endfor
+         %} id=sort-svg-e""
+
+<!-- Sort icons templates -->
+<div id="icon-template-down">
+    {{ bootstrap_icon("caret-down-fill") }}
+</div>
+<div id="icon-template-up">
+    {{ bootstrap_icon("caret-up-fill") }}
+</div>
 
 {% endblock %}

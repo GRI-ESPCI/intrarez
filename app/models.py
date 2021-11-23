@@ -49,10 +49,18 @@ class Rezident(flask_login.UserMixin, db.Model):
 
     @property
     def current_device(self):
-        """:class:`Device`: The rezidents's last seen device, or ``None``."""
+        """:class:`.Device`: The rezidents's last seen device, or ``None``."""
         if not self.devices:
             return None
         return max(self.devices, key=lambda device: device.last_seen_time)
+
+    @property
+    def last_seen(self):
+        """:class:`datetime.datetime`: The last time the rezident logged in,
+        or ``None``."""
+        if not self.current_device:
+            return None
+        return self.current_device.last_seen
 
     @property
     def other_devices(self):
@@ -222,7 +230,7 @@ class Rental(db.Model):
     @is_current.expression
     def is_current(cls):
         today = datetime.date.today()
-        return ((self.end.is_(None)) | (self.end > today))
+        return ((cls.end.is_(None)) | (cls.end > today))
 
 
 class Room(db.Model):

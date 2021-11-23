@@ -22,6 +22,16 @@
                     {{ moment(device.registered).format("LL") }}
                 </span>
             </td></tr>
+        <tr><th scope="row" class="ps-4">{{ _("Dernière connexion") }}</th>
+            <td class="text-break">
+                {% if device.last_seen %}
+                <span title="{{ device.last_seen }} UTC">
+                    {{ moment(device.last_seen).fromNow() }}
+                </span>
+                {% else %}
+                <span>{{ _("Jamais") }}</span>
+                {% endif %}
+            </td></tr>
         {% endwith %}
     </tbody></table>
     <div class="card-body h-100"><div class="accordion" id="acco-dev">

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<script src="{{ url_for("static", filename="js/gris-rezidents.js") }}"
+        defer></script>
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        <iframe src="http://10.0.0.1:667" class="w-100 vh-100"></iframe>
+    </div>
+</div>
+
+{% endblock %}

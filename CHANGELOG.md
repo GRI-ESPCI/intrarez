@@ -5,6 +5,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 1.2.0 - 2021-11-23
+
+# Added
+
+  * GRI menu: network monitoring through Darkstat and Bandwidthd;
+  * Re-introduced ``Rezident.last_seen`` as a proxy to
+    ``Rezident.current_device.last_seen``.
+
+# Changed
+
+  * GRI menu: rezidents list can now be sorted;
+  * GRI menu dropdown has now its own template;
+  * Device last connexion time is now shown even for the current device.
+
+# Fixed
+
+  * Device check routine sometimes crashed for new users;
+  * ``Room.is_current`` could not be used as an expression.
+
+
+## 1.1.1 - 2021-11-20
+
+# Fixed
+
+  * Captive portal could generate infinite redirection loops;
+  * MAC address checks were case-sensitive;
+  * Rezident last device and ``last_seen`` time were not correctly
+    updated: made it per-device and made device ``last_seen`` nullable.
+
+
 ## 1.1.0 - 2021-11-14
 
 # Added

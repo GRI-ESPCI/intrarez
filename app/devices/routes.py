@@ -79,10 +79,10 @@ def check_device(routine):
 
         # On cherche l'appareil avec cette adresse MAC
         device = Device.query.filter_by(mac_address=mac).first()
-        device.update_last_seen()
         if not device:
             # Appareil inconnu => enregistrer l'appareil
             return _redirect_if_safe("devices.register", mac=mac, next=next)
+        device.update_last_seen()
 
         # L'appareil est enregistré : on vérifie son propriétaire
         if flask_login.current_user != device.rezident:
