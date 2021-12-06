@@ -11,7 +11,7 @@
     </div>
 </div>
 <div class="row row-cols row-cols-xl-3 gy-4 gx-1">
-    {% with user = current_user %}
+    {% with user = current_user, doas = None %}
     <div class="col">{% include "cards/account.html" %}</div>
     <div class="col">{% include "cards/room.html" %}</div>
     <div class="col">{% include "cards/device.html" %}</div>

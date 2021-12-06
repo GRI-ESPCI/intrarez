@@ -104,7 +104,9 @@ the necessary fix for required=False attributes, but will also not set the requi
               {% else %}
                 {{field(class=kwargs.pop("class", "") + " form-control", **kwargs)|safe}}
               {% endif %}
+              {% if field.label.text %}
                 {{field.label(class="sr-only")|safe}}
+              {% endif %}
             {# </div> #}
             {% elif form_type == "horizontal" %}
               <div class=" col-{{horizontal_columns[0]}}-{{horizontal_columns[2]}}">
@@ -114,9 +116,11 @@ the necessary fix for required=False attributes, but will also not set the requi
                   {{field(class=kwargs.pop("class", "") + " form-control", **kwargs)|safe}}
                 {% endif %}
               </div>
+              {% if field.label.text %}
                 {{field.label(class="form-label " + (
                   " col-%s-%s" % horizontal_columns[0:2]
                 ))|safe}}
+              {% endif %}
               {%- if field.errors %}
                 {%- for error in field.errors %}
                   {% call _hz_form_wrap(horizontal_columns, form_type, required=required) %}
@@ -141,7 +145,9 @@ the necessary fix for required=False attributes, but will also not set the requi
                   {{field(class=kwargs.pop("class", "") + " form-control", placeholder=field.label.text, **kwargs)|safe}}
                 {%- endif %}
               {% endif %}
-              {{field.label(class="form-label")|safe}}
+              {% if field.label.text %}
+                {{field.label(class="form-label")|safe}}
+              {% endif %}
 
               {%- if field.errors %}
               <div class="invalid-feedback">

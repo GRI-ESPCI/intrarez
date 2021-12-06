@@ -157,7 +157,10 @@
                     </a>
                     <div class="small text-muted mb-3">
                         &copy;&nbsp;2021 GRI ESPCI –
-                        {{ _("Version") }} {{ __version__ }}
+                        <a href="{{ url_for("main.changelog") }}"
+                           class="text-muted">
+                            {{ _("Version") }} {{ __version__ }}
+                        </a>
                     </div>
                 </div>
                 <div class="col-6 col-lg-auto offset-lg-1 mb-2 me-lg-4">

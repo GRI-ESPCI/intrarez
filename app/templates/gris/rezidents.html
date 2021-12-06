@@ -61,7 +61,7 @@
         </tr></thead>
         <tbody id="rezidents-table">
         {% for user in users %}
-        <tr data-id="{{ user.id }}"
+        <tr data-id="{{ str(user.id).ljust(4, '0') }}"
             data-user="{{ user.full_name }}"
             data-room="{{ user.current_room.num if user.current_room else 0 }}"
             data-dev="{{ len(user.devices) }}"
@@ -91,16 +91,19 @@
                 <span>
                     {% if user.current_room %}
                     {{ user.current_room.num }}
+                    {% else %}
+                    {{ _("Aucune") }}
+                    {% endif %}
                     {% if user.old_rentals %}
                     (+{{ len(user.old_rentals) }})
-                    {% endif %}
                     {% endif %}
                 </span>
                 <span class="ms-auto">
                     <button type="button" class="btn p-0 me-1 d-inline-block"
                             data-bs-target="#mo-room-{{ user.id }}"
                             data-bs-toggle="modal"
-                            {% if not user.current_room %} disabled{% endif %}>
+                            {% if not user.current_room
+                               and not user.old_rentals %} disabled{% endif %}>
                         <svg class="bi flex-shrink-0" width="24" height="24"
                                 role="img" aria-label="{{ _("Chambre") }}">
                             {{ bootstrap_icon("door-closed") }}
@@ -125,7 +128,7 @@
                         </svg>
                     </button>
                 </span>
-            </td>
+            </span></td>
 
             <td colspan=2>
             {% if user.current_device %}
@@ -142,6 +145,7 @@
 
 <!-- Modals -->
 {% for user in users %}
+{% with doas = user.id %}
 <div class="modal fade" id="mo-account-{{ user.id }}" tabindex="-1"
      aria-labelledby="mo-account-lab" aria-hidden="true">
     <div class="modal-dialog"><div class="modal-content">
@@ -161,7 +165,6 @@
     </div></div>
 </div>
 
-{% if user.current_room %}
 <div class="modal fade" id="mo-room-{{ user.id }}" tabindex="-1"
      aria-labelledby="mo-room-lab" aria-hidden="true">
     <div class="modal-dialog"><div class="modal-content">
@@ -180,7 +183,6 @@
         </div>
     </div></div>
 </div>
-{% endif %}
 
 {% if user.current_device %}
 <div class="modal fade" id="mo-device-{{ user.id }}" tabindex="-1"
@@ -208,8 +210,9 @@
 {% for device in user.other_devices %}
 {% include "cards/device_modal.html" %}
 {% endfor %}
-{% endfor
-         %} id=sort-svg-e""
+
+{% endwith %}
+{% endfor %}
 
 <!-- Sort icons templates -->
 <div id="icon-template-down">

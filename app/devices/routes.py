@@ -11,8 +11,8 @@ import flask_login
 from flask_babel import _
 
 from app import db
-from app.models import Device
 from app.devices import bp, forms
+from app.models import Device, Rezident
 from app.tools.utils import redirect_to_next, run_script
 
 
@@ -113,16 +113,23 @@ def auth_needed():
 @check_device
 def register():
     """Device register page."""
+    doas = flask.request.args.get("doas", type=Rezident.query.get)
+    if doas and not flask_login.current_user.is_gri:
+        # Not authorized to do things as other rezidents!
+        flask.abort(403)
+    rezident = doas or flask_login.current_user
+
     form = forms.DeviceRegistrationForm()
     if form.validate_on_submit():
         # Check not already registered
-        if Device.query.filter_by(mac_address=form.mac.data).first():
+        mac_address = form.mac.data.lower()
+        if Device.query.filter_by(mac_address=mac_address).first():
             flask.flash(_("Cet appareil est déjà enregistré !"), "danger")
         else:
             now = datetime.datetime.now(datetime.timezone.utc)
             device = Device(
-                rezident=flask_login.current_user, name=form.nom.data,
-                mac_address=form.mac.data.lower(), type=form.type.data,
+                rezident=rezident, name=form.nom.data,
+                mac_address=mac_address, type=form.type.data,
                 registered=now, last_seen=None,
             )
             db.session.add(device)
@@ -136,7 +143,8 @@ def register():
                                                 **flask.request.args))
 
     return flask.render_template("devices/register.html",
-                                 title=_("Enregistrer l'appareil"), form=form)
+                                 title=_("Enregistrer l'appareil"),
+                                 form=form, doas=doas)
 
 
 @check_device

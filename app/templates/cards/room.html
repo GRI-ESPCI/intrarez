@@ -5,21 +5,27 @@
                  role="img">{{ bootstrap_icon("door-closed") }}
             </svg>
     </div>
+    {% if user.current_rental %}
     <table class="table table-striped table-borderless"><tbody>
         {% with rental = user.current_rental %}
         <tr><th scope="row" class="ps-4">{{ _("Location actuelle") }}</th>
             <td class="text-break">Chambre {{ rental.room.num }}
-            </td></tr>
+        </td></tr>
         <tr><th scope="row" class="ps-4">{{ _("Depuis le") }}</th>
-            <td class="text-break">
-                {{ moment(rental.start).format("LL") }}
-            </td></tr>
+        <td class="text-break">
+            {{ moment(rental.start).format("LL") }}
+        </td></tr>
         <tr><th scope="row" class="ps-4">{{ _("Jusqu'au") }}</th>
-            <td class="text-break">
-                {{ moment(rental.end).format("LL") if rental.end else "?" }}
-            </td></tr>
+        <td class="text-break">
+            {{ moment(rental.end).format("LL") if rental.end else "?" }}
+        </td></tr>
         {% endwith %}
     </tbody></table>
+    {% else %}
+    <div class="card-body fst-italic mx-2">
+        {{ _("Aucune location actuellement. ") }}
+    </div>
+    {% endif %}
     <div class="card-body h-100"><div class="accordion" id="acco-room">
         <div class="accordion-item">
             <h3 class="accordion-header" id="acco-room-h">
@@ -64,12 +70,12 @@
                 {{ _("Modifier les dates") }}
             </button>
         </div>
-        <div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
-             data-bs-placement="top"
-             title="{{ _("Fonctionnalité à venir") }}">
-            <button class="btn btn-outline-dark" disabled>
-                {{ _("Changer de chambre") }}
-            </button>
-        </div>
+        <a class="btn btn-outline-dark me-3 mb-2 position-relative"
+           href="{{ url_for("rooms.terminate", doas=doas,
+                            next=request.url_rule.endpoint) }}">
+            {{ _("Changer de chambre") }}
+            <span class="position-absolute top-0 start-100 translate-middle
+                         badge rounded-pill bg-success">NEW</span>
+        </a>
     </div>
 </div>

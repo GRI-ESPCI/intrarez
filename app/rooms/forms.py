@@ -18,3 +18,10 @@ class RentalRegistrationForm(FlaskForm):
     end = html5.DateField(_l("Fin de la location (optionnel)"),
                           validators=[Optional(), FutureDate()])
     submit = wtforms.SubmitField(_l("Enregistrer"))
+
+
+class RentalTransferForm(FlaskForm):
+    """WTForm used to terminate a room rental, before creating a new one."""
+    end = html5.DateField(_l("Fin de la location"),
+                          validators=[DataRequired(), PastDate()])
+    submit = wtforms.SubmitField(_l("Terminer la location"))

@@ -18,6 +18,9 @@
             <tr><th scope="row" class="ps-4">{{ _("Adresse MAC") }}</th>
                 <td class="text-break">{{ device.mac_address }}
                 </td></tr>
+            <tr><th scope="row" class="ps-4">{{ _("IP attribuée") }}</th>
+                <td class="text-break">{{ device.current_ip }}
+                </td></tr>
             <tr><th scope="row" class="ps-4">{{ _("Enregistrement") }}</th>
                 <td class="text-break">
                     <span title="{{ device.registered }} UTC">

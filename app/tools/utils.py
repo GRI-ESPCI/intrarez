@@ -9,17 +9,20 @@ import werkzeug
 from werkzeug import urls as wku
 
 
-def redirect_to_next():
+def redirect_to_next(**kwargs):
     """Redirect to the ``next`` request GET argument, or to homepage.
 
     Includes a security to avoid redirecting to external pages.
+
+    Args:
+        **kwargs: The query arguments, passed to :func:`flask.url_for`.
 
     Returns:
         The result of :func:`flask.redirect`.
     """
     next = flask.request.args.get("next", "")
     try:
-        next_page = flask.url_for(next)
+        next_page = flask.url_for(next, **kwargs)
     except werkzeug.routing.BuildError:
         next_page = ""
     if not next_page or wku.url_parse(next_page).netloc != "":

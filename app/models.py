@@ -186,6 +186,8 @@ class Device(db.Model):
     registered = db.Column(db.DateTime(), nullable=False)
     last_seen = db.Column(db.DateTime(), nullable=True)
 
+    allocations = db.relationship("Allocation", back_populates="device")
+
     def __repr__(self):
         """Returns repr(self)."""
         return f"<Device #{self.id} ('{self.name}') of {self.rezident}>"
@@ -200,6 +202,40 @@ class Device(db.Model):
         """Update :attr:`.Device.last_seen` timestamp."""
         self.last_seen = datetime.datetime.utcnow()
         db.session.commit()
+
+    def allocate_ip_for(self, room):
+        """Get the specific IP to use this device in a given room.
+
+        Create the :class`.Allocation` instance if it does not exist.
+
+        Args:
+            room (.Room): The room to allocate / get allocation for.
+
+        Returns:
+            :class:`str`: The allocated IP.
+        """
+        alloc = Allocation.query.filter_by(device=self, room=room).first()
+        if alloc:
+            # Already allocated
+            return alloc.ip
+        # Create allocation
+        ip = f"10.{room.ips_allocated % 256}.{room.base_ip}"
+        alloc = Allocation(device=self, room=room, ip=ip)
+        db.session.add(alloc)
+        room.ips_allocated += 1
+        db.session.commit()
+        return ip
+
+    @property
+    def current_ip(self):
+        """str: The current IP this device is connected to."""
+        room = self.rezident.current_room
+        if not room:
+            return "[no room]"
+        alloc = Allocation.query.filter_by(device=self, room=room).first()
+        if not alloc:
+            return "[not allocated]"
+        return alloc.ip
 
 
 class Rental(db.Model):
@@ -232,14 +268,22 @@ class Rental(db.Model):
         today = datetime.date.today()
         return ((cls.end.is_(None)) | (cls.end > today))
 
+    def terminate(self):
+        """Set the rental end date to today (not current)"""
+        today = datetime.date.today()
+        self.end = today
+        db.session.commit()
+
 
 class Room(db.Model):
     """A Rezidence room."""
     num = db.Column(db.Integer(), primary_key=True)
     floor = db.Column(db.Integer())
     base_ip = db.Column(db.String(4))
+    ips_allocated = db.Column(db.Integer(), nullable=False, default=0)
 
     rentals = db.relationship("Rental", back_populates="room")
+    allocations = db.relationship("Allocation", back_populates="room")
 
     def __repr__(self):
         """Returns repr(self)."""
@@ -289,3 +333,17 @@ class Room(db.Model):
                 rooms.append(cls(num=100*floor + door, floor=floor,
                                  base_ip=f"{floor}.{door}"))
         return rooms
+
+
+class Allocation(db.Model):
+    """An allocation of an IP address to a tuple Device-Room."""
+    id = db.Column(db.Integer(), primary_key=True)
+    _device_id = db.Column(db.ForeignKey("device.id"), nullable=False)
+    device = db.relationship("Device", back_populates="allocations")
+    _room_num = db.Column(db.ForeignKey("room.num"), nullable=False)
+    room = db.relationship("Room", back_populates="allocations")
+    ip = db.Column(db.String(16), nullable=False)
+
+    def __repr__(self):
+        """Returns repr(self)."""
+        return f"<Allocation #{self.id}: {self.ip}>"

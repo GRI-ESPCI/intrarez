@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+    <div class="row mb-3">
+        <div class="col">
+            <h1>{{ title }}</h1>
+        </div>
+    </div>
+    <div class="row"><p>
+        {{ _("Ces notes de mise à jour présentent les modifications "
+             "principales du point de vue utilisateur. Pour un changelog "
+             "plus technique, voir") }}
+        <a href="https://github.com/GRI-ESPCI/intrarez/blob/main/CHANGELOG.md">
+            {{ _("sur GitHub") }}</a>.
+    </p></div>
+    <div class="row mb-2">
+        <h4>v1.3 – {{ moment(datetime.date(2021, 12, 6)).format("L") }}</h4>
+        <ul class="ms-5">
+            <li>
+                {{ _("Ajout du mécanisme de changement de chambre.") }}
+            </li>
+            <li>
+                {{ _("Ajout de l'adresse IP attribuée aux appareils dans le "
+                     "profil.") }}
+            </li>
+            <li>
+                {{ _("Les GRI peuvent maintenant gérer les chambres et les "
+                     "appareils des Rezidents.") }}
+            </li>
+            <li>
+                {{ _("Ajout de cette page.") }}
+            </li>
+        </ul>
+    </div>
+    <div class="row mb-2">
+        <h4>v1.2 – {{ moment(datetime.date(2021, 11, 23)).format("L") }}</h4>
+        <ul class="ms-5">
+            <li>
+                {{ _("Ajout d'options GRI pour la gestion des Rezidents "
+                     "et la surveillance du réseau.") }}
+            </li>
+        </ul>
+    </div>
+    <div class="row mb-2">
+        <h4>v1.1 – {{ moment(datetime.date(2021, 10, 14)).format("L") }}</h4>
+        <ul class="ms-5">
+            <li>
+                {{ _("Mise en place d'un portail captif pour simplifier la "
+                     "connexion au réseau.") }}
+            </li>
+        </ul>
+    </div>
+    <div class="row mb-2">
+        <h3>v1.0 – {{ moment(datetime.date(2021, 11, 13)).format("L") }}</h3>
+        <p>{{ _("Première version publique.") }}</p>
+    </div>
+
+{% endblock %}

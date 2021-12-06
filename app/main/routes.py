@@ -58,6 +58,13 @@ def legal():
     return flask.render_template("main/legal.html",
                                  title=_("Mentions légales"))
 
+@bp.route("/changelog")
+def changelog():
+    """IntraRez changelog page."""
+    return flask.render_template("main/changelog.html",
+                                 title=_("Notes de mise à jour"),
+                                 datetime=datetime)
+
 @bp.route("/test")
 @check_device
 def test():

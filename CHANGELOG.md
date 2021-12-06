@@ -5,6 +5,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 1.3.0 - 2021-12-06
+
+# Added
+
+  * New table :class:`.models.Allocation` for IP allocations (per-room and
+    per-room) to store reliably IPs
+  * Show current device IP on device card;
+  * Terminate rental action, allowing to declare a new rental;
+  * "Doas" mechanism to allow GRI to manage rezidents rentals and devices;
+  * Check if room is occupied when declaring a new rental, if yes print a
+    warning popup;
+  * New changelog page.
+
+# Changed
+
+  * Forms fields with an empty name are now not shown at all;
+  * :func:`~.tools.utils.redirect_to_next` now accept URL parameters
+    through keywords arguments.
+
+# Fixed
+
+  * Device MAC address duplication check was case-sensitive;
+  * Display bug in profile card / GRI list when no rental;
+  * Rezidents list ID sorting was alphabetical and not numerical.
+
+
 ## 1.2.0 - 2021-11-23
 
 # Added

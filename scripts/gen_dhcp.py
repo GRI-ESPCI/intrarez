@@ -34,11 +34,11 @@ def main():
         rezident = room.current_rental.rezident
         print(f"Chambre {room.num} occupée par {rezident.full_name}")
 
-        for i_dev, device in enumerate(rezident.devices):
-            ip = f"10.{i_dev}.{room.base_ip}"
+        for device in rezident.devices:
+            ip = device.allocate_ip_for(room)
             print(f"    Appareil #{device.id} : {device.mac_address} -> {ip}")
             rules += (
-                f"host {rezident.username}-{room.num}-{i_dev} {{\n"
+                f"host {rezident.username}-{room.num}-{device.id} {{\n"
                 f"\thardware ethernet {device.mac_address};\n"
                 f"\tfixed-address {ip};\n"
                 "}\n"

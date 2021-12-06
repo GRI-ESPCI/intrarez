@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% import "_form.html" as wtf %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+
+{% if doas %}
+<div class="row">
+    {% include "doas.html" %}
+</div>
+{% endif %}
+
+<div class="row"><p>
+    {{ _("Mettre fin à ta location actuelle (chambre %(room)s) ?", room=room) }}
+</p></div>
+<div class="row"><p>
+    {{ _("Cela permettra de déclarer une nouvelle location (ou non, en cas "
+         "de départ de la résidence).") }}
+</p></div>
+<div class="row mb-3"><p>
+    {{ _("Tes appareils risquent d'être déconnectés du réseau quelques "
+         "instants.") }}
+</p></div>
+<div class="row">
+    <form action="" method="post" role="form" id="rental_form">
+        {{ form.hidden_tag() }}
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.end, value=today) }}
+        </div></div>
+        <div>
+            {{ wtf.form_field(form.submit) }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}
