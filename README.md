@@ -19,7 +19,7 @@ Seules les fonctionnalités majeures sont listées ici ; voir
 ## Exigences
 
 * Python : Probablement >= 3.10 à terme, pour l'instant >= 3.8 suffit ;
-* Autres packages Linux : ``mysql-server postfix git npm``, plus pour le
+* Autres packages Linux : ``postgresql postfix git npm``, plus pour le
   déploiement : ``supervisor nginx`` ;
 * Package npm : ``bower sass``
     * Package Bower : ``bootstrap webping-js``
@@ -36,7 +36,7 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
 * Installer les dépendences :
 
   ```
-  sudo apt install mariadb-server postfix git npm [supervisor nginx]
+  sudo apt install postgresql postgresql-client postfix git npm [supervisor nginx]
   ```
 
 * Installer l'application :
@@ -63,6 +63,10 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deploymen
      CREATE ROLE intrarez WITH LOGIN PASSWORD '<mdp-db>';
      CREATE DATABASE intrarez OWNER intrarez ENCODING "UTF8";
      EXIT;
+     ```
+
+     ```
+     pip install psycopg2 # ==2.9.2
      ```
 
    * MySQL :
