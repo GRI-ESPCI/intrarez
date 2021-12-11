@@ -60,6 +60,11 @@
                          width="80" height="80"
                          class="d-inline-block m-0" alt="GRI">
                     <span class="align-text-top">/&nbsp;<b>IntraRez</b></span>
+                    {% if config.get("BRANCH") %}
+                    <span class="badge rounded-pill bg-warning text-dark ms-2">
+                        {{ config["BRANCH"] }}
+                    </span>
+                    {% endif %}
                 </a>
                 <button class="navbar-toggler m-2" type="button"
                         data-bs-toggle="collapse"
@@ -127,7 +132,6 @@
                     <strong class="me-auto">
                         {{ alert_labels[category] }}
                     </strong>
-                    <small></small>
                     <button type="button" class="btn-close"
                             data-bs-dismiss="toast"
                             aria-label="{{ _("Fermer") }}">

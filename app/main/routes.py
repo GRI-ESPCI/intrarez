@@ -2,15 +2,12 @@
 
 import datetime
 import json
-import subprocess
-import re
 
 import flask
 import flask_login
 from flask_babel import _
 from discord_webhook import DiscordWebhook
 
-from app import db
 from app.main import bp, forms
 from app.devices import check_device
 
@@ -71,11 +68,11 @@ def test():
     """Test page."""
     # return flask.render_template("errors/other.html")
     # flask.abort(403)
-    raise RuntimeError("obanon")
-    # flask.flash("Succès", "success")
-    # flask.flash("Info", "info")
-    # flask.flash("Warning", "warning")
-    # flask.flash("Danger", "danger")
+    # raise RuntimeError("obanon")
+    flask.flash("Succès", "success")
+    flask.flash("Info", "info")
+    flask.flash("Warning", "warning")
+    flask.flash("Danger", "danger")
     pt = {}
     pt["BRF"] = flask.current_app.before_request_funcs
     pt["ARF"] = flask.current_app.after_request_funcs

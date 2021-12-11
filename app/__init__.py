@@ -28,6 +28,7 @@ import wtforms
 
 from config import Config
 from app.tools import loggers, utils
+from app import enums
 
 
 # Load extensions
@@ -62,6 +63,8 @@ def create_app(config_class=Config):
     babel.init_app(app)
     app.jinja_env.add_extension("jinja2.ext.do")
     app.jinja_env.globals.update(**__builtins__)
+    app.jinja_env.globals.update(**{name: getattr(enums, name)
+                                    for name in enums.__all__})
     app.jinja_env.globals["__version__"] = __version__
     app.jinja_env.globals["get_locale"] = get_locale
     app.jinja_env.globals["alert_labels"] = {
@@ -82,13 +85,14 @@ def create_app(config_class=Config):
     )
 
     # ! Keep imports here to avoid circular import issues !
-    from app import errors, main, auth, devices, rooms, gris
+    from app import errors, main, auth, devices, rooms, gris, payments
     app.register_blueprint(errors.bp)
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(devices.bp, url_prefix="/devices")
     app.register_blueprint(rooms.bp, url_prefix="/rooms")
     app.register_blueprint(gris.bp, url_prefix="/gris")
+    app.register_blueprint(payments.bp, url_prefix="/payments")
 
     # Set up error handling
     loggers.set_handlers(app)

@@ -3,6 +3,7 @@
 import time
 import datetime
 
+from dateutil import relativedelta
 import jwt
 import flask
 import flask_login
@@ -10,6 +11,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug import security as wzs
 
 from app import db
+from app.enums import *
 
 
 class Rezident(flask_login.UserMixin, db.Model):
@@ -32,11 +34,17 @@ class Rezident(flask_login.UserMixin, db.Model):
     promo = db.Column(db.String(8))
     email = db.Column(db.String(120), unique=True)
     is_gri = db.Column(db.Boolean(), nullable=False, default=False)
+    sub_state = db.Column(db.Enum(SubState), nullable=False,
+                          default=SubState.trial)
     _password_hash = db.Column(db.String(128))
 
-    devices = db.relationship("Device", back_populates="rezident",
-                              order_by="Device.id")
+    devices = db.relationship("Device", back_populates="rezident")
     rentals = db.relationship("Rental", back_populates="rezident")
+    subscriptions = db.relationship("Subscription", back_populates="rezident")
+    payments = db.relationship("Payment", back_populates="rezident",
+                               foreign_keys="Payment._rezident_id")
+    payments_created = db.relationship("Payment", back_populates="gri",
+                                       foreign_keys="Payment._gri_id")
 
     def __repr__(self):
         """Returns repr(self)."""
@@ -70,6 +78,12 @@ class Rezident(flask_login.UserMixin, db.Model):
         """
         return sorted(self.devices, key=lambda device: device.last_seen_time,
                       reverse=True)[1:]
+
+    @property
+    def first_access(self):
+        """:class:`datetime.date`: The rezidents's oldest device registration
+        date."""
+        return min(device.registered for device in self.devices).date()
 
     @property
     def current_rental(self):
@@ -111,6 +125,40 @@ class Rezident(flask_login.UserMixin, db.Model):
     @has_a_room.expression
     def has_a_room(cls):
         return cls.rentals.any(Rental.is_current)
+
+    @property
+    def current_subscription(self):
+        """:class:`Subscription`: The rezidents's current subscription, or
+        ``None``."""
+        try:
+            return next(sub for sub in self.subscriptions if sub.is_active)
+        except StopIteration:
+            return None
+
+    @property
+    def old_subscriptions(self):
+        """:class:`list[Subscription]`: The rezidents's non-current
+        subscriptions.
+
+        Sorted from most recent to last recent subscription."""
+        return sorted((sub for sub in self.subscriptions if not sub.is_active),
+                      key=lambda sub: sub.end, reverse=True)
+
+    @property
+    def computed_sub_state(self):
+        """:class:.SubState`: The rezidents's subscription state.
+
+        Theorically identical to :attr:`~Rezident.sub_state`, but computed
+        from :attr:`~Rezident.subscriptions`. It might differ the first
+        minutes of the day of state change.
+        """
+        sub = self.current_subscription
+        if not sub:
+            return SubState.outlaw
+        elif sub.is_trial:
+            return SubState.trial
+        else:
+            return SubState.subscribed
 
     def set_password(self, password):
         """Save or modify rezident password.
@@ -347,3 +395,74 @@ class Allocation(db.Model):
     def __repr__(self):
         """Returns repr(self)."""
         return f"<Allocation #{self.id}: {self.ip}>"
+
+
+class Subscription(db.Model):
+    """An subscription to Internet of a Rezident."""
+    id = db.Column(db.Integer(), primary_key=True)
+    _rezident_id = db.Column(db.ForeignKey("rezident.id"), nullable=False)
+    rezident = db.relationship("Rezident", back_populates="subscriptions")
+    _offer_slug = db.Column(db.ForeignKey("offer.slug"), nullable=False)
+    offer = db.relationship("Offer", back_populates="subscriptions")
+    _payment_id = db.Column(db.ForeignKey("payment.id"), nullable=False)
+    payment = db.relationship("Payment", back_populates="subscriptions")
+    start = db.Column(db.Date(), nullable=False)
+    end = db.Column(db.Date(), nullable=False)
+
+    def __repr__(self):
+        """Returns repr(self)."""
+        return f"<Subscription #{self.id} of {self.rezident}>"
+
+    @property
+    def cut_day(self):
+        """:class:`datetime.date`: The day Internet acces is cut if no
+        other subscription is made."""
+        return self.end + relativedelta.relativedelta(months=1, days=1)
+
+    @property
+    def is_active(self):
+        """:class:`bool`: Whether the subscription is active or in trial
+        period."""
+        return datetime.date.today() < self.cut_day
+
+    @property
+    def is_trial(self):
+        """:class:`bool`: Whether the subscription is in trial period."""
+        return self.end <= datetime.date.today() < self.cut_day
+
+
+class Payment(db.Model):
+    """An payment made by a Rezident."""
+    id = db.Column(db.Integer(), primary_key=True)
+    _rezident_id = db.Column(db.ForeignKey("rezident.id"), nullable=False)
+    rezident = db.relationship("Rezident", back_populates="payments",
+                               foreign_keys=_rezident_id)
+    amount = db.Column(db.Numeric(6, 2, asdecimal=False), nullable=False)
+    timestamp = db.Column(db.DateTime(), nullable=False)
+    lydia = db.Column(db.Boolean(), nullable=False)
+    lydia_id = db.Column(db.BigInteger())
+    _gri_id = db.Column(db.ForeignKey("rezident.id"))
+    gri = db.relationship("Rezident", back_populates="payments_created",
+                               foreign_keys=_gri_id)
+
+    subscriptions = db.relationship("Subscription", back_populates="payment")
+
+    def __repr__(self):
+        """Returns repr(self)."""
+        return f"<Payment #{self.id} of €{self.amount} by {self.rezident}>"
+
+
+class Offer(db.Model):
+    """An offer to subscibe to the Internet connection."""
+    slug = db.Column(db.String(32), primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    description = db.Column(db.String(2000))
+    price = db.Column(db.Numeric(6, 2, asdecimal=False))
+    created = db.Column(db.DateTime(), nullable=False)
+    active = db.Column(db.Boolean(), nullable=False, default=True)
+
+    subscriptions = db.relationship("Subscription", back_populates="offer")
+
+    def __repr__(self):
+        """Returns repr(self)."""
+        return f"<Offer '{self.slug}'>"

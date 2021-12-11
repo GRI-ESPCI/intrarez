@@ -41,11 +41,13 @@ class Config():
     MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS") is not None
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-    ADMINS = ["your-email@example.com"]
+    ADMINS = os.environ.get("ADMINS", "").split(";")
 
     ERROR_WEBHOOK = os.environ.get("ERROR_WEBHOOK")
     MESSAGE_WEBHOOK = os.environ.get("MESSAGE_WEBHOOK")
     GRI_ROLE_ID = os.environ.get("GRI_ROLE_ID")
+
+    BRANCH = os.environ.get("BRANCH")
 
     NETLOCS = os.environ.get("NETLOCS")
     if NETLOCS is not None:

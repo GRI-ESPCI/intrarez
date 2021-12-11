@@ -61,7 +61,7 @@
         </tr></thead>
         <tbody id="rezidents-table">
         {% for user in users %}
-        <tr data-id="{{ str(user.id).ljust(4, '0') }}"
+        <tr data-id="{{ str(user.id).rjust(4, '0') }}"
             data-user="{{ user.full_name }}"
             data-room="{{ user.current_room.num if user.current_room else 0 }}"
             data-dev="{{ len(user.devices) }}"

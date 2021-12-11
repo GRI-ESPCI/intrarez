@@ -5,6 +5,41 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased - 2021-12-06
+
+# STILL TO DO
+
+  * All payments pages
+  * Customize mails
+  * BDE roles to add payments?
+
+# Added
+
+  * New tables :class:`.models.Subscription`, :class:`.models.Payment` and
+    :class:`.models.Offer` to handle payments (see bottom left part of
+    https://dbdiagram.io/d/60f9d116b7279e412336e4c1);
+  * New convenient properties :meth:`~.models.Rezident.current_subscription`,
+    :meth:`~.models.Rezident.old_subscriptions`,
+    :meth:`~.models.Rezident.computed_sub_state` and
+    :meth:`~.models.Rezident.first_access`;
+  * New blueprint ``payments`` with email support;
+  * Added payments info card to index;
+  * Added data Enums handling in ``app/enums.py`` and
+    :class:`.enums.SubState` for subscription states;
+  * New script ``update_sub_state`` to be called every day to update
+    Rezidents subscription state;
+  * Added dev branch display and setup in ``.env``;
+  * New package requirement: ``python-dateutil``.
+
+# Changed
+
+  * Moved admin addresses configuration from ``config.py`` to ``.env``.
+
+# Fixed
+
+  * Rezidents list ID sorting fix was not working.
+
+
 ## 1.3.0 - 2021-12-06
 
 # Added

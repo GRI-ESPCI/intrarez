@@ -6,10 +6,8 @@ import flask
 import flask_login
 from flask_babel import _
 
-from app import db
-from app.gris import bp, forms
+from app.gris import bp
 from app.devices import check_device
-from app.tools.utils import redirect_to_next
 from app.models import Rezident
 
 
