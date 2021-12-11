@@ -21,8 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * New convenient properties :meth:`~.models.Rezident.current_subscription`,
     :meth:`~.models.Rezident.old_subscriptions`,
     :meth:`~.models.Rezident.computed_sub_state` and
-    :meth:`~.models.Rezident.first_access`;
+    :meth:`~.models.Rezident.add_first_subscription`;
   * New blueprint ``payments`` with email support;
+  * First offer automatically subscribed on first device add;
   * Added payments info card to index;
   * Added data Enums handling in ``app/enums.py`` and
     :class:`.enums.SubState` for subscription states;

@@ -80,12 +80,6 @@ class Rezident(flask_login.UserMixin, db.Model):
                       reverse=True)[1:]
 
     @property
-    def first_access(self):
-        """:class:`datetime.date`: The rezidents's oldest device registration
-        date."""
-        return min(device.registered for device in self.devices).date()
-
-    @property
     def current_rental(self):
         """:class:`Rental`: The rezidents's current rental, or ``None``."""
         try:
@@ -159,6 +153,15 @@ class Rezident(flask_login.UserMixin, db.Model):
             return SubState.trial
         else:
             return SubState.subscribed
+
+    def add_first_subscription(self):
+        """"Add subscription to first offer (free month)."""
+        sub = Subscription(rezident=self, offer=Offer.first_offer(),
+                           payment=None, start=datetime.date.today(),
+                           end=datetime.date.today())
+        db.session.add(sub)
+        self.sub_state = SubState.trial
+        db.session.commit()
 
     def set_password(self, password):
         """Save or modify rezident password.
@@ -404,7 +407,7 @@ class Subscription(db.Model):
     rezident = db.relationship("Rezident", back_populates="subscriptions")
     _offer_slug = db.Column(db.ForeignKey("offer.slug"), nullable=False)
     offer = db.relationship("Offer", back_populates="subscriptions")
-    _payment_id = db.Column(db.ForeignKey("payment.id"), nullable=False)
+    _payment_id = db.Column(db.ForeignKey("payment.id"))
     payment = db.relationship("Payment", back_populates="subscriptions")
     start = db.Column(db.Date(), nullable=False)
     end = db.Column(db.Date(), nullable=False)
@@ -455,8 +458,10 @@ class Payment(db.Model):
 class Offer(db.Model):
     """An offer to subscibe to the Internet connection."""
     slug = db.Column(db.String(32), primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.String(2000))
+    name_fr = db.Column(db.String(64), nullable=False)
+    name_en = db.Column(db.String(64), nullable=False)
+    description_fr = db.Column(db.String(2000))
+    description_en = db.Column(db.String(2000))
     price = db.Column(db.Numeric(6, 2, asdecimal=False))
     created = db.Column(db.DateTime(), nullable=False)
     active = db.Column(db.Boolean(), nullable=False, default=True)
@@ -466,3 +471,31 @@ class Offer(db.Model):
     def __repr__(self):
         """Returns repr(self)."""
         return f"<Offer '{self.slug}'>"
+
+    @classmethod
+    def first_offer(cls):
+        """Query method: get the welcome offer (1 free month).
+
+        Returns:
+            :class:`.Offer`
+        """
+        return cls.query.get("_first")
+
+    @classmethod
+    def create_first_offer(cls):
+        """Factory method: create the welcome offer (1 free month).
+
+        Returns:
+            :class:`.Offer`
+        """
+        return cls(
+            slug="_first",
+            name_fr="Offre de bienvenue",
+            name_en="Welcoming offer",
+            description_fr="Un mois d'accès à Internet offert à votre "
+                           "première connexion !",
+            description_en="One month of Internet access gifted when you "
+                           "connect for the first time!",
+            price=0.0,
+            created=datetime.datetime.now(),
+        )
