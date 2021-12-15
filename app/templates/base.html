@@ -52,7 +52,7 @@
           class="d-flex flex-column min-vh-100">
         {% block body %}
         {% block navbar %}
-        <nav class="navbar navbar-expand-sm navbar-light mb-4 py-0
+        <nav class="navbar navbar-expand-md navbar-light mb-4 py-0
                     bg-primary border-bottom border-2 border-secondary">
             <div class="container-fluid ps-0">
                 <a class="navbar-brand p-0" href="{{ url_for("main.index") }}">
@@ -95,6 +95,15 @@
                             </a>
                         </li>
                         {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-outline-secondary mx-2 my-1 position-relative"
+                               href="{{ url_for("payments.main") }}">
+                                {{ _("Abonnement") }}
+
+                                <span class="position-absolute top-0 start-100 translate-middle
+                                badge rounded-pill bg-success">★</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="btn btn-outline-secondary mx-2 my-1"
                                href="{{ url_for("main.profile") }}">

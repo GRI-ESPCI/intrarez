@@ -1,0 +1,43 @@
+{# Coming soon card - no used variables #}
+{% extends "cards/base.html" %}
+
+{% block card_title %}
+{{ _("À venir") }}
+{% endblock %}
+
+{% block card_icon %}
+{{ bootstrap_icon("three-dots") }}
+{% endblock %}
+
+{% block card_table %}
+<tr>
+    <th>
+        <span class="placeholder col-6"></span>
+    </th>
+    <td>
+        <span class="placeholder col-4"></span>
+        <span class="placeholder col-6"></span>
+    </td>
+</tr>
+<tr>
+    <th>
+        <span class="placeholder col-3"></span>
+    </th>
+    <td>
+        <span class="placeholder col-6"></span>
+    </td>
+</tr>
+<tr>
+    <th>
+        <span class="placeholder col-5"></span>
+    </th>
+    <td>
+        <span class="placeholder col-3"></span>
+        <span class="placeholder col-4"></span>
+    </td>
+</tr>
+{% endblock %}
+
+{% block card_footer %}
+<a class="btn btn-dark disabled placeholder col-6"></a>
+{% endblock %}

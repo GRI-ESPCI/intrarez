@@ -12,6 +12,7 @@ from werkzeug import security as wzs
 
 from app import db
 from app.enums import *
+from app.tools import utils
 
 
 class Rezident(flask_login.UserMixin, db.Model):
@@ -124,10 +125,9 @@ class Rezident(flask_login.UserMixin, db.Model):
     def current_subscription(self):
         """:class:`Subscription`: The rezidents's current subscription, or
         ``None``."""
-        try:
-            return next(sub for sub in self.subscriptions if sub.is_active)
-        except StopIteration:
+        if not self.subscriptions:
             return None
+        return max(self.subscriptions, key=lambda sub: sub.start)
 
     @property
     def old_subscriptions(self):
@@ -147,7 +147,7 @@ class Rezident(flask_login.UserMixin, db.Model):
         minutes of the day of state change.
         """
         sub = self.current_subscription
-        if not sub:
+        if not sub.is_active:
             return SubState.outlaw
         elif sub.is_trial:
             return SubState.trial
@@ -454,6 +454,13 @@ class Payment(db.Model):
         """Returns repr(self)."""
         return f"<Payment #{self.id} of €{self.amount} by {self.rezident}>"
 
+    @property
+    def amount_format(self):
+        famt = format(self.amount, ".2f")
+        if utils.get_locale() == "fr":
+            famt = famt.replace(".", ",")
+        return flask.Markup(f"{famt}&nbsp;€")
+
 
 class Offer(db.Model):
     """An offer to subscibe to the Internet connection."""
@@ -471,6 +478,32 @@ class Offer(db.Model):
     def __repr__(self):
         """Returns repr(self)."""
         return f"<Offer '{self.slug}'>"
+
+    @property
+    def name(self):
+        """str: Context-localized offer name.
+
+        One of :attr:`.name_fr` or :attr:`.name_en`, depending on the
+        request context (user prefered language). Read-only property.
+
+        Raises:
+            RuntimeError: If acceded outside of a request context.
+        """
+        locale = utils.get_locale()
+        return self.name_fr if locale == "fr" else self.name_en
+
+    @property
+    def description(self):
+        """str: Context-localized offer description.
+
+        One of :attr:`.name_fr` or :attr:`.name_en`, depending on the
+        request context (user prefered language). Read-only property.
+
+        Raises:
+            RuntimeError: If acceded outside of a request context.
+        """
+        locale = utils.get_locale()
+        return self.description_fr if locale == "fr" else self.description_en
 
     @classmethod
     def first_offer(cls):

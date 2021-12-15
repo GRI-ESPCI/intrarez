@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row mb-4 row-cols-1 row-cols-md-2">
+    {% with sub = current_user.current_subscription %}
+    <div class="col">
+    <ul class="mb-0">
+        {% if current_user.sub_state == SubState.subscribed %}
+
+        <li>
+            {{ _("État actuel") }} :
+            <strong>{{ _("En règle") }}</strong>
+            <svg class="ms-2 bi flex-shrink-0 position-absolute text-success"
+                 width="24" height="24" role="img">
+                {{ bootstrap_icon("check-circle") }}
+            </svg>
+        </li>
+        <li>
+            {{ _("Jusqu'au") }} :
+            <strong>{{ moment(sub.end).format("LL") }}</strong>
+        </li>
+        <li>
+            {{ _("Coupure le") }} :
+            <strong>{{ moment(sub.cut_day).format("LL") }}</strong>
+        </li>
+
+        {% elif current_user.sub_state == SubState.trial %}
+
+        <li>
+            {{ _("État actuel") }} :
+            <strong>{{ _("Mois offert") }}</strong>
+            <svg class="ms-2 bi flex-shrink-0 position-absolute text-warning"
+                 width="24" height="24" role="img">
+                {{ bootstrap_icon("circle-fill") }}
+            </svg>
+            <svg class="ms-2 bi flex-shrink-0 position-absolute text-danger"
+                 width="24" height="24" role="img">
+                {{ bootstrap_icon("exclamation-circle") }}
+            </svg>
+        </li>
+        <li>
+            {{ _("Depuis le") }} :
+            <strong>{{ moment(sub.end).format("LL") }}</strong>
+        </li>
+        <li>
+            {{ _("Coupure le") }} :
+            <strong>{{ moment(sub.cut_day).format("LL") }}</strong>
+        </li>
+
+        {% else %}
+
+        <li>
+            {{ _("État actuel") }} :
+            <strong>{{ _("Paiement nécessaire") }}</strong>
+            <svg class="ms-2 bi flex-shrink-0 position-absolute text-danger"
+                 width="24" height="24" role="img">
+                {{ bootstrap_icon("x-circle-fill") }}
+            </svg>
+        </li>
+        <li>
+            {{ _("Depuis le") }} :
+            <strong>{{ moment(sub.cut_day).format("LL") }}</strong>
+        </li>
+        <li>
+            {{ _("Accès Internet") }} :
+            {{ _("Suspendu") }}
+        </li>
+
+        {% endif %}
+    </ul>
+    </div>
+    <div class="col my-auto py-3">
+        {% if current_user.sub_state == SubState.trial %}
+
+        <a href="{{ url_for("payments.pay") }}"
+        class="btn btn-outline-dark btn-primary">
+            {{ _("Payer") }}
+        </a>
+
+        {% elif current_user.sub_state == SubState.outlaw %}
+
+        <a href="{{ url_for("payments.pay") }}"
+        class="btn btn-danger btn-outline-dark text-white">
+            {{ _("Payer") }}
+        </a>
+
+        {% endif %}
+    </div>
+    {% endwith %}
+</div>
+
+<div class="row mt-3 mb-2 gx-5">
+    <div class="col-7">
+    </div>
+    <div class="col mt-auto">
+    </div>
+</div>
+<div class="row cols-1 cols-lg-2 gx-5 mb-4">
+    <div class="col-auto col-lg-7">
+        <h2 class="mb-3">{{ _("Fonctionnement") }}</h2>
+        <p>
+            {{ _("Pour accéder à Internet, tous les locataires doivent payer "
+                 "un petit montant par an. Cet argent sert uniquement à "
+                 "<strong>financer l'abonnement Internet</strong> et le "
+                 "matériel permettant de vous distribuer Internet : nous ne "
+                 "sommes aucunement bénéficiaires – ce serait d'ailleurs "
+                 "illégal. N'hésitez pas à nous demander nos comptes.") }}
+        </p>
+        <p>
+            {{ _("À votre premier accès au réseau, nous vous offrons "
+                 "<strong>un mois d'accès gratuit</strong>. Vous avez donc un "
+                 "mois pour choisir une offre (selon la durée de la location) "
+                 "et payer, sans quoi votre accès à Internet sera "
+                 "<strong>automatiquement suspendu</strong>.") }}
+        </p>
+        <p>
+            {{ _("À la fin de chaque abonnement, vous disposez à nouveau "
+                 "d'un mois offert, pendant lequel vous pouvez prendre un "
+                 "nouvel abonnement si nécessaire. Pas de panique, nous vous "
+                 "enverrons des mails de rappel.") }}
+        </p>
+    </div>
+    <div class="col">
+        <h3 class="mt-1 mb-3">{{ _("Comment payer ?") }}</h3>
+        <div class="container ps-3 pe-0">
+            <div class="row mb-3">
+                <div class="col-auto my-auto d-flex flex-column">
+                    <svg class="flex-shrink-0 mb-2" width="28" height="28" role="img">
+                        <use href="{{ url_for("static", filename="svg/lydia.svg") }}#lydia" />
+                    </svg>
+                    <svg class="bi flex-shrink-0" width="28" height="28" role="img">
+                        {{ bootstrap_icon("credit-card") }}
+                    </svg>
+                </div>
+                <div class="col">
+                {{ _("Via <strong>Lydia</strong>, la célèbre solution de "
+                     "paiement en ligne. Si vous n'avez pas de compte Lydia, "
+                     "vous pouvez payer <strong>par carte bancaire</strong> "
+                     "via cette option, de manière 100 %% sécurisée, en "
+                     "quelques clics et sans créer de compte.") }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-auto my-auto">
+                    <svg class="bi flex-shrink-0" width="28" height="28" role="img">
+                        {{ bootstrap_icon("bank2") }}
+                    </svg>
+                </div>
+                <div class="col">
+                {{ _("Par <strong>virement bancaire</strong>, au RIB précisé "
+                     "lors du paiement. Comptez quelques jours de délai "
+                     "avant validation de la transaction.") }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto my-auto">
+                    <svg class="bi flex-shrink-0" width="28" height="28" role="img">
+                        {{ bootstrap_icon("cash-coin") }}
+                    </svg>
+                </div>
+                <div class="col">
+                {{ _("En <strong>espèces</strong> ou autre, directement "
+                     "auprès d'un GRI. Suivez les instructions lors du "
+                     "paiement.") }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3 mb-2">
+    <div class="col">
+        <h2>{{ _("Historique") }}</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">{{ _("ID") }}</th>
+            <th scope="col">{{ _("Offre") }}</th>
+            <th scope="col">{{ _("Date de début") }}</th>
+            <th scope="col">{{ _("Date de fin") }}</th>
+            <th scope="col">{{ _("Date de coupure") }}</th>
+            <th scope="col">{{ _("Paiement") }}</th>
+        </tr>
+    </thead>
+    <tbody id="rezidents-table">
+        {% for sub in subscriptions %}
+        <tr>
+            <td>{{ sub.id }}</td>
+            <td>
+            <span class="d-flex">
+                <span>{{ sub.offer.name }}</span>
+                <span class="ms-auto">
+                    <button type="button" class="btn p-0 me-1 d-inline-block"
+                            data-bs-target="#mo-offer-{{ sub.offer.slug }}"
+                            data-bs-toggle="modal">
+                        <svg class="bi flex-shrink-0" width="24" height="24"
+                                role="img" aria-label="{{ _("Compte") }}">
+                                {{ bootstrap_icon("clipboard-plus") }}
+                        </svg>
+                    </button>
+                </span>
+            </span>
+            </td>
+            <td>{{ moment(sub.start).format("LL") }}</td>
+            <td>{{ moment(sub.end).format("LL") }}</td>
+            <td>{{ moment(sub.cut_day).format("LL") }}</td>
+            <td>
+            <span class="d-flex">
+                <span>
+                    {{ sub.payment.amount_format
+                       if sub.payment
+                       else _("Offert") }}
+                </span>
+                <span class="ms-auto">
+                    <button type="button" class="btn p-0 me-1 d-inline-block"
+                            {% if sub.payment %}
+                            data-bs-target="#mo-payment-{{ sub.payment.id }}"
+                            data-bs-toggle="modal"
+                            {% else %} disabled
+                            {% endif %}>
+                        <svg class="bi flex-shrink-0" width="24" height="24"
+                                role="img" aria-label="{{ _("Paiement") }}">
+                                {{ bootstrap_icon("credit-card") }}
+                        </svg>
+                    </button>
+                </span>
+            </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    </div>
+</div>
+
+<!-- Modals -->
+{% for sub in subscriptions %}
+{% with offer = sub.offer %}
+<div class="modal fade" id="mo-offer-{{ offer.slug }}" tabindex="-1"
+     aria-labelledby="mo-offer-lab" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="mo-offer-lab">{{ _("Offre") }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="{{ _("Fermer") }}"></button>
+        </div>
+        <div class="modal-body">
+            {% include "cards/offer.html" %}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                {{ _("Fermer") }}
+            </button>
+        </div>
+    </div></div>
+</div>
+{% endwith %}
+{% endfor %}
+
+{% for sub in subscriptions %}
+{% with payment = sub.payment %}
+{% if payment %}
+<div class="modal fade" id="mo-payment-{{ payment.id }}" tabindex="-1"
+     aria-labelledby="mo-payt-lab" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="mo-payt-lab">{{ _("Paiement") }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="{{ _("Fermer") }}"></button>
+        </div>
+        <div class="modal-body">
+            {% include "cards/payment.html" %}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                {{ _("Fermer") }}
+            </button>
+        </div>
+    </div></div>
+</div>
+{% endif %}
+{% endwith %}
+{% endfor %}
+
+{% endblock %}

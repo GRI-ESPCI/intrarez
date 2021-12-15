@@ -7,7 +7,6 @@ import flask_login
 from flask_babel import _
 
 from app.gris import bp
-from app.devices import check_device
 from app.models import Rezident
 
 
@@ -37,7 +36,6 @@ def gris_only(routine):
 
 
 @bp.route("/rezidents")
-@check_device
 @gris_only
 def rezidents():
     """Users list page."""
@@ -47,7 +45,6 @@ def rezidents():
 
 
 @bp.route("/monitoring_ds")
-@check_device
 @gris_only
 def monitoring_ds():
     """Integration of Darkstat network monitoring."""
@@ -56,7 +53,6 @@ def monitoring_ds():
 
 
 @bp.route("/monitoring_bw")
-@check_device
 @gris_only
 def monitoring_bw():
     """Integration of Bandwidthd network monitoring."""

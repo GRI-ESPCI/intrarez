@@ -5,12 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased - 2021-12-06
+## Unreleased - 2021-12-15
 
 # STILL TO DO
 
-  * All payments pages
-  * Customize mails
+  * Pay page
+  * Lydia integration
+  * Send mails
   * BDE roles to add payments?
 
 # Added
@@ -22,7 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     :meth:`~.models.Rezident.old_subscriptions`,
     :meth:`~.models.Rezident.computed_sub_state` and
     :meth:`~.models.Rezident.add_first_subscription`;
-  * New blueprint ``payments`` with email support;
+  * New blueprint ``payments`` with email support:
+      * New page ``payments.main`` with informations about subscription and
+        subscriptions history (added to navbar);
   * First offer automatically subscribed on first device add;
   * Added payments info card to index;
   * Added data Enums handling in ``app/enums.py`` and
@@ -34,7 +37,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # Changed
 
+  * GRI pages do not require device check anymore;
   * Moved admin addresses configuration from ``config.py`` to ``.env``.
+  * Moved :func:`get_locale` from ``__init__.py`` to ``tools/utils.py``,
+    and added it to Jinja env;
+  * Informative cards shown on homepage, profile... are now built over a
+    base template (``tempates/cards/base.html``);
+  * Moved JS tooltips triggering in a specific file.
 
 # Fixed
 

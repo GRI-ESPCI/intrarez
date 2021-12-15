@@ -66,7 +66,7 @@ def create_app(config_class=Config):
     app.jinja_env.globals.update(**{name: getattr(enums, name)
                                     for name in enums.__all__})
     app.jinja_env.globals["__version__"] = __version__
-    app.jinja_env.globals["get_locale"] = get_locale
+    app.jinja_env.globals["get_locale"] = utils.get_locale
     app.jinja_env.globals["alert_labels"] = {
         "info": _l("Information :"),
         "success": _l("Succès :"),
@@ -141,13 +141,7 @@ def create_app(config_class=Config):
 
 
 # Set up locale
-@babel.localeselector
-def get_locale():
-    """Get the application language prefered by the remote user."""
-    return flask.request.accept_languages.best_match(
-        flask.current_app.config["LANGUAGES"]
-    )
-
+babel.localeselector(utils.get_locale)
 
 # Import application models
 # ! Keep at the bottom to avoid circular import issues !
