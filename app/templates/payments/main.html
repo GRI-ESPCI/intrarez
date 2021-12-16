@@ -2,6 +2,9 @@
 
 {% block app_content %}
 
+<script src="{{ url_for("static", filename="js/tooltips.js") }}"
+        defer></script>
+
 <div class="row mb-3">
     <div class="col">
         <h1>{{ title }}</h1>
@@ -15,9 +18,9 @@
 
         <li>
             {{ _("État actuel") }} :
-            <strong>{{ _("En règle") }}</strong>
+            <strong>{{ _("Abonné") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-success"
-                 width="24" height="24" role="img">
+                 width="24" height="24">
                 {{ bootstrap_icon("check-circle") }}
             </svg>
         </li>
@@ -36,11 +39,11 @@
             {{ _("État actuel") }} :
             <strong>{{ _("Mois offert") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-warning"
-                 width="24" height="24" role="img">
+                 width="24" height="24">
                 {{ bootstrap_icon("circle-fill") }}
             </svg>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-danger"
-                 width="24" height="24" role="img">
+                 width="24" height="24">
                 {{ bootstrap_icon("exclamation-circle") }}
             </svg>
         </li>
@@ -59,7 +62,7 @@
             {{ _("État actuel") }} :
             <strong>{{ _("Paiement nécessaire") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-danger"
-                 width="24" height="24" role="img">
+                 width="24" height="24">
                 {{ bootstrap_icon("x-circle-fill") }}
             </svg>
         </li>
@@ -76,17 +79,28 @@
     </ul>
     </div>
     <div class="col my-auto py-3">
-        {% if current_user.sub_state == SubState.trial %}
+        {% if current_user.sub_state == SubState.subscribed %}
+
+        <div class="d-inline-block me-3" data-bs-toggle="tooltip"
+             data-bs-placement="top"
+             title="{{ _("Renouvellement possible à partir de "
+                         "la fin de l'abonnement actuel") }}">
+            <button class="ms-2 btn btn-outline-dark" disabled>
+                {{ _("Payer") }}
+            </button>
+        </div>
+
+        {% elif current_user.sub_state == SubState.trial %}
 
         <a href="{{ url_for("payments.pay") }}"
-        class="btn btn-outline-dark btn-primary">
+           class="btn btn-outline-dark btn-primary">
             {{ _("Payer") }}
         </a>
 
-        {% elif current_user.sub_state == SubState.outlaw %}
+        {% else %}
 
         <a href="{{ url_for("payments.pay") }}"
-        class="btn btn-danger btn-outline-dark text-white">
+           class="btn btn-danger btn-outline-dark text-white">
             {{ _("Payer") }}
         </a>
 
@@ -113,11 +127,12 @@
                  "illégal. N'hésitez pas à nous demander nos comptes.") }}
         </p>
         <p>
-            {{ _("À votre premier accès au réseau, nous vous offrons "
-                 "<strong>un mois d'accès gratuit</strong>. Vous avez donc un "
-                 "mois pour choisir une offre (selon la durée de la location) "
-                 "et payer, sans quoi votre accès à Internet sera "
-                 "<strong>automatiquement suspendu</strong>.") }}
+            {{ _("À votre premier accès au réseau (et à la mise en place de "
+                 "ce système), nous vous offrons <strong>un mois d'accès "
+                 "gratuit</strong>. Vous avez donc un mois pour choisir une "
+                 "offre (selon la durée de la location) et pour payer, sans "
+                 "quoi votre accès à Internet sera <strong>automatiquement "
+                 "suspendu</strong>.") }}
         </p>
         <p>
             {{ _("À la fin de chaque abonnement, vous disposez à nouveau "
@@ -131,10 +146,12 @@
         <div class="container ps-3 pe-0">
             <div class="row mb-3">
                 <div class="col-auto my-auto d-flex flex-column">
-                    <svg class="flex-shrink-0 mb-2" width="28" height="28" role="img">
-                        <use href="{{ url_for("static", filename="svg/lydia.svg") }}#lydia" />
+                    <svg class="flex-shrink-0 mb-2" width="28" height="28">
+                        <use href="{{
+                                url_for("static", filename="svg/lydia.svg")
+                            }}#lydia" />
                     </svg>
-                    <svg class="bi flex-shrink-0" width="28" height="28" role="img">
+                    <svg class="bi flex-shrink-0" width="28" height="28">
                         {{ bootstrap_icon("credit-card") }}
                     </svg>
                 </div>
@@ -148,7 +165,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-auto my-auto">
-                    <svg class="bi flex-shrink-0" width="28" height="28" role="img">
+                    <svg class="bi flex-shrink-0" width="28" height="28">
                         {{ bootstrap_icon("bank2") }}
                     </svg>
                 </div>
@@ -160,7 +177,7 @@
             </div>
             <div class="row">
                 <div class="col-auto my-auto">
-                    <svg class="bi flex-shrink-0" width="28" height="28" role="img">
+                    <svg class="bi flex-shrink-0" width="28" height="28">
                         {{ bootstrap_icon("cash-coin") }}
                     </svg>
                 </div>
@@ -204,7 +221,7 @@
                             data-bs-target="#mo-offer-{{ sub.offer.slug }}"
                             data-bs-toggle="modal">
                         <svg class="bi flex-shrink-0" width="24" height="24"
-                                role="img" aria-label="{{ _("Compte") }}">
+                             role="img" aria-label="{{ _("Compte") }}">
                                 {{ bootstrap_icon("clipboard-plus") }}
                         </svg>
                     </button>
@@ -229,7 +246,7 @@
                             {% else %} disabled
                             {% endif %}>
                         <svg class="bi flex-shrink-0" width="24" height="24"
-                                role="img" aria-label="{{ _("Paiement") }}">
+                             role="img" aria-label="{{ _("Paiement") }}">
                                 {{ bootstrap_icon("credit-card") }}
                         </svg>
                     </button>

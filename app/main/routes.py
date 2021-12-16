@@ -7,7 +7,9 @@ import flask
 import flask_login
 from flask_babel import _
 from discord_webhook import DiscordWebhook
+import premailer
 
+from app import email
 from app.main import bp, forms
 from app.devices import check_device
 
@@ -100,3 +102,31 @@ def rickroll():
         fh.write(f"{datetime.datetime.now()}: rickrolled "
                  f"{flask_login.current_user.full_name}\n")
     return flask.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+
+
+@bp.route("/mail")
+@check_device
+def mail():
+    """Mails test route"""
+    user = flask_login.current_user
+    subject = "[IntraRez] Réinitialisation du mot de passe"
+    sender = "IntraRez <intrarez@pc-est-magique.fr>"
+    recipients = [f"{user.full_name} <{user.email}>"]
+    token = "kfsdklmfkdslm"
+    text_body = flask.render_template("mails/reset_password.txt",
+                                      user=user, token=token)
+    html_body = premailer.transform(
+        flask.render_template("mails/test.html"),
+        base_url="https://intrarez.pc-est-magique.fr/",
+        allow_loading_external_files=True,
+        remove_classes=True,
+        external_styles=[
+            flask.url_for("static",
+                          filename="css/compiled/custom-bootstrap.css"),
+            flask.url_for("static", filename="css/custom.css")
+        ],
+        disable_validation=True,
+        disable_leftover_css=True
+    )
+    email.send_email(subject, sender, recipients, text_body, html_body)
+    return html_body

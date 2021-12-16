@@ -11,8 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   * Pay page
   * Lydia integration
-  * Send mails
+  * Send mails [WIP]
   * BDE roles to add payments?
+
+  * Send mail when terminating room (or transfer)
+  * Make most IntraRez functions available from the outside world
 
 # Added
 
@@ -32,8 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     :class:`.enums.SubState` for subscription states;
   * New script ``update_sub_state`` to be called every day to update
     Rezidents subscription state;
+  * New template ``templates/mails/base.html`` for emails HTML content;
   * Added dev branch display and setup in ``.env``;
-  * New package requirement: ``python-dateutil``.
+  * New package requirement: ``python-dateutil``, ``premailer``.
 
 # Changed
 
