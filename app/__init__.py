@@ -133,12 +133,14 @@ def create_app(config_class=Config):
                 msg = f"Served error page ({flask.request}: {response.status})"
 
             remote_ip = flask.request.headers.get("X-Real-Ip", "<unknown IP>")
-            if flask.g.logged_in:
-                user = repr(flask_login.current_user)
-                if flask.g.doas:
-                    user += f" AS {flask.g.rezident!r}"
-            else:
-                user = "<anonymous>"
+            user = "<anonymous>"
+            try:
+                if flask.g.logged_in:
+                    user = repr(flask_login.current_user)
+                    if flask.g.doas:
+                        user += f" AS {flask.g.rezident!r}"
+            except AttributeError:
+                pass
             msg += f" to {remote_ip} ({user})"
             app.logger.info(msg)
         return response

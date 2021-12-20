@@ -98,9 +98,10 @@ def connect_check():
 @bp.route("/home")
 def rickroll():
     """The old good days..."""
-    with open("logs/rickrolled.log", "a") as fh:
-        fh.write(f"{datetime.datetime.now()}: rickrolled "
-                 f"{flask.g.rezident.full_name}\n")
+    if flask.g.logged_in:
+        with open("logs/rickrolled.log", "a") as fh:
+            fh.write(f"{datetime.datetime.now()}: rickrolled "
+                     f"{flask.g.rezident.full_name}\n")
     return flask.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
 
