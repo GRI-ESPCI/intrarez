@@ -50,7 +50,7 @@ def other_error(error):
     else:
         code = 500
         err_name = "Python Exception"
-        err_descr = "A Python exception stopped the execution of the request
+        err_descr = "A Python exception stopped the execution of the request."
         try:
             is_gri = flask.g.is_gri
         except AttributeError:      
