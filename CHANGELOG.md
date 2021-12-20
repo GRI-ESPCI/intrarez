@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased - 2021-12-15
+## Unreleased - 2021-12-20
 
 # STILL TO DO
 
@@ -15,9 +15,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * BDE roles to add payments?
 
   * Send mail when terminating room (or transfer)
-  * Make most IntraRez functions available from the outside world
 
 # Added
+
+  * New module ``context.py`` with :func:`~.context.create_request_context`
+    to define custom request context through :attr:`flask.g` attributes
+    and route decorators :func:`~.context.all_good_only`,
+    :func:`~.context.internal_only`, :func:`~.context.logged_in_only` and
+    :func:`~.context.gris_only`,
+  * New configuration options ``PREFERRED_URL_SCHEME``, ``SERVER_NAME`` and
+    ``APPLICATION_ROOT`` to generate absolute URLs;
+  * New configuration options ``FORCE_IP`` and ``FORCE_MAC``;
+  * New 401 error page handler for internal-only pages;
+  * New different home page for external requests;
+  * Implementation of Google reCAPTCHA v2: module :mod:`.tools.captcha`,
+    configuration options ``GOOGLE_RECAPTCHA_SITEKEY`` and
+    ``GOOGLE_RECAPTCHA_SECRET``, and implementation in contact form if from
+    outside;
+  * Added pgAdmin link to GRI menu;
+  * New util function :func:`.utils.safe_redirect`;
+  * New script ``mail_hook.py`` to report incoming mail to Discord with
+    new configuration option ``MAIL_WEBHOOK``;
 
   * New tables :class:`.models.Subscription`, :class:`.models.Payment` and
     :class:`.models.Offer` to handle payments (see bottom left part of
@@ -41,7 +59,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # Changed
 
+  * IntraRez is now adapted to a usage from the Internet (updated legal);
+  * ``doas`` mechanism made global and not page-specific;
+  * Account registration is now available from internal network only;
+  * Moved ``auth_needed`` and ``connect_check`` routes to ``main`` blueprint;
+  * Removed :func:`.app.devices.check_device`, :func:`.app.devices.get_mac`
+    and :func:`.app.gris.gris_only` in favor of :mod:`context`;
   * GRI pages do not require device check anymore;
+
   * Moved admin addresses configuration from ``config.py`` to ``.env``.
   * Moved :func:`get_locale` from ``__init__.py`` to ``tools/utils.py``,
     and added it to Jinja env;

@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% import "_form.html" as wtf %}
 
+{% block scripts %}
+{{ super() }}
+{% if not g.internal %}
+<script src="https://www.google.com/recaptcha/api.js" defer></script>
+<script src="{{ url_for("static", filename="js/captcha.js") }}" defer></script>
+{% endif %}
+{% endblock %}
+
 {% block app_content %}
 
 <div class="row mb-3">
@@ -16,22 +24,22 @@
     <form action="" method="post" role="form">
         {{ form.hidden_tag() }}
         <div class="form-floating mb-3">
-            {% if current_user.is_authenticated %}
-            {{ wtf.form_field(form.name, value=current_user.full_name) }}
+            {% if g.logged_in %}
+            {{ wtf.form_field(form.name, value=g.rezident.full_name) }}
             {% else %}
             {{ wtf.form_field(form.name) }}
             {% endif %}
         </div>
         <div class="form-floating mb-3">
-            {% if current_user.is_authenticated %}
-            {{ wtf.form_field(form.email, value=current_user.email) }}
+            {% if g.logged_in %}
+            {{ wtf.form_field(form.email, value=g.rezident.email) }}
             {% else %}
             {{ wtf.form_field(form.email) }}
             {% endif %}
         </div>
         <div class="form-floating mb-3">
-            {% if current_user.has_a_room %}
-            {{ wtf.form_field(form.room, value=current_user.current_room.num)}}
+            {% if g.has_a_room %}
+            {{ wtf.form_field(form.room, value=g.rezident.current_room.num)}}
             {% else %}
             {{ wtf.form_field(form.room) }}
             {% endif %}
@@ -42,6 +50,12 @@
         <div class="form-floating mb-3">
             {{ wtf.form_field(form.message, class="lines-6") }}
         </div>
+        {% if not g.internal %}
+        <div class="g-recaptcha form-floating mb-3"
+             data-sitekey="{{ config["GOOGLE_RECAPTCHA_SITEKEY"] }}"
+             data-callback="enable_submit"
+             data-expired-callback="disable_submit"></div>
+        {% endif %}
         <div>
             {{ wtf.form_field(form.submit) }}
         </div>

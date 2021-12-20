@@ -1,3 +1,11 @@
-<div class="bg-warning border border-danger border-3 rounded-pill px-4 py-2 mb-4 text-center fw-bold">
-    {{ _("Action réalisée en tant que %(doas)s", doas=doas) }}
+<div class="bg-warning border border-danger border-3 rounded-pill px-4 py-2
+            mb-4 text-center fw-bold position-relative">
+    {{ _("Action réalisée en tant que %(doas)s", doas=g.rezident) }}
+    <span class="position-absolute top-50 end-0 translate-middle-y">
+        <a href="." class="me-2" title="{{ _("Fermer") }}" role="button">
+            <svg class="bi flex-shrink-0 text-danger" width="24" height="24">
+                {{ bootstrap_icon("x-circle-fill") }}
+            </svg>
+        </a>
+    </span>
 </div>

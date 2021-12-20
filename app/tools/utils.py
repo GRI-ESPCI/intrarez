@@ -15,25 +15,61 @@ def get_locale():
     )
 
 
-def redirect_to_next(**kwargs):
-    """Redirect to the ``next`` request GET argument, or to homepage.
+def safe_redirect(endpoint, **params):
+    """Redirect to a specific page, except if we are already here.
+
+    Avoids infinite redirection loops caused by redirecting to the
+    current request endpoint.
+
+    It also automatically add the following URL parameters if not present:
+      * ``next``, allowing to go back to the original request later if
+        necessary (see :func:`tools.utils.redirect_to_next`);
+      * ``doas``, allowing to preserve doas mode through redirection
+        (see :attr:`flask.g.doas`).
+
+    Args:
+        endpoint (str): The endpoint to redirect to (e.g. ``"main.index"``)
+        **params: URL parameters to pass to :func:`flask.url_for`
+
+    Returns:
+        :class:`flask.Response` | ``None``
+    """
+    if endpoint == flask.request.endpoint:
+        # Do not redirect to request endpoint (infinite loop!)
+        return None
+
+    if "next" not in params:
+        params["next"] = flask.request.endpoint
+    if flask.g.doas and "doas" not in params:
+        params["doas"] = flask.g.rezident.id
+
+    return flask.redirect(flask.url_for(endpoint, **params))
+
+
+def redirect_to_next(**params):
+    """Redirect to the ``next`` request parameter, or to homepage.
 
     Includes a security to avoid redirecting to external pages.
 
     Args:
-        **kwargs: The query arguments, passed to :func:`flask.url_for`.
+        **params: The query arguments, passed to :func:`flask.url_for`.
 
     Returns:
         The result of :func:`flask.redirect`.
     """
     next = flask.request.args.get("next", "")
+    if flask.g.doas and "doas" not in params:
+        params["doas"] = flask.g.rezident.id
+
     try:
-        next_page = flask.url_for(next, **kwargs)
+        next_page = flask.url_for(next, **params)
     except werkzeug.routing.BuildError:
         next_page = ""
+
     if not next_page or wku.url_parse(next_page).netloc != "":
         # Do not redirect to absolute links (possible attack)
-        next_page = flask.url_for("main.index")
+        next_page = flask.url_for("main.index", **params)
+
     return flask.redirect(next_page)
 
 

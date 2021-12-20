@@ -28,7 +28,9 @@
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Email") }}</th>
-    <td class="text-break">{{ user.email }}</td>
+    <td class="text-break">
+        <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+    </td>
 </tr>
 {% endblock %}
 

@@ -27,8 +27,8 @@ from werkzeug import urls as wku
 import wtforms
 
 from config import Config
-from app.tools import loggers, utils
 from app import enums
+from app.tools import loggers, utils
 
 
 # Load extensions
@@ -111,9 +111,14 @@ def create_app(config_class=Config):
             return None
         if wku.url_parse(flask.request.url).netloc not in netlocs:
             # Requested URL not in netlocs: redirect
-            return flask.redirect(flask.url_for("main.index"))
+            return utils.safe_redirect("main.index")
         # Valid URL
         return None
+
+    # Set up custom context creation
+    # ! Keep import here to avoid circular import issues !
+    from app import context
+    app.before_request(context.create_request_context)
 
     # Set up custom logging
     @app.after_request
@@ -129,8 +134,10 @@ def create_app(config_class=Config):
                 msg = f"Served error page ({flask.request}: {response.status})"
 
             remote_ip = flask.request.headers.get("X-Real-Ip", "<unknown IP>")
-            if flask_login.current_user.is_authenticated:
+            if flask.g.logged_in:
                 user = repr(flask_login.current_user)
+                if flask.g.doas:
+                    user += f" AS {flask.g.rezident!r}"
             else:
                 user = "<anonymous>"
             msg += f" to {remote_ip} ({user})"

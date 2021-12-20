@@ -9,7 +9,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <p>{{ _("Bonjour %(name)s,", name=current_user.prenom) }}</p>
+        <p>{{ _("Bonjour %(name)s,", name=g.rezident.prenom) }}</p>
         <p>
             {{ _("Votre abonnement à Internet vient d'expirer. "
                 "Vous disposez d'<strong>un mois</strong> pour le "

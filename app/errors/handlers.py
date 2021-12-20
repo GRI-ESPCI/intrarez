@@ -4,15 +4,23 @@ import traceback
 
 import flask
 from flask_babel import _
-import flask_login
 from werkzeug.exceptions import HTTPException
 
 from app import db
 from app.errors import bp
 
 
-@bp.app_errorhandler(403)
+@bp.app_errorhandler(401)
 def unauthorized_error(error):
+    err_name = f"{error.code} {error.name}"
+    err_descr = error.description
+    flask.current_app.logger.error(f"{err_name} -- {flask.request}")
+    return flask.render_template("errors/401.html", err_name=err_name,
+                                 err_descr=err_descr,
+                                 title=_("Accès restreint")), 401
+
+@bp.app_errorhandler(403)
+def forbidden_error(error):
     err_name = f"{error.code} {error.name}"
     err_descr = error.description
     flask.current_app.logger.error(f"{err_name} -- {flask.request}")
@@ -43,13 +51,7 @@ def other_error(error):
         code = 500
         err_name = "Python Exception"
         err_descr = "A Python exception stopped the execution of the request."
-        gri = False
-        try:
-            user = flask_login.current_user
-            gri = user.is_authenticated and user.is_gri
-        except Exception:
-            pass
-        if gri:
+        if flask.g.is_gri:
             # GRI: show traceback
             tb = str(flask.escape(traceback.format_exc()))
             tb = flask.Markup(tb.replace("\n", "<br/>").replace(" ", "&nbsp;"))

@@ -11,10 +11,10 @@
     </div>
 </div>
 <div class="row mb-4 row-cols-1 row-cols-md-2">
-    {% with sub = current_user.current_subscription %}
+    {% with sub = g.rezident.current_subscription %}
     <div class="col">
     <ul class="mb-0">
-        {% if current_user.sub_state == SubState.subscribed %}
+        {% if g.rezident.sub_state == SubState.subscribed %}
 
         <li>
             {{ _("État actuel") }} :
@@ -33,7 +33,7 @@
             <strong>{{ moment(sub.cut_day).format("LL") }}</strong>
         </li>
 
-        {% elif current_user.sub_state == SubState.trial %}
+        {% elif g.rezident.sub_state == SubState.trial %}
 
         <li>
             {{ _("État actuel") }} :
@@ -79,7 +79,7 @@
     </ul>
     </div>
     <div class="col my-auto py-3">
-        {% if current_user.sub_state == SubState.subscribed %}
+        {% if g.rezident.sub_state == SubState.subscribed %}
 
         <div class="d-inline-block me-3" data-bs-toggle="tooltip"
              data-bs-placement="top"
@@ -90,7 +90,7 @@
             </button>
         </div>
 
-        {% elif current_user.sub_state == SubState.trial %}
+        {% elif g.rezident.sub_state == SubState.trial %}
 
         <a href="{{ url_for("payments.pay") }}"
            class="btn btn-outline-dark btn-primary">

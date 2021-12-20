@@ -1,12 +1,10 @@
 """Intranet de la Rez - Payments-related Pages Routes"""
 
 import flask
-import flask_login
 from flask_babel import _
 
-from app import db
+from app import context, db
 from app.payments import bp
-from app.devices import check_device
 from app.models import Offer
 
 
@@ -20,10 +18,10 @@ def create_first_offer():
 
 
 @bp.route("/")
-@check_device
+@context.all_good_only
 def main():
     """Subscriptions informations page."""
-    subscriptions = sorted(flask_login.current_user.subscriptions,
+    subscriptions = sorted(flask.g.rezident.subscriptions,
                            key=lambda sub: sub.start, reverse=True)
     return flask.render_template("payments/main.html",
                                  title=_("Mon abonnement Internet"),
@@ -31,7 +29,7 @@ def main():
 
 
 @bp.route("/pay")
-@check_device
+@context.all_good_only
 def pay():
     """Payment page."""
     return flask.render_template("payments/pay.html",

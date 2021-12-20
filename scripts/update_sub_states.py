@@ -4,10 +4,10 @@ Pour tous les Rezidents, vérifie que leur état actuel (abonné, mois offert,
 paiement nécessaire) correspond bien à leurs abonnements en cours.
 
 Conçu pour être appelé tous les jours à minuit. Envoie également un mail
-à l'
+au Rezident l'informant du changement d'état.
 
 Ce script peut uniquement être appelé depuis Flask :
-/home/intrarez/intrarez/env/bin/flask script gen_dhcp.py
+/home/intrarez/intrarez/env/bin/flask script update_sub_states.py
 
 12/2021 Loïc 137
 """
@@ -21,7 +21,7 @@ try:
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
-        "/home/intrarez/intrarez/env/bin/flask script gen_dhcp.py\n"
+        "/home/intrarez/intrarez/env/bin/flask script update_sub_states.py\n"
     )
     sys.exit(1)
 
