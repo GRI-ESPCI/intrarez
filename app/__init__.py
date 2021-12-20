@@ -85,13 +85,14 @@ def create_app(config_class=Config):
     )
 
     # ! Keep imports here to avoid circular import issues !
-    from app import errors, main, auth, devices, rooms, gris
+    from app import errors, main, auth, devices, rooms, gris, payments
     app.register_blueprint(errors.bp)
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(devices.bp, url_prefix="/devices")
     app.register_blueprint(rooms.bp, url_prefix="/rooms")
     app.register_blueprint(gris.bp, url_prefix="/gris")
+    app.register_blueprint(payments.bp, url_prefix="/payments")
 
     # Set up error handling
     loggers.set_handlers(app)

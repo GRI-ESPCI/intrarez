@@ -109,6 +109,16 @@
                     </li>
                     {% else %}      {# Utilisateur connecté #}
                     <li class="nav-item">
+                        <a class="btn btn-outline-secondary mx-2 my-1
+                                  position-relative"
+                            href="{{ url_for("payments.main") }}">
+                            {{ _("Abonnement") }}
+                            <span class="position-absolute top-0 start-100
+                                         translate-middle badge rounded-pill
+                                         bg-success">★</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="btn btn-outline-secondary mx-2 my-1"
                             href="{{ url_for("main.profile") }}">
                             {{ _("Profil") }}

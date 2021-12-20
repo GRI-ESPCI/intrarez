@@ -24,6 +24,9 @@ def register():
         if Device.query.filter_by(mac_address=mac_address).first():
             flask.flash(_("Cet appareil est déjà enregistré !"), "danger")
         else:
+            if not g.rezident.devices:
+                # First device: create first connexion subscription
+                g.rezident.add_first_subscription()
             now = datetime.datetime.now(datetime.timezone.utc)
             device = Device(
                 rezident=g.rezident, name=form.nom.data,

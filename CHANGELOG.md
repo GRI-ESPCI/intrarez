@@ -5,6 +5,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased - 2021-12-21
+
+# STILL TO DO
+
+  * Pay page
+  * Lydia integration
+  * Send mails [WIP]
+  * BDE roles to add payments?
+
+  * Send mail when terminating room (or transfer)
+
+# Added
+
+  * New tables :class:`.models.Subscription`, :class:`.models.Payment` and
+    :class:`.models.Offer` to handle payments (see bottom left part of
+    https://dbdiagram.io/d/60f9d116b7279e412336e4c1);
+  * New convenient properties :meth:`~.models.Rezident.current_subscription`,
+    :meth:`~.models.Rezident.old_subscriptions`,
+    :meth:`~.models.Rezident.computed_sub_state` and
+    :meth:`~.models.Rezident.add_first_subscription`;
+  * New blueprint ``payments`` with email support:
+      * New page ``payments.main`` with informations about subscription and
+        subscriptions history (added to navbar);
+  * First offer automatically subscribed on first device add;
+  * Added payments info card to index;
+  * Added data Enums handling in ``app/enums.py`` and
+    :class:`.enums.SubState` for subscription states;
+  * New script ``update_sub_state`` to be called every day to update
+    Rezidents subscription state;
+
+
 ## 1.4.0 - 2021-12-20
 
 # Added

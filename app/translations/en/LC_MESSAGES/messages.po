@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 23:19+0100\n"
+"POT-Creation-Date: 2021-12-20 20:24+0100\n"
 "PO-Revision-Date: 2021-09-14 21:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -69,14 +69,14 @@ msgstr "Remember me"
 #: app/auth/forms.py:38 app/auth/routes.py:87
 #: app/templates/auth/auth_needed.html:22 app/templates/auth/register.html:59
 #: app/templates/auth/reset_password.html:29
-#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:88
+#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:90
 #: app/templates/main/external_home.html:22
 msgid "Connexion"
 msgstr "Sign in"
 
 #: app/auth/forms.py:43 app/main/forms.py:14
 #: app/templates/cards/account.html:18 app/templates/cards/device.html:73
-#: app/templates/cards/device_modal.html:15
+#: app/templates/cards/device_modal.html:15 app/templates/cards/offer.html:14
 msgid "Nom"
 msgstr "Last name"
 
@@ -116,7 +116,7 @@ msgstr "New password (validation)"
 msgid "Valider"
 msgstr "Validate"
 
-#: app/auth/routes.py:36 app/main/routes.py:95
+#: app/auth/routes.py:36
 msgid "Accès à Internet"
 msgstr "Internet Access"
 
@@ -178,7 +178,7 @@ msgstr "MAC address*"
 msgid "Type (optionnel)"
 msgstr "Type (optional)"
 
-#: app/devices/forms.py:18 app/devices/routes.py:44
+#: app/devices/forms.py:18 app/devices/routes.py:47
 msgid "Enregistrer l'appareil"
 msgstr "Register device"
 
@@ -187,7 +187,7 @@ msgstr "Register device"
 msgid "Adresse MAC"
 msgstr "MAC address"
 
-#: app/devices/forms.py:29 app/devices/routes.py:80
+#: app/devices/forms.py:29 app/devices/routes.py:83
 msgid "Transférer l'appareil"
 msgstr "Transfer device"
 
@@ -195,63 +195,63 @@ msgstr "Transfer device"
 msgid "Cet appareil est déjà enregistré !"
 msgstr "This device is already registered!"
 
-#: app/devices/routes.py:36
+#: app/devices/routes.py:39
 msgid "Appareil enregistré avec succès !"
 msgstr "Device successfully registered!"
 
-#: app/devices/routes.py:57
+#: app/devices/routes.py:60
 msgid "Cet appareil n'est pas encore enregistré !"
 msgstr "This device is not already registered!"
 
-#: app/devices/routes.py:60
+#: app/devices/routes.py:63
 msgid "Cet appareil vous appartient déjà !"
 msgstr "This device already belong to you!"
 
-#: app/devices/routes.py:65
+#: app/devices/routes.py:68
 msgid "Appareil transféré avec succès !"
 msgstr "Device successfully transfered!"
 
-#: app/devices/routes.py:98
+#: app/devices/routes.py:101
 msgid "Hmm, ça n'a pas marché..."
 msgstr "Hmm, it didn't work..."
 
-#: app/devices/routes.py:99
+#: app/devices/routes.py:102
 msgid "Non, toujours pas..."
 msgstr "No, still not..."
 
-#: app/devices/routes.py:100
+#: app/devices/routes.py:103
 msgid "Ah ! Ah non, non plus..."
 msgstr "Oh! Oh no, no more..."
 
-#: app/devices/routes.py:101
+#: app/devices/routes.py:104
 msgid "Nan mais quand ça veut pas, ça veut pas..."
 msgstr "You know, when it won't, it won't..."
 
-#: app/devices/routes.py:102
+#: app/devices/routes.py:105
 msgid "Ça va sinon ?"
 msgstr "How are you, btw?"
 
-#: app/devices/routes.py:103
+#: app/devices/routes.py:106
 msgid "Il ne va plus se passer grand chose, hein, je pense."
 msgstr "No much more to come, I think."
 
-#: app/devices/routes.py:104
+#: app/devices/routes.py:107
 msgid "Après on sait jamais, sur un malentendu..."
 msgstr "But you never know, on a misunderstanding..."
 
-#: app/devices/routes.py:105
+#: app/devices/routes.py:108
 msgid "zzzzzzzzzzzzzzzzzzzzzzzzz"
 msgstr "zzzzzzzzzzzzzzzzzzzzzzzzz"
 
-#: app/devices/routes.py:106
+#: app/devices/routes.py:109
 msgid "Attention, je vais commencer à dire des choses aléatoires."
 msgstr "Careful, I'll start saying random things."
 
-#: app/devices/routes.py:107
+#: app/devices/routes.py:110
 msgid "Je vous aurai prévenu !"
 msgstr "I'll have warned you!"
 
-#: app/devices/routes.py:118
+#: app/devices/routes.py:121
 msgid "Détection d'appareil impossible"
 msgstr "Device detection impossible"
 
@@ -292,7 +292,7 @@ msgstr "Message"
 msgid "Envoyer"
 msgstr "Send"
 
-#: app/main/routes.py:21 app/templates/base.html:189
+#: app/main/routes.py:21 app/templates/base.html:201
 #: app/templates/errors/401.html:29 app/templates/errors/403.html:26
 #: app/templates/errors/404.html:23 app/templates/errors/other.html:17
 #: app/templates/mails/base.html:61
@@ -323,7 +323,7 @@ msgstr ""
 msgid "Contact"
 msgstr "Contact"
 
-#: app/main/routes.py:72 app/templates/base.html:208
+#: app/main/routes.py:72 app/templates/base.html:220
 msgid "Mentions légales"
 msgstr "Legal notice"
 
@@ -331,11 +331,15 @@ msgstr "Legal notice"
 msgid "Notes de mise à jour"
 msgstr "Changelog"
 
-#: app/main/routes.py:87 app/templates/base.html:114
+#: app/main/routes.py:87 app/templates/base.html:126
 msgid "Profil"
 msgstr "Profile"
 
-#: app/main/routes.py:128
+#: app/main/routes.py:95
+msgid "Accès à Internet"
+msgstr "Internet Access"
+
+#: app/main/routes.py:127
 msgid "Test"
 msgstr "Test"
 
@@ -387,23 +391,23 @@ msgstr "Change room"
 
 #: app/templates/auth/auth_needed.html:27
 #: app/templates/auth/auth_needed.html:35 app/templates/auth/login.html:33
-#: app/templates/auth/login.html:41 app/templates/base.html:95
-#: app/templates/base.html:105
+#: app/templates/auth/login.html:41 app/templates/base.html:97
+#: app/templates/base.html:107
 msgid "Créer un compte"
 msgstr "Sign up"
 
 #: app/templates/auth/auth_needed.html:32 app/templates/auth/login.html:38
-#: app/templates/base.html:101
+#: app/templates/base.html:103
 msgid ""
 "La création de compte n'est possible que depuis le réseau local de la "
 "Rezidence."
 msgstr "Accounts can only be created from the Rezidence internal network."
 
-#: app/templates/base.html:120 app/templates/devices/transfer.html:42
+#: app/templates/base.html:132 app/templates/devices/transfer.html:42
 msgid "Déconnexion"
 msgstr "Sign out"
 
-#: app/templates/base.html:153 app/templates/cards/device_modal.html:10
+#: app/templates/base.html:165 app/templates/cards/device_modal.html:10
 #: app/templates/cards/device_modal.html:67 app/templates/doas.html:5
 #: app/templates/gris/rezidents.html:159 app/templates/gris/rezidents.html:166
 #: app/templates/gris/rezidents.html:178 app/templates/gris/rezidents.html:185
@@ -412,17 +416,17 @@ msgstr "Sign out"
 msgid "Fermer"
 msgstr "Close"
 
-#: app/templates/base.html:182 app/templates/mails/base.html:54
+#: app/templates/base.html:194 app/templates/mails/base.html:54
 msgid "Version"
 msgstr "Version"
 
 #: app/templates/auth/reset_password_request.html:33
-#: app/templates/base.html:195 app/templates/devices/register.html:250
+#: app/templates/base.html:207 app/templates/devices/register.html:250
 #: app/templates/mails/base.html:67
 msgid "Nous contacter"
 msgstr "Contact us"
 
-#: app/templates/base.html:202
+#: app/templates/base.html:214
 msgid "Code source"
 msgstr "Source code"
 
@@ -465,7 +469,7 @@ msgstr "Reset"
 #: app/templates/devices/register.html:10
 #: app/templates/devices/transfer.html:10 app/templates/gris/rezidents.html:28
 #: app/templates/gris/rezidents.html:85 app/templates/gris/rezidents.html:157
-#: app/templates/main/connect_check.html:9 app/templates/rooms/register.html:10
+#: app/templates/rooms/register.html:10
 msgid "Compte"
 msgstr "Account"
 
@@ -990,8 +994,7 @@ msgid ""
 "L'adresse <a href=\"http://10.0.0.1\">10.0.0.1</a> doit être accessible."
 msgstr ""
 "Please try again after connecting your device to the Ethernet network. "
-"The address <a href=\"http://10.0.0.1\">10.0.0.1</a> should be "
-"accessible."
+"The address <a href=\"http://10.0.0.1\">10.0.0.1</a> should be accessible."
 
 #: app/templates/errors/401.html:22
 msgid ""
@@ -1100,52 +1103,34 @@ msgid "sur GitHub"
 msgstr "on GitHub"
 
 #: app/templates/main/changelog.html:21
-msgid ""
-"L'IntraRez est maintenant utilisable depuis l'extérieur de la Rezidence, "
-"à l'adresse "
-msgstr ""
-"IntraRez is now available from the outside of the Rezidente, at address "
-
-#: app/templates/main/changelog.html:25
-msgid "(sauf pour la création de compte)."
-msgstr "(except for account creation)."
-
-#: app/templates/main/changelog.html:28
-msgid ""
-"L'utilisation du formulaire de contact depuis l'extérieur est maintenant "
-"soumise à un captcha."
-msgstr ""
-"Using the contact form from the outside is now subject to a captcha."
-
-#: app/templates/main/changelog.html:37
 msgid "Ajout du mécanisme de changement de chambre."
 msgstr "Added the room change mechanism."
 
-#: app/templates/main/changelog.html:40
+#: app/templates/main/changelog.html:24
 msgid "Ajout de l'adresse IP attribuée aux appareils dans le profil."
 msgstr "Added device allocated IP address to the Profile."
 
-#: app/templates/main/changelog.html:44
+#: app/templates/main/changelog.html:28
 msgid ""
 "Les GRI peuvent maintenant gérer les chambres et les appareils des "
 "Rezidents."
 msgstr "GRI can now manage Rezidents rooms and devices."
 
-#: app/templates/main/changelog.html:48
+#: app/templates/main/changelog.html:32
 msgid "Ajout de cette page."
 msgstr "Added this page."
 
-#: app/templates/main/changelog.html:56
+#: app/templates/main/changelog.html:40
 msgid ""
 "Ajout d'options GRI pour la gestion des Rezidents et la surveillance du "
 "réseau."
 msgstr "Added GRI options for Rezidents managements and network monitoring."
 
-#: app/templates/main/changelog.html:65
+#: app/templates/main/changelog.html:49
 msgid "Mise en place d'un portail captif pour simplifier la connexion au réseau."
 msgstr "Added a captive portal to make connection easier."
 
-#: app/templates/main/changelog.html:72
+#: app/templates/main/changelog.html:56
 msgid "Première version publique."
 msgstr "First public version."
 
@@ -1216,9 +1201,8 @@ msgstr ""
 
 #: app/templates/main/external_home.html:11
 msgid "Ce site à pour fonction de gérer la connexion à Internet à la Rez."
-msgstr ""
-"The purpose of this site is to manage connection to the Internet from the"
-" Rez."
+msgstr "The purpose of this site is to manage connection to the Internet "
+"from the Rez."
 
 #: app/templates/main/external_home.html:15
 msgid ""
@@ -1260,9 +1244,9 @@ msgid ""
 " créés que depuis le réseau interne à la Résidence de l'École, et "
 "certaines fonctions ne sont pas accessibles depuis l'extérieur."
 msgstr ""
-"It is publicly accessible; however, accounts can only be created from the"
-" internal network of the school's residence, and some features are not "
-"available from the outer world."
+"It is publicly accessible; however, accounts can only be created from "
+"the internal network of the school's residence, and some features are "
+"not available from the outer world."
 
 #: app/templates/main/legal.html:21
 msgid "Contactez-nous"

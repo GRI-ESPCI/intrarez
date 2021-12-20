@@ -1,0 +1,25 @@
+{# Offer card - used variables: offer #}
+{% extends "cards/base.html" %}
+
+{% block card_title %}
+{{ _("Offre") }}
+{% endblock %}
+
+{% block card_icon %}
+{{ bootstrap_icon("clipboard-plus") }}
+{% endblock %}
+
+{% block card_table %}
+<tr>
+    <th scope="row" class="ps-4">{{ _("Nom") }}</th>
+    <td class="text-break">{{ offer.name }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Description") }}</th>
+    <td class="text-break">{{ offer.description }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Prix") }}</th>
+    <td>{{ offer.price }}&nbsp;€</td>
+</tr>
+{% endblock %}
