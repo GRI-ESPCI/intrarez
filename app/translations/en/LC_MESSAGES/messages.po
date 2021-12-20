@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-06 03:36+0100\n"
+"POT-Creation-Date: 2021-12-20 23:19+0100\n"
 "PO-Revision-Date: 2021-09-14 21:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,25 +18,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/__init__.py:38
+#: app/__init__.py:39
 msgid "Merci de vous connecter pour accéder à cette page."
 msgstr "Please log in to access to this page."
 
-#: app/__init__.py:68
+#: app/__init__.py:71
 msgid "Information :"
 msgstr "Information:"
 
-#: app/__init__.py:69
+#: app/__init__.py:72
 msgid "Succès :"
 msgstr "Success:"
 
-#: app/__init__.py:70
+#: app/__init__.py:73
 msgid "Attention :"
 msgstr "Caution:"
 
-#: app/__init__.py:71
+#: app/__init__.py:74
 msgid "Avertissement :"
 msgstr "Warning:"
+
+#: app/context.py:252 app/context.py:277
+msgid "Veuillez vous authentifier pour accéder à cette page."
+msgstr "Please log in to access to this page."
 
 #: app/auth/email.py:15
 msgid "[IntraRez] Réinitialisation du mot de passe"
@@ -62,25 +66,25 @@ msgstr "Password"
 msgid "Rester connecté"
 msgstr "Remember me"
 
-#: app/auth/forms.py:38 app/auth/routes.py:76
-#: app/templates/auth/register.html:59
+#: app/auth/forms.py:38 app/auth/routes.py:87
+#: app/templates/auth/auth_needed.html:22 app/templates/auth/register.html:59
 #: app/templates/auth/reset_password.html:29
-#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:83
-#: app/templates/devices/auth_needed.html:22
+#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:88
+#: app/templates/main/external_home.html:22
 msgid "Connexion"
 msgstr "Sign in"
 
 #: app/auth/forms.py:43 app/main/forms.py:14
-#: app/templates/cards/account.html:12 app/templates/cards/device.html:59
-#: app/templates/cards/device_modal.html:12
+#: app/templates/cards/account.html:18 app/templates/cards/device.html:73
+#: app/templates/cards/device_modal.html:15
 msgid "Nom"
 msgstr "Last name"
 
-#: app/auth/forms.py:45 app/templates/cards/account.html:14
+#: app/auth/forms.py:45 app/templates/cards/account.html:22
 msgid "Prénom"
 msgstr "First name"
 
-#: app/auth/forms.py:47 app/templates/cards/account.html:16
+#: app/auth/forms.py:47 app/templates/cards/account.html:26
 msgid "Promotion"
 msgstr "Promotion"
 
@@ -100,7 +104,7 @@ msgstr "Sign up"
 msgid "Envoyer le mail de réinitialisation"
 msgstr "Send reset mail"
 
-#: app/auth/forms.py:69 app/auth/routes.py:130
+#: app/auth/forms.py:69 app/auth/routes.py:143
 msgid "Nouveau mot de passe"
 msgstr "New password"
 
@@ -112,49 +116,53 @@ msgstr "New password (validation)"
 msgid "Valider"
 msgstr "Validate"
 
-#: app/auth/routes.py:46
+#: app/auth/routes.py:36 app/main/routes.py:95
+msgid "Accès à Internet"
+msgstr "Internet Access"
+
+#: app/auth/routes.py:57
 msgid "Compte créé avec succès !"
 msgstr "Account successfully created!"
 
-#: app/auth/routes.py:51
+#: app/auth/routes.py:62
 msgid "Nouveau compte"
 msgstr "New account"
 
-#: app/auth/routes.py:66
+#: app/auth/routes.py:77
 msgid "Nom d'utilisateur inconnu"
 msgstr "Unknown username"
 
-#: app/auth/routes.py:69
+#: app/auth/routes.py:80
 msgid "Mot de passe incorrect"
 msgstr "Wrong password"
 
-#: app/auth/routes.py:73 app/templates/devices/connect_check.html:50
+#: app/auth/routes.py:84 app/templates/main/connect_check.html:50
 msgid "Connecté !"
 msgstr "Connected!"
 
-#: app/auth/routes.py:84
+#: app/auth/routes.py:96
 msgid "Vous avez été déconnecté."
 msgstr "You have been signed out."
 
-#: app/auth/routes.py:99
+#: app/auth/routes.py:112
 msgid ""
 "Un email a été envoyé avec les instructions pour réinitialiser le mot de "
 "passe."
 msgstr "An email has benn send with password reset instructions."
 
-#: app/auth/routes.py:104
+#: app/auth/routes.py:117
 msgid "Mot de passe oublié"
 msgstr "Password Lost"
 
-#: app/auth/routes.py:111
+#: app/auth/routes.py:124
 msgid "Ce lien n'est pas utilisable en étant authentifié."
 msgstr "This link cannot be used by an authenticated user."
 
-#: app/auth/routes.py:117
+#: app/auth/routes.py:130
 msgid "Lien de réinitialisation invalide ou expiré."
 msgstr "Reset link invalid or expired."
 
-#: app/auth/routes.py:125
+#: app/auth/routes.py:138
 msgid "Le mot de passe a été réinitialisé avec succès."
 msgstr "Your password has been successfully reset."
 
@@ -170,104 +178,97 @@ msgstr "MAC address*"
 msgid "Type (optionnel)"
 msgstr "Type (optional)"
 
-#: app/devices/forms.py:18 app/devices/routes.py:148
+#: app/devices/forms.py:18 app/devices/routes.py:44
 msgid "Enregistrer l'appareil"
 msgstr "Register device"
 
-#: app/devices/forms.py:25 app/templates/cards/device.html:16
-#: app/templates/cards/device_modal.html:18
+#: app/devices/forms.py:25 app/templates/cards/device.html:23
+#: app/templates/cards/device_modal.html:25
 msgid "Adresse MAC"
 msgstr "MAC address"
 
-#: app/devices/forms.py:29 app/devices/routes.py:186
+#: app/devices/forms.py:29 app/devices/routes.py:80
 msgid "Transférer l'appareil"
 msgstr "Transfer device"
 
-#: app/devices/routes.py:111
-msgid "Bienvenue sur l'IntraRez !"
-msgstr "Welcome on the IntraRez!"
-
-#: app/devices/routes.py:129
+#: app/devices/routes.py:25
 msgid "Cet appareil est déjà enregistré !"
 msgstr "This device is already registered!"
 
-#: app/devices/routes.py:140
+#: app/devices/routes.py:36
 msgid "Appareil enregistré avec succès !"
 msgstr "Device successfully registered!"
 
-#: app/devices/routes.py:161
+#: app/devices/routes.py:57
 msgid "Cet appareil n'est pas encore enregistré !"
 msgstr "This device is not already registered!"
 
-#: app/devices/routes.py:164
+#: app/devices/routes.py:60
 msgid "Cet appareil vous appartient déjà !"
 msgstr "This device already belong to you!"
 
-#: app/devices/routes.py:169
+#: app/devices/routes.py:65
 msgid "Appareil transféré avec succès !"
 msgstr "Device successfully transfered!"
 
-#: app/devices/routes.py:200
+#: app/devices/routes.py:98
 msgid "Hmm, ça n'a pas marché..."
 msgstr "Hmm, it didn't work..."
 
-#: app/devices/routes.py:201
+#: app/devices/routes.py:99
 msgid "Non, toujours pas..."
 msgstr "No, still not..."
 
-#: app/devices/routes.py:202
+#: app/devices/routes.py:100
 msgid "Ah ! Ah non, non plus..."
 msgstr "Oh! Oh no, no more..."
 
-#: app/devices/routes.py:203
+#: app/devices/routes.py:101
 msgid "Nan mais quand ça veut pas, ça veut pas..."
 msgstr "You know, when it won't, it won't..."
 
-#: app/devices/routes.py:204
+#: app/devices/routes.py:102
 msgid "Ça va sinon ?"
 msgstr "How are you, btw?"
 
-#: app/devices/routes.py:205
+#: app/devices/routes.py:103
 msgid "Il ne va plus se passer grand chose, hein, je pense."
 msgstr "No much more to come, I think."
 
-#: app/devices/routes.py:206
+#: app/devices/routes.py:104
 msgid "Après on sait jamais, sur un malentendu..."
 msgstr "But you never know, on a misunderstanding..."
 
-#: app/devices/routes.py:207
+#: app/devices/routes.py:105
 msgid "zzzzzzzzzzzzzzzzzzzzzzzzz"
 msgstr "zzzzzzzzzzzzzzzzzzzzzzzzz"
 
-#: app/devices/routes.py:208
+#: app/devices/routes.py:106
 msgid "Attention, je vais commencer à dire des choses aléatoires."
 msgstr "Careful, I'll start saying random things."
 
-#: app/devices/routes.py:209
+#: app/devices/routes.py:107
 msgid "Je vous aurai prévenu !"
 msgstr "I'll have warned you!"
 
-#: app/devices/routes.py:220
+#: app/devices/routes.py:118
 msgid "Détection d'appareil impossible"
 msgstr "Device detection impossible"
 
-#: app/devices/routes.py:230
-msgid "Accès à Internet"
-msgstr "Internet Access"
-
-#: app/errors/handlers.py:21 app/templates/errors/403.html:8
+#: app/errors/handlers.py:20 app/errors/handlers.py:29
+#: app/templates/errors/401.html:8 app/templates/errors/403.html:8
 msgid "Accès restreint"
 msgstr "Access restricted"
 
-#: app/gris/routes.py:48
+#: app/gris/routes.py:17
 msgid "Liste des Rezidents"
 msgstr "Rezidents list"
 
-#: app/gris/routes.py:57
+#: app/gris/routes.py:25
 msgid "Darkstat network monitoring"
 msgstr "Darkstat network monitoring"
 
-#: app/gris/routes.py:66
+#: app/gris/routes.py:33
 msgid "Bandwidthd network monitoring"
 msgstr "Bandwidthd network monitoring"
 
@@ -291,51 +292,60 @@ msgstr "Message"
 msgid "Envoyer"
 msgstr "Send"
 
-#: app/main/routes.py:23 app/templates/base.html:169
-#: app/templates/errors/403.html:26 app/templates/errors/404.html:23
-#: app/templates/errors/other.html:17
+#: app/main/routes.py:21 app/templates/base.html:189
+#: app/templates/errors/401.html:29 app/templates/errors/403.html:26
+#: app/templates/errors/404.html:23 app/templates/errors/other.html:17
+#: app/templates/mails/base.html:61
 msgid "Accueil"
 msgstr "Home"
 
-#: app/main/routes.py:42
-msgid ""
-"Oh non ! Le message n'a pas pu être transmis. N'hésitez pas à contacter "
-"un GRI aux coordonnées en bas de page.<br/>(Type d'erreur : "
-msgstr ""
-"O no! The message could not be transmitted. Please feel free to reach GRI"
-" at the contact information below.<br/>(Error type: "
+#: app/main/routes.py:31
+msgid "Bienvenue sur l'IntraRez !"
+msgstr "Welcome on the IntraRez!"
 
-#: app/main/routes.py:49
+#: app/main/routes.py:43
+msgid "Le capctcha n'a pas pu être vérifié. Veuillez réessayer."
+msgstr "The capctcha could not be verified. Please try again."
+
+#: app/main/routes.py:54
 msgid "Message transmis !"
 msgstr "Message transmitted!"
 
-#: app/main/routes.py:52
+#: app/main/routes.py:57
+msgid ""
+"Oh non ! Le message n'a pas pu être transmis. N'hésitez pas à contacter "
+"un GRI aux coordonnées en bas de page.<br/>(Erreur : "
+msgstr ""
+"O no! The message could not be transmitted. Please feel free to reach GRI"
+" at the contact information below.<br/>(Error: "
+
+#: app/main/routes.py:64
 msgid "Contact"
 msgstr "Contact"
 
-#: app/main/routes.py:59 app/templates/base.html:188
+#: app/main/routes.py:72 app/templates/base.html:208
 msgid "Mentions légales"
 msgstr "Legal notice"
 
-#: app/main/routes.py:65
+#: app/main/routes.py:79
 msgid "Notes de mise à jour"
 msgstr "Changelog"
 
-#: app/main/routes.py:89
-msgid "Test"
-msgstr "Test"
-
-#: app/main/routes.py:95 app/templates/base.html:96
+#: app/main/routes.py:87 app/templates/base.html:114
 msgid "Profil"
 msgstr "Profile"
 
+#: app/main/routes.py:128
+msgid "Test"
+msgstr "Test"
+
 #: app/rooms/forms.py:14 app/templates/auth/register.html:13
-#: app/templates/cards/room.html:3 app/templates/cards/room.html:48
-#: app/templates/devices/connect_check.html:12
+#: app/templates/cards/room.html:5 app/templates/cards/room.html:62
 #: app/templates/devices/register.html:13
-#: app/templates/devices/transfer.html:13 app/templates/gris/rezidents.html:35
-#: app/templates/gris/rezidents.html:108 app/templates/gris/rezidents.html:172
-#: app/templates/main/contact.html:69 app/templates/rooms/register.html:13
+#: app/templates/devices/transfer.html:13 app/templates/gris/rezidents.html:37
+#: app/templates/gris/rezidents.html:111 app/templates/gris/rezidents.html:176
+#: app/templates/main/connect_check.html:12 app/templates/main/contact.html:83
+#: app/templates/rooms/register.html:13
 msgid "Chambre"
 msgstr "Room"
 
@@ -359,91 +369,118 @@ msgstr "Rental end date"
 msgid "Terminer la location"
 msgstr "Terminate rental"
 
-#: app/rooms/routes.py:38
+#: app/rooms/routes.py:30
 msgid "Vous avez déjà une location en cours !"
 msgstr "You already have a rental in progress!"
 
-#: app/rooms/routes.py:52
+#: app/rooms/routes.py:44
 msgid "Chambre enregistrée avec succès !"
 msgstr "Room successfully registered!"
 
-#: app/rooms/routes.py:70
+#: app/rooms/routes.py:62
 msgid "Nouvelle location"
 msgstr "New rental"
 
-#: app/rooms/routes.py:102 app/templates/cards/room.html:76
+#: app/rooms/routes.py:87 app/templates/cards/room.html:95
 msgid "Changer de chambre"
 msgstr "Change room"
 
-#: app/templates/auth/login.html:32 app/templates/base.html:89
-#: app/templates/devices/auth_needed.html:26
+#: app/templates/auth/auth_needed.html:27
+#: app/templates/auth/auth_needed.html:35 app/templates/auth/login.html:33
+#: app/templates/auth/login.html:41 app/templates/base.html:95
+#: app/templates/base.html:105
 msgid "Créer un compte"
 msgstr "Sign up"
 
-#: app/templates/base.html:102 app/templates/devices/transfer.html:42
+#: app/templates/auth/auth_needed.html:32 app/templates/auth/login.html:38
+#: app/templates/base.html:101
+msgid ""
+"La création de compte n'est possible que depuis le réseau local de la "
+"Rezidence."
+msgstr "Accounts can only be created from the Rezidence internal network."
+
+#: app/templates/base.html:120 app/templates/devices/transfer.html:42
 msgid "Déconnexion"
 msgstr "Sign out"
 
-#: app/templates/base.html:133 app/templates/cards/device_modal.html:8
-#: app/templates/cards/device_modal.html:51
-#: app/templates/gris/rezidents.html:155 app/templates/gris/rezidents.html:162
-#: app/templates/gris/rezidents.html:174 app/templates/gris/rezidents.html:181
-#: app/templates/gris/rezidents.html:195 app/templates/gris/rezidents.html:202
-#: app/templates/rooms/register.html:70
+#: app/templates/base.html:153 app/templates/cards/device_modal.html:10
+#: app/templates/cards/device_modal.html:67 app/templates/doas.html:5
+#: app/templates/gris/rezidents.html:159 app/templates/gris/rezidents.html:166
+#: app/templates/gris/rezidents.html:178 app/templates/gris/rezidents.html:185
+#: app/templates/gris/rezidents.html:199 app/templates/gris/rezidents.html:206
+#: app/templates/rooms/register.html:64
 msgid "Fermer"
 msgstr "Close"
 
-#: app/templates/base.html:162
+#: app/templates/base.html:182 app/templates/mails/base.html:54
 msgid "Version"
 msgstr "Version"
 
 #: app/templates/auth/reset_password_request.html:33
-#: app/templates/base.html:175 app/templates/devices/register.html:256
+#: app/templates/base.html:195 app/templates/devices/register.html:250
+#: app/templates/mails/base.html:67
 msgid "Nous contacter"
 msgstr "Contact us"
 
-#: app/templates/base.html:182
+#: app/templates/base.html:202
 msgid "Code source"
 msgstr "Source code"
 
-#: app/templates/doas.html:2
+#: app/templates/doas.html:3
 #, python-format
 msgid "Action réalisée en tant que %(doas)s"
 msgstr "Action done as %(doas)s"
+
+#: app/templates/auth/auth_needed.html:11
+msgid "Un compte est nécessaire pour enregistrer l'appareil et accéder au réseau."
+msgstr "An account is necessary to register the device and access the network."
+
+#: app/templates/auth/auth_needed.html:15
+msgid "Merci de créer un compte par personne souhaitant accéder au réseau."
+msgstr "Please create an account per person wishing to access the network."
+
+#: app/templates/auth/auth_needed.html:42
+#: app/templates/main/external_home.html:31
+msgid "En cas de problème, n'hésitez pas à "
+msgstr "If any problem, do not hesitate to "
+
+#: app/templates/auth/auth_needed.html:43
+#: app/templates/main/external_home.html:32
+msgid "nous contacter"
+msgstr "contact us"
 
 #: app/templates/auth/login.html:29
 msgid "Pas inscrit ?"
 msgstr "Not registered?"
 
-#: app/templates/auth/login.html:35
+#: app/templates/auth/login.html:46
 msgid "Mot de passe oublié ?"
 msgstr "Password lost?"
 
-#: app/templates/auth/login.html:38
+#: app/templates/auth/login.html:49
 msgid "Réinitialiser"
 msgstr "Reset"
 
-#: app/templates/auth/register.html:10 app/templates/cards/account.html:3
-#: app/templates/devices/connect_check.html:9
+#: app/templates/auth/register.html:10 app/templates/cards/account.html:5
 #: app/templates/devices/register.html:10
-#: app/templates/devices/transfer.html:10 app/templates/gris/rezidents.html:26
-#: app/templates/gris/rezidents.html:83 app/templates/gris/rezidents.html:153
-#: app/templates/rooms/register.html:10
+#: app/templates/devices/transfer.html:10 app/templates/gris/rezidents.html:28
+#: app/templates/gris/rezidents.html:85 app/templates/gris/rezidents.html:157
+#: app/templates/main/connect_check.html:9 app/templates/rooms/register.html:10
 msgid "Compte"
 msgstr "Account"
 
-#: app/templates/auth/register.html:16 app/templates/cards/device_modal.html:6
-#: app/templates/devices/connect_check.html:15
+#: app/templates/auth/register.html:16 app/templates/cards/device_modal.html:8
 #: app/templates/devices/register.html:16
-#: app/templates/devices/transfer.html:16 app/templates/gris/rezidents.html:126
+#: app/templates/devices/transfer.html:16 app/templates/gris/rezidents.html:130
+#: app/templates/main/connect_check.html:15
 #: app/templates/rooms/register.html:16
 msgid "Appareil"
 msgstr "Device"
 
-#: app/templates/auth/register.html:19
-#: app/templates/devices/connect_check.html:19
-#: app/templates/devices/register.html:19
-#: app/templates/devices/transfer.html:19 app/templates/rooms/register.html:19
+#: app/templates/auth/register.html:19 app/templates/devices/register.html:19
+#: app/templates/devices/transfer.html:19
+#: app/templates/main/connect_check.html:19
+#: app/templates/rooms/register.html:19
 msgid "Internet"
 msgstr "Internet"
 
@@ -460,166 +497,127 @@ msgstr "Got it back?"
 msgid "Adresse e-mail oubliée ? Autre soucis ?"
 msgstr "Forget your email? Other issue?"
 
-#: app/templates/cards/account.html:10
+#: app/templates/cards/account.html:14
 msgid "Identifiant"
 msgstr "ID"
 
-#: app/templates/cards/account.html:18
+#: app/templates/cards/account.html:30
 msgid "Email"
 msgstr "Mail"
 
-#: app/templates/cards/account.html:25 app/templates/cards/account.html:32
-#: app/templates/cards/device.html:100 app/templates/cards/device_modal.html:45
-#: app/templates/cards/room.html:68
+#: app/templates/cards/account.html:39 app/templates/cards/account.html:45
+#: app/templates/cards/device.html:114 app/templates/cards/device_modal.html:61
+#: app/templates/cards/room.html:87
 msgid "Fonctionnalité à venir"
 msgstr "Upcoming feature"
 
-#: app/templates/cards/account.html:27
+#: app/templates/cards/account.html:41
 msgid "Modifier une information"
 msgstr "Edit an information"
 
-#: app/templates/cards/account.html:34
+#: app/templates/cards/account.html:47
 msgid "Changer de mot de passe"
 msgstr "Change password"
 
-#: app/templates/cards/device.html:3 app/templates/gris/rezidents.html:44
-#: app/templates/gris/rezidents.html:192
+#: app/templates/cards/coming_soon.html:5
+msgid "À venir"
+msgstr "Coming soon"
+
+#: app/templates/cards/device.html:5 app/templates/gris/rezidents.html:46
+#: app/templates/gris/rezidents.html:196
 msgid "Appareils"
 msgstr "Devices"
 
-#: app/templates/cards/device.html:10
+#: app/templates/cards/device.html:15
 msgid "Appareil actuel"
 msgstr "Actual device"
 
-#: app/templates/cards/device.html:13 app/templates/cards/device_modal.html:15
+#: app/templates/cards/device.html:19 app/templates/cards/device_modal.html:20
 msgid "Type"
 msgstr "Type"
 
-#: app/templates/cards/device.html:19 app/templates/cards/device_modal.html:21
+#: app/templates/cards/device.html:27 app/templates/cards/device_modal.html:30
 msgid "IP attribuée"
 msgstr "Allocated IP"
 
-#: app/templates/cards/device.html:22 app/templates/cards/device_modal.html:24
+#: app/templates/cards/device.html:31 app/templates/cards/device_modal.html:35
 msgid "Enregistrement"
 msgstr "Register"
 
-#: app/templates/cards/device.html:28 app/templates/cards/device.html:62
-#: app/templates/cards/device_modal.html:30
-#: app/templates/gris/rezidents.html:53
+#: app/templates/cards/device.html:39 app/templates/cards/device.html:74
+#: app/templates/cards/device_modal.html:44
+#: app/templates/gris/rezidents.html:55
 msgid "Dernière connexion"
 msgstr "Last connection"
 
-#: app/templates/cards/device.html:35 app/templates/cards/device.html:76
-#: app/templates/cards/device_modal.html:37
+#: app/templates/cards/device.html:46 app/templates/cards/device.html:85
+#: app/templates/cards/device_modal.html:52
 msgid "Jamais"
 msgstr "Never"
 
-#: app/templates/cards/device.html:47
+#: app/templates/cards/device.html:62
 msgid "Autres appareils :"
 msgstr "Other devices:"
 
-#: app/templates/cards/device.html:85
+#: app/templates/cards/device.html:95
 msgid "Détails"
 msgstr "Details"
 
-#: app/templates/cards/device.html:102 app/templates/cards/device_modal.html:47
+#: app/templates/cards/device.html:116 app/templates/cards/device_modal.html:63
 msgid "Modifier l'appareil"
 msgstr "Edit device"
 
-#: app/templates/cards/device.html:108
+#: app/templates/cards/device.html:122
 msgid "Nouvel appareil"
 msgstr "New device"
 
-#: app/templates/cards/room.html:11
-msgid "Location actuelle"
-msgstr "Current rental"
+#: app/templates/cards/profile.html:5
+msgid "Mon profil"
+msgstr "My profile"
 
-#: app/templates/cards/room.html:14
-msgid "Depuis le"
-msgstr "From"
+#: app/templates/cards/profile.html:14
+msgid "Mon compte"
+msgstr "My account"
 
-#: app/templates/cards/room.html:18
-msgid "Jusqu'au"
-msgstr "To"
+#: app/templates/cards/profile.html:18
+msgid "Ma chambre"
+msgstr "My room"
 
-#: app/templates/cards/room.html:26
+#: app/templates/cards/profile.html:22
+msgid "Nombre d'appareils"
+msgstr "# of devices"
+
+#: app/templates/cards/profile.html:29
+msgid "Voir mon profil"
+msgstr "Go to my profile"
+
+#: app/templates/cards/room.html:17
 msgid "Aucune location actuellement. "
 msgstr "No rental at the moment. "
 
-#: app/templates/cards/room.html:36
+#: app/templates/cards/room.html:25
+msgid "Location actuelle"
+msgstr "Current rental"
+
+#: app/templates/cards/room.html:29
+msgid "Depuis le"
+msgstr "From"
+
+#: app/templates/cards/room.html:33
+msgid "Jusqu'au"
+msgstr "To"
+
+#: app/templates/cards/room.html:50
 msgid "Anciennes locations :"
 msgstr "Former rentals:"
 
-#: app/templates/cards/room.html:49
+#: app/templates/cards/room.html:63
 msgid "Période"
 msgstr "Dates"
 
-#: app/templates/cards/room.html:70
+#: app/templates/cards/room.html:89
 msgid "Modifier les dates"
 msgstr "Edit dates"
-
-#: app/templates/devices/auth_needed.html:11
-msgid "Un compte est nécessaire pour enregistrer l'appareil et accéder au réseau."
-msgstr "An account is necessary to register the device and access the network."
-
-#: app/templates/devices/auth_needed.html:15
-msgid "Merci de créer un compte par personne souhaitant accéder au réseau."
-msgstr "Please create an account per person wishing to access the network."
-
-#: app/templates/devices/auth_needed.html:31
-msgid "En cas de problème, n'hésitez pas à "
-msgstr "If any problem, do not hesitate to "
-
-#: app/templates/devices/auth_needed.html:32
-msgid "nous contacter"
-msgstr "contact us"
-
-#: app/templates/devices/connect_check.html:30
-msgid ""
-"C'est tout bon ! La passerelle va être configurée pour accorder l'accès à"
-" Internet à cet appareil."
-msgstr ""
-"All good! The gateway will be configure to grant access to the  Internet "
-"to this device."
-
-#: app/templates/devices/connect_check.html:34
-msgid ""
-"Cette opération peut prendre quelques minutes. Cette page indiquera "
-"automatiquement quand ce sera bon !"
-msgstr ""
-"This operation may take a few minutes. This page will show automatically "
-"when it's done!"
-
-#: app/templates/devices/connect_check.html:45
-msgid "Test de la connexion..."
-msgstr "Testing connection..."
-
-#: app/templates/devices/connect_check.html:54
-msgid "Accéder à Internet"
-msgstr "Access the Internet"
-
-#: app/templates/devices/connect_check.html:60
-msgid ""
-"Si il n'y a toujours rien après 10 minutes, essayez de débrancher / "
-"rebrancher l'appareil, puis de le redémarrer."
-msgstr ""
-"If there is still nothing after 10 minutes, try unplugging / replugging "
-"the device, then rebooting it."
-
-#: app/templates/devices/connect_check.html:64
-#: app/templates/devices/error.html:39
-msgid "Si le problème persiste, "
-msgstr "If the issue goes on, "
-
-#: app/templates/devices/connect_check.html:65
-#: app/templates/devices/error.html:40
-msgid "contactez-nous"
-msgstr "contact us"
-
-#: app/templates/devices/connect_check.html:66
-#: app/templates/devices/error.html:41
-msgid "pour voir ensemble comment résoudre ce problème."
-msgstr "so we can see together how to address this issue."
 
 #: app/templates/devices/error.html:11
 msgid ""
@@ -643,15 +641,27 @@ msgstr "Wait a litte and try again."
 msgid "Recharger la page"
 msgstr "Reload page"
 
+#: app/templates/devices/error.html:39 app/templates/main/connect_check.html:64
+msgid "Si le problème persiste, "
+msgstr "If the issue goes on, "
+
+#: app/templates/devices/error.html:40 app/templates/main/connect_check.html:65
+msgid "contactez-nous"
+msgstr "contact us"
+
+#: app/templates/devices/error.html:41 app/templates/main/connect_check.html:66
+msgid "pour voir ensemble comment résoudre ce problème."
+msgstr "so we can see together how to address this issue."
+
 #: app/templates/devices/error.html:44
 msgid "Code erreur :"
 msgstr "Error code:"
 
-#: app/templates/devices/register.html:37
+#: app/templates/devices/register.html:31
 msgid "Enregistrer un appareil lui permet de se connecter au réseau."
 msgstr "Register a device grants it access to the network."
 
-#: app/templates/devices/register.html:40
+#: app/templates/devices/register.html:34
 msgid ""
 "Il n'est pas obligatoire de le nommer, mais cela permet d'y voir plus "
 "clair si vous avez plusieurs appareils (téléphone et ordinateur, par "
@@ -660,7 +670,7 @@ msgstr ""
 "It is not mandatory to name it, but it makes it clearer if you have "
 "several devices (phone and computer, for example)."
 
-#: app/templates/devices/register.html:45
+#: app/templates/devices/register.html:39
 msgid ""
 "De même, le type d'appareil peut aider les GRI à comprendre ce qu'il se "
 "passe plus rapidement en cas de problème."
@@ -668,7 +678,7 @@ msgstr ""
 "Similarly, the type of device can help GRIs to understand what is going "
 "on more quickly in a problem occurs."
 
-#: app/templates/devices/register.html:71
+#: app/templates/devices/register.html:65
 msgid ""
 "*Si l'adresse MAC n'est pas détectée automatiquement, ou que vous "
 "souhaitez enregistrer manuellement un autre appareil, voici quelques "
@@ -678,11 +688,11 @@ msgstr ""
 "manually register another device, here is some information on how to find"
 " it:"
 
-#: app/templates/devices/register.html:82
+#: app/templates/devices/register.html:76
 msgid "Généralités"
 msgstr "General information"
 
-#: app/templates/devices/register.html:88
+#: app/templates/devices/register.html:82
 msgid ""
 "Chaque appareil est identifié par une <strong>adresse\n"
 "MAC</strong> (<em>Media Access Control</em>), ou adresse physique, qui "
@@ -701,7 +711,7 @@ msgstr ""
 "such an address. Your computer can even have several addresses, if "
 "different components can make it access to the Internet."
 
-#: app/templates/devices/register.html:94
+#: app/templates/devices/register.html:88
 msgid ""
 "Ces adresses ont une longeur de 6 octets (48 bits) et\n"
 "sont généralement représentées sous forme hexadécimale, en séparant les "
@@ -711,7 +721,7 @@ msgstr ""
 "These addresses are 6 bytes (48 bits) long and are usually represented in"
 " hexadecimal form, separating bytes with colons:"
 
-#: app/templates/devices/register.html:97
+#: app/templates/devices/register.html:91
 msgid ""
 "Contrairement à l'adresse IP, qui identifie votre\n"
 "point d'accès au réseau, votre adresse MAC n'est pas accessible depuis "
@@ -724,23 +734,23 @@ msgstr ""
 "detect it only thanks to a sleight-of-hand only feasible on a local "
 "network."
 
-#: app/templates/devices/register.html:101
+#: app/templates/devices/register.html:95
 msgid "Pour en savoir plus :"
 msgstr "For more information:"
 
-#: app/templates/devices/register.html:102
+#: app/templates/devices/register.html:96
 msgid "https://fr.wikipedia.org/wiki/Adresse_MAC"
 msgstr "https://en.wikipedia.org/wiki/MAC_address"
 
-#: app/templates/devices/register.html:104
+#: app/templates/devices/register.html:98
 msgid "Adresse MAC — Wikipédia</a>"
 msgstr "MAC address — Wikipedia"
 
-#: app/templates/devices/register.html:114
+#: app/templates/devices/register.html:108
 msgid "Windows"
 msgstr "Windows"
 
-#: app/templates/devices/register.html:121
+#: app/templates/devices/register.html:115
 msgid ""
 "Clic droit sur le <strong>Menu Démarrer</strong>\n"
 "> <strong>Invite de commandes</strong> (ou <kbd>Win</kbd> + <kbd>R</kbd> "
@@ -750,13 +760,13 @@ msgstr ""
 "Right-click on the <strong>Start Menu</strong> > <strong>Command "
 "Prompt</strong> (or <kbd>Win</kbd> + <kbd>R</kbd> then <code>cmd</code>)"
 
-#: app/templates/devices/register.html:125
+#: app/templates/devices/register.html:119
 msgid ""
 "Taper\n"
 "<strong><code>ipconfig /all</code></strong>"
 msgstr "Type <strong><code>ipconfig /all</code></strong>"
 
-#: app/templates/devices/register.html:127
+#: app/templates/devices/register.html:121
 msgid ""
 "Repérer la ligne <strong><code>Adresse\n"
 "physique</code></strong>. Si plusieurs interfaces s'affichent, repérer "
@@ -767,11 +777,11 @@ msgstr ""
 "several interfaces are shown, locate the one representing the Ethernet "
 "adapter or Wi-Fi adapter."
 
-#: app/templates/devices/register.html:139
+#: app/templates/devices/register.html:133
 msgid "Mac OS"
 msgstr "Mac OS"
 
-#: app/templates/devices/register.html:145
+#: app/templates/devices/register.html:139
 msgid ""
 "Contrairement à ce qu'on pourrait penser, il n'est pas\n"
 "particulièrement plus facile de trouver l'adresse MAC d'un Mac."
@@ -779,7 +789,7 @@ msgstr ""
 "Contrary to what one might think, it is not particularly easier to find "
 "the MAC address of a Mac."
 
-#: app/templates/devices/register.html:148
+#: app/templates/devices/register.html:142
 msgid ""
 "Menu <strong>Apple</strong> > <strong>Préférences\n"
 "système</strong> > <strong>Réseau</strong>"
@@ -787,22 +797,22 @@ msgstr ""
 "<strong>Apple</strong> Menu > <strong>System Preferences</strong> > "
 "<strong>Network</strong>"
 
-#: app/templates/devices/register.html:150
+#: app/templates/devices/register.html:144
 msgid "Pour les connexions sans-fil :"
 msgstr "For wireless connections:"
 
-#: app/templates/devices/register.html:152
+#: app/templates/devices/register.html:146
 msgid ""
 "Choisir <strong>AirPort</strong> /\n"
 "<strong>Wi-Fi</strong>"
 msgstr "Chose <strong>AirPort</strong> / <strong>Wi-Fi</strong>"
 
-#: app/templates/devices/register.html:154
-#: app/templates/devices/register.html:162
+#: app/templates/devices/register.html:148
+#: app/templates/devices/register.html:156
 msgid "Cliquer sur <strong>Avancé</strong>"
 msgstr "Click on <strong>Avanced</strong>"
 
-#: app/templates/devices/register.html:155
+#: app/templates/devices/register.html:149
 msgid ""
 "Repérer la ligne <strong>ID AirPort</strong>\n"
 "ou <strong>Adresse Wi-Fi</strong>"
@@ -810,27 +820,27 @@ msgstr ""
 "Locate the line <strong>AirPort ID</strong>\n"
 "or <strong>Wi-Fi Address</strong>"
 
-#: app/templates/devices/register.html:158
+#: app/templates/devices/register.html:152
 msgid "Pour les connexions filaires :"
 msgstr "For wired connections:"
 
-#: app/templates/devices/register.html:160
+#: app/templates/devices/register.html:154
 msgid ""
 "Choisir\n"
 "<strong>Ethernet intégré</strong>"
 msgstr "Chose <strong>Built-in Ethernet</strong>"
 
-#: app/templates/devices/register.html:163
+#: app/templates/devices/register.html:157
 msgid ""
 "Repérer la ligne\n"
 "<strong>ID Ethernet</strong>"
 msgstr "Locate the line <strong>Ethernet ID</strong>"
 
-#: app/templates/devices/register.html:175
+#: app/templates/devices/register.html:169
 msgid "Linux"
 msgstr "Linux"
 
-#: app/templates/devices/register.html:181
+#: app/templates/devices/register.html:175
 msgid ""
 "La méthode peut varier selon la distribution\n"
 "installée et sa version."
@@ -838,11 +848,11 @@ msgstr ""
 "The method may vary depending on the installed distribution and on its "
 "version"
 
-#: app/templates/devices/register.html:184
+#: app/templates/devices/register.html:178
 msgid "Ouvrir un terminal"
 msgstr "Open a terminal"
 
-#: app/templates/devices/register.html:185
+#: app/templates/devices/register.html:179
 msgid ""
 "Taper <strong><code>ifconfig</code></strong>\n"
 "<em>(ou <code>/sbin/ifconfig</code>)</em>"
@@ -850,7 +860,7 @@ msgstr ""
 "Type <strong><code>ifconfig</code></strong>\n"
 "<em>(or <code>/sbin/ifconfig</code>)</em>"
 
-#: app/templates/devices/register.html:187
+#: app/templates/devices/register.html:181
 msgid ""
 "Repérer la ligne <strong><code>ether</code>\n"
 "</strong> ou <strong><code>wlan</code></strong>. Si plusieurs interfaces\n"
@@ -863,17 +873,17 @@ msgstr ""
 "are shown, locate the one representing the Ethernet or Wi-Fi adapter us "
 "use."
 
-#: app/templates/devices/register.html:200
+#: app/templates/devices/register.html:194
 msgid "Android"
 msgstr "Android"
 
-#: app/templates/devices/register.html:206
+#: app/templates/devices/register.html:200
 msgid ""
 "La méthode exacte peut varier selon\n"
 "l'appareil."
 msgstr "The exact method may vary depending on the device."
 
-#: app/templates/devices/register.html:209
+#: app/templates/devices/register.html:203
 msgid ""
 "Ouvrir <strong>Paramètres</strong> (>\n"
 "<strong>Général</strong>)"
@@ -881,13 +891,13 @@ msgstr ""
 "Open <strong>Settings</strong> (>\n"
 "<strong>General</strong>)"
 
-#: app/templates/devices/register.html:211
+#: app/templates/devices/register.html:205
 msgid ""
 "Aller dans <strong>À propos</strong> (du\n"
 "téléphone)"
 msgstr "Go to <strong>About</strong> (the smartphone)"
 
-#: app/templates/devices/register.html:213
+#: app/templates/devices/register.html:207
 msgid ""
 "Repérer la ligne <strong>Adresse MAC</strong>,\n"
 "<strong>Adresse Wi-Fi</strong> (du téléphone) ou équivalent."
@@ -895,11 +905,11 @@ msgstr ""
 "Locate the line <strong>MAC Address</strong>,\n"
 "<strong>Wi-Fi Address</strong> (of the smartphone) or equivalent."
 
-#: app/templates/devices/register.html:224
+#: app/templates/devices/register.html:218
 msgid "iPhone"
 msgstr "iPhone"
 
-#: app/templates/devices/register.html:231
+#: app/templates/devices/register.html:225
 msgid ""
 "Ouvrir <strong>Paramètres</strong> >\n"
 "<strong>Général</strong>"
@@ -907,21 +917,21 @@ msgstr ""
 "Open <strong>Settings</strong> >\n"
 "<strong>General</strong>"
 
-#: app/templates/devices/register.html:233
+#: app/templates/devices/register.html:227
 msgid "Aller dans <strong>À propos</strong>"
 msgstr "Go to <strong>About</strong>"
 
-#: app/templates/devices/register.html:234
+#: app/templates/devices/register.html:228
 msgid ""
 "Repérer la ligne\n"
 "<strong>Adresse Wi-Fi</strong>."
 msgstr "Locate the line <strong>Wi-Fi Address</strong>."
 
-#: app/templates/devices/register.html:245
+#: app/templates/devices/register.html:239
 msgid "Autres appareils"
 msgstr "Other devices"
 
-#: app/templates/devices/register.html:251
+#: app/templates/devices/register.html:245
 msgid ""
 "De manière générale, l'adresse MAC est indiquée dans\n"
 "les informations système / matérielles de l'appareil. Il arrive aussi "
@@ -932,7 +942,7 @@ msgstr ""
 "information about the device. It can also be on on a sticker on the back "
 "of the device."
 
-#: app/templates/devices/register.html:254
+#: app/templates/devices/register.html:248
 msgid ""
 "N'hésitez pas à nous demander de l'aide si vous êtes\n"
 "bloqué :"
@@ -962,6 +972,41 @@ msgid ""
 " l'appareil :"
 msgstr "Otherwise, do not hesitate to switch to the account owning the device:"
 
+#: app/templates/errors/401.html:9
+msgid "Cette page n'est accessible que depuis la Rez."
+msgstr "This page can only be accessed from the Rezidence internal network."
+
+#: app/templates/errors/401.html:13
+msgid ""
+"Cette ressource n'est pas accessible depuis Internet, mais est réservée "
+"au réseau interne de la Rezidence."
+msgstr ""
+"This resource cannot be accesses from the Internet, but only from the "
+"Rezidence internal network."
+
+#: app/templates/errors/401.html:17
+msgid ""
+"Merci de réessayer en connectant votre appareil au réseau Ethernet. "
+"L'adresse <a href=\"http://10.0.0.1\">10.0.0.1</a> doit être accessible."
+msgstr ""
+"Please try again after connecting your device to the Ethernet network. "
+"The address <a href=\"http://10.0.0.1\">10.0.0.1</a> should be "
+"accessible."
+
+#: app/templates/errors/401.html:22
+msgid ""
+"Si cette page s'affiche en suivant un lien ou bouton interne au site, ou "
+"alors vous pensez être bien connecté depuis le réseau interne, n'hésitez "
+"pas à "
+msgstr ""
+"If you arrived to this page from an internal link or button, or if you "
+"think you are connected from the internal network, do not hesitate to "
+
+#: app/templates/errors/401.html:25 app/templates/errors/403.html:22
+#: app/templates/errors/404.html:19
+msgid "nous en informer"
+msgstr "report us about it"
+
 #: app/templates/errors/403.html:9
 msgid "Cette page est réservée aux GRIs."
 msgstr "This page is for GRIs only."
@@ -985,10 +1030,6 @@ msgid ""
 msgstr ""
 "If this page is shown after following an internal link or button, do not "
 "hesitate to "
-
-#: app/templates/errors/403.html:22 app/templates/errors/404.html:19
-msgid "nous en informer"
-msgstr "report us about it"
 
 #: app/templates/errors/404.html:8 app/templates/errors/other.html:8
 msgid "Oh non !"
@@ -1030,15 +1071,19 @@ msgstr "Monitoring (Darkstat)"
 msgid "Monitoring (Bandwidthd)"
 msgstr "Monitoring (Bandwidthd)"
 
-#: app/templates/gris/menu.html:21
+#: app/templates/gris/menu.html:22
+msgid "pgAdmin"
+msgstr "pgAdmin"
+
+#: app/templates/gris/menu.html:25
 msgid "À venir..."
 msgstr "Coming soon"
 
-#: app/templates/gris/rezidents.html:17
+#: app/templates/gris/rezidents.html:19
 msgid "ID"
 msgstr "ID"
 
-#: app/templates/gris/rezidents.html:95
+#: app/templates/gris/rezidents.html:97
 msgid "Aucune"
 msgstr "None"
 
@@ -1055,38 +1100,88 @@ msgid "sur GitHub"
 msgstr "on GitHub"
 
 #: app/templates/main/changelog.html:21
+msgid ""
+"L'IntraRez est maintenant utilisable depuis l'extérieur de la Rezidence, "
+"à l'adresse "
+msgstr ""
+"IntraRez is now available from the outside of the Rezidente, at address "
+
+#: app/templates/main/changelog.html:25
+msgid "(sauf pour la création de compte)."
+msgstr "(except for account creation)."
+
+#: app/templates/main/changelog.html:28
+msgid ""
+"L'utilisation du formulaire de contact depuis l'extérieur est maintenant "
+"soumise à un captcha."
+msgstr ""
+"Using the contact form from the outside is now subject to a captcha."
+
+#: app/templates/main/changelog.html:37
 msgid "Ajout du mécanisme de changement de chambre."
 msgstr "Added the room change mechanism."
 
-#: app/templates/main/changelog.html:24
+#: app/templates/main/changelog.html:40
 msgid "Ajout de l'adresse IP attribuée aux appareils dans le profil."
 msgstr "Added device allocated IP address to the Profile."
 
-#: app/templates/main/changelog.html:28
+#: app/templates/main/changelog.html:44
 msgid ""
 "Les GRI peuvent maintenant gérer les chambres et les appareils des "
 "Rezidents."
 msgstr "GRI can now manage Rezidents rooms and devices."
 
-#: app/templates/main/changelog.html:32
+#: app/templates/main/changelog.html:48
 msgid "Ajout de cette page."
 msgstr "Added this page."
 
-#: app/templates/main/changelog.html:40
+#: app/templates/main/changelog.html:56
 msgid ""
 "Ajout d'options GRI pour la gestion des Rezidents et la surveillance du "
 "réseau."
 msgstr "Added GRI options for Rezidents managements and network monitoring."
 
-#: app/templates/main/changelog.html:49
+#: app/templates/main/changelog.html:65
 msgid "Mise en place d'un portail captif pour simplifier la connexion au réseau."
 msgstr "Added a captive portal to make connection easier."
 
-#: app/templates/main/changelog.html:56
+#: app/templates/main/changelog.html:72
 msgid "Première version publique."
 msgstr "First public version."
 
-#: app/templates/main/contact.html:12
+#: app/templates/main/connect_check.html:30
+msgid ""
+"C'est tout bon ! La passerelle va être configurée pour accorder l'accès à"
+" Internet à cet appareil."
+msgstr ""
+"All good! The gateway will be configure to grant access to the  Internet "
+"to this device."
+
+#: app/templates/main/connect_check.html:34
+msgid ""
+"Cette opération peut prendre quelques minutes. Cette page indiquera "
+"automatiquement quand ce sera bon !"
+msgstr ""
+"This operation may take a few minutes. This page will show automatically "
+"when it's done!"
+
+#: app/templates/main/connect_check.html:45
+msgid "Test de la connexion..."
+msgstr "Testing connection..."
+
+#: app/templates/main/connect_check.html:54
+msgid "Accéder à Internet"
+msgstr "Access the Internet"
+
+#: app/templates/main/connect_check.html:60
+msgid ""
+"Si il n'y a toujours rien après 10 minutes, essayez de débrancher / "
+"rebrancher l'appareil, puis de le redémarrer."
+msgstr ""
+"If there is still nothing after 10 minutes, try unplugging / replugging "
+"the device, then rebooting it."
+
+#: app/templates/main/contact.html:20
 msgid ""
 "Pour toute question, remarque ou suggestion, n'hésitez pas à nous "
 "contacter :"
@@ -1094,23 +1189,23 @@ msgstr ""
 "If you have any question, comment or suggestion, please feel free to "
 "contact us:"
 
-#: app/templates/main/contact.html:51
+#: app/templates/main/contact.html:65
 msgid "Les GRIs"
 msgstr "The GRIs"
 
-#: app/templates/main/contact.html:71
+#: app/templates/main/contact.html:85
 msgid "Pas à la Rez"
 msgstr "Not in the Rez"
 
-#: app/templates/main/contact.html:84
+#: app/templates/main/contact.html:98
 msgid "Pas sur Messenger"
 msgstr "Not on Messenger"
 
-#: app/templates/main/contact.html:98
+#: app/templates/main/contact.html:112
 msgid "Pas sur Discord"
 msgstr "Not on Discord"
 
-#: app/templates/main/contact.html:106
+#: app/templates/main/contact.html:120
 #, python-format
 msgid ""
 "N'hésitez pas notemment à nous contacter pour nous rappeler de mettre à "
@@ -1118,6 +1213,24 @@ msgid ""
 msgstr ""
 "Please especially feel free to contact us to remind us to update this "
 "list. We'll 100 %% forget."
+
+#: app/templates/main/external_home.html:11
+msgid "Ce site à pour fonction de gérer la connexion à Internet à la Rez."
+msgstr ""
+"The purpose of this site is to manage connection to the Internet from the"
+" Rez."
+
+#: app/templates/main/external_home.html:15
+msgid ""
+"L'accès depuis l'extérieur n'est possible qu'après avoir créé un compte "
+"depuis le réseau interne (prises Ethernet murales)."
+msgstr ""
+"Access from outside is only possible after creating an account from the "
+"internal network (Ethernal wall plugs)."
+
+#: app/templates/main/external_home.html:26
+msgid "Visiter Internet"
+msgstr "Visit the Internet"
 
 #: app/templates/main/index.html:10 app/templates/main/test.html:5
 #, python-format
@@ -1135,38 +1248,6 @@ msgstr ""
 "you may have known is still in its infancy, and we have a lot of new "
 "features ideas that should be available soon."
 
-#: app/templates/main/index.html:23
-msgid "Une idée, un commentaire ? N'hésitez pas à "
-msgstr "An idea, a comment? Do not hesitate to "
-
-#: app/templates/main/index.html:24
-msgid "nous en faire part"
-msgstr "tell us about it"
-
-#: app/templates/main/index.html:31
-msgid "Mon profil"
-msgstr "My profile"
-
-#: app/templates/main/index.html:38
-msgid "Mon compte"
-msgstr "My account"
-
-#: app/templates/main/index.html:40
-msgid "Ma chambre"
-msgstr "My room"
-
-#: app/templates/main/index.html:42
-msgid "Nombre d'appareils"
-msgstr "# of devices"
-
-#: app/templates/main/index.html:49
-msgid "Voir mon profil"
-msgstr "Go to my profile"
-
-#: app/templates/main/index.html:56
-msgid "À venir"
-msgstr "Coming soon"
-
 #: app/templates/main/legal.html:11
 msgid "Ce site est créé, géré et hébergé par le club GRI – BDE ESPCI Paris - PSL."
 msgstr ""
@@ -1174,14 +1255,20 @@ msgstr ""
 "Paris - PSL."
 
 #: app/templates/main/legal.html:15
-msgid "Il n'est accessible que depuis le réseau interne."
-msgstr "It can only be accessed from the internal network."
+msgid ""
+"Il est accessible publiquement ; en revanche, les comptes ne peuvent être"
+" créés que depuis le réseau interne à la Résidence de l'École, et "
+"certaines fonctions ne sont pas accessibles depuis l'extérieur."
+msgstr ""
+"It is publicly accessible; however, accounts can only be created from the"
+" internal network of the school's residence, and some features are not "
+"available from the outer world."
 
-#: app/templates/main/legal.html:18
+#: app/templates/main/legal.html:21
 msgid "Contactez-nous"
 msgstr "Contact us"
 
-#: app/templates/main/legal.html:19
+#: app/templates/main/legal.html:22
 msgid "pour toute question relative à la gestion de vos données."
 msgstr "for every question about the management of your data."
 
@@ -1189,7 +1276,7 @@ msgstr "for every question about the management of your data."
 msgid "Salutations, inconnu !"
 msgstr "Greetings, stranger!"
 
-#: app/templates/rooms/register.html:37
+#: app/templates/rooms/register.html:31
 msgid ""
 "Merci de renseigner ta chambre actuelle, ainsi que le début de la "
 "location (approximativent)."
@@ -1197,20 +1284,20 @@ msgstr ""
 "Please fill in your current room, as well as the beginning of the rental "
 "period (approximately)."
 
-#: app/templates/rooms/register.html:41
+#: app/templates/rooms/register.html:35
 msgid "La date de fin n'est pas obligatoire."
 msgstr "The rental end date is not mandatory."
 
-#: app/templates/rooms/register.html:68
+#: app/templates/rooms/register.html:62
 msgid "Chambre déjà occupée !"
 msgstr "Room already rented!"
 
-#: app/templates/rooms/register.html:74
+#: app/templates/rooms/register.html:68
 #, python-format
 msgid "La chambre indiquée (%(num)d) est enregistrée comme déjà occupée !"
 msgstr "The indicated room (%(num)d) is registered as already occupied!"
 
-#: app/templates/rooms/register.html:79
+#: app/templates/rooms/register.html:73
 msgid ""
 "Soit vous venez de récupérer la chambre, auquel cas pas de panique, c'est"
 " simplement que l'ancien Rezident n'a pas signalé son départ. Validez "
@@ -1219,7 +1306,7 @@ msgstr ""
 "If you just got the room back, in which case don't panic, it's just that "
 "the former Rezident didn't report his departure. Validate without fear."
 
-#: app/templates/rooms/register.html:84
+#: app/templates/rooms/register.html:78
 msgid ""
 "Soit il s'agit d'une sous-location, auquel cas nous vous conseillons de "
 "voir avec le propriétaire pour plutôt qu'il enregistre votre appareil sur"
@@ -1230,7 +1317,7 @@ msgstr ""
 "rather register your device on its account. Without that, we will soon "
 "ask you to pay for the Internet connection."
 
-#: app/templates/rooms/register.html:90
+#: app/templates/rooms/register.html:84
 msgid ""
 "Soit il s'agit d'une colocation (ou autre cas de figure), auquel cas nous"
 " vous demendons d'utiliser un seul compte pour la chambre, au nom du "
@@ -1241,7 +1328,7 @@ msgstr ""
 "account for the room, in the name of the official room owner. Indeed, if "
 "you proceed, all devices previously registered will lose Internet access."
 
-#: app/templates/rooms/register.html:98
+#: app/templates/rooms/register.html:92
 msgid ""
 "N'essayez pas d'abuser du système ou de vous en servir à des fins peu "
 "recommendables ! Les GRI ouvrent l'œil, et vous n'avez pas envie de les "
@@ -1250,21 +1337,21 @@ msgstr ""
 "Do not try to abuse the system or use it for unsavory purposes! The GRI "
 "are keeping an eye on you, and you don't want to make them angry..."
 
-#: app/templates/rooms/register.html:106
+#: app/templates/rooms/register.html:100
 msgid "Modifier"
 msgstr "Edit"
 
-#: app/templates/rooms/register.html:109
+#: app/templates/rooms/register.html:103
 #, python-format
 msgid "Valider cette chambre (%(num)d)"
 msgstr "Validate this room (%(num)d)"
 
-#: app/templates/rooms/terminate.html:19
+#: app/templates/rooms/terminate.html:13
 #, python-format
 msgid "Mettre fin à ta location actuelle (chambre %(room)s) ?"
 msgstr "Terminate your current rental (room %(room)s)?"
 
-#: app/templates/rooms/terminate.html:22
+#: app/templates/rooms/terminate.html:16
 msgid ""
 "Cela permettra de déclarer une nouvelle location (ou non, en cas de "
 "départ de la résidence)."
@@ -1272,7 +1359,7 @@ msgstr ""
 "This will allow you to declare a new rental (or not, if leaving the "
 "residence)."
 
-#: app/templates/rooms/terminate.html:26
+#: app/templates/rooms/terminate.html:20
 msgid "Tes appareils risquent d'être déconnectés du réseau quelques instants."
 msgstr "Your devices may be disconnected a few instants."
 

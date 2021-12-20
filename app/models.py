@@ -3,6 +3,7 @@
 import time
 import datetime
 
+from dateutil import relativedelta
 import jwt
 import flask
 import flask_login
@@ -10,6 +11,8 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug import security as wzs
 
 from app import db
+from app.enums import *
+from app.tools import utils
 
 
 class Rezident(flask_login.UserMixin, db.Model):
@@ -34,8 +37,7 @@ class Rezident(flask_login.UserMixin, db.Model):
     is_gri = db.Column(db.Boolean(), nullable=False, default=False)
     _password_hash = db.Column(db.String(128))
 
-    devices = db.relationship("Device", back_populates="rezident",
-                              order_by="Device.id")
+    devices = db.relationship("Device", back_populates="rezident")
     rentals = db.relationship("Rental", back_populates="rezident")
 
     def __repr__(self):

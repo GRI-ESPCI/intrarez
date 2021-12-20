@@ -21,14 +21,12 @@
               rel="stylesheet" />
         {% endblock styles %}
 
-        {% if current_user.is_authenticated %}
-        {% if current_user.is_gri %}
+        {% if g.is_gri %}
         <link href="{{ url_for("static", filename="favicon_gri.png") }}"
               rel="icon" />
-        {% else %}
+        {% elif g.logged_in %}
         <link href="{{ url_for("static", filename="favicon_user.png") }}"
               rel="icon" />
-        {% endif %}
         {% else %}
         <link href="{{ url_for("static", filename="favicon.png") }}"
               rel="icon" />
@@ -38,6 +36,8 @@
         <!-- Bootstrap 5.0.2 Bundle with Popper (loaded asynchroniously) -->
         <script src="{{ url_for("static",
             filename="bower_components/bootstrap/dist/js/bootstrap.bundle.min.js") }}" defer></script>
+        <script src="{{ url_for("static", filename="js/tooltips.js") }}"
+                defer></script>
         {{ moment.include_moment(local_js=url_for("static",
             filename="bower_components/moment/min/moment-with-locales.min.js"))
         }}
@@ -52,64 +52,85 @@
           class="d-flex flex-column min-vh-100">
         {% block body %}
         {% block navbar %}
-        <nav class="navbar navbar-expand-sm navbar-light mb-4 py-0
+        <nav class="navbar navbar-expand-md navbar-light mb-4 py-0
                     bg-primary border-bottom border-2 border-secondary">
-            <div class="container-fluid ps-0">
-                <a class="navbar-brand p-0" href="{{ url_for("main.index") }}">
-                    <img src="{{ url_for("static", filename="img/gri.png") }}"
-                         width="80" height="80"
-                         class="d-inline-block m-0" alt="GRI">
-                    <span class="align-text-top">/&nbsp;<b>IntraRez</b></span>
-                </a>
-                <button class="navbar-toggler m-2" type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar navbar-collapse"
-                     id="navbarSupportedContent">
-                    <ul class="navbar-nav mx-auto mb-12 mb-1sm-0">
-                        {% if current_user.is_gri %}
-                        {% include "gris/menu.html" %}
-                        {% endif %}
-                    </ul>
-                    <ul class="navbar-nav ms-auto mb-12 mb-1sm-0">
-                        {% if current_user.is_anonymous %}
-                        <li class="nav-item">
-                            <a class="btn btn-outline-secondary mx-2 my-1"
-                               href="{{ url_for("auth.login") }}">
-                                {{ _("Connexion") }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-secondary mx-2 my-1"
-                               href="{{ url_for("auth.register") }}">
-                                {{ _("Créer un compte") }}
-                            </a>
-                        </li>
+        <div class="container-fluid ps-0">
+            <a class="navbar-brand p-0" href="{{ url_for("main.index") }}">
+                <img src="{{ url_for("static", filename="img/gri.png") }}"
+                        width="80" height="80"
+                        class="d-inline-block m-0" alt="GRI">
+                <span class="align-text-top">/&nbsp;<b>IntraRez</b></span>
+                {% if config.get("BRANCH") %}
+                <span class="badge rounded-pill bg-warning text-dark ms-2">
+                    {{ config["BRANCH"] }}
+                </span>
+                {% endif %}
+            </a>
+            <button class="navbar-toggler m-2" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar navbar-collapse"
+                 id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto mb-12 mb-1sm-0">
+                    {% if g.is_gri %}
+                    {% include "gris/menu.html" %}
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ms-auto mb-12 mb-1sm-0">
+                    {% if not g.logged_in %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-secondary mx-2 my-1"
+                           href="{{ url_for("auth.login") }}">
+                            {{ _("Connexion") }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% if g.internal %}
+                        <a class="btn btn-outline-secondary mx-2 my-1"
+                           href="{{ url_for("auth.register") }}">
+                            {{ _("Créer un compte") }}
+                        </a>
                         {% else %}
-                        <li class="nav-item">
-                            <a class="btn btn-outline-secondary mx-2 my-1"
-                               href="{{ url_for("main.profile") }}">
-                                {{ _("Profil") }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-secondary mx-2 my-1"
-                               href="{{ url_for("auth.logout") }}">
-                                {{ _("Déconnexion") }}
-                            </a>
-                        </li>
+                        <div class="d-inline-block mx-2 my-1"
+                             data-bs-toggle="tooltip"
+                             data-bs-placement="bottom"
+                             title="{{ _("La création de compte n'est "
+                                         "possible que depuis le réseau "
+                                         "local de la Rezidence.") }}">
+                            <button class="btn btn-outline-secondary" disabled>
+                                {{ _("Créer un compte") }}
+                            </button>
+                        </div>
                         {% endif %}
-                    </ul>
-                </div>
+                    </li>
+                    {% else %}      {# Utilisateur connecté #}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-secondary mx-2 my-1"
+                            href="{{ url_for("main.profile") }}">
+                            {{ _("Profil") }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-secondary mx-2 my-1"
+                            href="{{ url_for("auth.logout") }}">
+                            {{ _("Déconnexion") }}
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
+        </div>
         </nav>
         {% endblock navbar %}
         {% block content %}
         <div class="container">
+            {% if g.doas %}
+            <div class="row">{% include "doas.html" %}</div>
+            {% endif %}
             {% block app_content %}{% endblock app_content %}
         </div>
 
@@ -127,7 +148,6 @@
                     <strong class="me-auto">
                         {{ alert_labels[category] }}
                     </strong>
-                    <small></small>
                     <button type="button" class="btn-close"
                             data-bs-dismiss="toast"
                             aria-label="{{ _("Fermer") }}">

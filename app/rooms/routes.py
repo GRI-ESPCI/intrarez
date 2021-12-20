@@ -3,14 +3,12 @@
 import datetime
 
 import flask
-import flask_login
 from flask_babel import _
 
-from app import db
-from app.devices import check_device
-from app.models import Rezident, Room, Rental
+from app import context, db
+from app.models import Room, Rental
 from app.rooms import bp, forms
-from app.tools.utils import redirect_to_next, run_script
+from app.tools import utils
 
 
 @bp.before_app_first_request
@@ -23,20 +21,14 @@ def create_rez_rooms():
 
 
 @bp.route("/register", methods=["GET", "POST"])
-@check_device
+@context.all_good_only
 def register():
     """Room register page."""
-    doas = flask.request.args.get("doas", type=Rezident.query.get)
-    if doas and not flask_login.current_user.is_gri:
-        # Not authorized to do things as other rezidents!
-        flask.abort(403)
-    rezident = doas or flask_login.current_user
-
-    room = rezident.current_room
+    room = flask.g.rezident.current_room
     if room:
         # Already a room: abort
         flask.flash(_("Vous avez déjà une location en cours !"), "warning")
-        return redirect_to_next()
+        return utils.redirect_to_next()
 
     form = forms.RentalRegistrationForm()
     already_rented = None
@@ -44,14 +36,14 @@ def register():
         room = Room.query.get(form.room.data)
 
         def _register_room():
-            rental = Rental(rezident=rezident, room=room,
+            rental = Rental(rezident=flask.g.rezident, room=room,
                             start=form.start.data, end=form.end.data)
             db.session.add(rental)
             db.session.commit()
-            run_script("gen_dhcp.py")       # Update DHCP rules
+            utils.run_script("gen_dhcp.py")       # Update DHCP rules
             flask.flash(_("Chambre enregistrée avec succès !"), "success")
             # OK
-            return redirect_to_next()
+            return utils.redirect_to_next()
 
         if not room.current_rental:
             # No problem: register room
@@ -67,38 +59,30 @@ def register():
         already_rented = room.num
 
     return flask.render_template("rooms/register.html", form=form,
-                                 title=_("Nouvelle location"), doas=doas,
+                                 title=_("Nouvelle location"),
                                  already_rented=already_rented)
 
 
 @bp.route("/terminate", methods=["GET", "POST"])
-@check_device
+@context.all_good_only
 def terminate():
     """Room terminate page."""
-    doas = flask.request.args.get("doas", type=Rezident.query.get)
-    if doas and not flask_login.current_user.is_gri:
-        # Not authorized to do things as other rezidents!
-        flask.abort(403)
-    rezident = doas or flask_login.current_user
-
-    room = rezident.current_room
+    room = flask.g.rezident.current_room
     if not room:
         # No current rental: go to register
-        return flask.redirect(flask.url_for(
+        return utils.safe_redirect(
             "rooms.register",
-            doas=flask.request.args.get("doas"),
+            doas=flask.g.doas,
             next=flask.request.args.get("next"),
-        ))
+        )
 
     form = forms.RentalTransferForm()
     if form.validate_on_submit():
-        rental = rezident.current_rental
+        rental = flask.g.rezident.current_rental
         rental.end = form.end.data
         db.session.commit()
-        # Test if doas => redirect to room register
-        return redirect_to_next()
+        return utils.redirect_to_next()
 
     return flask.render_template("rooms/terminate.html", form=form,
                                  title=_("Changer de chambre"),
-                                 doas=doas, room=room.num,
-                                 today=datetime.date.today())
+                                 room=room.num, today=datetime.date.today())

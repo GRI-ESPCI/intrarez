@@ -16,15 +16,26 @@
          "réseau.") }}
 </p></div>
 <div class="row mt-3 mb-5">
-    <div>
+    <div class="col">
         <a class="btn btn-primary ms-3"
                 href="{{ url_for("auth.login", **request.args) }}">
             {{ _("Connexion") }}
         </a>
+        {% if g.internal %}
         <a class="btn btn-primary ms-5"
-                href="{{ url_for("auth.register", **request.args) }}">
+           href="{{ url_for("auth.register", **request.args) }}">
             {{ _("Créer un compte") }}
         </a>
+        {% else %}
+        <div class="d-inline-block ms-5" data-bs-toggle="tooltip"
+             data-bs-placement="right"
+             title="{{ _("La création de compte n'est possible que depuis "
+                         "le réseau local de la Rezidence.") }}">
+            <button class="btn btn-primary" disabled>
+                {{ _("Créer un compte") }}
+            </button>
+        </div>
+        {% endif %}
     </div>
 </div>
 <div class="row"><p>

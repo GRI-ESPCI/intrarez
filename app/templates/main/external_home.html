@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("Ce site à pour fonction de gérer la connexion à Internet à "
+         "la Rez.") }}
+</p></div>
+<div class="row"><p>
+    {{ _("L'accès depuis l'extérieur n'est possible qu'après avoir créé "
+         "un compte depuis le réseau interne (prises Ethernet murales).") }}
+</p></div>
+<div class="row mt-3 mb-5">
+    <div class="col">
+        <a class="btn btn-primary ms-3"
+                href="{{ url_for("auth.login", **request.args) }}">
+            {{ _("Connexion") }}
+        </a>
+        <a class="btn btn-success ms-5"
+           href="{{ url_for("main.rickroll") }}">
+            {{ _("Visiter Internet") }}
+        </a>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("En cas de problème, n'hésitez pas à ") }}
+    <a href="{{ url_for("main.contact") }}">{{ _("nous contacter") }}</a>.
+</p></div>
+
+{% endblock %}

@@ -1,13 +1,13 @@
 """Intranet de la Rez Flask App - Configuration"""
 
 import os
-import sys
 
 from dotenv import load_dotenv
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, ".env"))
+
 
 def get_or_die(name):
     """Check availability and get the value of an environment variable.
@@ -33,6 +33,10 @@ class Config():
 
     LANGUAGES = ["fr", "en"]
 
+    PREFERRED_URL_SCHEME = os.environ.get("PREFERRED_URL_SCHEME")
+    SERVER_NAME = os.environ.get("SERVER_NAME")
+    APPLICATION_ROOT = os.environ.get("APPLICATION_ROOT")
+
     SQLALCHEMY_DATABASE_URI = get_or_die("SQLALCHEMY_DATABASE_URI")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -41,11 +45,19 @@ class Config():
     MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS") is not None
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-    ADMINS = ["your-email@example.com"]
+    ADMINS = os.environ.get("ADMINS", "").split(";")
 
     ERROR_WEBHOOK = os.environ.get("ERROR_WEBHOOK")
     MESSAGE_WEBHOOK = os.environ.get("MESSAGE_WEBHOOK")
+    MAIL_WEBHOOK = os.environ.get("MAIL_WEBHOOK")
     GRI_ROLE_ID = os.environ.get("GRI_ROLE_ID")
+
+    GOOGLE_RECAPTCHA_SITEKEY = os.environ.get("GOOGLE_RECAPTCHA_SITEKEY")
+    GOOGLE_RECAPTCHA_SECRET = os.environ.get("GOOGLE_RECAPTCHA_SECRET")
+
+    BRANCH = os.environ.get("BRANCH")
+    FORCE_IP = os.environ.get("FORCE_IP")
+    FORCE_MAC = os.environ.get("FORCE_MAC")
 
     NETLOCS = os.environ.get("NETLOCS")
     if NETLOCS is not None:

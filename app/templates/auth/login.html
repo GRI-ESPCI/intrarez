@@ -27,10 +27,21 @@
 </div>
 <div class="row"><p>
     {{ _("Pas inscrit ?") }}
+    {% if g.internal %}
     <a class="btn btn-outline-primary ms-2"
        href="{{ url_for("auth.register", **request.args) }}">
         {{ _("Créer un compte") }}
     </a>
+    {% else %}
+    <span class="d-inline-block ms-2" data-bs-toggle="tooltip"
+         data-bs-placement="right"
+         title="{{ _("La création de compte n'est possible que depuis "
+                     "le réseau local de la Rezidence.") }}">
+        <button class="btn btn-outline-primary" disabled>
+            {{ _("Créer un compte") }}
+        </button>
+    </span>
+    {% endif %}
 </p><p>
     {{ _("Mot de passe oublié ?") }}
     <a class="btn btn-outline-secondary ms-2"

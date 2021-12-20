@@ -27,6 +27,7 @@ from werkzeug import urls as wku
 import wtforms
 
 from config import Config
+from app import enums
 from app.tools import loggers, utils
 
 
@@ -62,8 +63,10 @@ def create_app(config_class=Config):
     babel.init_app(app)
     app.jinja_env.add_extension("jinja2.ext.do")
     app.jinja_env.globals.update(**__builtins__)
+    app.jinja_env.globals.update(**{name: getattr(enums, name)
+                                    for name in enums.__all__})
     app.jinja_env.globals["__version__"] = __version__
-    app.jinja_env.globals["get_locale"] = get_locale
+    app.jinja_env.globals["get_locale"] = utils.get_locale
     app.jinja_env.globals["alert_labels"] = {
         "info": _l("Information :"),
         "success": _l("Succès :"),
@@ -107,9 +110,14 @@ def create_app(config_class=Config):
             return None
         if wku.url_parse(flask.request.url).netloc not in netlocs:
             # Requested URL not in netlocs: redirect
-            return flask.redirect(flask.url_for("main.index"))
+            return utils.safe_redirect("main.index")
         # Valid URL
         return None
+
+    # Set up custom context creation
+    # ! Keep import here to avoid circular import issues !
+    from app import context
+    app.before_request(context.create_request_context)
 
     # Set up custom logging
     @app.after_request
@@ -125,8 +133,10 @@ def create_app(config_class=Config):
                 msg = f"Served error page ({flask.request}: {response.status})"
 
             remote_ip = flask.request.headers.get("X-Real-Ip", "<unknown IP>")
-            if flask_login.current_user.is_authenticated:
+            if flask.g.logged_in:
                 user = repr(flask_login.current_user)
+                if flask.g.doas:
+                    user += f" AS {flask.g.rezident!r}"
             else:
                 user = "<anonymous>"
             msg += f" to {remote_ip} ({user})"
@@ -137,13 +147,7 @@ def create_app(config_class=Config):
 
 
 # Set up locale
-@babel.localeselector
-def get_locale():
-    """Get the application language prefered by the remote user."""
-    return flask.request.accept_languages.best_match(
-        flask.current_app.config["LANGUAGES"]
-    )
-
+babel.localeselector(utils.get_locale)
 
 # Import application models
 # ! Keep at the bottom to avoid circular import issues !

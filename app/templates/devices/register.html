@@ -3,7 +3,7 @@
 
 {% block app_content %}
 
-{% if not request.args.get("force") and not doas %}
+{% if not request.args.get("force") and not g.doas %}
 <div class="row mt-3 mb-5">
     <div class="col"><div class="progress registration-steps fs-5">
         <div class="progress-bar w-25 bg-success bg-gradient">
@@ -26,12 +26,6 @@
         <h1>{{ title }}</h1>
     </div>
 </div>
-
-{% if doas %}
-<div class="row">
-    {% include "doas.html" %}
-</div>
-{% endif %}
 
 <div class="row"><p>
     {{ _("Enregistrer un appareil lui permet de se connecter au réseau.") }}

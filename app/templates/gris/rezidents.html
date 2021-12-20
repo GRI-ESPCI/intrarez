@@ -4,6 +4,8 @@
 
 <script src="{{ url_for("static", filename="js/gris-rezidents.js") }}"
         defer></script>
+<script src="{{ url_for("static", filename="js/tooltips.js") }}"
+        defer></script>
 
 <div class="row mb-3">
     <div class="col">
@@ -61,7 +63,7 @@
         </tr></thead>
         <tbody id="rezidents-table">
         {% for user in users %}
-        <tr data-id="{{ str(user.id).ljust(4, '0') }}"
+        <tr data-id="{{ str(user.id).rjust(4, '0') }}"
             data-user="{{ user.full_name }}"
             data-room="{{ user.current_room.num if user.current_room else 0 }}"
             data-dev="{{ len(user.devices) }}"
@@ -100,10 +102,11 @@
                 </span>
                 <span class="ms-auto">
                     <button type="button" class="btn p-0 me-1 d-inline-block"
+                            {% if user.current_room or user.old_rentals %}
                             data-bs-target="#mo-room-{{ user.id }}"
                             data-bs-toggle="modal"
-                            {% if not user.current_room
-                               and not user.old_rentals %} disabled{% endif %}>
+                            {% else %} disabled
+                            {% endif %}>
                         <svg class="bi flex-shrink-0" width="24" height="24"
                                 role="img" aria-label="{{ _("Chambre") }}">
                             {{ bootstrap_icon("door-closed") }}
@@ -118,9 +121,10 @@
                 </span>
                 <span class="ms-auto">
                     <button type="button" class="btn p-0 me-1 d-inline-block"
+                            {% if user.current_device %}
                             data-bs-target="#mo-device-{{ user.id }}"
                             data-bs-toggle="modal"
-                            {% if not user.current_device %} disabled
+                            {% else %} disabled
                             {% endif %}>
                         <svg class="bi flex-shrink-0" width="24" height="24"
                                 role="img" aria-label="{{ _("Appareil") }}">
@@ -130,7 +134,7 @@
                 </span>
             </span></td>
 
-            <td colspan=2>
+            <td>
             {% if user.current_device %}
                 <span title="{{ user.current_device.last_seen }} UTC">
                 {{ moment(user.current_device.last_seen).format("LLL") }}
