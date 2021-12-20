@@ -5,16 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased - 2021-12-20
-
-# STILL TO DO
-
-  * Pay page
-  * Lydia integration
-  * Send mails [WIP]
-  * BDE roles to add payments?
-
-  * Send mail when terminating room (or transfer)
+## 1.4.0 - 2021-12-20
 
 # Added
 
@@ -36,26 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * New util function :func:`.utils.safe_redirect`;
   * New script ``mail_hook.py`` to report incoming mail to Discord with
     new configuration option ``MAIL_WEBHOOK``;
-
-  * New tables :class:`.models.Subscription`, :class:`.models.Payment` and
-    :class:`.models.Offer` to handle payments (see bottom left part of
-    https://dbdiagram.io/d/60f9d116b7279e412336e4c1);
-  * New convenient properties :meth:`~.models.Rezident.current_subscription`,
-    :meth:`~.models.Rezident.old_subscriptions`,
-    :meth:`~.models.Rezident.computed_sub_state` and
-    :meth:`~.models.Rezident.add_first_subscription`;
-  * New blueprint ``payments`` with email support:
-      * New page ``payments.main`` with informations about subscription and
-        subscriptions history (added to navbar);
-  * First offer automatically subscribed on first device add;
-  * Added payments info card to index;
-  * Added data Enums handling in ``app/enums.py`` and
-    :class:`.enums.SubState` for subscription states;
-  * New script ``update_sub_state`` to be called every day to update
-    Rezidents subscription state;
   * New template ``templates/mails/base.html`` for emails HTML content;
   * Added dev branch display and setup in ``.env``;
-  * New package requirement: ``python-dateutil``, ``premailer``.
+  * New package requirements: ``python-dateutil``, ``premailer``.
 
 # Changed
 
@@ -66,7 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Removed :func:`.app.devices.check_device`, :func:`.app.devices.get_mac`
     and :func:`.app.gris.gris_only` in favor of :mod:`context`;
   * GRI pages do not require device check anymore;
-
   * Moved admin addresses configuration from ``config.py`` to ``.env``.
   * Moved :func:`get_locale` from ``__init__.py`` to ``tools/utils.py``,
     and added it to Jinja env;
