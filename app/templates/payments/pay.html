@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% import "_form.html" as wtf %}
 
+{% block scripts %}
+{{ super() }}
+<script src={{ url_for("static", filename="js/payments-pay.js")}}
+        defer></script>
+{% endblock %}
+
 {% block app_content %}
 
 <div class="row mb-3">
@@ -9,8 +15,138 @@
     </div>
 </div>
 
-<div class="row"><p>
-    {{ _("Merci de nous donner tout ton argent") }}
-</p></div>
+<div class="row mb-3">
+    <div class="col">
+        <h2>{{ _("Offre") }}</h2>
+    </div>
+</div>
+<div class="row mb-4 gy-3">
+    {% for offer in offers %}
+    <div class="col">
+
+        <div class="card o-card bg-pc5 border-pc4 border-2 h-100 mx-auto"
+             id="card_offer_{{ offer.slug }}" name="offer_card">
+            <div class="card-body d-flex align-items-center">
+                <h3 class="card-title me-auto my-0">{{ offer.name }}</h3>
+                <h3 class="card-title my-0">{{ offer.price_format }}</h3>
+            </div>
+            <div class="card-body h-100">{{ offer.description }}</div>
+            <div class="card-body text-center">
+                <button class="btn btn-outline-secondary mb-2"
+                        onclick="chose_offer('{{ offer.slug }}');"
+                        id="offer_button_{{ offer.slug }}" name="offer_button"
+                        data-price="{{ offer.price_format }}">
+                    {{ _("Choisir cette offre") }}
+                </button>
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row mb-3 mt-5" id="methods_header" hidden>
+    <div class="col">
+        <h2>{{ _("Mode de paiement") }}</h2>
+    </div>
+</div>
+<div class="row mb-4 gy-3" id="methods_row" hidden>
+    <div class="col">
+
+        <div class="card o-card bg-pc5 border-pc4 border-2 h-100 mx-auto"
+             id="card_method_lydia" name="method_card">
+            <div class="card-body d-flex align-items-center">
+                <h3 class="card-title me-auto my-0">{{ _("Lydia / CB") }}</h3>
+                <svg class="flex-shrink-0 me-2" width="36" height="36" role="img">
+                    <use href="{{
+                            url_for("static", filename="svg/lydia.svg")
+                        }}#lydia" />
+                </svg>
+                <svg class="bi flex-shrink-0" width="36" height="36" role="img">
+                    {{ bootstrap_icon("credit-card") }}
+                </svg>
+            </div>
+            <div class="card-body h-100">
+                {{ _("Via <strong>Lydia</strong>, la célèbre solution de "
+                     "paiement en ligne. Si vous n'avez pas de compte Lydia, "
+                     "vous pouvez payer <strong>par carte bancaire</strong> "
+                     "via cette option, de manière 100 %% sécurisée, en "
+                     "quelques clics et sans créer de compte.") }}
+            </div>
+            <div class="card-body text-center">
+                <button class="btn btn-outline-secondary mb-2"
+                        onclick="chose_method('lydia');"
+                        id="method_button_lydia" name="method_button"
+                        data-phrase="{{ _("Payer [] avec Lydia") }}">
+                    {{ _("Payer avec Lydia") }}
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <div class="col">
+
+        <div class="card o-card bg-pc5 border-pc4 border-2 h-100 mx-auto"
+             id="card_method_transfer" name="method_card">
+            <div class="card-body d-flex align-items-center">
+                <h3 class="card-title me-auto my-0">{{ _("Virement" )}}</h3>
+                <svg class="bi flex-shrink-0" width="36" height="36" role="img">
+                    {{ bootstrap_icon("bank2") }}
+                </svg>
+            </div>
+            <div class="card-body h-100">
+                {{ _("Par <strong>virement bancaire</strong>, au RIB précisé "
+                "lors du paiement. Comptez quelques jours de délai "
+                "avant validation de la transaction.") }}
+            </div>
+            <div class="card-body text-center mt-auto">
+                <button class="btn btn-outline-secondary mb-2"
+                        onclick="chose_method('transfer');"
+                        id="method_button_transfer" name="method_button"
+                        data-phrase="{{ _("Payer [] par virement") }}">
+                    {{ _("Payer par virement") }}
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <div class="col">
+
+        <div class="card o-card bg-pc5 border-pc4 border-2 h-100 mx-auto"
+             id="card_method_cash" name="method_card">
+            <div class="card-body d-flex align-items-center">
+                <h3 class="card-title me-auto my-0">{{ _("Espèces") }}</h3>
+                <svg class="bi flex-shrink-0" width="36" height="36" role="img">
+                    {{ bootstrap_icon("cash-coin") }}
+                </svg>
+            </div>
+            <div class="card-body h-100">
+                {{ _("En <strong>espèces</strong> ou autre, directement "
+                "auprès d'un GRI. Suivez les instructions lors du "
+                "paiement.") }}
+            </div>
+            <div class="card-body text-center">
+                <button class="btn btn-outline-secondary mb-2"
+                        onclick="chose_method('cash');"
+                        id="method_button_cash" name="method_button"
+                        data-phrase="{{ _("Payer [] en main propre") }}">
+                    {{ _("Payer en main propre") }}
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row mb-3 mt-5" id="pay_header" hidden>
+    <div class="col">
+        <h2>{{ _("Validation") }}</h2>
+    </div>
+</div>
+<div class="row mb-3" id="pay_row" hidden>
+    <div class="col text-center">
+        <a href="#" class="btn btn-primary" id="pay_button">[TBD]</a>
+    </div>
+</div>
 
 {% endblock %}

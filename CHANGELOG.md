@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # STILL TO DO
 
-  * Pay page
+  * Methods pay pages
   * Lydia integration
   * Send mails [WIP]
   * BDE roles to add payments?
@@ -23,17 +23,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     https://dbdiagram.io/d/60f9d116b7279e412336e4c1);
   * New convenient properties :meth:`~.models.Rezident.current_subscription`,
     :meth:`~.models.Rezident.old_subscriptions`,
-    :meth:`~.models.Rezident.computed_sub_state` and
-    :meth:`~.models.Rezident.add_first_subscription`;
+    :meth:`~.models.Rezident.computed_sub_state`,
+    :meth:`~.models.Rezident.add_first_subscription` and
+    :meth:`~.models.Rezident.first_seen`;
   * New blueprint ``payments`` with email support:
       * New page ``payments.main`` with informations about subscription and
         subscriptions history (added to navbar);
-  * First offer automatically subscribed on first device add;
+      * New page ``payments.pay`` where Rezidents can chose an offer and a
+        payment method.
+  * First offer automatically subscribed if necessary during context creation;
   * Added payments info card to index;
+  * Added Rezidents subscription state to GRI rezidents list;
   * Added data Enums handling in ``app/enums.py`` and
     :class:`.enums.SubState` for subscription states;
   * New script ``update_sub_state`` to be called every day to update
     Rezidents subscription state;
+
+# Changed
+
+  * Current device shown in Profile for an external request is now a special
+    peseudo-device with external IP;
+  * :meth:`~.models.Rezident.other_devices` now inludes current device if the
+    request is not made internally, from this device.
+
+# Fixed
+
+  * Error report crashed if the error occured too early (before setting up
+    custom request context);
+
+
+## 1.4.1 - 2021-12-21
+
+# Fixed
+
+  * Error report crashed if the error occured too early (before setting up
+    custom request context);
+  * "Visit the Internet" button did not work.
 
 
 ## 1.4.0 - 2021-12-20

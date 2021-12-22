@@ -111,7 +111,7 @@ def create_app(config_class=Config):
             return None
         if wku.url_parse(flask.request.url).netloc not in netlocs:
             # Requested URL not in netlocs: redirect
-            return utils.safe_redirect("main.index")
+            return flask.redirect(flask.url_for("main.index"))
         # Valid URL
         return None
 
@@ -134,12 +134,14 @@ def create_app(config_class=Config):
                 msg = f"Served error page ({flask.request}: {response.status})"
 
             remote_ip = flask.request.headers.get("X-Real-Ip", "<unknown IP>")
-            if flask.g.logged_in:
-                user = repr(flask_login.current_user)
-                if flask.g.doas:
-                    user += f" AS {flask.g.rezident!r}"
-            else:
-                user = "<anonymous>"
+            user = "<anonymous>"
+            try:
+                if flask.g.logged_in:
+                    user = repr(flask_login.current_user)
+                    if flask.g.doas:
+                        user += f" AS {flask.g.rezident!r}"
+            except AttributeError:
+                pass
             msg += f" to {remote_ip} ({user})"
             app.logger.info(msg)
         return response

@@ -35,8 +35,12 @@
         {% block scripts %}
         <!-- Bootstrap 5.0.2 Bundle with Popper (loaded asynchroniously) -->
         <script src="{{ url_for("static",
-            filename="bower_components/bootstrap/dist/js/bootstrap.bundle.min.js") }}" defer></script>
+                                filename="bower_components/bootstrap/dist/"
+                                         + "js/bootstrap.bundle.min.js") }}"
+                defer></script>
         <script src="{{ url_for("static", filename="js/tooltips.js") }}"
+                defer></script>
+        <script src="{{ url_for("static", filename="js/toasts.js") }}"
                 defer></script>
         {{ moment.include_moment(local_js=url_for("static",
             filename="bower_components/moment/min/moment-with-locales.min.js"))
@@ -169,8 +173,6 @@
             </div>
             {% endfor %}
         </div>
-        <script src="{{ url_for("static", filename="js/toasts.js") }}" defer>
-        </script>
         {% endif %}
         {% endwith %}
 

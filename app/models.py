@@ -57,6 +57,14 @@ class Rezident(flask_login.UserMixin, db.Model):
         return f"{self.prenom} {self.nom}"
 
     @property
+    def first_seen(self):
+        """:class:`.datetime.datetime`: The first time the rezident registered
+        a device, or ``None``."""
+        if not self.devices:
+            return None
+        return min(device.registered for device in self.devices)
+
+    @property
     def current_device(self):
         """:class:`.Device`: The rezidents's last seen device, or ``None``."""
         if not self.devices:
@@ -73,12 +81,22 @@ class Rezident(flask_login.UserMixin, db.Model):
 
     @property
     def other_devices(self):
-        """:class:`list[Device]`: The rezidents's non-current devices.
+        """:class:`list[Device]`: The rezidents's non-current* devices.
 
         Sorted from most recently seen to latest seen.
+
+        *If the rezident's "current_device" is not the device currently
+        making the request (connection from outside/GRIs list), it is
+        included in this list.
         """
-        return sorted(self.devices, key=lambda device: device.last_seen_time,
-                      reverse=True)[1:]
+        all = sorted(self.devices, key=lambda device: device.last_seen_time,
+                     reverse=True)
+        if flask.g.internal and self == flask.g.rezident:
+            # Really connected from current device: exclude it from other
+            return all[1:]
+        else:
+            # Connected from outside/an other device: include it
+            return all
 
     @property
     def current_rental(self):
@@ -154,10 +172,16 @@ class Rezident(flask_login.UserMixin, db.Model):
         else:
             return SubState.subscribed
 
-    def add_first_subscription(self):
-        """"Add subscription to first offer (free month)."""
+    def add_first_subscription(self, start=None):
+        """"Add subscription to first offer (free month).
+
+        The subscription starts the day the Rezident registered its first
+        device (usually today), and ends today.
+        """
+        start = (self.first_seen.date() if self.devices
+                 else datetime.date.today())
         sub = Subscription(rezident=self, offer=Offer.first_offer(),
-                           payment=None, start=datetime.date.today(),
+                           payment=None, start=start,
                            end=datetime.date.today())
         db.session.add(sub)
         self.sub_state = SubState.trial
@@ -470,7 +494,7 @@ class Offer(db.Model):
     description_fr = db.Column(db.String(2000))
     description_en = db.Column(db.String(2000))
     price = db.Column(db.Numeric(6, 2, asdecimal=False))
-    created = db.Column(db.DateTime(), nullable=False)
+    visible = db.Column(db.Boolean(), nullable=False, default=True)
     active = db.Column(db.Boolean(), nullable=False, default=True)
 
     subscriptions = db.relationship("Subscription", back_populates="offer")
@@ -478,6 +502,13 @@ class Offer(db.Model):
     def __repr__(self):
         """Returns repr(self)."""
         return f"<Offer '{self.slug}'>"
+
+    @property
+    def price_format(self):
+        famt = format(self.price, ".2f")
+        if utils.get_locale() == "fr":
+            famt = famt.replace(".", ",")
+        return flask.Markup(f"{famt}&nbsp;€")
 
     @property
     def name(self):
@@ -531,4 +562,6 @@ class Offer(db.Model):
                            "connect for the first time!",
             price=0.0,
             created=datetime.datetime.now(),
+            visible=False,
+            active=True,
         )

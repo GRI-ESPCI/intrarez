@@ -2,9 +2,6 @@
 
 {% block app_content %}
 
-<script src="{{ url_for("static", filename="js/tooltips.js") }}"
-        defer></script>
-
 <div class="row mb-3">
     <div class="col">
         <h1>{{ title }}</h1>
@@ -109,12 +106,6 @@
     {% endwith %}
 </div>
 
-<div class="row mt-3 mb-2 gx-5">
-    <div class="col-7">
-    </div>
-    <div class="col mt-auto">
-    </div>
-</div>
 <div class="row cols-1 cols-lg-2 gx-5 mb-4">
     <div class="col-auto col-lg-7">
         <h2 class="mb-3">{{ _("Fonctionnement") }}</h2>
@@ -209,7 +200,7 @@
             <th scope="col">{{ _("Paiement") }}</th>
         </tr>
     </thead>
-    <tbody id="rezidents-table">
+    <tbody>
         {% for sub in subscriptions %}
         <tr>
             <td>{{ sub.id }}</td>
@@ -221,8 +212,8 @@
                             data-bs-target="#mo-offer-{{ sub.offer.slug }}"
                             data-bs-toggle="modal">
                         <svg class="bi flex-shrink-0" width="24" height="24"
-                             role="img" aria-label="{{ _("Compte") }}">
-                                {{ bootstrap_icon("clipboard-plus") }}
+                             role="img" aria-label="{{ _("Offre") }}">
+                                {{ bootstrap_icon("clipboard") }}
                         </svg>
                     </button>
                 </span>

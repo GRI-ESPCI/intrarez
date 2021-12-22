@@ -21,6 +21,11 @@ a[target="_blank"]::after {
     width: 22rem;
 }
 
+/* Offer */
+.o-card {
+    width: 19rem;
+}
+
 /* Textarea */
 .lines-6 {
     height: 150px !important;

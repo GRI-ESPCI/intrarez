@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% import "_form.html" as wtf %}
 
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for("static", filename="js/rooms-register.js") }}"
+        defer></script>
+{% endblock %}
+
 {% block app_content %}
 
 {% if not request.args.get("force") and not g.doas %}
@@ -106,8 +112,6 @@
     </div>
 </div>
 </div>
-<script src="{{ url_for("static", filename="js/rooms-register.js") }}" defer>
-</script>
 {% endif %}
 
 {% endblock %}

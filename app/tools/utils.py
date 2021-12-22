@@ -40,6 +40,8 @@ def safe_redirect(endpoint, **params):
 
     if "next" not in params:
         params["next"] = flask.request.endpoint
+    elif params["next"] is None:
+        del params["next"]
     if flask.g.doas and "doas" not in params:
         params["doas"] = flask.g.rezident.id
 

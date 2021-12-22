@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block card_table %}
+{% if g.internal and user == g.rezident %}
 {% with device = user.current_device %}
 <tr>
     <th scope="row" class="ps-4">{{ _("Appareil actuel") }}</th>
@@ -48,6 +49,20 @@
     </td>
 </tr>
 {% endwith %}
+{% else %}          {# if not g.internal #}
+<tr>
+    <th scope="row" class="ps-4">{{ _("Appareil actuel") }}</th>
+    <td class="text-break">{{ _("[Connexion extérieure]") }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Adresse MAC") }}</th>
+    <td class="text-break">{{ _("(inconnue)") }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("IP distante") }}</th>
+    <td class="text-break">{{ g.remote_ip }}</td>
+</tr>
+{% endif %}
 {% endblock %}
 
 {% block card_prefooter %}
@@ -59,7 +74,8 @@
                 type="button" data-bs-toggle="collapse"
                 data-bs-target="#coll-dev-h" aria-expanded="true"
                 aria-controls="coll-dev-h">
-            {{ _("Autres appareils :") }}&nbsp;
+            {{ _("Autres appareils :") if g.internal and user == g.rezident
+              else _("Appareils :") }}&nbsp;
             <strong>{{ len(user.other_devices) }}</strong>
         </button>
     </h3>

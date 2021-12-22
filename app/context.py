@@ -114,8 +114,8 @@ def create_request_context():
             return utils.safe_redirect("devices.error", reason="ip")
 
     # Get MAC
-    g.mac = False and flask.current_app.config["FORCE_MAC"] or _get_mac(g.remote_ip)
-    g.internal = bool(g.mac)
+    g.mac = flask.current_app.config["FORCE_MAC"] or _get_mac(g.remote_ip)
+    g.internal = False and bool(g.mac)
     if not g.internal and not g.all_good:
         g.redemption_endpoint = "main.external_home"
 
@@ -129,30 +129,38 @@ def create_request_context():
         g.all_good = False
         g.redemption_endpoint = "rooms.register"
 
-    if not g.internal:
-        # All further checks need an internal user
-        return None
+    if g.internal:
+        # Get device
+        g.device = Device.query.filter_by(mac_address=g.mac).first()
+        if g.device:
+            g.device.update_last_seen()
+        else:
+            if g.all_good:
+                # Internal but device not registered: must register
+                g.all_good = False
+                g.redemption_endpoint = "devices.register"
+                g.redemption_params = {"mac": g.mac}
+            # Last check need a device
+            return None
 
-    # Get device
-    g.device = Device.query.filter_by(mac_address=g.mac).first()
-    if g.device:
-        g.device.update_last_seen()
-    else:
-        if g.all_good:
-            # Internal but device not registered: must register
+        # Check device owner
+        g.own_device = (g.rezident == g.device.rezident)
+        if g.all_good and not g.own_device:
+            # Internal, device but not owned: must transfer
             g.all_good = False
-            g.redemption_endpoint = "devices.register"
+            g.redemption_endpoint = "devices.transfer"
             g.redemption_params = {"mac": g.mac}
-        # Last check need a device
+            return None
+
+    # Check at least one device
+    if g.all_good and not g.rezident.devices:
+        g.all_good = False
+        g.redemption_endpoint = "devices.register"
         return None
 
-    # Check device owner
-    g.own_device = (g.rezident == g.device.rezident)
-    if g.all_good and not g.own_device:
-        # Internal, device but not owned: must transfer
-        g.all_good = False
-        g.redemption_endpoint = "devices.transfer"
-        g.redemption_params = {"mac": g.mac}
+    # Add first subscription if necessary
+    if g.all_good and not g.rezident.current_subscription:
+        g.rezident.add_first_subscription()
 
     # All set!
     return None

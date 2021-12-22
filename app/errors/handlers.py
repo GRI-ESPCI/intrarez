@@ -51,7 +51,12 @@ def other_error(error):
         code = 500
         err_name = "Python Exception"
         err_descr = "A Python exception stopped the execution of the request."
-        if flask.g.is_gri:
+        try:
+            is_gri = flask.g.is_gri
+        except AttributeError:
+            # Very early error
+            is_gri = False
+        if is_gri:
             # GRI: show traceback
             tb = str(flask.escape(traceback.format_exc()))
             tb = flask.Markup(tb.replace("\n", "<br/>").replace(" ", "&nbsp;"))

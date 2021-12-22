@@ -7,7 +7,7 @@ Conçu pour être appelé comme commande dans `/etc/aliases`:
 http://www.postfix.org/aliases.5.html.
 
 Ce script peut uniquement être appelé depuis Flask :
-/home/intrarez/intrarez/env/bin/flask script mail_hook.py
+cd /home/intrarez/intrarez; ./env/bin/flask script mail_hook.py
 
 12/2021 Loïc 137
 """
@@ -25,7 +25,7 @@ try:
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
-        "/home/intrarez/intrarez/env/bin/flask script mail_hook.py\n"
+        "cd /home/intrarez/intrarez; ./env/bin/flask script mail_hook.py\n"
     )
     sys.exit(1)
 
