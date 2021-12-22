@@ -561,7 +561,6 @@ class Offer(db.Model):
             description_en="One month of Internet access gifted when you "
                            "connect for the first time!",
             price=0.0,
-            created=datetime.datetime.now(),
             visible=False,
             active=True,
         )
