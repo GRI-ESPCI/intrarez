@@ -10,6 +10,7 @@ pay_shown = false;
 
 // Selected options variables
 base_href = document.getElementById("pay_button").href;
+params = new URLSearchParams(window.location.search);
 chosen_offer = "";
 chosen_method = "";
 price = "";
@@ -72,9 +73,11 @@ function chose_method(method) {
     for (i = 0; i < method_buttons.length; i++) {
         method_buttons[i].style.setProperty("transition", "all 0.2s");
         if (method_buttons[i] == button) {
-            method_buttons[i].classList.replace("btn-outline-secondary", "btn-success");
+            method_buttons[i].classList.replace("btn-outline-secondary",
+                                                "btn-success");
         } else {
-            method_buttons[i].classList.replace("btn-success", "btn-outline-secondary");
+            method_buttons[i].classList.replace("btn-success",
+                                                "btn-outline-secondary");
         }
     }
     // Prepare pay button
@@ -88,13 +91,13 @@ function chose_method(method) {
     }
     // Scroll to next step
     document.getElementById("pay_row").scrollIntoView();
-    document.getElementById("pay_button").focus()
+    document.getElementById("pay_button").focus();
 }
 
 function update_pay_button() {
-    pay_button = document.getElementById("pay_button")
-    pay_button.innerHTML = phrase.replace("[]", price);
-    params = new URLSearchParams({"method": chosen_method,
-                                  "offer": chosen_offer});
-    pay_button.href = "?" + params.toString();
+    pay_button = document.getElementById("pay_button");
+    pay_button.innerHTML = phrase.replace("_price_", price);
+    pay_button.href = base_href.replace("_method_", chosen_method)
+                               .replace("_offer_", chosen_offer)
+                      + "?" + params.toString();
 }

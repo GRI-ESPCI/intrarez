@@ -1,12 +1,15 @@
 """Intranet de la Rez - Payments-related Pages Routes"""
 
+import datetime
+
 import flask
 from flask_babel import _
+import flask_login
 
 from app import context, db
-from app.payments import bp
+from app.payments import bp, email
 from app.enums import SubState
-from app.models import Offer
+from app.models import Offer, Payment, Subscription
 from app.tools import utils
 
 
@@ -38,61 +41,68 @@ def pay():
         flask.flash(_("Vous avez déjà un abonnement en cours !"), "warning")
         return utils.redirect_to_next()
 
-    methods = {
-        "lydia": "payments.lydia",
-        "transfer": "payments.transfer",
-        "cash": "payments.cash",
-    }
-    method = flask.request.args.get("method")
-    if method in methods:
-        offer = Offer.query.get(flask.request.args.get("offer"))
-        if offer and offer.visible and offer.active:
-            return utils.safe_redirect(methods[method], offer=offer.slug,
-                                       next=None)
-
     offers = Offer.query.filter_by(visible=True).order_by(Offer.price).all()
     return flask.render_template("payments/pay.html",
-                                 title=_("Payer"),
-                                 offers=offers)
+                                 title=_("Paiement"), offers=offers)
 
 
-@bp.route("/lydia")
+@bp.route("/pay/<method>")
+@bp.route("/pay/<method>/<offer>")
 @context.all_good_only
-def lydia():
+def pay_(method=None, offer=None):
     """Payment page."""
-    offer = Offer.query.get(flask.request.args.get("offer"))
-    if not (offer and offer.visible and offer.active):
-        return utils.safe_redirect("payments.pay")
     if flask.g.rezident.sub_state == SubState.subscribed:
         flask.flash(_("Vous avez déjà un abonnement en cours !"), "warning")
         return utils.redirect_to_next()
 
-    return f"PAY BY LYDIA {offer.name}"
+    methods = {
+        "lydia": _("Payer avec Lydia"),
+        "transfer": _("Payer par virement"),
+        "cash": _("Payer en main propre"),
+        "magic": _("Ajouter un paiement"),
+    }
+    if method in methods:
+        offer = Offer.query.get(offer)
+        if offer and offer.visible and offer.active:
+            if method == "magic" and not flask.g.doas:
+                flask.abort(403)
+            return flask.render_template(f"payments/pay_{method}.html",
+                                         title=methods[method], offer=offer)
+
+    # Bad arguments
+    return utils.safe_redirect("payments.pay", next=None)
 
 
-@bp.route("/transfer")
+@bp.route("/add_payment/<offer>")
 @context.all_good_only
-def transfer():
-    """Payment page."""
-    offer = Offer.query.get(flask.request.args.get("offer"))
-    if not (offer and offer.visible and offer.active):
-        return utils.safe_redirect("payments.pay")
+def add_payment(offer=None):
+    """Add an arbitrary payment by a GRI."""
     if flask.g.rezident.sub_state == SubState.subscribed:
         flask.flash(_("Vous avez déjà un abonnement en cours !"), "warning")
         return utils.redirect_to_next()
 
-    return f"PAY BY VIREMENT {offer.name}"
+    if not flask.g.doas:
+        flask.abort(403)
 
-
-@bp.route("/cash")
-@context.all_good_only
-def cash():
-    """Payment page."""
-    offer = Offer.query.get(flask.request.args.get("offer"))
+    offer = Offer.query.get(offer)
     if not (offer and offer.visible and offer.active):
-        return utils.safe_redirect("payments.pay")
-    if flask.g.rezident.sub_state == SubState.subscribed:
-        flask.flash(_("Vous avez déjà un abonnement en cours !"), "warning")
+        flask.flash("Offre incorrecte", "danger")
         return utils.redirect_to_next()
 
-    return f"PAY BY CASH {offer.name}"
+    rezident = flask.g.rezident
+    payment = Payment(rezident=rezident, amount=offer.price,
+                      timestamp=datetime.datetime.now(), lydia=False,
+                      gri=flask_login.current_user)
+    db.session.add(payment)
+    subscription = Subscription(rezident=rezident, offer=offer,
+                                payment=payment, start=datetime.date.today(),
+                                end=datetime.date.today() + offer.delay)
+    db.session.add(subscription)
+
+    rezident.sub_state = rezident.computed_sub_state    # Should be "subscibed"
+    db.session.commit()
+
+    flask.flash("Paiement et abonnement enregistrés !", "success")
+    email.send_state_change_email(rezident, rezident.sub_state)
+
+    return utils.redirect_to_next()

@@ -1,5 +1,6 @@
 """"IntraRez - Custom request context"""
 
+from ipaddress import IPv4Address
 import functools
 import re
 import subprocess
@@ -92,6 +93,7 @@ def create_request_context():
     if doas:
         if g.is_gri:
             g.rezident = doas
+            g.is_gri = g.rezident.is_gri
             g.doas = True
         else:
             # Not authorized to do things as other rezidents!
@@ -115,7 +117,7 @@ def create_request_context():
 
     # Get MAC
     g.mac = flask.current_app.config["FORCE_MAC"] or _get_mac(g.remote_ip)
-    g.internal = False and bool(g.mac)
+    g.internal = bool(g.mac)
     if not g.internal and not g.all_good:
         g.redemption_endpoint = "main.external_home"
 
@@ -208,9 +210,9 @@ def all_good_only(routine):
         The protected routine.
     """
     @functools.wraps(routine)
-    def new_routine():
+    def new_routine(*args, **kwargs):
         if g.all_good:
-            return routine()
+            return routine(*args, **kwargs)
         else:
             return (utils.safe_redirect(g.redemption_endpoint,
                                         **g.redemption_params) or routine())
@@ -231,9 +233,9 @@ def internal_only(routine):
         The protected routine.
     """
     @functools.wraps(routine)
-    def new_routine():
+    def new_routine(*args, **kwargs):
         if g.internal:
-            return routine()
+            return routine(*args, **kwargs)
         else:
             flask.abort(401)    # 401 Unauthorized
 
@@ -253,9 +255,9 @@ def logged_in_only(routine):
         The protected routine.
     """
     @functools.wraps(routine)
-    def new_routine():
+    def new_routine(*args, **kwargs):
         if g.logged_in:
-            return routine()
+            return routine(*args, **kwargs)
         else:
             flask.flash(_("Veuillez vous authentifier pour accéder "
                           "à cette page."), "warning")
@@ -276,9 +278,9 @@ def gris_only(routine):
         The protected routine.
     """
     @functools.wraps(routine)
-    def new_routine():
+    def new_routine(*args, **kwargs):
         if g.is_gri:
-            return routine()
+            return routine(*args, **kwargs)
         elif g.logged_in:
             flask.abort(403)    # 403 Not Authorized
         else:
@@ -287,3 +289,34 @@ def gris_only(routine):
             return utils.safe_redirect("auth.login")
 
     return new_routine
+
+
+def _address_in_range(address, start, stop):
+    return (IPv4Address(start) <= IPv4Address(address) <= IPv4Address(stop))
+
+
+def capture():
+    """"Redirect request to the adequate page based on its remote IP.
+
+    Function called by the captive portal if the requested address is not one
+    of the IntraRez.
+
+    Returns:
+        The return value of :func:`flask.redirect`, or ``None`` if we are
+        already on the adequate page (process request).
+    """
+    remote_ip = _get_remote_ip()
+    if not remote_ip:
+        # X-Real-Ip header not set by Nginx: application bug?
+        return utils.safe_redirect("devices.error", reason="ip")
+    if _address_in_range(remote_ip, "10.0.0.100", "10.0.0.199"):
+        # 10.0.0.100 - 10.0.0.199: Not registered
+        return utils.safe_redirect("main.index")
+    if _address_in_range(remote_ip, "10.0.8.0", "10.0.8.255"):
+        # 10.0.8.x: Not suscribed
+        return utils.safe_redirect("main.index")    # Not implemented
+    if _address_in_range(remote_ip, "10.0.9.0", "10.0.9.255"):
+        # 10.0.9.x: Banned
+        return utils.safe_redirect("main.index")    # Not implemented
+
+    return utils.safe_redirect("main.index")

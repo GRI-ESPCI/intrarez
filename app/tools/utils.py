@@ -59,20 +59,19 @@ def redirect_to_next(**params):
     Returns:
         The result of :func:`flask.redirect`.
     """
-    next = flask.request.args.get("next", "")
-    if flask.g.doas and "doas" not in params:
-        params["doas"] = flask.g.rezident.id
+    next_endpoint = flask.request.args.get("next", "")
 
     try:
-        next_page = flask.url_for(next, **params)
+        next_page = flask.url_for(next_endpoint, **params)
     except werkzeug.routing.BuildError:
-        next_page = ""
+        next_page = None
 
     if not next_page or wku.url_parse(next_page).netloc != "":
         # Do not redirect to absolute links (possible attack)
-        next_page = flask.url_for("main.index", **params)
+        next_endpoint = "main.index"
 
-    return flask.redirect(next_page)
+    params["next"] = None
+    return safe_redirect(next_endpoint, **params)
 
 
 def get_bootstrap_icon(name):

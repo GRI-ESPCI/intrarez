@@ -15,7 +15,7 @@
 
         <li>
             {{ _("État actuel") }} :
-            <strong>{{ _("Abonné") }}</strong>
+            <strong>{{ _("Abonné(e)") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-success"
                  width="24" height="24">
                 {{ bootstrap_icon("check-circle") }}
@@ -263,7 +263,9 @@
                     aria-label="{{ _("Fermer") }}"></button>
         </div>
         <div class="modal-body">
+            {% with can_change = False %}
             {% include "cards/offer.html" %}
+            {% endwith %}
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" data-bs-dismiss="modal">

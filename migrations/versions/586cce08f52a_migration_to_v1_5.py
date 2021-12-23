@@ -35,6 +35,8 @@ def upgrade():
     sa.Column('description_en', sa.String(length=2000), nullable=True),
     sa.Column('price', sa.Numeric(precision=6, scale=2, asdecimal=False),
               nullable=True),
+    sa.Column('months', sa.Integer(), nullable=False),
+    sa.Column('days', sa.Integer(), nullable=False),
     sa.Column('visible', sa.Boolean(), nullable=False),
     sa.Column('active', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('slug')

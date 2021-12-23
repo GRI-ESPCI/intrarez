@@ -5,6 +5,7 @@ import logging
 from logging import StreamHandler
 from logging.handlers import SMTPHandler, RotatingFileHandler
 
+import flask
 from discord_webhook import DiscordWebhook
 
 
@@ -18,7 +19,20 @@ class DiscordHandler(StreamHandler):
         msg = self.format(record)
         if len(msg) > 1900:     # Discord limitation
             msg = "[...]\n" + msg[-1900:]
-        content = f"{self.gri_mention}ALED ça a planté !\n```{msg}```"
+
+        try:
+            remote_ip = flask.g.remote_ip
+        except AttributeError:
+            remote_ip = "<unknown IP>"
+        else:
+            try:
+                if flask.g.logged_in:
+                    remote_ip += f" / {flask.g.rezident.full_name[:25]}"
+            except AttributeError:
+                pass
+
+        content = (f"{self.gri_mention}ALED ça a planté ! (chez {remote_ip})\n"
+                   f"```{msg}```")
         webhook = DiscordWebhook(url=self.webhook, content=content)
         webhook.execute()
 

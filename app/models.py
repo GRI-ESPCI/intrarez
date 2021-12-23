@@ -480,6 +480,8 @@ class Payment(db.Model):
 
     @property
     def amount_format(self):
+        """:class:`str`: :attr:`Payment.amount` formatted depending on current
+        user locale."""
         famt = format(self.amount, ".2f")
         if utils.get_locale() == "fr":
             famt = famt.replace(".", ",")
@@ -494,6 +496,8 @@ class Offer(db.Model):
     description_fr = db.Column(db.String(2000))
     description_en = db.Column(db.String(2000))
     price = db.Column(db.Numeric(6, 2, asdecimal=False))
+    months = db.Column(db.Integer(), nullable=False, default=0)
+    days = db.Column(db.Integer(), nullable=False, default=0)
     visible = db.Column(db.Boolean(), nullable=False, default=True)
     active = db.Column(db.Boolean(), nullable=False, default=True)
 
@@ -504,7 +508,18 @@ class Offer(db.Model):
         return f"<Offer '{self.slug}'>"
 
     @property
+    def delay(self):
+        """:class:`.dateutil.relativedelta.relativedelta'`: The delay of
+        Internet granted by this offer.
+
+        Relies on :attr:`Offer.months` and :attr:`Offer.days`.
+        """
+        return relativedelta.relativedelta(months=self.months, days=self.days)
+
+    @property
     def price_format(self):
+        """:class:`str`: :attr:`Offer.price` formatted depending on current
+        user locale."""
         famt = format(self.price, ".2f")
         if utils.get_locale() == "fr":
             famt = famt.replace(".", ",")

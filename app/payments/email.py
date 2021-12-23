@@ -15,16 +15,15 @@ def send_state_change_email(rezident, sub_state):
         sub_state (~enums.SubState): the new Rezident subscription state.
     """
     sender_mail = flask.current_app.config["ADMINS"][0]
-    match sub_state:
-        case SubState.subscribed:
-            subject = _("Paiement validé !")
-            template_name = "payment_state_subscribed"
-        case SubState.trial:
-            subject = _("Attention, paiement Internet nécessaire")
-            template_name = "payment_state_trial"
-        case SubState.outlaw:
-            subject = _("Votre accès Internet a été coupé")
-            template_name = "payment_state_outlaw"
+    if sub_state == SubState.subscribed:
+        subject = _("Paiement validé !")
+        template_name = "payment_state_subscribed"
+    elif sub_state == SubState.trial:
+        subject = _("Attention, paiement Internet nécessaire")
+        template_name = "payment_state_trial"
+    else:
+        subject = _("Votre accès Internet a été coupé")
+        template_name = "payment_state_outlaw"
 
     send_email(
         subject=f"[IntraRez] {subject}",

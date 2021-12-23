@@ -27,10 +27,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     :meth:`~.models.Rezident.add_first_subscription` and
     :meth:`~.models.Rezident.first_seen`;
   * New blueprint ``payments`` with email support:
-      * New page ``payments.main`` with informations about subscription and
+      * New page ``payments/main`` with informations about subscription and
         subscriptions history (added to navbar);
-      * New page ``payments.pay`` where Rezidents can chose an offer and a
-        payment method.
+      * New page ``payments/pay`` where Rezidents can chose an offer and a
+        payment method, leading to page ``payments/pay/<method>/<offer>``
+        to "proceed to" payment. Available methods:
+          * /lydia (Lydia / CB);
+          * /transfer (bank transfer);
+          * /cash (or other hand-to-hant transaction);
+          * /magic (special for GRI to add arbitrary payments).
+      * New route ``payments.add_payment/<offer>`` to GRI to add payments;
   * First offer automatically subscribed if necessary during context creation;
   * Added payments info card to index;
   * Added Rezidents subscription state to GRI rezidents list;
@@ -44,12 +50,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Current device shown in Profile for an external request is now a special
     peseudo-device with external IP;
   * :meth:`~.models.Rezident.other_devices` now inludes current device if the
-    request is not made internally, from this device.
+    request is not made internally, from this device;
+  * Captive portal redirection is now managed by :func:`context.capture`;
+  * 401 / 403 / 404 errors are no more reported to Discord, and IP is now
+    reported.
 
 # Fixed
 
   * Error report crashed if the error occured too early (before setting up
     custom request context);
+  * :mod:`context` decorators did not handle arguments routes.
 
 
 ## 1.4.1 - 2021-12-21

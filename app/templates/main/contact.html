@@ -45,7 +45,8 @@
             {% endif %}
         </div>
         <div class="form-floating mb-3">
-            {{ wtf.form_field(form.title) }}
+            {{ wtf.form_field(form.title, value=request.args.get("title",
+                                                                 "")) }}
         </div>
         <div class="form-floating mb-3">
             {{ wtf.form_field(form.message, class="lines-6") }}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col">
+        <div class="row mb-3">
+            <div class="col-auto">
+                <h1>{{ title }}</h1>
+            </div>
+            <div class="col my-auto me-auto">
+                <a class="btn btn-outline-secondary"
+                   href="{{ url_for("payments.pay") }}">
+                    {{ _("Changer") }}
+                </a>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <h2>{{ _("Procéder au paiement :") }}</h2>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <p>{{ _("[Intégration Lydia ici]") }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col col-auto mb-auto">
+        {% with can_change = True %}
+        {% include "cards/offer.html" %}
+        {% endwith %}
+    </div>
+</div>
+
+
+{% endblock %}

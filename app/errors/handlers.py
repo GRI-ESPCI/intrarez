@@ -14,7 +14,7 @@ from app.errors import bp
 def unauthorized_error(error):
     err_name = f"{error.code} {error.name}"
     err_descr = error.description
-    flask.current_app.logger.error(f"{err_name} -- {flask.request}")
+    flask.current_app.logger.warning(f"{err_name} -- {flask.request}")
     return flask.render_template("errors/401.html", err_name=err_name,
                                  err_descr=err_descr,
                                  title=_("Accès restreint")), 401
@@ -23,7 +23,7 @@ def unauthorized_error(error):
 def forbidden_error(error):
     err_name = f"{error.code} {error.name}"
     err_descr = error.description
-    flask.current_app.logger.error(f"{err_name} -- {flask.request}")
+    flask.current_app.logger.warning(f"{err_name} -- {flask.request}")
     return flask.render_template("errors/403.html", err_name=err_name,
                                  err_descr=err_descr,
                                  title=_("Accès restreint")), 403
@@ -32,7 +32,7 @@ def forbidden_error(error):
 def not_found_error(error):
     err_name = f"{error.code} {error.name}"
     err_descr = error.description
-    flask.current_app.logger.error(f"{err_name} -- {flask.request}")
+    flask.current_app.logger.warning(f"{err_name} -- {flask.request}")
     return flask.render_template("errors/404.html", err_name=err_name,
                                  err_descr=err_descr, title=err_name), 404
 

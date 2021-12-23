@@ -170,7 +170,7 @@
                     {% if not user.current_subscription %}
                     {{ _("Aucun") }}
                     {% elif user.sub_state == SubState.subscribed %}
-                    {{ _("Abonné") }} (&rarr; {{ moment(
+                    {{ _("Abonné(e)") }} (&rarr; {{ moment(
                             user.current_subscription.end
                         ).format("LL") }})
                     {% elif user.sub_state == SubState.trial %}

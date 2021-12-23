@@ -106,12 +106,9 @@ def create_app(config_class=Config):
         if netlocs is None or app.debug or app.testing:
             # Captive portal disabled or testing: process all requests
             return None
-        if flask.request.endpoint:
-            # No infinite redirections loop
-            return None
         if wku.url_parse(flask.request.url).netloc not in netlocs:
             # Requested URL not in netlocs: redirect
-            return flask.redirect(flask.url_for("main.index"))
+            return context.capture()
         # Valid URL
         return None
 

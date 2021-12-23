@@ -20,6 +20,15 @@
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Prix") }}</th>
-    <td>{{ offer.price }}&nbsp;€</td>
+    <td>{{ offer.price_format }}</td>
 </tr>
+{% endblock %}
+
+{% block card_footer %}
+{% if can_change %}
+<a class="btn btn-outline-dark"
+   href="{{ url_for("payments.pay") }}">
+    {{ _("Changer d'offre") }}
+</a>
+{% endif %}
 {% endblock %}
