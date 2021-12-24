@@ -23,7 +23,8 @@ def safe_redirect(endpoint, **params):
 
     It also automatically add the following URL parameters if not present:
       * ``next``, allowing to go back to the original request later if
-        necessary (see :func:`tools.utils.redirect_to_next`);
+        necessary (see :func:`tools.utils.redirect_to_next`). To disable
+        this behavior, pass ``next=None``;
       * ``doas``, allowing to preserve doas mode through redirection
         (see :attr:`flask.g.doas`).
 
@@ -42,8 +43,14 @@ def safe_redirect(endpoint, **params):
         params["next"] = flask.request.endpoint
     elif params["next"] is None:
         del params["next"]
-    if flask.g.doas and "doas" not in params:
-        params["doas"] = flask.g.rezident.id
+
+    try:
+        doas = flask.g.doas
+    except AttributeError:
+        pass
+    else:
+        if doas and "doas" not in params:
+            params["doas"] = flask.g.rezident.id
 
     return flask.redirect(flask.url_for(endpoint, **params))
 
