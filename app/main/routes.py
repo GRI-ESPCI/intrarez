@@ -6,7 +6,6 @@ import json
 import flask
 from flask_babel import _
 from discord_webhook import DiscordWebhook
-import premailer
 
 from app import context, email
 from app.main import bp, forms
@@ -140,18 +139,6 @@ def mail():
     token = "kfsdklmfkdslm"
     text_body = flask.render_template("mails/reset_password.txt",
                                       user=user, token=token)
-    html_body = premailer.transform(
-        flask.render_template("mails/test.html"),
-        base_url="https://intrarez.pc-est-magique.fr/",
-        allow_loading_external_files=True,
-        remove_classes=True,
-        external_styles=[
-            flask.url_for("static",
-                          filename="css/compiled/custom-bootstrap.css"),
-            flask.url_for("static", filename="css/custom.css")
-        ],
-        disable_validation=True,
-        disable_leftover_css=True
-    )
+    html_body = flask.render_template("mails/test.html")
     email.send_email(subject, sender, recipients, text_body, html_body)
     return html_body

@@ -10,6 +10,10 @@
             {{ _("Rezidents") }}
         </a></li>
         <li><a class="dropdown-item"
+               href="{{ url_for("gris.run_script") }}">
+            {{ _("Exécuter un script") }}
+        </a></li>
+        <li><a class="dropdown-item"
                href="{{ url_for("gris.monitoring_ds") }}">
             {{ _("Monitoring (Darkstat)") }}
         </a></li>

@@ -106,3 +106,12 @@ def add_payment(offer=None):
     email.send_state_change_email(rezident, rezident.sub_state)
 
     return utils.redirect_to_next()
+
+
+@bp.route("/test_mail")
+@context.gris_only
+def test_mail():
+    """Mails test route"""
+    body = email.send_state_change_email(flask.g.rezident, SubState.outlaw)
+    flask.flash("Mail sent", "success")
+    return body

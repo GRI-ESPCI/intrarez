@@ -5,11 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased - 2021-12-21
+## Unreleased - 2021-12-25
 
 # STILL TO DO
 
-  * Methods pay pages
   * Lydia integration
   * Send mails [WIP]
   * BDE roles to add payments?
@@ -42,8 +41,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Added Rezidents subscription state to GRI rezidents list;
   * Added data Enums handling in ``app/enums.py`` and
     :class:`.enums.SubState` for subscription states;
+  * Real-world email support, with HTML rich contents (processed using
+    :func:`premailer.transform` by new function :func:`email.process_html`);
+  * New GRI page ``run_script`` to execute scripts from the web interface;
   * New script ``update_sub_state`` to be called every day to update
-    Rezidents subscription state;
+    Rezidents subscription state.
 
 # Changed
 
@@ -59,7 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   * Error report crashed if the error occured too early (before setting up
     custom request context);
-  * :mod:`context` decorators did not handle arguments routes.
+  * :mod:`context` decorators did not handle arguments routes;
+  * Arbitrary ``doas`` query arguments could induce crashs.
 
 
 ## 1.4.1 - 2021-12-21

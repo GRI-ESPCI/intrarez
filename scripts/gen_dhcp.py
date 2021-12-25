@@ -4,7 +4,9 @@ Pour toutes les chambres, attribue une adresse IP aux appareils de
 l'occupant actuel.
 
 Ce script peut uniquement être appelé depuis Flask :
-cd /home/intrarez/intrarez; ./env/bin/flask script gen_dhcp.py
+  * Soit depuis l'interface en ligne (menu GRI) ;
+  * Soit par ligne de commande :
+    cd /home/intrarez/intrarez; " ./env/bin/flask script gen_dhcp.py
 
 10/2021 Loïc 137
 """
@@ -17,7 +19,10 @@ try:
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
-        "cd /home/intrarez/intrarez; ./env/bin/flask script gen_dhcp.py\n"
+        "  * Soit depuis l'interface en ligne (menu GRI) ;\n"
+        "  * Soit par ligne de commande :\n"
+        "    cd /home/intrarez/intrarez; "
+        "    ./env/bin/flask script update_sub_states.py\n"
     )
     sys.exit(1)
 

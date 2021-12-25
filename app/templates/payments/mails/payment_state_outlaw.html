@@ -1,25 +1,36 @@
-<p>{{ _("Dear %(name)s,", name=rezident.username) }}</p>
-<p>
-    {{ _("To reset your password") }}
-    <a href="{{ url_for("auth.reset_password", token=token, _external=True) }}">
-        {{ _("click here") }}
-    </a>.
-</p>
-<p>
-    {{ _("Alternatively, you can paste the following link in your browser's address bar:") }}
-</p>
-<p>
-    {{ url_for("auth.reset_password", token=token, _external=True) }}
-</p>
-<p>
-    <b>{{ _("This link can only be used from inside the Rez network.") }}</b>
-</p>
-<p>
-    {{ _("If you have not requested a password reset simply ignore this message.") }}
-</p>
-<p>
-    {{ _("Sincerely,") }}
-</p>
-<p>
-    {{ _("The IntraRez Team") }}
-</p>
+{% extends "mails/base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h2>{{ _("Votre abonnement a expiré") }}</h2>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col">
+        <p>{{ _("Bonjour %(name)s,", name=g.rezident.prenom) }}</p>
+        <p>
+            {{ _("Votre abonnement à Internet vient d'expirer. "
+                "Vous disposez d'<strong>un mois</strong> pour le "
+                "renouveller, après quoi votre accès Internet sera "
+                "<strong>automatiquement coupé</strong>.") }}
+        </p>
+        <p class="text-muted">
+            {{ _("Si vous avez quitté la Rezidence, il vous suffit de "
+                "<strong>déclarer la fin de votre location</strong> pour"
+                "que nous ne vous envoyons plus d'email.") }}
+        </p>
+    </div>
+</div>
+<br/>
+<div class="row mb-3">
+    <div class="col"><p>
+        {{ _("Une idée, un commentaire ? N'hésitez pas à ") }}
+        <a href="{{ url_for("main.contact") }}">{{ _("nous en faire part") }}
+        </a> !
+    </p></div>
+</div>
+
+{% endblock %}

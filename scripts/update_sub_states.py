@@ -7,7 +7,9 @@ Conçu pour être appelé tous les jours à minuit. Envoie également un mail
 au Rezident l'informant du changement d'état.
 
 Ce script peut uniquement être appelé depuis Flask :
-cd /home/intrarez/intrarez; ./env/bin/flask script update_sub_states.py
+  * Soit depuis l'interface en ligne (menu GRI) ;
+  * Soit par ligne de commande :
+    cd /home/intrarez/intrarez; " ./env/bin/flask script update_sub_states.py
 
 12/2021 Loïc 137
 """
@@ -21,8 +23,10 @@ try:
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
-        "cd /home/intrarez/intrarez; "
-        "./env/bin/flask script update_sub_states.py\n"
+        "  * Soit depuis l'interface en ligne (menu GRI) ;\n"
+        "  * Soit par ligne de commande :\n"
+        "    cd /home/intrarez/intrarez; "
+        "    ./env/bin/flask script update_sub_states.py\n"
     )
     sys.exit(1)
 
@@ -31,9 +35,14 @@ def main():
     rezidents = Rezident.query.all()
 
     for rezident in rezidents:
-        if rezident.sub_state != rezident.computed_sub_state:
+        print(f"{rezident.full_name} : ", end="")
+        css = rezident.computed_sub_state
+        if rezident.sub_state == css:
+            print(f"à jour ({rezident.sub_state.name})")
             # État pas à jour
-            rezident.sub_state = rezident.computed_sub_state
+        else:
+            print(f"{rezident.sub_state.name} -> {css}")
+            rezident.sub_state = css
             email.send_state_change_email(rezident, rezident.sub_state)
 
     db.session.commit()

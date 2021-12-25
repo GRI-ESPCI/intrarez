@@ -89,7 +89,8 @@ def create_request_context():
         g.redemption_endpoint = "auth.auth_needed"
 
     # Check doas
-    doas = flask.request.args.get("doas", type=Rezident.query.get)
+    doas_id = flask.request.args.get("doas", "")
+    doas = Rezident.query.get(doas_id) if doas_id.isdigit() else None
     if doas:
         if g.is_gri:
             g.rezident = doas

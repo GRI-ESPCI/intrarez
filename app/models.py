@@ -142,9 +142,16 @@ class Rezident(flask_login.UserMixin, db.Model):
     @property
     def current_subscription(self):
         """:class:`Subscription`: The rezidents's current subscription, or
-        ``None``."""
+        ``None``.
+
+        If the user do not have the basic subscription but has devices,
+        it is created and returned.
+        """
         if not self.subscriptions:
-            return None
+            if self.devices:
+                self.add_first_subscription()
+            else:
+                return None
         return max(self.subscriptions, key=lambda sub: sub.start)
 
     @property
@@ -165,14 +172,17 @@ class Rezident(flask_login.UserMixin, db.Model):
         minutes of the day of state change.
         """
         sub = self.current_subscription
-        if not sub.is_active:
-            return SubState.outlaw
+        if not sub:
+            # Default: trial
+            return SubState.trial
+        elif sub.is_active:
+            return SubState.subscribed
         elif sub.is_trial:
             return SubState.trial
         else:
-            return SubState.subscribed
+            return SubState.outlaw
 
-    def add_first_subscription(self, start=None):
+    def add_first_subscription(self):
         """"Add subscription to first offer (free month).
 
         The subscription starts the day the Rezident registered its first

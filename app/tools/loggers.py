@@ -21,7 +21,7 @@ class DiscordHandler(StreamHandler):
             msg = "[...]\n" + msg[-1900:]
 
         try:
-            remote_ip = flask.g.remote_ip
+            remote_ip = flask.g.remote_ip or "<missing header>"
         except AttributeError:
             remote_ip = "<unknown IP>"
         else:

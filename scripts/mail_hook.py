@@ -7,7 +7,12 @@ Conçu pour être appelé comme commande dans `/etc/aliases`:
 http://www.postfix.org/aliases.5.html.
 
 Ce script peut uniquement être appelé depuis Flask :
-cd /home/intrarez/intrarez; ./env/bin/flask script mail_hook.py
+  * Soit depuis l'interface en ligne (menu GRI) ;
+  * Soit par ligne de commande :
+    cd /home/intrarez/intrarez; " ./env/bin/flask script mail_hook.py
+
+Cependant, cela ne servirait à rien de l'appeler autrement que via
+`/etc/aliases`, vu que le script attend le contenu du mail dans stdin.
 
 12/2021 Loïc 137
 """
@@ -25,7 +30,10 @@ try:
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
-        "cd /home/intrarez/intrarez; ./env/bin/flask script mail_hook.py\n"
+        "  * Soit depuis l'interface en ligne (menu GRI) ;\n"
+        "  * Soit par ligne de commande :\n"
+        "    cd /home/intrarez/intrarez; "
+        "    ./env/bin/flask script update_sub_states.py\n"
     )
     sys.exit(1)
 
@@ -34,9 +42,15 @@ def report_mail():
     """"Get mail, process it into an Embed and send it to Discord."""
     # Parse email contents from stdin
     mail = email.message_from_file(sys.stdin, policy=email.policy.default)
+    if not mail:
+        # Not a real mail (no headers)
+        print("Pas de mail dans l'entrée standard (normal si exécution "
+              "manuelle, ce script n'est pas fait pour ça).")
+        return
 
     # Extract email parts
     sender = mail.get("From", "<no sender>")
+    print(f"Mail de {sender} réceptionné...")
     subject = mail.get("Subject", "<no subject>")
     recipient = mail.get("To", "<no recipient>")
     raw_timestamp = email.utils.parsedate(mail.get("Date"))
@@ -80,6 +94,8 @@ def report_mail():
         raise RuntimeError(
             f"Discord API responded with {reponse.code}: {reponse.text}"
         )
+
+    print(f"Mail de {sender} transmis.")
 
 
 def main():

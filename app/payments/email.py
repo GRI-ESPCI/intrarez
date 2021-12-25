@@ -25,7 +25,7 @@ def send_state_change_email(rezident, sub_state):
         subject = _("Votre accès Internet a été coupé")
         template_name = "payment_state_outlaw"
 
-    send_email(
+    html_body = send_email(
         subject=f"[IntraRez] {subject}",
         sender=f"IntraRez <{sender_mail}>",
         recipients=[f"{rezident.full_name} <{rezident.email}>"],
@@ -34,3 +34,6 @@ def send_state_change_email(rezident, sub_state):
         html_body=flask.render_template(f"payments/mails/{template_name}.html",
                                         rezident=rezident)
     )
+
+    # TEMPORARY
+    return html_body
