@@ -5,7 +5,7 @@ import flask_babel
 from flask_babel import _
 
 from app.email import send_email
-from app.models import SubState
+from app.enums import SubState
 
 
 def send_state_change_email(rezident, sub_state):
@@ -36,7 +36,7 @@ def send_state_change_email(rezident, sub_state):
     send_email(
         f"payments/{template_name}",
         subject=f"[IntraRez] {subject}",
-        recipients=[f"{rezident.full_name} <{rezident.email}>"],
+        recipients={rezident.email: rezident.full_name},
         html_body=html_body,
     )
 
@@ -53,11 +53,12 @@ def send_reminder_email(rezident):
         html_body = flask.render_template(
             f"payments/mails/renew_reminder.html",
             rezident=rezident,
+            sub=rezident.current_subscription,
         )
 
     send_email(
         f"payments/renew_reminder",
         subject=f"[IntraRez] {subject}",
-        recipients=[f"{rezident.full_name} <{rezident.email}>"],
+        recipients={rezident.email: rezident.full_name},
         html_body=html_body,
     )

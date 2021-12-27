@@ -44,7 +44,7 @@ def send_email(template, *, subject, recipients, html_body, text_body=None):
         template (str): The mail template name.
         subject (str): The mail subject.
         sender (str): The sender address.
-        recipients (list[str]): The recipients addresses.
+        recipients (dict[str]): The recipients addresses -> names dict.
         html_body (str): The mail content to print in HTML mode.
         text_body (str): The mail content to print in plain text mode.
             If not set, it will be constructed from ``html_body`` using
@@ -60,9 +60,13 @@ def send_email(template, *, subject, recipients, html_body, text_body=None):
     msg = flask_mail.Message(
         subject=subject,
         sender=f"IntraRez <{sender_mail}>",
-        recipients=recipients,
+        recipients=[f"{name} <{addr}>" for addr, name in recipients.items()],
         body=text_body,
         html=html_body,
+        extra_headers={
+            "List-Unsubscribe": f"<mailto: {sender_mail}?subject=Unsubscribe: "
+                                f"{', '.join(recipients.keys())}>"
+        }
     )
 
     # Send mail
@@ -90,6 +94,7 @@ def init_premailer():
         css_text="\n".join(class_files_contents),
         disable_validation=True,
         disable_leftover_css=True,
+        cssutils_logging_level=logging.CRITICAL,
     )
 
 

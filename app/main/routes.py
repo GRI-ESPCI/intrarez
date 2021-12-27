@@ -126,19 +126,3 @@ def test():
             pt[name] = obj
 
     return flask.render_template("main/test.html", title=_("Test"), pt=pt)
-
-
-@bp.route("/mail")
-@context.gris_only
-def mail():
-    """Mails test route"""
-    user = flask.g.rezident
-    subject = "[IntraRez] Réinitialisation du mot de passe"
-    sender = "IntraRez <intrarez@pc-est-magique.fr>"
-    recipients = [f"{user.full_name} <{user.email}>"]
-    token = "kfsdklmfkdslm"
-    text_body = flask.render_template("mails/reset_password.txt",
-                                      user=user, token=token)
-    html_body = flask.render_template("mails/test.html")
-    email.send_email(subject, sender, recipients, text_body, html_body)
-    return html_body

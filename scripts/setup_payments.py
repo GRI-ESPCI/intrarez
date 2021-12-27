@@ -46,23 +46,25 @@ def send_on_setup_email(rezident):
         html_body = flask.render_template(
             f"payments/mails/on_setup.html",
             rezident=rezident,
+            sub=rezident.current_subscription,
         )
 
     # Send email
     send_email(
         f"payments/on_setup",
         subject=f"[IntraRez] {subject}",
-        recipients=[f"{rezident.full_name} <{rezident.email}>"],
+        recipients={rezident.email: rezident.full_name},
         html_body=html_body,
     )
 
 
 def main():
     rezidents = Rezident.query.all()
-    N = len(rezidents)
+    n_rez = len(rezidents)
 
-    for i, rezident in enumerate(rezidents):
-        print(f"[{i + 1}/{N}] {rezident.full_name} : ", end="")
+    for i_rez, rezident in enumerate(rezidents):
+        print(f"[{i_rez + 1}/{n_rez}] {rezident.full_name} : ", end="")
+        sys.stdout.flush()
 
         if not rezident.devices:
             print("Pas d'appareils, skip")
@@ -73,8 +75,10 @@ def main():
 
         # Un appareil mais pas d'abonnement : c tipar
         print(f"Ajout de l'abonnement... ", end="")
+        sys.stdout.flush()
         rezident.add_first_subscription()
         print(f"Envoi du mail... ", end="")
+        sys.stdout.flush()
         send_on_setup_email(rezident)
         db.session.commit()     # On commit à chaque fois, au cas où ça crash
         print(f"Fait !")

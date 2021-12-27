@@ -68,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         :mod:`html2text`, through new functions :func:`email.init_textifier`
         (to set up options) and :func:`email.html_to_plaintext`;
       * New mails-specific logger logging to ``logs/mails.log``;
+      * Added ``List-Unsubscribe`` header to help message distribution;
       * Errors when sending mails are now reported as errors to the main
         logger (Discord alert);
   * New GRI page ``run_script`` to execute scripts from the web interface.

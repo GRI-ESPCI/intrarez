@@ -584,12 +584,8 @@ class Offer(db.Model):
         """
         return cls(
             slug="_first",
-            name_fr="Offre de bienvenue",
-            name_en="Welcoming offer",
-            description_fr="Un mois d'accès à Internet offert à votre "
-                           "première connexion !",
-            description_en="One month of Internet access gifted when you "
-                           "connect for the first time!",
+            name_fr="<call `flask script update_offers`>",
+            name_en="<call `flask script update_offers`>",
             price=0.0,
             visible=False,
             active=True,
