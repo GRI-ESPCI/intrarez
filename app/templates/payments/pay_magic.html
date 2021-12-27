@@ -34,7 +34,7 @@
                     <li>
                         {{ _("Montant :") }}
                         <span class="fw-bold font-monospace ps-1">
-                            {{ offer.price_format }}
+                            {{ babel.format_currency(offer.price, "EUR") }}
                         </span>
                     </li>
                     <li>

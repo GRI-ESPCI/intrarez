@@ -93,7 +93,7 @@
 
 
 {% block card_footer %}
-<a href="{{ url_for("payments.main") }}"
+<a href="{{ url_for("payments.main", doas=doas) }}"
    class="btn btn-outline-dark">
     {{ _("Plus d'informations") }}
 </a>

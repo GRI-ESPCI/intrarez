@@ -75,14 +75,13 @@ def login():
             or Rezident.query.filter_by(email=form.login.data).first())
         if user is None:
             flask.flash(_("Nom d'utilisateur inconnu"), "danger")
-            return utils.safe_redirect("auth.login")
         elif not user.check_password(form.password.data):
             flask.flash(_("Mot de passe incorrect"), "danger")
-            return utils.safe_redirect("auth.login")
-        # OK
-        flask_login.login_user(user, remember=form.remember_me.data)
-        flask.flash(_("Connecté !"), "success")
-        return utils.redirect_to_next()
+        else:
+            # OK
+            flask_login.login_user(user, remember=form.remember_me.data)
+            flask.flash(_("Connecté !"), "success")
+            return utils.redirect_to_next()
 
     return flask.render_template("auth/login.html", title=_("Connexion"),
                                  form=form)

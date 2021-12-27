@@ -14,10 +14,12 @@ Ce script peut uniquement être appelé depuis Flask :
 12/2021 Loïc 137
 """
 
+import datetime
 import sys
 
 try:
     from app import db
+    from app.enums import SubState
     from app.models import Rezident
     from app.payments import email
 except ImportError:
@@ -33,16 +35,26 @@ except ImportError:
 
 def main():
     rezidents = Rezident.query.all()
+    in_a_week = datetime.date.today() + datetime.timedelta(days=7)
 
     for rezident in rezidents:
         print(f"{rezident.full_name} : ", end="")
-        css = rezident.computed_sub_state
-        if rezident.sub_state == css:
-            print(f"à jour ({rezident.sub_state.name})")
-            # État pas à jour
-        else:
-            print(f"{rezident.sub_state.name} -> {css}")
-            rezident.sub_state = css
-            email.send_state_change_email(rezident, rezident.sub_state)
 
-    db.session.commit()
+        sub_state = rezident.compute_sub_state()
+        if rezident.sub_state == sub_state:
+            if (sub_state == SubState.trial
+                and rezident.current_subscription.cut_day == in_a_week
+                and rezident.has_a_room):
+                # Coupure dans une semaine : mail de rappel
+                print(f"coupure dans une semaine, rappel")
+                email.send_reminder_email(rezident)
+            else:
+                # État à jour
+                print(f"à jour ({rezident.sub_state.name})")
+        else:
+            # État pas à jour : changer et envoyer un mail
+            print(f"{rezident.sub_state.name} -> {sub_state}")
+            rezident.sub_state = sub_state
+            db.session.commit()     # On commit à chaque fois, au cas où
+            if rezident.has_a_room:
+                email.send_state_change_email(rezident, rezident.sub_state)

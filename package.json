@@ -1,6 +1,6 @@
 {
   "name": "intrarez",
-  "version": "1.5.0-alpha.4.0",
+  "version": "1.5.0-alpha.5.0",
   "description": "Intranet de la Rez Flask Web App",
   "main": "n/a",
   "scripts": {
@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/GRI-ESPCI/intrarez/issues"
   },
-  "homepage": "https://github.com/GRI-ESPCI/intrarez#readme",
+  "homepage": "https://intrarez.pc-est-magique.fr",
   "dependencies": {
     "bower": "^1.8.12",
     "sass": "^1.42.1"

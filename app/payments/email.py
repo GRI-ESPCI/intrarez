@@ -1,6 +1,7 @@
 """Intranet de la Rez - Payments-related emails"""
 
 import flask
+import flask_babel
 from flask_babel import _
 
 from app.email import send_email
@@ -14,26 +15,49 @@ def send_state_change_email(rezident, sub_state):
         rezident (~models.Rezident): the Rezident in question.
         sub_state (~enums.SubState): the new Rezident subscription state.
     """
-    sender_mail = flask.current_app.config["ADMINS"][0]
-    if sub_state == SubState.subscribed:
-        subject = _("Paiement validé !")
-        template_name = "payment_state_subscribed"
-    elif sub_state == SubState.trial:
-        subject = _("Attention, paiement Internet nécessaire")
-        template_name = "payment_state_trial"
-    else:
-        subject = _("Votre accès Internet a été coupé")
-        template_name = "payment_state_outlaw"
+    with flask_babel.force_locale(rezident.locale or "en"):
+        # Render mail content in rezident's language
+        if sub_state == SubState.subscribed:
+            subject = _("Paiement validé !")
+            template_name = "new_subscription"
+        elif sub_state == SubState.trial:
+            subject = _("Paiement nécessaire")
+            template_name = "subscription_expired"
+        else:
+            subject = _("Votre accès Internet a été coupé")
+            template_name = "internet_cut"
 
-    html_body = send_email(
+        html_body = flask.render_template(
+            f"payments/mails/{template_name}.html",
+            rezident=rezident,
+            sub=rezident.current_subscription
+        )
+
+    send_email(
+        f"payments/{template_name}",
         subject=f"[IntraRez] {subject}",
-        sender=f"IntraRez <{sender_mail}>",
         recipients=[f"{rezident.full_name} <{rezident.email}>"],
-        text_body=flask.render_template(f"payments/mails/{template_name}.txt",
-                                        rezident=rezident),
-        html_body=flask.render_template(f"payments/mails/{template_name}.html",
-                                        rezident=rezident)
+        html_body=html_body,
     )
 
-    # TEMPORARY
-    return html_body
+
+def send_reminder_email(rezident):
+    """Send an email informing a Rezident its access will be cut soon.
+
+    Args:
+        rezident (~models.Rezident): the Rezident in question.
+    """
+    with flask_babel.force_locale(rezident.locale or "en"):
+        # Render mail content in rezident's language
+        subject = _("IMPORTANT - Votre accès Internet va bientôt couper !")
+        html_body = flask.render_template(
+            f"payments/mails/renew_reminder.html",
+            rezident=rezident,
+        )
+
+    send_email(
+        f"payments/renew_reminder",
+        subject=f"[IntraRez] {subject}",
+        recipients=[f"{rezident.full_name} <{rezident.email}>"],
+        html_body=html_body,
+    )

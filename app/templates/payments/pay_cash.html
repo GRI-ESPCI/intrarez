@@ -48,7 +48,8 @@
         <a class="btn btn-secondary ms-2"
            href="{{ url_for("main.contact") }}?title={{
                  _("Demande de paiement en main propre : %(name)s (%(price)s)",
-                   name=offer.name, price=offer.price_format) }}">
+                   name=offer.name,
+                   price=babel.format_currency(offer.price, "EUR") }}">
             {{ _("Faire une demande") }}
         </a>
     </div>

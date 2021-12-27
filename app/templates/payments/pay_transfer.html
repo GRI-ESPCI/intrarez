@@ -47,7 +47,7 @@
                     <li>
                         {{ _("Montant :") }}
                         <span class="fw-bold font-monospace ps-1">
-                            {{ offer.price_format }}
+                            {{ babel.format_currency(offer.price, "EUR") }}
                         </span>
                     </li>
                 </ul>
@@ -75,7 +75,8 @@
         <a class="btn btn-secondary ms-2"
            href="{{ url_for("main.contact") }}?title={{
                  _("Virement effectué : %(name)s (%(price)s)",
-                   name=offer.name, price=offer.price_format) }}">
+                   name=offer.name,
+                   price=babel.format_currency(offer.price, "EUR")) }}">
             {{ _("Nous prévenir") }}
         </a>
     </div>

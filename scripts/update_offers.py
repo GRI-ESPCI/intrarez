@@ -86,7 +86,7 @@ def offers():
                            "être pris.",
             description_en="5 months of Internet access, then 1 extra month "
                            "during which a new subscription can be taken.",
-            price=18.0,
+            price=8.0,
             months=5,
             days=0,
             active=True,
@@ -116,6 +116,7 @@ def main():
         offer = Offer.query.get(slug)
         if offer:
             # Offer modification
+            print(f"Mise à jour de {offer}...")
             if (offer.price != offer_dict["price"]
                 or offer.months != offer_dict["months"]
                 or offer.days != offer_dict["days"]):
@@ -130,7 +131,6 @@ def main():
                     "non active et ajouter une nouvelle offre.\n\n"
                     "Aucune modification n'a été effectuée."
                 )
-            print(f"Mise à jour de {offer}...")
             for col, val in offer_dict.items():
                 setattr(offer, col, val)
 

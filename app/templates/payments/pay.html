@@ -26,26 +26,42 @@
 </div>
 <div class="row mb-4 gy-3">
     {% for offer in offers %}
+    {% with price = babel.format_currency(offer.price, "EUR") %}
     <div class="col">
 
         <div class="card o-card bg-pc5 border-pc4 border-2 h-100 mx-auto"
              id="card_offer_{{ offer.slug }}" name="offer_card">
             <div class="card-body d-flex align-items-center">
                 <h3 class="card-title me-auto my-0">{{ offer.name }}</h3>
-                <h3 class="card-title my-0">{{ offer.price_format }}</h3>
+                <h3 class="card-title my-0">{{ price }}</h3>
             </div>
             <div class="card-body h-100">{{ offer.description }}</div>
+            <div class="card-body position-relative">
+                <div class="position-absolute top-50 translate-middle-y ms-1">
+                    <svg class="bi flex-shrink-0" width="24" height="24">
+                        {{ bootstrap_icon("arrow-right-circle") }}
+                    </svg>
+                </div>
+                <div class="offset-2">
+                    {{ _("Abonnement valide jusqu'au") }}
+                    <strong>
+                        {{ moment(g.rezident.current_subscription.renew_day
+                                  + offer.total_delay).format("LL") }}
+                    </strong>
+                </div>
+            </div>
             <div class="card-body text-center">
                 <button class="btn btn-outline-secondary mb-2"
                         onclick="chose_offer('{{ offer.slug }}');"
                         id="offer_button_{{ offer.slug }}" name="offer_button"
-                        data-price="{{ offer.price_format }}">
+                        data-price="{{ price }}">
                     {{ _("Choisir cette offre") }}
                 </button>
             </div>
         </div>
 
     </div>
+    {% endwith %}
     {% endfor %}
 </div>
 
@@ -178,7 +194,7 @@
 
 <div class="row mb-3 mt-5" id="pay_header" hidden>
     <div class="col">
-        <h2>{{ _("Validation") }}</h2>
+        <h2>{{ _("Confirmation") }}</h2>
     </div>
 </div>
 <div class="row mb-3" id="pay_row" hidden>
@@ -186,7 +202,7 @@
         <a href="{{ url_for("payments.pay_", method="_method_",
                             offer="_offer_") }}"
            class="btn btn-primary" id="pay_button">[TBD]</a>
-        <!-- Link and button inserted by "static/js/payments-pay.js" -->
+        <!-- Link and button text inserted by static/js/payments-pay.js -->
     </div>
 </div>
 

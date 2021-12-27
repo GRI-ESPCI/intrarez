@@ -8,13 +8,6 @@ import werkzeug
 from werkzeug import urls as wku
 
 
-def get_locale():
-    """Get the application language prefered by the remote user."""
-    return flask.request.accept_languages.best_match(
-        flask.current_app.config["LANGUAGES"]
-    )
-
-
 def safe_redirect(endpoint, **params):
     """Redirect to a specific page, except if we are already here.
 

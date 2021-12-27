@@ -9,11 +9,15 @@ Ce script peut uniquement être appelé depuis Flask :
 """
 
 import sys
+import tempfile
+import webbrowser
 
 import flask
+import flask_babel
 
 try:
     from app.enums import SubState
+    from app.models import Rezident
     from app.payments import email
 except ImportError:
     sys.stderr.write(
@@ -27,4 +31,12 @@ except ImportError:
 
 
 def main():
-    email.send_state_change_email(flask.g.rezident, SubState.outlaw)
+    for rezident in Rezident.query.all():
+        if not rezident.current_subscription:
+            continue
+
+        body = email.send_state_change_email(rezident, SubState.trial)
+
+        with tempfile.NamedTemporaryFile("w+", suffix=".html") as fp:
+            fp.write(body)
+            webbrowser.open(f"file:///{fp.name}")

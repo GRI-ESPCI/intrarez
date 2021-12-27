@@ -7,24 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased - 2021-12-25
 
-# STILL TO DO
+### STILL TO DO
 
   * Lydia integration
-  * Send mails [WIP]
   * BDE roles to add payments?
 
-  * Send mail when terminating room (or transfer)
+  * Send mail when creating account + terminating room (or transfer)
 
-# Added
+### Added
+
+#### Payments
 
   * New tables :class:`.models.Subscription`, :class:`.models.Payment` and
     :class:`.models.Offer` to handle payments (see bottom left part of
     https://dbdiagram.io/d/60f9d116b7279e412336e4c1);
-  * New convenient properties :meth:`~.models.Rezident.current_subscription`,
-    :meth:`~.models.Rezident.old_subscriptions`,
-    :meth:`~.models.Rezident.computed_sub_state`,
-    :meth:`~.models.Rezident.add_first_subscription` and
-    :meth:`~.models.Rezident.first_seen`;
+  * New convenient properties :attr:`~.models.Rezident.current_subscription`,
+    :attr:`~.models.Rezident.old_subscriptions`,
+    :attr:`~.models.Rezident.add_first_subscription` and
+    :attr:`~.models.Rezident.first_seen` and method
+    :meth:`~.models.Rezident.compute_sub_state`;
   * New blueprint ``payments`` with email support:
       * New page ``payments/main`` with informations about subscription and
         subscriptions history (added to navbar);
@@ -36,30 +37,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
           * /cash (or other hand-to-hant transaction);
           * /magic (special for GRI to add arbitrary payments).
       * New route ``payments.add_payment/<offer>`` to GRI to add payments;
+      * New mails templates ``payments/new_subscription``,
+        ``payments/subscription_expired``, ``payments/renew_reminder`` and
+        ``payments/internet_cut``, ``payments.on_setup``;
   * First offer automatically subscribed if necessary during context creation;
   * Added payments info card to index;
   * Added Rezidents subscription state to GRI rezidents list;
   * Added data Enums handling in ``app/enums.py`` and
     :class:`.enums.SubState` for subscription states;
-  * Real-world email support, with HTML rich contents (processed using
-    :func:`premailer.transform` by new function :func:`email.process_html`);
-  * New GRI page ``run_script`` to execute scripts from the web interface;
   * New script ``update_sub_state`` to be called every day to update
-    Rezidents subscription state.
+    Rezidents subscription state and send calendar-based mails;
+  * New script ``update_offers`` contening basic offers data allowing to
+    modify offer from source control;
+  * New script ``setup_payments`` to add all first subscriptions and send
+    information mails.
 
-# Changed
+#### Mails, misc.
+
+  * User locale is now stored:
+      * New column :attr:`.models.Rezident.locale` checked before each request
+        and updated if necessary;
+      * This locale is used to build mails to the Rezident;
+      * It is shown in GRI rezidents list;
+  * Real-world email support:
+      * HTML rich body (extends ``templates/mails_base.html``;
+      * HTML body adapted to emails using :mod:`premailer`, through new
+        functions :func:`email.init_premailer` (to set up options) and
+        :func:`email.process_html`;
+      * Plain-text body can now be constructed from HTML body using
+        :mod:`html2text`, through new functions :func:`email.init_textifier`
+        (to set up options) and :func:`email.html_to_plaintext`;
+      * New mails-specific logger logging to ``logs/mails.log``;
+      * Errors when sending mails are now reported as errors to the main
+        logger (Discord alert);
+  * New GRI page ``run_script`` to execute scripts from the web interface.
+
+### Changed
 
   * Current device shown in Profile for an external request is now a special
-    peseudo-device with external IP;
-  * :meth:`~.models.Rezident.other_devices` now inludes current device if the
+    pseudo-device with external IP;
+  * :meth:`~.models.Rezident.other_devices` now includes current device if the
     request is not made internally, from this device;
+  * Dropped :func:`.tools.utils.get_locale` in favor of
+    :func:`flask_babel.get_locale`;
   * Captive portal redirection is now managed by :func:`context.capture`;
   * 401 / 403 / 404 errors are no more reported to Discord, and IP is now
     reported.
 
-# Fixed
+### Fixed
 
-  * Error report crashed if the error occured too early (before setting up
+  * Trying to log with wrong credentials caused a 500 Internat Error;
+  * Error report crashed if the error occurred too early (before setting up
     custom request context);
   * :mod:`context` decorators did not handle arguments routes;
   * Arbitrary ``doas`` query arguments could induce crashs.
@@ -67,7 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.4.1 - 2021-12-21
 
-# Fixed
+### Fixed
 
   * Error report crashed if the error occured too early (before setting up
     custom request context);
@@ -76,7 +104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.4.0 - 2021-12-20
 
-# Added
+### Added
 
   * New module ``context.py`` with :func:`~.context.create_request_context`
     to define custom request context through :attr:`flask.g` attributes
@@ -100,7 +128,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Added dev branch display and setup in ``.env``;
   * New package requirements: ``python-dateutil``, ``premailer``.
 
-# Changed
+### Changed
 
   * IntraRez is now adapted to a usage from the Internet (updated legal);
   * ``doas`` mechanism made global and not page-specific;
@@ -116,14 +144,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     base template (``tempates/cards/base.html``);
   * Moved JS tooltips triggering in a specific file.
 
-# Fixed
+### Fixed
 
   * Rezidents list ID sorting fix was not working.
 
 
 ## 1.3.0 - 2021-12-06
 
-# Added
+### Added
 
   * New table :class:`.models.Allocation` for IP allocations (per-room and
     per-room) to store reliably IPs
@@ -134,13 +162,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     warning popup;
   * New changelog page.
 
-# Changed
+### Changed
 
   * Forms fields with an empty name are now not shown at all;
   * :func:`~.tools.utils.redirect_to_next` now accept URL parameters
     through keywords arguments.
 
-# Fixed
+### Fixed
 
   * Device MAC address duplication check was case-sensitive;
   * Display bug in profile card / GRI list when no rental;
@@ -149,19 +177,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.2.0 - 2021-11-23
 
-# Added
+### Added
 
   * GRI menu: network monitoring through Darkstat and Bandwidthd;
   * Re-introduced ``Rezident.last_seen`` as a proxy to
     ``Rezident.current_device.last_seen``.
 
-# Changed
+### Changed
 
   * GRI menu: rezidents list can now be sorted;
   * GRI menu dropdown has now its own template;
   * Device last connexion time is now shown even for the current device.
 
-# Fixed
+### Fixed
 
   * Device check routine sometimes crashed for new users;
   * ``Room.is_current`` could not be used as an expression.
@@ -169,7 +197,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.1.1 - 2021-11-20
 
-# Fixed
+### Fixed
 
   * Captive portal could generate infinite redirection loops;
   * MAC address checks were case-sensitive;
@@ -179,17 +207,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.1.0 - 2021-11-14
 
-# Added
+### Added
 
   * Captive portal: serving homepage for requests to domains not
     in new environment variable ``NETLOCS``.
 
-# Changed
+### Changed
 
   * Scripts now need to provide a ``main()`` function called by
     ``flask script``.
 
-# Fixed
+### Fixed
 
   * Generated usernames could contain non-alphanumeric characters;
   * Scripts were only run once (no re-import);
@@ -199,25 +227,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.0.0 - 2021-11-13
 
-# Added
+### Added
 
   * New logs for DHCP hosts watcher and rickrollage.
 
-# Fixed
+### Fixed
 
   * Typos in Makefile / README.
 
 
 ## 0.8.0 - 2021-10-20
 
-# Added
+### Added
 
   * Watcher script for reloading DHCP server (new environment variable
     ``DHCP_HOSTS_FILE``, watcher job configuration in Supervisor
     configuration model).
   * Added an information message before DHCP rules.
 
-# Changed
+### Changed
 
   * Traceback is now shown on error page depending on user status (GRI or
     not), regardless the app debug value.
@@ -225,36 +253,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.7.0 - 2021-10-19
 
-# Added
+### Added
 
   * Scripts system and `flask script`.
   * `gen_dhcp.py` script for generating DHCP hosts rules, called at
     device register / transfer.
 
-# Changed
+### Changed
 
   * Rezidents devices are sorted by ID.
 
-# Fixed
+### Fixed
 
   * Profile page crashed when several devices.
 
 
 ## 0.6.1 - 2021-10-18
 
-# Changed
+### Changed
 
   * Globally renamed `user` table (and associated relationships) into
     `rezident` (reserved keyword in PostgreSQL).
 
-# Fixed
+### Fixed
 
   * Typos in Makefile / README and in Bower configuration file.
 
 
 ## 0.6.0 - 2021-10-17
 
-# Added
+### Added
 
   * Makefile rules for automatic installation (beta).
   * IntraRez is now a npm local package (easier dependencies installations).
@@ -263,20 +291,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * New custom error page for 403 (GRI-only pages).
   * User last device last seen timestamp is now updated at each request.
 
-# Changed
+### Changed
 
   * Application version is now retrieved from npm package information.
   * Different favicon depending on user permissions.
   * Moment.js is now a local dependency (instead of a web-loaded file).
 
-# Fixed
+### Fixed
 
   * Wrong label for "contact us" page email field.
 
 
 ## 0.5.0 - 2021-10-04
 
-# Added
+### Added
 
   * New Index page.
   * New Profile page listing account information, rooms and devices.
@@ -284,7 +312,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     ``User.other_devices``, ``User.current_rental`` and ``User.old_rentals``.
   * Added ESPCI colors to Bootstrap-customized main colors.
 
-# Changed
+### Changed
 
   * Login is now automatic on registration.
   * Automatically override names case when creating account.
@@ -292,7 +320,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     ``force`` argument is set.
   * Replaces some basic fields with HTML5 fields.
 
-# Fixed
+### Fixed
 
   * Some endpoints were erroneous during registration process.
   * ``User.current_room`` returned a ``Rental`` and not a ``Room``.
@@ -300,7 +328,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.4.0 - 2021-10-03
 
-# Added
+### Added
 
   * Room registration (new ``Room`` and ``Rental`` models).
   * Room check integrated in registration process.
@@ -311,23 +339,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Past / Future Date form validators.
   * New utility function ``get_bootstrap_icon`` to facilite icons integration.
 
-# Changed
+### Changed
 
   * New favicon
   * New 404 / other errors pages.
 
-# Fixed
+### Fixed
 
   * Discord report of app errors.
 
 
 ## 0.3.1 - 2021-09-30
 
-# Changed
+### Changed
 
   * Minor style changes, Bootstrap customization tests
 
-# Fixed
+### Fixed
 
   * Critical bug in routing handling
   * Louis Grandvaux name
@@ -335,7 +363,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.3.0 - 2021-09-29
 
-# Added
+### Added
 
   * Device detection, registration and transfer (new ``Device`` model).
   * Device check on each request, redirecting to the appropriate page.
@@ -345,20 +373,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Utility function ``tools.utils.redirect_to_next``.
   * MAC address and Length form validators.
 
-# Changed
+### Changed
 
   * External links now open in a new tab.
   * Bootstrap is now provided as an external dependency, not included.
   * CSS is now generated from SCSS files, allowing Bootstrap customization.
 
-# Fixed
+### Fixed
 
   * Form input custom classes were ignored in some cases.
 
 
 ## 0.2.0 - 2021-09-26
 
-# Added
+### Added
 
   * Contact us page with contact form and Discord integration.
   * Legal notice page.
@@ -366,7 +394,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Room number form validator.
   * 405 error page.
 
-# Changed
+### Changed
 
   * Renamed `app._tools` module to `app.tools` (issues with Flask-Babel)
   * Minor style improvements.
@@ -374,13 +402,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.1.1 - 2021-09-25
 
-# Changed
+### Changed
 
   * Integrated Bootstrap directly in project files.
   * Upgraded flashed messages display using Bootstrap toasts.
   * Other various style improvements.
 
-# Fixed
+### Fixed
 
   * Crash when redirecting to login page.
   * Errors in Nginx / Supervisor configuration models.

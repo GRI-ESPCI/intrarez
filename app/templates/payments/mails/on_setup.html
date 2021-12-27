@@ -1,0 +1,76 @@
+{% extends "mails_base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h2>{{ _("Mise en place des paiements Internet") }}</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>{{ _("Bonjour %(name)s,", name=rezident.prenom) }}</p>
+        <p>
+            {{ _("Vous recevez cet email car vous utilisez les services des "
+                 "GRI pour accéder à Internet à la Rezidence.") }}
+        </p>
+        <p>
+            {{ _("Comme vous le savez peut-être, <strong>l'accès "
+                 "Internet n'est pas gratuit</strong> : en effet, nous "
+                 "payons tous les mois un abonnement à Internet et nous "
+                 "devons régulièrement remplacer le matériel utilisé pour "
+                 "la gestion du réseau.") }}
+        </p>
+        <p>
+            {{ _("Jusqu'à présent, les paiements étaient collectés à la main "
+                 "et au bon vouloir du trésorier du BDE, c'est-à-dire pas "
+                 "souvent. Un des objectifs de la mise en place du nouvel "
+                 "IntraRez était le développement d'un <strong>module de "
+                 "gestion d'abonnement</strong>, c'est maintenant chose "
+                 "faite.") }}
+        </p>
+        <p>
+            {{ _("Bien entendu, tout cela n'est pas rétroactif, et nous vous "
+                 "laissons <strong>un mois</strong> pour prendre un "
+                 "abonnement. Après cela, c'est-à-dire le %(date)s, votre "
+                 "accès Internet sera <strong>coupé automatiquement</strong>",
+                 date=babel.format_date(sub.cut_day, format="long")) }}
+        </p>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col text-center">
+        <a class="btn btn-primary mx-3 my-2"
+           href="{{ url_for("payments.pay") }}">
+            {{ _("Prendre un abonnement") }}
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col mb-3">
+        <p>
+            {{ _("Le paiement peut se faire par <strong>Lydia</strong> / "
+                 "<strong>CB</strong> (de préférence), <strong>virement "
+                 "bancaire</strong> ou <strong>espèces</strong>, pour une "
+                 "durée de 3 mois, 6 mois ou 12 mois. "
+                 "Vous constaterez que le prix est dérisoire par rapport "
+                 "au coût d'un abonnement individuel auprès d'un FAI.") }}
+        </p>
+        <p>
+            {{ _("Pour toute question ou pour plus d'informations, vous "
+                 "pouvez simplement répondre à cet email. ") }}
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>
+            {{ _("Très bonne journée,") }}
+        </p>
+        <p>
+            {{ _("Les GRI") }}
+        </p>
+    </div>
+</div>
+
+{% endblock %}

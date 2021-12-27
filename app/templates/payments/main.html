@@ -225,7 +225,7 @@
             <td>
             <span class="d-flex">
                 <span>
-                    {{ sub.payment.amount_format
+                    {{ babel.format_currency(sub.payment.amount, "EUR")
                        if sub.payment
                        else _("Offert") }}
                 </span>

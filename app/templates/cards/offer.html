@@ -20,7 +20,7 @@
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Prix") }}</th>
-    <td>{{ offer.price_format }}</td>
+    <td>{{ babel.format_currency(offer.price, "EUR") }}</td>
 </tr>
 {% endblock %}
 

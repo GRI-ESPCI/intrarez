@@ -6,6 +6,7 @@ import datetime
 from dateutil import relativedelta
 import jwt
 import flask
+import flask_babel
 import flask_login
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug import security as wzs
@@ -34,6 +35,7 @@ class Rezident(flask_login.UserMixin, db.Model):
     prenom = db.Column(db.String(64))
     promo = db.Column(db.String(8))
     email = db.Column(db.String(120), unique=True)
+    locale = db.Column(db.String(8))
     is_gri = db.Column(db.Boolean(), nullable=False, default=False)
     sub_state = db.Column(db.Enum(SubState), nullable=False,
                           default=SubState.trial)
@@ -163,24 +165,27 @@ class Rezident(flask_login.UserMixin, db.Model):
         return sorted((sub for sub in self.subscriptions if not sub.is_active),
                       key=lambda sub: sub.end, reverse=True)
 
-    @property
-    def computed_sub_state(self):
-        """:class:.SubState`: The rezidents's subscription state.
+    def compute_sub_state(self):
+        """Compute the rezidents's subscription state.
 
-        Theorically identical to :attr:`~Rezident.sub_state`, but computed
-        from :attr:`~Rezident.subscriptions`. It might differ the first
-        minutes of the day of state change.
+        Theoretically returns :attr:`~Rezident.sub_state`, but computed
+        from :attr:`~Rezident.subscriptions`: it will differ the first
+        minutes of the day of state change, before the daily scheduled
+        script ``update_sub_states`` changes it.
+
+        Returns:
+            :class:.SubState`:
         """
         sub = self.current_subscription
         if not sub:
             # Default: trial
             return SubState.trial
-        elif sub.is_active:
-            return SubState.subscribed
+        elif not sub.is_active:
+            return SubState.outlaw
         elif sub.is_trial:
             return SubState.trial
         else:
-            return SubState.outlaw
+            return SubState.subscribed
 
     def add_first_subscription(self):
         """"Add subscription to first offer (free month).
@@ -452,9 +457,18 @@ class Subscription(db.Model):
 
     @property
     def cut_day(self):
-        """:class:`datetime.date`: The day Internet acces is cut if no
+        """:class:`datetime.date`: The day Internet access is cut if no
         other subscription is made."""
         return self.end + relativedelta.relativedelta(months=1, days=1)
+
+    @property
+    def renew_day(self):
+        """:class:`datetime.date`: The day Internet access is cut if no
+        other subscription is made."""
+        if self.is_active:
+            return self.cut_day
+        else:
+            return datetime.date.today()
 
     @property
     def is_active(self):
@@ -488,15 +502,6 @@ class Payment(db.Model):
         """Returns repr(self)."""
         return f"<Payment #{self.id} of €{self.amount} by {self.rezident}>"
 
-    @property
-    def amount_format(self):
-        """:class:`str`: :attr:`Payment.amount` formatted depending on current
-        user locale."""
-        famt = format(self.amount, ".2f")
-        if utils.get_locale() == "fr":
-            famt = famt.replace(".", ",")
-        return flask.Markup(f"{famt}&nbsp;€")
-
 
 class Offer(db.Model):
     """An offer to subscibe to the Internet connection."""
@@ -527,25 +532,25 @@ class Offer(db.Model):
         return relativedelta.relativedelta(months=self.months, days=self.days)
 
     @property
-    def price_format(self):
-        """:class:`str`: :attr:`Offer.price` formatted depending on current
-        user locale."""
-        famt = format(self.price, ".2f")
-        if utils.get_locale() == "fr":
-            famt = famt.replace(".", ",")
-        return flask.Markup(f"{famt}&nbsp;€")
+    def total_delay(self):
+        """:class:`.dateutil.relativedelta.relativedelta'`: The delay of
+        Internet granted by this offer.
+
+        Relies on :attr:`Offer.months` and :attr:`Offer.days`.
+        """
+        return self.delay + relativedelta.relativedelta(months=1)
 
     @property
     def name(self):
         """str: Context-localized offer name.
 
         One of :attr:`.name_fr` or :attr:`.name_en`, depending on the
-        request context (user prefered language). Read-only property.
+        request context (user preferred language). Read-only property.
 
         Raises:
             RuntimeError: If acceded outside of a request context.
         """
-        locale = utils.get_locale()
+        locale = flask_babel.get_locale().language[:2]
         return self.name_fr if locale == "fr" else self.name_en
 
     @property
@@ -553,12 +558,12 @@ class Offer(db.Model):
         """str: Context-localized offer description.
 
         One of :attr:`.name_fr` or :attr:`.name_en`, depending on the
-        request context (user prefered language). Read-only property.
+        request context (user preferred language). Read-only property.
 
         Raises:
             RuntimeError: If acceded outside of a request context.
         """
-        locale = utils.get_locale()
+        locale = flask_babel.get_locale().language[:2]
         return self.description_fr if locale == "fr" else self.description_en
 
     @classmethod

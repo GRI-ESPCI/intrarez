@@ -66,7 +66,7 @@ def create_app(config_class=Config):
     app.jinja_env.globals.update(**{name: getattr(enums, name)
                                     for name in enums.__all__})
     app.jinja_env.globals["__version__"] = __version__
-    app.jinja_env.globals["get_locale"] = utils.get_locale
+    app.jinja_env.globals["babel"] = flask_babel
     app.jinja_env.globals["alert_labels"] = {
         "info": _l("Information :"),
         "success": _l("Succès :"),
@@ -150,7 +150,21 @@ def create_app(config_class=Config):
 
 
 # Set up locale
-babel.localeselector(utils.get_locale)
+@babel.localeselector
+def _get_locale():
+    """Get the application language preferred by the remote user."""
+    locale = flask.request.accept_languages.best_match(
+        flask.current_app.config["LANGUAGES"]
+    )
+    if (flask_login.current_user.is_authenticated
+        and locale != flask_login.current_user.locale):
+        # Do not use flask.g.rezident here, it would override user locale
+        # by the locale of a GRI using doas
+        flask_login.current_user.locale = locale
+        db.session.commit()
+
+    return locale
+
 
 # Import application models
 # ! Keep at the bottom to avoid circular import issues !
@@ -158,7 +172,7 @@ from app import models
 
 # Set up user loader locale
 @login.user_loader
-def load_user(id):
+def _load_user(id):
     """Function used by Flask-login to get the connected user.
 
     Args:

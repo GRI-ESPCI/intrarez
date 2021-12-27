@@ -20,7 +20,9 @@
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Montant") }}</th>
-    <td class="text-break">{{ payment.amount_format }}</td>
+    <td class="text-break">
+        {{ babel.format_currency(payment.amount, "EUR") }}
+    </td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Mode de paiement") }}</th>
