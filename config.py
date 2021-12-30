@@ -55,6 +55,8 @@ class Config():
     GOOGLE_RECAPTCHA_SITEKEY = os.environ.get("GOOGLE_RECAPTCHA_SITEKEY")
     GOOGLE_RECAPTCHA_SECRET = os.environ.get("GOOGLE_RECAPTCHA_SECRET")
 
+    GRI_BASIC_PASSWORD = os.environ.get("GRI_BASIC_PASSWORD")
+
     BRANCH = os.environ.get("BRANCH")
     FORCE_IP = os.environ.get("FORCE_IP")
     FORCE_MAC = os.environ.get("FORCE_MAC")

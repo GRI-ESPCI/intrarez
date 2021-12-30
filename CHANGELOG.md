@@ -5,14 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased - 2021-12-25
+## Unreleased - 2021-12-30
 
 ### STILL TO DO
 
   * Lydia integration
   * BDE roles to add payments?
 
-  * Send mail when creating account + terminating room (or transfer)
+  * All translations (oof)
 
 ### Added
 
@@ -62,15 +62,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Real-world email support:
       * HTML rich body (extends ``templates/mails_base.html``;
       * HTML body adapted to emails using :mod:`premailer`, through new
-        functions :func:`email.init_premailer` (to set up options) and
-        :func:`email.process_html`;
+        functions :func:`email.init_premailer` (called before first request
+        to set up options) and :func:`email.process_html`;
       * Plain-text body can now be constructed from HTML body using
         :mod:`html2text`, through new functions :func:`email.init_textifier`
-        (to set up options) and :func:`email.html_to_plaintext`;
+        (called before first request to set up options) and
+        :func:`email.html_to_plaintext`;
       * New mails-specific logger logging to ``logs/mails.log``;
       * Added ``List-Unsubscribe`` header to help message distribution;
       * Errors when sending mails are now reported as errors to the main
         logger (Discord alert);
+      * New emails when creating an account (``auth/account_registered``)
+        and when a rezident's room is transferred (``rooms/room_transferred``);
   * New GRI page ``run_script`` to execute scripts from the web interface.
 
 ### Changed
@@ -83,7 +86,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     :func:`flask_babel.get_locale`;
   * Captive portal redirection is now managed by :func:`context.capture`;
   * 401 / 403 / 404 errors are no more reported to Discord, and IP is now
-    reported.
+    reported;
+  * Changed the way Darkstat and Bandwidthd monitoring systems are integrated
+    to work under HTTPS; updated configuration models consequently (new
+    environment variable ``GRI_BASIC_PASSWORD``).
 
 ### Fixed
 
@@ -91,6 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Error report crashed if the error occurred too early (before setting up
     custom request context);
   * :mod:`context` decorators did not handle arguments routes;
+  * Password reset email was not send, and password reset page crashed;
   * Arbitrary ``doas`` query arguments could induce crashs.
 
 

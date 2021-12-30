@@ -17,9 +17,9 @@ from app.tools import utils
 @bp.route("/rezidents")
 @context.gris_only
 def rezidents():
-    """Users list page."""
+    """Rezidents list page."""
     return flask.render_template("gris/rezidents.html",
-                                 users=Rezident.query.all(),
+                                 rezidents=Rezident.query.all(),
                                  title=_("Gestion des Rezidents"))
 
 

@@ -24,6 +24,11 @@ class_files = [
     "app/static/css/custom.css",
 ]
 
+# Mail-formatting objects, built by init_premailer() / init_textifier()
+# registered by app.before_first_request
+_premailer = None
+_textifier = None
+
 
 def _send_email(app: flask.Flask, template, msg):
     with app.app_context():
@@ -83,13 +88,19 @@ def init_premailer():
     Returns:
         :class:`premailer.Premailer`: The Premailer instance to use.
     """
+    global _premailer
+
     class_files_contents = []
     for file in class_files:
         with open(file, "r") as fp:
             class_files_contents.append(fp.read())
 
-    return premailer.Premailer(
-        base_url="https://intrarez.pc-est-magique.fr/",
+    scheme = flask.current_app.config["PREFERRED_URL_SCHEME"]
+    server = flask.current_app.config["SERVER_NAME"]
+    root = flask.current_app.config["APPLICATION_ROOT"]
+
+    _premailer = premailer.Premailer(
+        base_url=f"{scheme}://{server}{root}",
         remove_classes=True,
         css_text="\n".join(class_files_contents),
         disable_validation=True,
@@ -104,19 +115,17 @@ def init_textifier():
     Returns:
         :class:`html2text.HTML2Text`: The HTML2Text instance to use.
     """
-    textifier = html2text.HTML2Text()
-    textifier.body_width = 79
-    textifier.protect_links = True
-    textifier.images_to_alt = True
-    textifier.wrap_list_items = True
-    textifier.decode_errors = "replace"
-    textifier.default_image_alt = "(image)"
-    textifier.emphasis_mark = "*"
-    return textifier
+    global _textifier
+    _textifier = html2text.HTML2Text()
+    _textifier.body_width = 79
+    _textifier.protect_links = True
+    _textifier.images_to_alt = True
+    _textifier.wrap_list_items = True
+    _textifier.decode_errors = "replace"
+    _textifier.default_image_alt = "(image)"
+    _textifier.emphasis_mark = "*"
 
 
-_premailer = init_premailer()
-_textifier = init_textifier()
 
 
 def process_html(body):

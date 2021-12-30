@@ -1,4 +1,4 @@
-{# Subscription card - used variables: user #}
+{# Subscription card - used variables: rezident #}
 {% extends "cards/base.html" %}
 
 {% block card_title %}
@@ -11,7 +11,7 @@
 
 
 {% block card_table %}
-{% if user.sub_state == SubState.subscribed %}
+{% if rezident.sub_state == SubState.subscribed %}
 
 <tr>
     <th scope="row" class="ps-4">{{ _("État") }}</th>
@@ -28,14 +28,14 @@
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Jusqu'au") }}</th>
-    <td>{{ moment(user.current_subscription.end).format("LL") }}</td>
+    <td>{{ moment(rezident.current_subscription.end).format("LL") }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Coupure le") }}</th>
-    <td>{{ moment(user.current_subscription.cut_day).format("LL") }}</td>
+    <td>{{ moment(rezident.current_subscription.cut_day).format("LL") }}</td>
 </tr>
 
-{% elif user.sub_state == SubState.trial %}
+{% elif rezident.sub_state == SubState.trial %}
 
 <tr>
     <th scope="row" class="ps-4">{{ _("État") }}</th>
@@ -57,11 +57,11 @@
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Depuis le") }}</th>
-    <td>{{ moment(user.current_subscription.end).format("LL") }}</td>
+    <td>{{ moment(rezident.current_subscription.end).format("LL") }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Coupure le") }}</th>
-    <td>{{ moment(user.current_subscription.cut_day).format("LL") }}</td>
+    <td>{{ moment(rezident.current_subscription.cut_day).format("LL") }}</td>
 </tr>
 
 {% else %}
@@ -81,7 +81,7 @@
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Depuis le") }}</th>
-    <td>{{ moment(user.old_subscriptions[0].cut_day).format("LL") }}</td>
+    <td>{{ moment(rezident.old_subscriptions[0].cut_day).format("LL") }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Accès Internet") }}</th>
@@ -97,7 +97,7 @@
    class="btn btn-outline-dark">
     {{ _("Plus d'informations") }}
 </a>
-{% if user.sub_state == SubState.subscribed %}
+{% if rezident.sub_state == SubState.subscribed %}
 
 <div class="d-inline-block me-3" data-bs-toggle="tooltip"
      data-bs-placement="top" title="{{ _("Renouvellement possible à partir de "
@@ -107,7 +107,7 @@
     </button>
 </div>
 
-{% elif user.sub_state == SubState.trial %}
+{% elif rezident.sub_state == SubState.trial %}
 
 <a href="{{ url_for("payments.pay", doas=doas) }}"
    class="btn btn-outline-dark btn-primary ms-2">

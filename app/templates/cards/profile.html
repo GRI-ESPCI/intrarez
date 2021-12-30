@@ -1,4 +1,4 @@
-{# Profile card - used variables: user #}
+{# Profile card - used variables: rezident #}
 {% extends "cards/base.html" %}
 
 {% block card_title %}
@@ -12,15 +12,15 @@
 {% block card_table %}
 <tr>
     <th scope="row" class="ps-4">{{ _("Mon compte") }}</th>
-    <td>{{ user.username }}</td>
+    <td>{{ rezident.username }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Ma chambre") }}</th>
-    <td>{{ user.current_room.num }}</td>
+    <td>{{ rezident.current_room.num }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Nombre d'appareils") }}</th>
-    <td>{{ len(user.devices) }}</td>
+    <td>{{ len(rezident.devices) }}</td>
 </tr>
 {% endblock %}
 

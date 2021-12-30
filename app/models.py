@@ -13,7 +13,6 @@ from werkzeug import security as wzs
 
 from app import db
 from app.enums import *
-from app.tools import utils
 
 
 class Rezident(flask_login.UserMixin, db.Model):
@@ -258,8 +257,11 @@ class Rezident(flask_login.UserMixin, db.Model):
             rezident exists, else ``None``.
         """
         try:
-            id = jwt.decode(token, flask.current_app.config["SECRET_KEY"],
-                            algorithms=["HS256"])["reset_password"]
+            id = jwt.decode(
+                token,
+                flask.current_app.config["SECRET_KEY"],
+                algorithms=["HS256"]
+            )["reset_password"]
         except Exception:
             return
         return cls.query.get(id)
@@ -350,18 +352,15 @@ class Rental(db.Model):
 
         Hybrid property (see :meth:`Rezident.has_a_room`).
         """
-        today = datetime.date.today()
-        return (self.end is None) or (self.end > today)
+        return (self.end is None) or (self.end > datetime.date.today())
 
     @is_current.expression
     def is_current(cls):
-        today = datetime.date.today()
-        return ((cls.end.is_(None)) | (cls.end > today))
+        return ((cls.end.is_(None)) | (cls.end > datetime.date.today()))
 
     def terminate(self):
         """Set the rental end date to today (not current)"""
-        today = datetime.date.today()
-        self.end = today
+        self.end = datetime.date.today()
         db.session.commit()
 
 

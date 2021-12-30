@@ -13,16 +13,25 @@ from app.models import Rezident
 from app.tools import utils
 
 
-def new_username(form):
-    """Create a user unique username from a registration form."""
-    pnom = form.prenom.data.lower()[0] + form.nom.data.lower()[:7]
+def new_username(prenom, nom):
+    """Create a new rezident unique username from a forname and a name.
+
+    Args:
+        prenom (str): The rezident's forname.
+        nom (str): The rezident's last name.
+
+    Returns:
+        :class:`str`: The first non-existing corresponding username.
+    """
+    pnom = prenom.lower()[0] + nom.lower()[:7]
+    # Exclude non-alphanumerics characters
     base_username = re.sub(r"\W", "", unidecode.unidecode(pnom), re.A)
-    # Check if username already exists
+    # Construct first non-existing username
     username = base_username
-    discr = 0
+    discr = 1
     while Rezident.query.filter_by(username=username).first():
+        username = f"{base_username}{discr}"
         discr += 1
-        username = base_username + str(discr)
     return username
 
 
@@ -45,17 +54,19 @@ def register():
 
     form = forms.RegistrationForm()
     if form.validate_on_submit():
-        username = new_username(form)
-        user = Rezident(
-            username=username, nom=form.nom.data.title(),
+        rezident = Rezident(
+            username=new_username(form.prenom.data, form.nom.data),
+            nom=form.nom.data.title(),
             prenom=form.prenom.data.title(),
-            promo=form.promo.data, email=form.email.data
+            promo=form.promo.data,
+            email=form.email.data,
         )
-        user.set_password(form.password.data)
-        db.session.add(user)
+        rezident.set_password(form.password.data)
+        db.session.add(rezident)
         db.session.commit()
         flask.flash(_("Compte créé avec succès !"), "success")
-        flask_login.login_user(user, remember=False)
+        flask_login.login_user(rezident, remember=False)
+        email.send_account_registered_email(rezident)
         return utils.redirect_to_next()
 
     return flask.render_template("auth/register.html",
@@ -71,15 +82,15 @@ def login():
     form = forms.LoginForm()
     if form.validate_on_submit():
         # Check user / password
-        user = (Rezident.query.filter_by(username=form.login.data).first()
+        rezident = (Rezident.query.filter_by(username=form.login.data).first()
             or Rezident.query.filter_by(email=form.login.data).first())
-        if user is None:
+        if rezident is None:
             flask.flash(_("Nom d'utilisateur inconnu"), "danger")
-        elif not user.check_password(form.password.data):
+        elif not rezident.check_password(form.password.data):
             flask.flash(_("Mot de passe incorrect"), "danger")
         else:
             # OK
-            flask_login.login_user(user, remember=form.remember_me.data)
+            flask_login.login_user(rezident, remember=form.remember_me.data)
             flask.flash(_("Connecté !"), "success")
             return utils.redirect_to_next()
 
@@ -105,11 +116,12 @@ def reset_password_request():
 
     form = forms.ResetPasswordRequestForm()
     if form.validate_on_submit():
-        user = Rezident.query.filter_by(email=form.email.data).first()
-        if user:
-            email.send_password_reset_email(user)
+        rezident = Rezident.query.filter_by(email=form.email.data).first()
+        if rezident:
+            email.send_password_reset_email(rezident)
         flask.flash(_("Un email a été envoyé avec les instructions pour "
-                      "réinitialiser le mot de passe."), "info")
+                      "réinitialiser le mot de passe. Pensez à vérifier vos "
+                      "spams."), "info")
         return utils.safe_redirect("auth.login")
 
     return flask.render_template("auth/reset_password_request.html",

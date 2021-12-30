@@ -61,7 +61,6 @@ def create_app(config_class=Config):
     mail.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
-    app.jinja_env.add_extension("jinja2.ext.do")
     app.jinja_env.globals.update(**__builtins__)
     app.jinja_env.globals.update(**{name: getattr(enums, name)
                                     for name in enums.__all__})
@@ -98,9 +97,17 @@ def create_app(config_class=Config):
     loggers.set_handlers(app)
     app.logger.info("Intrarez startup")
 
+    # Set up mail processors building
+    # ! Keep import here to avoid circular import issues !
+    from app import email
+    @app.before_first_request
+    def _init_mail_processors():
+        email.init_premailer()
+        email.init_textifier()
+
     # Set up captive portal
     @app.before_request
-    def captive_portal():
+    def _captive_portal():
         """Captive portal: redirect external requests to homepage."""
         netlocs = app.config["NETLOCS"]
         if netlocs is None or app.debug or app.testing:
@@ -179,9 +186,8 @@ def _load_user(id):
         id (str): the ID of the connected user (stored in the session).
 
     Returns:
-        :class:`Rezident`
+        :class:`Rezident` | ``None``
     """
     if not id.isdigit():
-        return False
-    user = models.Rezident.query.get(int(id))
-    return user
+        return None
+    return models.Rezident.query.get(int(id))

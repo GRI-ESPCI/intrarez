@@ -78,7 +78,7 @@ msgstr "Sign in"
 #: app/templates/cards/account.html:18 app/templates/cards/device.html:73
 #: app/templates/cards/device_modal.html:15 app/templates/cards/offer.html:14
 msgid "Nom"
-msgstr "Last name"
+msgstr "Name"
 
 #: app/auth/forms.py:45 app/templates/cards/account.html:22
 msgid "Prénom"

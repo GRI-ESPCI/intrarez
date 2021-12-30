@@ -14,6 +14,8 @@ Ce script peut uniquement être appelé depuis Flask :
 import os
 import sys
 
+import flask
+
 try:
     from app.models import Room
 except ImportError:
@@ -61,10 +63,10 @@ def main():
             f"# ({__file__}).\n"
             "# Ne PAS le modifier à la main, ce serait écrasé !\n#\n"
             "#   * Pour ajouter un appareil à un Rezident,\n"
-            "#       - utiliser l'interface en ligne "
-            "#         (https://intrarez.pc-est-magique.fr/gris/rezidents)\n"
+            "#       - utiliser l'interface en ligne \n"
+            f"#         ({flask.url_for('gris.rezidents')})\n"
             "#       - OU utiliser `flask shell` pour l'ajouter en base,\n"
-            "#         puis regénérer avec `flask script gen_dhcp.py`\n"
+            "#         puis régénérer avec `flask script gen_dhcp.py`\n"
             "#         (flask = /home/intrarez/intrarez/env/bin/flask)\n#\n"
             "#   * Pour ajouter toute autre règle, modifier directement\n"
             "#     /env/dhcp/dhcpd.conv\n#\n"

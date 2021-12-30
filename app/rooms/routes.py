@@ -7,7 +7,7 @@ from flask_babel import _
 
 from app import context, db
 from app.models import Room, Rental
-from app.rooms import bp, forms
+from app.rooms import bp, email, forms
 from app.tools import utils
 
 
@@ -52,6 +52,7 @@ def register():
         if not form.submit.data:
             # The submit button used was not the form one (so it was the
             # warning one): already warned and chose to process, transfer room
+            email.send_room_transferred_email(room.current_rental.rezident)
             room.current_rental.terminate()
             return _register_room()
 

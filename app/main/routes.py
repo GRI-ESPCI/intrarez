@@ -126,3 +126,19 @@ def test():
             pt[name] = obj
 
     return flask.render_template("main/test.html", title=_("Test"), pt=pt)
+
+
+@bp.route("/test_mail/<blueprint>/<template>")
+@context.gris_only
+def test_mail(blueprint, template):
+    """Mails test route"""
+    from app.email import process_html, html_to_plaintext
+    body = flask.render_template(f"{blueprint}/mails/{template}.html",
+                                 rezident=flask.g.rezident,
+                                 token="s4mple_t0ken",
+                                 sub=flask.g.rezident.current_subscription)
+    body = process_html(body)
+    if flask.request.args.get("txt"):
+        return f"<pre>{flask.escape(html_to_plaintext(body))}</pre>"
+    else:
+        return body

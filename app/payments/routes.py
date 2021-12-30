@@ -119,18 +119,3 @@ def add_payment(offer=None):
     flask.flash("Mail d'information envoyé !", "success")
 
     return utils.redirect_to_next()
-
-
-@bp.route("/test_mail/<template>")
-@context.gris_only
-def test_mail(template):
-    """Mails test route"""
-    from app.email import process_html, html_to_plaintext
-    body = flask.render_template(f"payments/mails/{template}.html",
-                                 rezident=flask.g.rezident,
-                                 sub=flask.g.rezident.current_subscription)
-    body = process_html(body)
-    if flask.request.args.get("txt"):
-        return f"<pre>{flask.escape(html_to_plaintext(body))}</pre>"
-    else:
-        return body

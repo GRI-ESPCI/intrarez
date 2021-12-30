@@ -1,0 +1,78 @@
+{% extends "mails_base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h2>{{ _("Votre compte a bien été créé") }}</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>{{ _("Bonjour %(name)s,", name=rezident.prenom) }}</p>
+        <p>
+            {{ _("Votre compte sur l'IntraRez a bien été créé :") }}
+        </p>
+        <ul class="mb-4">
+            <li>
+                {{ _("Identifiant :") }}
+                <strong>{{ rezident.username }}</strong>
+            </li>
+            <li>
+                {{ _("Nom :") }}
+                <strong>{{ rezident.nom }}</strong>
+            </li>
+            <li>
+                {{ _("Prénom :") }}
+                <strong>{{ rezident.prenom }}</strong>
+            </li>
+            <li>
+                {{ _("Promotion :") }}
+                <strong>{{ {
+                        "ext": _("Locataire non-ESPCI"),
+                        "sousloc": _("Sous-locataire")
+                    }.get(rezident.promo, rezident.promo)
+                }}</strong>
+            </li>
+            <li>
+                {{ _("Adresse e-mail :") }}
+                <strong>{{ rezident.email }}</strong>
+            </li>
+        </ul>
+        <p>
+            {{ _("Pour plus d'informations, consultez votre profil :") }}
+        </p>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col text-center">
+        <a class="btn btn-primary mx-3 my-2"
+           href="{{ url_for("main.profile") }}">
+            {{ _("Voir mon profil") }}
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col mb-3">
+        <p>
+            {{ _("Il ne vous reste plus qu'à enregistrer votre chambre et "
+                 "votre premier appareil pour pouvoir accéder à Internet.") }}
+        </p>
+        <p>
+            {{ _("Pour toute question ou pour plus d'informations, vous "
+                 "pouvez simplement répondre à cet email.") }}
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>
+            {{ _("Très bonne journée,") }}
+        </p>
+        <p>
+            {{ _("Les GRI") }}
+        </p>
+    </div>
+</div>
+
+{% endblock %}

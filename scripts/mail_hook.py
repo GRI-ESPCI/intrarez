@@ -104,4 +104,4 @@ def main():
     except Exception:
         raise RuntimeError("Sorry, your mail could not reach our team. "
                            "Please use our individual contacts at "
-                           "https://intrarez.pc-est-magique.fr/contact.")
+                           f"{flask.url_for('main.contact', _external=True)}.")
