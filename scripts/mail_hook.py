@@ -80,7 +80,7 @@ def report_mail():
             )
             embed.add_embed_field(
                 name="Profil (compte GRI nécessaire) :",
-                value=flask.url_for("main.profile", doas=rezident.id),
+                value=flask.url_for("profile.main", doas=rezident.id),
             )
 
     # Send webhook

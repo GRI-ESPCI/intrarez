@@ -74,17 +74,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         logger (Discord alert);
       * New emails when creating an account (``auth/account_registered``)
         and when a rezident's room is transferred (``rooms/room_transferred``);
+  * New promised rules ``profile.modify_account``, ``profile.update_password``,
+    ``rooms.modify`` and ``devices.modify`` (and revealed buttons in profile
+    page, cards...) ;
   * New GRI page ``run_script`` to execute scripts from the web interface;
   * New maintenance mode (``MAINTENANCE`` environment variable and 503 page).
 
 ### Changed
 
+  * Moved route ``main.profile`` to new blueprint ``profile``, as
+    ``profile.main``;
   * Current device shown in Profile for an external request is now a special
     pseudo-device with external IP;
   * :meth:`~.models.Rezident.other_devices` now includes current device if the
     request is not made internally, from this device;
   * Dropped :func:`.tools.utils.get_locale` in favor of
     :func:`flask_babel.get_locale`;
+  * Moved ``auth.forms.promotions_list`` to :func:`tools.utils.promotions`,
+    and it now has a cache mechanism to compute it once a day maximum, and
+    returns a dict rather than a list of tuples;
   * Captive portal redirection is now managed by :func:`context.capture`;
   * 401 / 403 / 404 errors are no more reported to Discord, and IP is now
     reported;

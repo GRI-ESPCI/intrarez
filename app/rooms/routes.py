@@ -64,6 +64,27 @@ def register():
                                  already_rented=already_rented)
 
 
+@bp.route("/modify", methods=["GET", "POST"])
+@context.all_good_only
+def modify():
+    """Rental modification page."""
+    form = forms.RentalModificationForm()
+    if form.validate_on_submit():
+        rental = flask.g.rezident.current_rental
+        if rental:
+            rental.start = form.start.data
+            rental.end = form.end.data
+            db.session.commit()
+            flask.flash(_("Location modifiée avec succès !"), "success")
+        else:
+            flask.flash(_("Pas de location en cours !"), "danger")
+        return utils.redirect_to_next()
+
+    return flask.render_template("rooms/modify.html",
+                                 title=_("Mettre à jour ma location"),
+                                 form=form)
+
+
 @bp.route("/terminate", methods=["GET", "POST"])
 @context.all_good_only
 def terminate():

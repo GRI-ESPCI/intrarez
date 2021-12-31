@@ -79,13 +79,6 @@ def changelog():
                                  datetime=datetime)
 
 
-@bp.route("/profile")
-@context.all_good_only
-def profile():
-    """IntraRez profile page."""
-    return flask.render_template("main/profile.html", title=_("Profil"))
-
-
 @bp.route("/connect_check")
 @context.internal_only
 def connect_check():

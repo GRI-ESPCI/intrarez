@@ -78,13 +78,14 @@ def create_app(config_class=Config):
         "danger": "exclamation-triangle-fill",
         "warning": "exclamation-triangle-fill",
     }
+    app.jinja_env.globals["promotions"] = utils.promotions
     app.jinja_env.globals["bootstrap_icon"] = utils.get_bootstrap_icon
     app.jinja_env.globals['bootstrap_is_hidden_field'] = (
         lambda field: isinstance(field, wtforms.fields.HiddenField)
     )
 
     # ! Keep imports here to avoid circular import issues !
-    from app import errors, main, auth, devices, rooms, gris, payments
+    from app import errors, main, auth, devices, rooms, gris, payments, profile
     app.register_blueprint(errors.bp)
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
@@ -92,6 +93,7 @@ def create_app(config_class=Config):
     app.register_blueprint(rooms.bp, url_prefix="/rooms")
     app.register_blueprint(gris.bp, url_prefix="/gris")
     app.register_blueprint(payments.bp, url_prefix="/payments")
+    app.register_blueprint(profile.bp, url_prefix="/profile")
 
     # Set up error handling
     loggers.set_handlers(app)

@@ -1,9 +1,11 @@
 """Useful miscellaneous functions."""
 
+import datetime
 import os
 import importlib
 
 import flask
+from flask_babel import lazy_gettext as _l
 import werkzeug
 from werkzeug import urls as wku
 
@@ -72,6 +74,37 @@ def redirect_to_next(**params):
 
     params["next"] = None
     return safe_redirect(next_endpoint, **params)
+
+
+_promotions = None
+_promotions_last_update = None
+
+
+def _build_promotions_list():
+    year = datetime.datetime.now().year
+    max_promo = year - 1882         # Promotion 1 en 1882
+    if datetime.datetime.now().month > 6:       # > juin : nouvelle promotion
+        max_promo += 1
+    promos = {str(promo): str(promo)
+              for promo in range(max_promo, max_promo - 6, - 1)}
+    # Special values
+    promos["ext"] = _l("Locataire non-ESPCI")
+    promos["sousloc"] = _l("Sous-locataire")
+    return promos
+
+
+def promotions():
+    """Build the possible promotions depending on the current date.
+
+    Returns:
+        :class:`dict`: Mapping of promotion slug (stored in database) to name.
+    """
+    global _promotions, _promotions_last_update
+    # Caching mechanism: build promotions list max. once a day
+    if not _promotions or _promotions_last_update < datetime.date.today():
+        _promotions = _build_promotions_list()
+        _promotions_last_update = datetime.date.today()
+    return _promotions
 
 
 def get_bootstrap_icon(name):

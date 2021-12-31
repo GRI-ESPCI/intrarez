@@ -126,12 +126,13 @@
 
 {% block card_footer_class %}{{ super() }} px-auto{% endblock %}
 {% block card_footer %}
-<div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
-     data-bs-placement="top" title="{{ _("Fonctionnalité à venir") }}">
-    <button class="btn btn-outline-dark" disabled>
-        {{ _("Modifier l'appareil") }}
-    </button>
-</div>
+<a class="btn btn-outline-dark me-3 position-relative"
+   href="{{ url_for("devices.modify", doas=doas,
+                    next=request.url_rule.endpoint) }}">
+    {{ _("Modifier l'appareil") }}
+    <span class="position-absolute top-0 start-100 translate-middle
+                 badge rounded-pill bg-success">NEW</span>
+</a>
 <a class="btn btn-outline-dark"
    href="{{ url_for("devices.register", force=True, doas=doas,
                     next=request.url_rule.endpoint) }}">

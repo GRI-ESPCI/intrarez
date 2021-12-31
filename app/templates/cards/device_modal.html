@@ -56,13 +56,13 @@
             </tbody></table>
         </div>
         <div class="modal-footer">
-            <div class="d-inline-block" data-bs-toggle="tooltip"
-                 data-bs-placement="top"
-                 title="{{ _("Fonctionnalité à venir") }}">
-                <button class="btn btn-outline-dark" disabled>
-                    {{ _("Modifier l'appareil") }}
-                </button>
-            </div>
+            <a class="btn btn-outline-dark me-3 position-relative"
+               href="{{ url_for("devices.modify", device_id=device.id, doas=doas,
+                                next=request.url_rule.endpoint) }}">
+                {{ _("Modifier l'appareil") }}
+                <span class="position-absolute top-0 start-100 translate-middle
+                             badge rounded-pill bg-success">NEW</span>
+            </a>
             <button class="btn btn-secondary" data-bs-dismiss="modal">
                 {{ _("Fermer") }}
             </button>

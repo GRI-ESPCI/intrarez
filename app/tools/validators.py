@@ -2,6 +2,7 @@
 
 import datetime
 
+import flask
 import wtforms
 from flask_babel import lazy_gettext as _l
 
@@ -71,18 +72,12 @@ class Length(wtforms.validators.Length):
         super().__init__(min, max, message)
 
 
-class NewUsername(CustomValidator):
-    message = _l("Nom d'utilisateur déjà utilisé.")
-
-    def validate(self, form, field):
-        return (Rezident.query.filter_by(username=field.data).first() is None)
-
-
 class NewEmail(CustomValidator):
     message = _l("Adresse e-mail déjà liée à un autre compte.")
 
     def validate(self, form, field):
-        return (Rezident.query.filter_by(email=field.data).first() is None)
+        rezident = Rezident.query.filter_by(email=field.data).first()
+        return (rezident is None) or (rezident == flask.g.rezident)
 
 
 class ValidRoom(CustomValidator):

@@ -28,11 +28,9 @@
             </li>
             <li>
                 {{ _("Promotion :") }}
-                <strong>{{ {
-                        "ext": _("Locataire non-ESPCI"),
-                        "sousloc": _("Sous-locataire")
-                    }.get(rezident.promo, rezident.promo)
-                }}</strong>
+                <strong>
+                    {{ promotions().get(rezident.promo, rezident.promo) }}
+                </strong>
             </li>
             <li>
                 {{ _("Adresse e-mail :") }}
@@ -47,7 +45,7 @@
 <div class="row mb-3">
     <div class="col text-center">
         <a class="btn btn-primary mx-3 my-2"
-           href="{{ url_for("main.profile") }}">
+           href="{{ url_for("profile.main") }}">
             {{ _("Voir mon profil") }}
         </a>
     </div>

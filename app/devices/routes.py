@@ -35,7 +35,7 @@ def register():
             utils.run_script("gen_dhcp.py")       # Update DHCP rules
             flask.flash(_("Appareil enregistré avec succès !"), "success")
             # OK
-            if flask.request.args.get("force"):
+            if flask.g.doas or flask.request.args.get("force"):
                 return utils.redirect_to_next()
             return utils.safe_redirect("main.connect_check",
                                        **flask.request.args)
@@ -43,6 +43,37 @@ def register():
     return flask.render_template("devices/register.html",
                                  title=_("Enregistrer l'appareil"),
                                  form=form)
+
+
+@bp.route("/modify", methods=["GET", "POST"])
+@bp.route("/modify/<device_id>", methods=["GET", "POST"])
+@context.all_good_only
+def modify(device_id=None):
+    """Rental modification page."""
+    device = None
+    if device_id is None:
+        device = flask.g.rezident.current_device
+    elif device_id.isdigit():
+        device = Device.query.get(device_id)
+
+    if not device:
+        flask.flash(_("Appareil inconnu !"), "danger")
+
+    form = forms.DeviceModificationForm()
+    if form.validate_on_submit():
+        device.name = form.nom.data
+        device.type = form.type.data
+        mac_address = form.mac.data.lower()
+        if device.mac_address != mac_address:
+            device.mac_address = mac_address
+            utils.run_script("gen_dhcp.py")       # Update DHCP rules
+        db.session.commit()
+        flask.flash(_("Appareil modifié avec succès !"), "success")
+        return utils.redirect_to_next()
+
+    return flask.render_template("devices/modify.html",
+                                 title=_("Modifier un appareil"),
+                                 device=device, form=form)
 
 
 @bp.route("/transfer", methods=["GET", "POST"])
@@ -64,7 +95,7 @@ def transfer():
             utils.run_script("gen_dhcp.py")       # Update DHCP rules
             flask.flash(_("Appareil transféré avec succès !"), "success")
             # OK
-            if flask.request.args.get("force"):
+            if flask.g.doas or flask.request.args.get("force"):
                 return utils.redirect_to_next()
             else:
                 return utils.safe_redirect("main.connect_check",
