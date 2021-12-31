@@ -143,16 +143,9 @@ class Rezident(flask_login.UserMixin, db.Model):
     @property
     def current_subscription(self):
         """:class:`Subscription`: The rezidents's current subscription, or
-        ``None``.
-
-        If the user do not have the basic subscription but has devices,
-        it is created and returned.
-        """
+        ``None``."""
         if not self.subscriptions:
-            if self.devices:
-                self.add_first_subscription()
-            else:
-                return None
+            return None
         return max(self.subscriptions, key=lambda sub: sub.start)
 
     @property

@@ -40,6 +40,17 @@ def not_found_error(error):
 def theiere_error(error):
     return "Would you like a cup of tea?", 418
 
+@bp.app_errorhandler(503)
+def service_unavailable_error(error):
+    err_name = f"{error.code} {error.name}"
+    err_descr = error.description
+    if flask.current_app.config["MAINTENANCE"]:
+        flask.current_app.logger.info(f"{err_name} -- {flask.request}")
+    else:
+        flask.current_app.logger.error(f"{err_name} -- {flask.request}")
+    return flask.render_template("errors/503.html", err_name=err_name,
+                                 err_descr=err_descr, title=err_name), 503
+
 @bp.app_errorhandler(Exception)
 def other_error(error):
     if isinstance(error, HTTPException):

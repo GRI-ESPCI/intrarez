@@ -47,8 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     :class:`.enums.SubState` for subscription states;
   * New script ``update_sub_state`` to be called every day to update
     Rezidents subscription state and send calendar-based mails;
-  * New script ``update_offers`` contening basic offers data allowing to
-    modify offer from source control;
+  * New script ``update_offers`` holding basic offers data allowing to
+    modify offers from source control;
   * New script ``setup_payments`` to add all first subscriptions and send
     information mails.
 
@@ -74,7 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         logger (Discord alert);
       * New emails when creating an account (``auth/account_registered``)
         and when a rezident's room is transferred (``rooms/room_transferred``);
-  * New GRI page ``run_script`` to execute scripts from the web interface.
+  * New GRI page ``run_script`` to execute scripts from the web interface;
+  * New maintenance mode (``MAINTENANCE`` environment variable and 503 page).
 
 ### Changed
 

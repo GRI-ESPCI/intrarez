@@ -17,7 +17,8 @@
         <link href="{{ url_for("static", filename="css/custom.css") }}"
               rel="stylesheet" />
         <!-- Bootstrap 5.0.2 core CSS -->
-        <link href="{{ url_for("static", filename="css/compiled/custom-bootstrap.css") }}"
+        <link href="{{ url_for("static",
+                        filename="css/compiled/custom-bootstrap.css") }}"
               rel="stylesheet" />
         {% endblock styles %}
 
@@ -61,9 +62,11 @@
         <div class="container-fluid ps-0">
             <a class="navbar-brand p-0" href="{{ url_for("main.index") }}">
                 <img src="{{ url_for("static", filename="img/gri.png") }}"
-                        width="80" height="80"
-                        class="d-inline-block m-0" alt="GRI">
-                <span class="align-text-top">/&nbsp;<b>IntraRez</b></span>
+                     width="80" height="80" class="d-inline-block m-0"
+                     alt="GRI">
+                <span class="align-text-top">
+                    /&nbsp;<strong>IntraRez</strong>
+                </span>
                 {% if config.get("BRANCH") %}
                 <span class="badge rounded-pill bg-warning text-dark ms-2">
                     {{ config["BRANCH"] }}
@@ -72,19 +75,19 @@
             </a>
             <button class="navbar-toggler m-2" type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
+                    data-bs-target="#navbar_content"
+                    aria-controls="navbar_content"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar navbar-collapse"
-                 id="navbarSupportedContent">
-                <ul class="navbar-nav mx-auto mb-12 mb-1sm-0">
+            <div class="collapse navbar navbar-collapse" id="navbar_content">
+                <ul class="navbar-nav mx-auto flex-row flex-wrap
+                           justify-content-end">
                     {% if g.is_gri %}
                     {% include "gris/menu.html" %}
                     {% endif %}
                 </ul>
-                <ul class="navbar-nav ms-auto mb-12 mb-1sm-0">
+                <ul class="navbar-nav flex-row flex-wrap justify-content-end">
                     {% if not g.logged_in %}
                     <li class="nav-item">
                         <a class="btn btn-outline-secondary mx-2 my-1"
@@ -115,7 +118,7 @@
                     <li class="nav-item">
                         <a class="btn btn-outline-secondary mx-2 my-1
                                   position-relative"
-                            href="{{ url_for("payments.main") }}">
+                           href="{{ url_for("payments.main") }}">
                             {{ _("Abonnement") }}
                             <span class="position-absolute top-0 start-100
                                          translate-middle badge rounded-pill
@@ -124,13 +127,13 @@
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-outline-secondary mx-2 my-1"
-                            href="{{ url_for("main.profile") }}">
+                           href="{{ url_for("main.profile") }}">
                             {{ _("Profil") }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-outline-secondary mx-2 my-1"
-                            href="{{ url_for("auth.logout") }}">
+                           href="{{ url_for("auth.logout") }}">
                             {{ _("Déconnexion") }}
                         </a>
                     </li>

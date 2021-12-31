@@ -64,3 +64,5 @@ class Config():
     NETLOCS = os.environ.get("NETLOCS")
     if NETLOCS is not None:
         NETLOCS = NETLOCS.split(";")
+
+    MAINTENANCE = bool(os.environ.get("MAINTENANCE"))

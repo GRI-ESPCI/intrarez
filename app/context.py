@@ -103,6 +103,14 @@ def create_request_context():
             return flask.redirect(flask.url_for(flask.request.endpoint,
                                                 **new_args))
 
+    # Check maintenance
+    if flask.current_app.config["MAINTENANCE"]:
+        if g.is_gri:
+            flask.flash(_("Le site est en mode maintenance : seuls les GRI "
+                          "peuvent y accéder."), "warning")
+        else:
+            flask.abort(503)    # 503 Service Unavailable
+
     # Get IP
     g.remote_ip = flask.current_app.config["FORCE_IP"] or _get_remote_ip()
     if not g.remote_ip:

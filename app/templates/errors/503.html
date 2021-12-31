@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+<div class="position-relative">
+    {{ super() }}   {# Original navbar #}
+    <div class="position-absolute bottom-0 start-0 w-100 h-100 mb-4
+                maintenance-stripes"></div>
+</div>
+{% endblock navbar %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col col-md-10 col-lg-8 col-xl-7 col-xxl-6">
+        <p><img src="{{ url_for("static", filename="img/maintenance.jpg") }}"
+                width="100%" /></p>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        <h1 class="text-danger fw-bold">{{ _("Un instant !")}}</h1>
+        <h2>> {{ _("L'IntraRez est actuellement en maintenance.") }}</h2>
+    </div>
+</div>
+<div class="row"><p>
+    {{ _("Les GRI travaillent en ce moment même au déploiement de nouvelles "
+         "fonctionnalités ou à la résolution d'un problème.") }}
+</p></div>
+<div class="row mb-2"><p>
+    {{ _("Patience ! Le service devrait être revenu d'ici quelques minutes. "
+         "L'accès des appareils à Internet n'est pas impacté.") }}
+</p></div>
+<div class="row text-muted"><p>
+    <div class="col-auto d-flex align-items-center pe-0 text-muted">
+        <svg class="bi flex-shrink-0 me-2" width="36" height="36"
+             role="img" aria-label="Bug">{{ bootstrap_icon("bug-fill") }}</svg>
+    </div>
+    <div class="col d-flex align-items-center ps-2">
+        <span><strong>{{ err_name }}:</strong> {{ err_descr }}</span>
+    </div>
+</p></div>
+
+{% endblock %}
+
+{% block footer %}
+<div class="position-relative">
+    {{ super() }}   {# Original footer #}
+    <div class="position-absolute top-0 start-0 w-100 h-100 mt-4
+                maintenance-stripes"></div>
+</div>
+{% endblock footer %}

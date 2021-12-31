@@ -30,3 +30,16 @@ a[target="_blank"]::after {
 .lines-6 {
     height: 150px !important;
 }
+
+/* Maintenance stripes overlay */
+.maintenance-stripes {
+    background: repeating-linear-gradient(
+        -45deg,
+        #000000,
+        #000000 25px,
+        #ffff00 25px,
+        #ffff00 50px
+    );
+    opacity: 50%;
+    z-index: 10;
+}
