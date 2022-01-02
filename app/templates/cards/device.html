@@ -130,8 +130,7 @@
    href="{{ url_for("devices.modify", doas=doas,
                     next=request.url_rule.endpoint) }}">
     {{ _("Modifier l'appareil") }}
-    <span class="position-absolute top-0 start-100 translate-middle
-                 badge rounded-pill bg-success">NEW</span>
+    {{ macros.badge("NEW") }}
 </a>
 <a class="btn btn-outline-dark"
    href="{{ url_for("devices.register", force=True, doas=doas,

@@ -14,7 +14,7 @@
         {% if g.rezident.sub_state == SubState.subscribed %}
 
         <li>
-            {{ _("État actuel") }} :
+            {{ _("État actuel :") }}
             <strong>{{ _("Abonné(e)") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-success"
                  width="24" height="24">
@@ -22,18 +22,18 @@
             </svg>
         </li>
         <li>
-            {{ _("Jusqu'au") }} :
+            {{ _("Jusqu'au :") }}
             <strong>{{ moment(sub.end).format("LL") }}</strong>
         </li>
         <li>
-            {{ _("Coupure le") }} :
+            {{ _("Coupure le :") }}
             <strong>{{ moment(sub.cut_day).format("LL") }}</strong>
         </li>
 
         {% elif g.rezident.sub_state == SubState.trial %}
 
         <li>
-            {{ _("État actuel") }} :
+            {{ _("État actuel :") }}
             <strong>{{ _("Mois offert") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-warning"
                  width="24" height="24">
@@ -45,18 +45,18 @@
             </svg>
         </li>
         <li>
-            {{ _("Depuis le") }} :
+            {{ _("Depuis le :") }}
             <strong>{{ moment(sub.end).format("LL") }}</strong>
         </li>
         <li>
-            {{ _("Coupure le") }} :
+            {{ _("Coupure le :") }}
             <strong>{{ moment(sub.cut_day).format("LL") }}</strong>
         </li>
 
         {% else %}
 
         <li>
-            {{ _("État actuel") }} :
+            {{ _("État actuel :") }}
             <strong>{{ _("Paiement nécessaire") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-danger"
                  width="24" height="24">
@@ -64,11 +64,11 @@
             </svg>
         </li>
         <li>
-            {{ _("Depuis le") }} :
+            {{ _("Depuis le :") }}
             <strong>{{ moment(sub.cut_day).format("LL") }}</strong>
         </li>
         <li>
-            {{ _("Accès Internet") }} :
+            {{ _("Accès Internet :") }}
             {{ _("Suspendu") }}
         </li>
 

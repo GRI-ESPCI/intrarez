@@ -43,7 +43,7 @@
                     </svg>
                 </div>
                 <div class="offset-2">
-                    {{ _("Abonnement valide jusqu'au") }}
+                    {{ _("Abonnement valide jusqu'au") }}<br />
                     <strong>
                         {{ moment(g.rezident.current_subscription.renew_day
                                   + offer.total_delay).format("LL") }}

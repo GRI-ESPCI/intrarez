@@ -1,0 +1,10 @@
+
+<!-- Ajoute un badge en haut à droite du premier élément parent avec
+     la classe position-relative.
+
+     content (str): Le texte dans le badge (par défaut une étoile)
+-->
+{% macro badge(content="★") %}
+    <span class="position-absolute top-0 start-100 translate-middle
+                badge rounded-pill bg-success">{{ content }}</span>
+{% endmacro %}

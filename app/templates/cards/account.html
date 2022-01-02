@@ -41,14 +41,12 @@
    href="{{ url_for("profile.modify_account", doas=doas,
                     next=request.url_rule.endpoint) }}">
     {{ _("Modifier une information") }}
-    <span class="position-absolute top-0 start-100 translate-middle
-                 badge rounded-pill bg-success">NEW</span>
+    {{ macros.badge("NEW") }}
 </a>
 <a class="btn btn-outline-dark me-3 position-relative"
    href="{{ url_for("profile.update_password", doas=doas,
                     next=request.url_rule.endpoint) }}">
     {{ _("Changer de mot de passe") }}
-    <span class="position-absolute top-0 start-100 translate-middle
-                 badge rounded-pill bg-success">NEW</span>
+    {{ macros.badge("NEW") }}
 </a>
 {% endblock %}

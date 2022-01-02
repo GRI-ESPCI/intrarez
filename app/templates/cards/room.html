@@ -87,14 +87,12 @@
    href="{{ url_for("rooms.modify", doas=doas,
                     next=request.url_rule.endpoint) }}">
     {{ _("Modifier les dates") }}
-    <span class="position-absolute top-0 start-100 translate-middle
-                 badge rounded-pill bg-success">NEW</span>
+    {{ macros.badge("NEW") }}
 </a>
 <a class="btn btn-outline-dark me-3 position-relative"
    href="{{ url_for("rooms.terminate", doas=doas,
                     next=request.url_rule.endpoint) }}">
     {{ _("Changer de chambre") }}
-    <span class="position-absolute top-0 start-100 translate-middle
-                 badge rounded-pill bg-success">NEW</span>
+    {{ macros.badge("NEW") }}
 </a>
 {% endblock %}

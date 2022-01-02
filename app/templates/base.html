@@ -1,3 +1,5 @@
+{% import "_macros.html" as macros %}
+
 {% block doc %}
 <!DOCTYPE html>
 <html lang="{{ babel.get_locale() }}">
@@ -34,7 +36,7 @@
         {% endif %}
 
         {% block scripts %}
-        <!-- Bootstrap 5.0.2 Bundle with Popper (loaded asynchroniously) -->
+        <!-- Bootstrap 5.0.2 Bundle with Popper (loaded asynchronously) -->
         <script src="{{ url_for("static",
                                 filename="bower_components/bootstrap/dist/"
                                          + "js/bootstrap.bundle.min.js") }}"
@@ -120,9 +122,7 @@
                                   position-relative"
                            href="{{ url_for("payments.main") }}">
                             {{ _("Abonnement") }}
-                            <span class="position-absolute top-0 start-100
-                                         translate-middle badge rounded-pill
-                                         bg-success">★</span>
+                            {{ macros.badge() }}
                         </a>
                     </li>
                     <li class="nav-item">

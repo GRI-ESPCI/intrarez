@@ -96,7 +96,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     reported;
   * Changed the way Darkstat and Bandwidthd monitoring systems are integrated
     to work under HTTPS; updated configuration models consequently (new
-    environment variable ``GRI_BASIC_PASSWORD``).
+    environment variable ``GRI_BASIC_PASSWORD``);
+  * "NEW" /star badges are now set through a macro, in
+    ``app/templates/_macro.html``.
 
 ### Fixed
 
@@ -112,7 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-  * Error report crashed if the error occured too early (before setting up
+  * Error report crashed if the error occurred too early (before setting up
     custom request context);
   * "Visit the Internet" button did not work.
 
@@ -156,7 +158,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Moved :func:`get_locale` from ``__init__.py`` to ``tools/utils.py``,
     and added it to Jinja env;
   * Informative cards shown on homepage, profile... are now built over a
-    base template (``tempates/cards/base.html``);
+    base template (``templates/cards/base.html``);
   * Moved JS tooltips triggering in a specific file.
 
 ### Fixed

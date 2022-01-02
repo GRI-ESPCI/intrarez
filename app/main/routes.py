@@ -39,7 +39,7 @@ def contact():
     form = forms.ContactForm()
     if form.validate_on_submit():
         if (not flask.g.internal) and (not captcha.verify_captcha()):
-            flask.flash(_("Le capctcha n'a pas pu être vérifié. "
+            flask.flash(_("Le captcha n'a pas pu être vérifié. "
                           "Veuillez réessayer."), "danger")
         else:
             role_id = flask.current_app.config["GRI_ROLE_ID"]
@@ -128,7 +128,7 @@ def test_mail(blueprint, template):
     from app.email import process_html, html_to_plaintext
     body = flask.render_template(f"{blueprint}/mails/{template}.html",
                                  rezident=flask.g.rezident,
-                                 token="s4mple_t0ken",
+                                 token="sample_t0ken",
                                  sub=flask.g.rezident.current_subscription)
     body = process_html(body)
     if flask.request.args.get("txt"):
