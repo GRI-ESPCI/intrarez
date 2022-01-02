@@ -15,6 +15,74 @@
             {{ _("sur GitHub") }}</a>.
     </p></div>
     <div class="row mb-2">
+        <h4>v1.5 – Unreleased</h4>
+        <ul class="ms-5">
+            <li>
+                {{ _("Mise en service des paiements : ") }}
+                <ul class="mb-2">
+                    <li>{{ _("Page générique d'information ;") }}</li>
+                    <li>{{ _("Page de choix de l'offre et du moyen de "
+                             "paiement ;") }}</li>
+                    <li>{{ _("Pages de paiement par Lydia / CB, virement "
+                             "bancaire ou espèces ;") }}</li>
+                    <li>{{ _("Page d'ajout / validation de paiement pour les "
+                             "GRI ;") }}</li>
+                    <li>{{ _("Souscription automatique à l'offre de bienvenue "
+                             "lors de la première connexion ;") }}</li>
+                    <li>{{ _("Intégration à la page d'accueil et à la barre "
+                             "de menu.") }}</li>
+                </ul>
+            </li>
+            <li>
+                {{ _("Envoi de mails riches, au format HTML :") }}
+                <ul class="mb-2">
+                    <li>{{ _("Lors de la création de compte ;") }}</li>
+                    <li>{{ _("En cas d'oubli de mot de passe ;") }}</li>
+                    <li>{{ _("Lors de la perte de sa chambre ;") }}</li>
+                    <li>{{ _("À la validation d'un paiement ;") }}</li>
+                    <li>{{ _("Un mois avant, une semaine avant et le jour "
+                             "d'expiration d'un abonnement.") }}</li>
+                </ul>
+            </li>
+            <li>
+                {{ _("Ajout de la possibilité de modifier : ") }}
+                <ul class="mb-2">
+                    <li>{{ _("Une information sur son profil ;") }}</li>
+                    <li>{{ _("Son mot de passe ;") }}</li>
+                    <li>{{ _("Les dates d'une location ;") }}</li>
+                    <li>{{ _("Les informations sur un appareil.") }}</li>
+                </ul>
+            </li>
+            <li>
+                {{ _("La langue préférée (français ou anglais, selon les "
+                     "paramètres du navigateur) est enregistrée pour chaque "
+                     "Rezident, et utilisée pour l'envoi des mails.") }}
+            </li>
+            <li>
+                {{ _("Ajout d'un mode maintenance activable par les GRI.") }}
+            </li>
+            <li>
+                {{ _("Ajout d'une page GRI pour exécuter un script.") }}
+            </li>
+        </ul>
+    </div>
+    <div class="row mb-2">
+        <h4>v1.4 – {{ moment(datetime.date(2021, 12, 20)).format("L") }}</h4>
+        <ul class="ms-5">
+            <li>
+                {{ _("L'IntraRez est maintenant utilisable depuis l'extérieur "
+                     "de la Rezidence, à l'adresse ") }}
+                <a href="{{ url_for("main.index") }}">
+                    {{ config["SERVER_NAME"] }}</a>
+                {{ _("(sauf pour la création de compte).") }}
+            </li>
+            <li>
+                {{ _("L'utilisation du formulaire de contact depuis "
+                     "l'extérieur est maintenant soumise à un captcha.") }}
+            </li>
+        </ul>
+    </div>
+    <div class="row mb-2">
         <h4>v1.3 – {{ moment(datetime.date(2021, 12, 6)).format("L") }}</h4>
         <ul class="ms-5">
             <li>
@@ -43,7 +111,7 @@
         </ul>
     </div>
     <div class="row mb-2">
-        <h4>v1.1 – {{ moment(datetime.date(2021, 10, 14)).format("L") }}</h4>
+        <h4>v1.1 – {{ moment(datetime.date(2021, 11, 14)).format("L") }}</h4>
         <ul class="ms-5">
             <li>
                 {{ _("Mise en place d'un portail captif pour simplifier la "

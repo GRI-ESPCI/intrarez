@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 20:24+0100\n"
-"PO-Revision-Date: 2021-09-14 21:12+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Project-Id-Version: 1.5.0-beta.4.0\n"
+"Report-Msgid-Bugs-To: intrarez@pc-est-magique.fr\n"
+"POT-Creation-Date: 2021-12-31 19:34+0100\n"
+"PO-Revision-Date: 2022-01-02 18:56+0100\n"
+"Last-Translator: Loïc Simon <intrarez@pc-est-magique.fr>\n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -22,172 +22,177 @@ msgstr ""
 msgid "Merci de vous connecter pour accéder à cette page."
 msgstr "Please log in to access to this page."
 
-#: app/__init__.py:71
+#: app/__init__.py:70
 msgid "Information :"
 msgstr "Information:"
 
-#: app/__init__.py:72
+#: app/__init__.py:71
 msgid "Succès :"
 msgstr "Success:"
 
-#: app/__init__.py:73
+#: app/__init__.py:72
 msgid "Attention :"
 msgstr "Caution:"
 
-#: app/__init__.py:74
+#: app/__init__.py:73
 msgid "Avertissement :"
 msgstr "Warning:"
 
-#: app/context.py:252 app/context.py:277
+#: app/context.py:109
+msgid "Le site est en mode maintenance : seuls les GRI peuvent y accéder."
+msgstr "The site is under maintenance: only GRI can access it."
+
+#: app/context.py:271 app/context.py:296
 msgid "Veuillez vous authentifier pour accéder à cette page."
 msgstr "Please log in to access to this page."
 
-#: app/auth/email.py:15
-msgid "[IntraRez] Réinitialisation du mot de passe"
-msgstr "[IntraRez] Reset your password"
+#: app/auth/email.py:16 app/auth/routes.py:67
+msgid "Compte créé avec succès !"
+msgstr "Account successfully created!"
 
-#: app/auth/forms.py:27
-msgid "Locataire non-ESPCI"
-msgstr "Not ESPCI tenant"
+#: app/auth/email.py:37 app/templates/auth/mails/reset_password.html:7
+msgid "Réinitialisation du mot de passe"
+msgstr "Password reset"
 
-#: app/auth/forms.py:28
-msgid "Sous-locataire"
-msgstr "Subtenant"
-
-#: app/auth/forms.py:33
+#: app/auth/forms.py:14
 msgid "Nom d'utilisateur / Adresse e-mail"
 msgstr "Username / Mail address"
 
-#: app/auth/forms.py:35 app/auth/forms.py:52
+#: app/auth/forms.py:16 app/auth/forms.py:34
 msgid "Mot de passe"
 msgstr "Password"
 
-#: app/auth/forms.py:37
+#: app/auth/forms.py:18
 msgid "Rester connecté"
 msgstr "Remember me"
 
-#: app/auth/forms.py:38 app/auth/routes.py:87
-#: app/templates/auth/auth_needed.html:22 app/templates/auth/register.html:59
+#: app/auth/forms.py:19 app/auth/routes.py:97
+#: app/templates/auth/auth_needed.html:21 app/templates/auth/register.html:59
 #: app/templates/auth/reset_password.html:29
-#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:90
+#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:95
 #: app/templates/main/external_home.html:22
 msgid "Connexion"
 msgstr "Sign in"
 
-#: app/auth/forms.py:43 app/main/forms.py:14
-#: app/templates/cards/account.html:18 app/templates/cards/device.html:73
+#: app/auth/forms.py:24 app/main/forms.py:14 app/profile/forms.py:14
+#: app/templates/cards/account.html:18 app/templates/cards/device.html:89
 #: app/templates/cards/device_modal.html:15 app/templates/cards/offer.html:14
 msgid "Nom"
 msgstr "Name"
 
-#: app/auth/forms.py:45 app/templates/cards/account.html:22
+#: app/auth/forms.py:26 app/profile/forms.py:16
+#: app/templates/cards/account.html:22
 msgid "Prénom"
 msgstr "First name"
 
-#: app/auth/forms.py:47 app/templates/cards/account.html:26
+#: app/auth/forms.py:28 app/profile/forms.py:18
+#: app/templates/cards/account.html:26
 msgid "Promotion"
 msgstr "Promotion"
 
-#: app/auth/forms.py:49 app/auth/forms.py:62
+#: app/auth/forms.py:31 app/auth/forms.py:44 app/profile/forms.py:21
 msgid "Adresse e-mail"
 msgstr "Mail address"
 
-#: app/auth/forms.py:54
+#: app/auth/forms.py:36
 msgid "Mot de passe (validation)"
 msgstr "Password (validation)"
 
-#: app/auth/forms.py:57
+#: app/auth/forms.py:39
 msgid "Créer mon compte"
 msgstr "Sign up"
 
-#: app/auth/forms.py:64
+#: app/auth/forms.py:46
 msgid "Envoyer le mail de réinitialisation"
 msgstr "Send reset mail"
 
-#: app/auth/forms.py:69 app/auth/routes.py:143
+#: app/auth/forms.py:51 app/auth/routes.py:154 app/profile/forms.py:31
 msgid "Nouveau mot de passe"
 msgstr "New password"
 
-#: app/auth/forms.py:71
+#: app/auth/forms.py:53 app/profile/forms.py:33
 msgid "Nouveau mot de passe (validation)"
 msgstr "New password (validation)"
 
-#: app/auth/forms.py:74
+#: app/auth/forms.py:56
 msgid "Valider"
 msgstr "Validate"
 
-#: app/auth/routes.py:36
+#: app/auth/routes.py:45 app/main/routes.py:87
 msgid "Accès à Internet"
 msgstr "Internet Access"
 
-#: app/auth/routes.py:57
-msgid "Compte créé avec succès !"
-msgstr "Account successfully created!"
-
-#: app/auth/routes.py:62
+#: app/auth/routes.py:73
 msgid "Nouveau compte"
 msgstr "New account"
 
-#: app/auth/routes.py:77
+#: app/auth/routes.py:88
 msgid "Nom d'utilisateur inconnu"
 msgstr "Unknown username"
 
-#: app/auth/routes.py:80
+#: app/auth/routes.py:90
 msgid "Mot de passe incorrect"
 msgstr "Wrong password"
 
-#: app/auth/routes.py:84 app/templates/main/connect_check.html:50
+#: app/auth/routes.py:94 app/templates/main/connect_check.html:54
 msgid "Connecté !"
 msgstr "Connected!"
 
-#: app/auth/routes.py:96
+#: app/auth/routes.py:106
 msgid "Vous avez été déconnecté."
 msgstr "You have been signed out."
 
-#: app/auth/routes.py:112
+#: app/auth/routes.py:122
 msgid ""
 "Un email a été envoyé avec les instructions pour réinitialiser le mot de "
-"passe."
-msgstr "An email has benn send with password reset instructions."
+"passe. Pensez à vérifier vos spams."
+msgstr "An email has benn send with password reset instructions. Please check "
+"your spams."
 
-#: app/auth/routes.py:117
+#: app/auth/routes.py:128
 msgid "Mot de passe oublié"
 msgstr "Password Lost"
 
-#: app/auth/routes.py:124
+#: app/auth/routes.py:135
 msgid "Ce lien n'est pas utilisable en étant authentifié."
 msgstr "This link cannot be used by an authenticated user."
 
-#: app/auth/routes.py:130
+#: app/auth/routes.py:141
 msgid "Lien de réinitialisation invalide ou expiré."
 msgstr "Reset link invalid or expired."
 
-#: app/auth/routes.py:138
+#: app/auth/routes.py:149
 msgid "Le mot de passe a été réinitialisé avec succès."
 msgstr "Your password has been successfully reset."
 
-#: app/devices/forms.py:12 app/devices/forms.py:23
+#: app/devices/forms.py:12 app/devices/forms.py:23 app/devices/forms.py:34
 msgid "Nom (optionnel)"
 msgstr "Name (optional)"
 
-#: app/devices/forms.py:14
-msgid "Adresse MAC*"
-msgstr "MAC address*"
-
-#: app/devices/forms.py:16 app/devices/forms.py:27
+#: app/devices/forms.py:14 app/devices/forms.py:25 app/devices/forms.py:36
 msgid "Type (optionnel)"
 msgstr "Type (optional)"
 
-#: app/devices/forms.py:18 app/devices/routes.py:47
+#: app/devices/forms.py:16
+msgid "Adresse MAC*"
+msgstr "MAC address*"
+
+#: app/devices/forms.py:18 app/devices/routes.py:44
 msgid "Enregistrer l'appareil"
 msgstr "Register device"
 
-#: app/devices/forms.py:25 app/templates/cards/device.html:23
+#: app/devices/forms.py:27 app/devices/forms.py:38
+#: app/templates/cards/device.html:24 app/templates/cards/device.html:58
 #: app/templates/cards/device_modal.html:25
 msgid "Adresse MAC"
 msgstr "MAC address"
 
-#: app/devices/forms.py:29 app/devices/routes.py:83
+#: app/devices/forms.py:29 app/templates/cards/device.html:132
+#: app/templates/cards/device_modal.html:62
+msgid "Modifier l'appareil"
+msgstr "Edit device"
+
+#: app/devices/forms.py:40 app/devices/routes.py:111
 msgid "Transférer l'appareil"
 msgstr "Transfer device"
 
@@ -195,63 +200,75 @@ msgstr "Transfer device"
 msgid "Cet appareil est déjà enregistré !"
 msgstr "This device is already registered!"
 
-#: app/devices/routes.py:39
+#: app/devices/routes.py:36
 msgid "Appareil enregistré avec succès !"
 msgstr "Device successfully registered!"
 
 #: app/devices/routes.py:60
+msgid "Appareil inconnu !"
+msgstr "Unknown device!"
+
+#: app/devices/routes.py:71
+msgid "Appareil modifié avec succès !"
+msgstr "Device successfully modified!"
+
+#: app/devices/routes.py:75
+msgid "Modifier un appareil"
+msgstr "Edit a device"
+
+#: app/devices/routes.py:88
 msgid "Cet appareil n'est pas encore enregistré !"
 msgstr "This device is not already registered!"
 
-#: app/devices/routes.py:63
+#: app/devices/routes.py:91
 msgid "Cet appareil vous appartient déjà !"
 msgstr "This device already belong to you!"
 
-#: app/devices/routes.py:68
+#: app/devices/routes.py:96
 msgid "Appareil transféré avec succès !"
 msgstr "Device successfully transfered!"
 
-#: app/devices/routes.py:101
+#: app/devices/routes.py:129
 msgid "Hmm, ça n'a pas marché..."
 msgstr "Hmm, it didn't work..."
 
-#: app/devices/routes.py:102
+#: app/devices/routes.py:130
 msgid "Non, toujours pas..."
 msgstr "No, still not..."
 
-#: app/devices/routes.py:103
+#: app/devices/routes.py:131
 msgid "Ah ! Ah non, non plus..."
 msgstr "Oh! Oh no, no more..."
 
-#: app/devices/routes.py:104
+#: app/devices/routes.py:132
 msgid "Nan mais quand ça veut pas, ça veut pas..."
 msgstr "You know, when it won't, it won't..."
 
-#: app/devices/routes.py:105
+#: app/devices/routes.py:133
 msgid "Ça va sinon ?"
 msgstr "How are you, btw?"
 
-#: app/devices/routes.py:106
+#: app/devices/routes.py:134
 msgid "Il ne va plus se passer grand chose, hein, je pense."
 msgstr "No much more to come, I think."
 
-#: app/devices/routes.py:107
+#: app/devices/routes.py:135
 msgid "Après on sait jamais, sur un malentendu..."
 msgstr "But you never know, on a misunderstanding..."
 
-#: app/devices/routes.py:108
+#: app/devices/routes.py:136
 msgid "zzzzzzzzzzzzzzzzzzzzzzzzz"
 msgstr "zzzzzzzzzzzzzzzzzzzzzzzzz"
 
-#: app/devices/routes.py:109
+#: app/devices/routes.py:137
 msgid "Attention, je vais commencer à dire des choses aléatoires."
 msgstr "Careful, I'll start saying random things."
 
-#: app/devices/routes.py:110
+#: app/devices/routes.py:138
 msgid "Je vous aurai prévenu !"
 msgstr "I'll have warned you!"
 
-#: app/devices/routes.py:121
+#: app/devices/routes.py:149
 msgid "Détection d'appareil impossible"
 msgstr "Device detection impossible"
 
@@ -260,15 +277,27 @@ msgstr "Device detection impossible"
 msgid "Accès restreint"
 msgstr "Access restricted"
 
-#: app/gris/routes.py:17
-msgid "Liste des Rezidents"
-msgstr "Rezidents list"
+#: app/gris/forms.py:37
+msgid "Script"
+msgstr "Script"
 
-#: app/gris/routes.py:25
+#: app/gris/forms.py:39
+msgid "Exécuter"
+msgstr "Run"
+
+#: app/gris/routes.py:23
+msgid "Gestion des Rezidents"
+msgstr "Rezidents management"
+
+#: app/gris/routes.py:51 app/gris/routes.py:54 app/templates/gris/menu.html:14
+msgid "Exécuter un script"
+msgstr "Run a script"
+
+#: app/gris/routes.py:62
 msgid "Darkstat network monitoring"
 msgstr "Darkstat network monitoring"
 
-#: app/gris/routes.py:33
+#: app/gris/routes.py:70
 msgid "Bandwidthd network monitoring"
 msgstr "Bandwidthd network monitoring"
 
@@ -292,26 +321,26 @@ msgstr "Message"
 msgid "Envoyer"
 msgstr "Send"
 
-#: app/main/routes.py:21 app/templates/base.html:201
+#: app/main/routes.py:20 app/templates/base.html:204
 #: app/templates/errors/401.html:29 app/templates/errors/403.html:26
 #: app/templates/errors/404.html:23 app/templates/errors/other.html:17
-#: app/templates/mails/base.html:61
+#: app/templates/mails_base.html:73
 msgid "Accueil"
 msgstr "Home"
 
-#: app/main/routes.py:31
+#: app/main/routes.py:30
 msgid "Bienvenue sur l'IntraRez !"
 msgstr "Welcome on the IntraRez!"
 
-#: app/main/routes.py:43
+#: app/main/routes.py:42
 msgid "Le capctcha n'a pas pu être vérifié. Veuillez réessayer."
 msgstr "The capctcha could not be verified. Please try again."
 
-#: app/main/routes.py:54
+#: app/main/routes.py:53
 msgid "Message transmis !"
 msgstr "Message transmitted!"
 
-#: app/main/routes.py:57
+#: app/main/routes.py:56
 msgid ""
 "Oh non ! Le message n'a pas pu être transmis. N'hésitez pas à contacter "
 "un GRI aux coordonnées en bas de page.<br/>(Erreur : "
@@ -319,45 +348,121 @@ msgstr ""
 "O no! The message could not be transmitted. Please feel free to reach GRI"
 " at the contact information below.<br/>(Error: "
 
-#: app/main/routes.py:64
+#: app/main/routes.py:63
 msgid "Contact"
 msgstr "Contact"
 
-#: app/main/routes.py:72 app/templates/base.html:220
+#: app/main/routes.py:71 app/templates/base.html:223
 msgid "Mentions légales"
 msgstr "Legal notice"
 
-#: app/main/routes.py:79
+#: app/main/routes.py:78
 msgid "Notes de mise à jour"
 msgstr "Changelog"
 
-#: app/main/routes.py:87 app/templates/base.html:126
+#: app/main/routes.py:121
+msgid "Test"
+msgstr "Test"
+
+#: app/payments/email.py:21
+msgid "Paiement validé !"
+msgstr "Payment validated!"
+
+#: app/payments/email.py:24 app/templates/cards/subscription.html:73
+#: app/templates/payments/main.html:60
+msgid "Paiement nécessaire"
+msgstr "Payment required"
+
+#: app/payments/email.py:27 app/templates/payments/mails/internet_cut.html:7
+msgid "Votre accès Internet a été coupé"
+msgstr "Yout Internet access has been cut"
+
+#: app/payments/email.py:52
+msgid "IMPORTANT - Votre accès Internet va bientôt couper !"
+msgstr "IMPORTANT - Your Internet access will soon be cut off!"
+
+#: app/payments/routes.py:32
+msgid "Mon abonnement Internet"
+msgstr "My Internet subscription"
+
+#: app/payments/routes.py:41 app/payments/routes.py:56
+#: app/payments/routes.py:86
+msgid "Vous avez déjà un abonnement en cours !"
+msgstr "You already have an active subscription!"
+
+#: app/payments/routes.py:46 app/templates/cards/payment.html:5
+#: app/templates/payments/main.html:200 app/templates/payments/main.html:240
+#: app/templates/payments/main.html:287
+msgid "Paiement"
+msgstr "Payment"
+
+#: app/payments/routes.py:60 app/templates/payments/pay.html:132
+msgid "Payer avec Lydia"
+msgstr "Pay with Lydia"
+
+#: app/payments/routes.py:61 app/templates/payments/pay.html:159
+msgid "Payer par virement"
+msgstr "Pay by bank transfer"
+
+#: app/payments/routes.py:62 app/templates/payments/pay.html:186
+msgid "Payer en main propre"
+msgstr "Pay in person"
+
+#: app/payments/routes.py:63 app/templates/payments/pay.html:96
+msgid "Ajouter un paiement"
+msgstr "Add a payment"
+
+#: app/profile/forms.py:24 app/profile/forms.py:36
+msgid "Mettre à jour"
+msgstr "Update"
+
+#: app/profile/forms.py:29
+msgid "Mot de passe actuel"
+msgstr "Current password"
+
+#: app/profile/routes.py:16 app/templates/base.html:131
 msgid "Profil"
 msgstr "Profile"
 
-#: app/main/routes.py:95
-msgid "Accès à Internet"
-msgstr "Internet Access"
+#: app/profile/routes.py:30
+msgid "Compte modifié avec succès !"
+msgstr "Account successfully modified!"
 
-#: app/main/routes.py:127
-msgid "Test"
-msgstr "Test"
+#: app/profile/routes.py:34
+msgid "Mettre à jour mon compte"
+msgstr "Update my account"
+
+#: app/profile/routes.py:47
+msgid "Mot de passe mis à jour !"
+msgstr "Password updated!"
+
+#: app/profile/routes.py:50
+msgid "Mot de passe actuel incorrect"
+msgstr "Wrong current password"
+
+#: app/profile/routes.py:53
+msgid "Modifier mon mot de passe"
+msgstr "Change my password"
+
+#: app/rooms/email.py:18
+msgid "Attention : Chambre transférée, Internet coupé"
+msgstr "Warning: Room transferred, Internet cut"
 
 #: app/rooms/forms.py:14 app/templates/auth/register.html:13
 #: app/templates/cards/room.html:5 app/templates/cards/room.html:62
 #: app/templates/devices/register.html:13
-#: app/templates/devices/transfer.html:13 app/templates/gris/rezidents.html:37
-#: app/templates/gris/rezidents.html:111 app/templates/gris/rezidents.html:176
-#: app/templates/main/connect_check.html:12 app/templates/main/contact.html:83
-#: app/templates/rooms/register.html:13
+#: app/templates/devices/transfer.html:13 app/templates/gris/rezidents.html:43
+#: app/templates/gris/rezidents.html:163 app/templates/gris/rezidents.html:292
+#: app/templates/main/connect_check.html:21 app/templates/main/contact.html:85
+#: app/templates/rooms/register.html:19
 msgid "Chambre"
 msgstr "Room"
 
-#: app/rooms/forms.py:16
+#: app/rooms/forms.py:16 app/rooms/forms.py:25
 msgid "Début de la location"
 msgstr "Rental start date"
 
-#: app/rooms/forms.py:18
+#: app/rooms/forms.py:18 app/rooms/forms.py:27
 msgid "Fin de la location (optionnel)"
 msgstr "Rental end date (optional)"
 
@@ -365,11 +470,15 @@ msgstr "Rental end date (optional)"
 msgid "Enregistrer"
 msgstr "Register"
 
-#: app/rooms/forms.py:25
+#: app/rooms/forms.py:29 app/templates/rooms/register.html:106
+msgid "Modifier"
+msgstr "Edit"
+
+#: app/rooms/forms.py:34
 msgid "Fin de la location"
 msgstr "Rental end date"
 
-#: app/rooms/forms.py:27
+#: app/rooms/forms.py:36
 msgid "Terminer la location"
 msgstr "Terminate rental"
 
@@ -381,52 +490,71 @@ msgstr "You already have a rental in progress!"
 msgid "Chambre enregistrée avec succès !"
 msgstr "Room successfully registered!"
 
-#: app/rooms/routes.py:62
+#: app/rooms/routes.py:63
 msgid "Nouvelle location"
 msgstr "New rental"
 
-#: app/rooms/routes.py:87 app/templates/cards/room.html:95
+#: app/rooms/routes.py:78
+msgid "Location modifiée avec succès !"
+msgstr "Rental successfully modified!"
+
+#: app/rooms/routes.py:80
+msgid "Pas de location en cours !"
+msgstr "No rental in progress!"
+
+#: app/rooms/routes.py:84
+msgid "Mettre à jour ma location"
+msgstr "Modify rental"
+
+#: app/rooms/routes.py:109 app/templates/cards/room.html:96
 msgid "Changer de chambre"
 msgstr "Change room"
 
-#: app/templates/auth/auth_needed.html:27
-#: app/templates/auth/auth_needed.html:35 app/templates/auth/login.html:33
-#: app/templates/auth/login.html:41 app/templates/base.html:97
-#: app/templates/base.html:107
+#: app/templates/auth/auth_needed.html:26
+#: app/templates/auth/auth_needed.html:34 app/templates/auth/login.html:33
+#: app/templates/auth/login.html:41 app/templates/base.html:102
+#: app/templates/base.html:112
 msgid "Créer un compte"
 msgstr "Sign up"
 
-#: app/templates/auth/auth_needed.html:32 app/templates/auth/login.html:38
-#: app/templates/base.html:103
+#: app/templates/auth/auth_needed.html:31 app/templates/auth/login.html:38
+#: app/templates/base.html:108
 msgid ""
 "La création de compte n'est possible que depuis le réseau local de la "
 "Rezidence."
 msgstr "Accounts can only be created from the Rezidence internal network."
 
-#: app/templates/base.html:132 app/templates/devices/transfer.html:42
+#: app/templates/base.html:122 app/templates/gris/rezidents.html:65
+#: app/templates/gris/rezidents.html:334
+msgid "Abonnement"
+msgstr "Subscription"
+
+#: app/templates/base.html:137 app/templates/devices/transfer.html:42
 msgid "Déconnexion"
 msgstr "Sign out"
 
-#: app/templates/base.html:165 app/templates/cards/device_modal.html:10
+#: app/templates/base.html:170 app/templates/cards/device_modal.html:10
 #: app/templates/cards/device_modal.html:67 app/templates/doas.html:5
-#: app/templates/gris/rezidents.html:159 app/templates/gris/rezidents.html:166
-#: app/templates/gris/rezidents.html:178 app/templates/gris/rezidents.html:185
-#: app/templates/gris/rezidents.html:199 app/templates/gris/rezidents.html:206
-#: app/templates/rooms/register.html:64
+#: app/templates/gris/rezidents.html:275 app/templates/gris/rezidents.html:282
+#: app/templates/gris/rezidents.html:294 app/templates/gris/rezidents.html:301
+#: app/templates/gris/rezidents.html:315 app/templates/gris/rezidents.html:322
+#: app/templates/gris/rezidents.html:337 app/templates/gris/rezidents.html:344
+#: app/templates/payments/main.html:263 app/templates/payments/main.html:272
+#: app/templates/payments/main.html:289 app/templates/payments/main.html:296
+#: app/templates/rooms/register.html:70
 msgid "Fermer"
 msgstr "Close"
 
-#: app/templates/base.html:194 app/templates/mails/base.html:54
+#: app/templates/base.html:197 app/templates/mails_base.html:57
 msgid "Version"
 msgstr "Version"
 
 #: app/templates/auth/reset_password_request.html:33
-#: app/templates/base.html:207 app/templates/devices/register.html:250
-#: app/templates/mails/base.html:67
+#: app/templates/base.html:210 app/templates/devices/register.html:250
 msgid "Nous contacter"
 msgstr "Contact us"
 
-#: app/templates/base.html:214
+#: app/templates/base.html:217
 msgid "Code source"
 msgstr "Source code"
 
@@ -435,20 +563,33 @@ msgstr "Source code"
 msgid "Action réalisée en tant que %(doas)s"
 msgstr "Action done as %(doas)s"
 
+#: app/templates/mails_base.html:65
+msgid "Vous recevez cet email car vous avez un compte actif sur l'IntraRez."
+msgstr "You are receiving this email because you have an active account on "
+"the IntraRez. "
+
+#: app/templates/mails_base.html:78
+msgid "Je ne souhaite plus recevoir d'e-mails"
+msgstr "I no longer wish to receive emails"
+
+#: app/templates/mails_base.html:81
+msgid "Se désinscrire"
+msgstr "Unsubscribe"
+
 #: app/templates/auth/auth_needed.html:11
 msgid "Un compte est nécessaire pour enregistrer l'appareil et accéder au réseau."
 msgstr "An account is necessary to register the device and access the network."
 
 #: app/templates/auth/auth_needed.html:15
-msgid "Merci de créer un compte par personne souhaitant accéder au réseau."
-msgstr "Please create an account per person wishing to access the network."
+msgid "Merci de créer un compte par chambre à connecter au réseau."
+msgstr "Please create an account per room to connect to the network."
 
-#: app/templates/auth/auth_needed.html:42
+#: app/templates/auth/auth_needed.html:41
 #: app/templates/main/external_home.html:31
 msgid "En cas de problème, n'hésitez pas à "
 msgstr "If any problem, do not hesitate to "
 
-#: app/templates/auth/auth_needed.html:43
+#: app/templates/auth/auth_needed.html:42
 #: app/templates/main/external_home.html:32
 msgid "nous contacter"
 msgstr "contact us"
@@ -467,24 +608,25 @@ msgstr "Reset"
 
 #: app/templates/auth/register.html:10 app/templates/cards/account.html:5
 #: app/templates/devices/register.html:10
-#: app/templates/devices/transfer.html:10 app/templates/gris/rezidents.html:28
-#: app/templates/gris/rezidents.html:85 app/templates/gris/rezidents.html:157
-#: app/templates/rooms/register.html:10
+#: app/templates/devices/transfer.html:10 app/templates/gris/rezidents.html:32
+#: app/templates/gris/rezidents.html:136 app/templates/gris/rezidents.html:273
+#: app/templates/main/connect_check.html:18
+#: app/templates/rooms/register.html:16
 msgid "Compte"
 msgstr "Account"
 
 #: app/templates/auth/register.html:16 app/templates/cards/device_modal.html:8
 #: app/templates/devices/register.html:16
-#: app/templates/devices/transfer.html:16 app/templates/gris/rezidents.html:130
-#: app/templates/main/connect_check.html:15
-#: app/templates/rooms/register.html:16
+#: app/templates/devices/transfer.html:16 app/templates/gris/rezidents.html:182
+#: app/templates/main/connect_check.html:24
+#: app/templates/rooms/register.html:22
 msgid "Appareil"
 msgstr "Device"
 
 #: app/templates/auth/register.html:19 app/templates/devices/register.html:19
 #: app/templates/devices/transfer.html:19
-#: app/templates/main/connect_check.html:19
-#: app/templates/rooms/register.html:19
+#: app/templates/main/connect_check.html:28
+#: app/templates/rooms/register.html:25
 msgid "Internet"
 msgstr "Internet"
 
@@ -501,7 +643,118 @@ msgstr "Got it back?"
 msgid "Adresse e-mail oubliée ? Autre soucis ?"
 msgstr "Forget your email? Other issue?"
 
-#: app/templates/cards/account.html:14
+#: app/templates/auth/mails/account_registered.html:7
+msgid "Votre compte a bien été créé"
+msgstr "Your account has been created"
+
+#: app/templates/auth/mails/account_registered.html:12
+#: app/templates/auth/mails/reset_password.html:12
+#: app/templates/payments/mails/internet_cut.html:12
+#: app/templates/payments/mails/new_subscription.html:12
+#: app/templates/payments/mails/on_setup.html:12
+#: app/templates/payments/mails/renew_reminder.html:12
+#: app/templates/payments/mails/subscription_expired.html:12
+#: app/templates/rooms/mails/room_transferred.html:12
+#, python-format
+msgid "Bonjour %(name)s,"
+msgstr "Hello %(name)s,"
+
+#: app/templates/auth/mails/account_registered.html:14
+msgid "Votre compte sur l'IntraRez a bien été créé :"
+msgstr "Your account on the IntraRez has successfully been created:"
+
+#: app/templates/auth/mails/account_registered.html:18
+msgid "Identifiant :"
+msgstr "ID :"
+
+#: app/templates/auth/mails/account_registered.html:22
+msgid "Nom :"
+msgstr "Name :"
+
+#: app/templates/auth/mails/account_registered.html:26
+msgid "Prénom :"
+msgstr "First name"
+
+#: app/templates/auth/mails/account_registered.html:30
+msgid "Promotion :"
+msgstr "Promotion :"
+
+#: app/templates/auth/mails/account_registered.html:36
+msgid "Adresse e-mail :"
+msgstr "Mail address :"
+
+#: app/templates/auth/mails/account_registered.html:41
+msgid "Pour plus d'informations, consultez votre profil :"
+msgstr "For more information, plsease visit your profile:"
+
+#: app/templates/auth/mails/account_registered.html:49
+#: app/templates/cards/profile.html:29
+msgid "Voir mon profil"
+msgstr "Go to my profile"
+
+#: app/templates/auth/mails/account_registered.html:56
+msgid ""
+"Si cela n'est pas déjà fait, il ne vous reste plus qu'à enregistrer votre "
+"chambre et votre premier appareil pour pouvoir accéder à Internet."
+msgstr ""
+"If not already done, you just have to register your room and your first "
+"device to have access to the Internet."
+
+#: app/templates/auth/mails/account_registered.html:60
+#: app/templates/auth/mails/reset_password.html:34
+#: app/templates/payments/mails/internet_cut.html:72
+#: app/templates/payments/mails/new_subscription.html:42
+#: app/templates/payments/mails/on_setup.html:60
+#: app/templates/payments/mails/renew_reminder.html:74
+#: app/templates/payments/mails/subscription_expired.html:74
+#: app/templates/rooms/mails/room_transferred.html:50
+msgid ""
+"Pour toute question ou pour plus d'informations, vous pouvez simplement "
+"répondre à cet email."
+msgstr ""
+"For any question or for more information, you can simply answer this email."
+
+#: app/templates/auth/mails/account_registered.html:68
+#: app/templates/auth/mails/reset_password.html:42
+#: app/templates/payments/mails/internet_cut.html:80
+#: app/templates/payments/mails/new_subscription.html:50
+#: app/templates/payments/mails/on_setup.html:68
+#: app/templates/payments/mails/renew_reminder.html:82
+#: app/templates/payments/mails/subscription_expired.html:82
+#: app/templates/rooms/mails/room_transferred.html:58
+msgid "Très bonne journée,"
+msgstr "Have a good day,"
+
+#: app/templates/auth/mails/account_registered.html:71
+#: app/templates/auth/mails/reset_password.html:45
+#: app/templates/payments/mails/internet_cut.html:83
+#: app/templates/payments/mails/new_subscription.html:53
+#: app/templates/payments/mails/on_setup.html:71
+#: app/templates/payments/mails/renew_reminder.html:85
+#: app/templates/payments/mails/subscription_expired.html:85
+#: app/templates/rooms/mails/room_transferred.html:61
+msgid "Les GRI"
+msgstr "The GRI team"
+
+#: app/templates/auth/mails/reset_password.html:14
+msgid ""
+"Pour réinitialiser votre mot de passe, appuyez simplement sur le bouton "
+"ci-dessous :"
+msgstr ""
+"To reset your password, simply click the button below:"
+
+#: app/templates/auth/mails/reset_password.html:23
+msgid "Réinitialiser mon mot de passe"
+msgstr "Reset my password"
+
+#: app/templates/auth/mails/reset_password.html:30
+msgid ""
+"Si vous n'avez pas fait de demande de réinitialisation de mot de passe, "
+"merci d'ignorer cet email."
+msgstr ""
+"If you have not requested a password reset, please ignore this email."
+
+#: app/templates/cards/account.html:14 app/templates/cards/payment.html:14
 msgid "Identifiant"
 msgstr "ID"
 
@@ -509,17 +762,11 @@ msgstr "ID"
 msgid "Email"
 msgstr "Mail"
 
-#: app/templates/cards/account.html:39 app/templates/cards/account.html:45
-#: app/templates/cards/device.html:114 app/templates/cards/device_modal.html:61
-#: app/templates/cards/room.html:87
-msgid "Fonctionnalité à venir"
-msgstr "Upcoming feature"
-
-#: app/templates/cards/account.html:41
+#: app/templates/cards/account.html:43
 msgid "Modifier une information"
 msgstr "Edit an information"
 
-#: app/templates/cards/account.html:47
+#: app/templates/cards/account.html:50
 msgid "Changer de mot de passe"
 msgstr "Change password"
 
@@ -527,53 +774,111 @@ msgstr "Change password"
 msgid "À venir"
 msgstr "Coming soon"
 
-#: app/templates/cards/device.html:5 app/templates/gris/rezidents.html:46
-#: app/templates/gris/rezidents.html:196
+#: app/templates/cards/device.html:5 app/templates/gris/rezidents.html:54
+#: app/templates/gris/rezidents.html:312
 msgid "Appareils"
 msgstr "Devices"
 
-#: app/templates/cards/device.html:15
+#: app/templates/cards/device.html:16 app/templates/cards/device.html:54
 msgid "Appareil actuel"
 msgstr "Actual device"
 
-#: app/templates/cards/device.html:19 app/templates/cards/device_modal.html:20
+#: app/templates/cards/device.html:20 app/templates/cards/device_modal.html:20
 msgid "Type"
 msgstr "Type"
 
-#: app/templates/cards/device.html:27 app/templates/cards/device_modal.html:30
+#: app/templates/cards/device.html:28 app/templates/cards/device_modal.html:30
 msgid "IP attribuée"
 msgstr "Allocated IP"
 
-#: app/templates/cards/device.html:31 app/templates/cards/device_modal.html:35
+#: app/templates/cards/device.html:32 app/templates/cards/device_modal.html:35
 msgid "Enregistrement"
 msgstr "Register"
 
-#: app/templates/cards/device.html:39 app/templates/cards/device.html:74
+#: app/templates/cards/device.html:40 app/templates/cards/device.html:90
 #: app/templates/cards/device_modal.html:44
-#: app/templates/gris/rezidents.html:55
+#: app/templates/gris/rezidents.html:76
 msgid "Dernière connexion"
 msgstr "Last connection"
 
-#: app/templates/cards/device.html:46 app/templates/cards/device.html:85
+#: app/templates/cards/device.html:47 app/templates/cards/device.html:101
 #: app/templates/cards/device_modal.html:52
 msgid "Jamais"
 msgstr "Never"
 
+#: app/templates/cards/device.html:55
+msgid "[Connexion extérieure]"
+msgstr "[External connection]"
+
+#: app/templates/cards/device.html:59
+msgid "(inconnue)"
+msgstr "(unknown)"
+
 #: app/templates/cards/device.html:62
+msgid "IP distante"
+msgstr "Remote IP"
+
+#: app/templates/cards/device.html:77
 msgid "Autres appareils :"
 msgstr "Other devices:"
 
-#: app/templates/cards/device.html:95
+#: app/templates/cards/device.html:78
+msgid "Appareils :"
+msgstr "Devices:"
+
+#: app/templates/cards/device.html:111
 msgid "Détails"
 msgstr "Details"
 
-#: app/templates/cards/device.html:116 app/templates/cards/device_modal.html:63
-msgid "Modifier l'appareil"
-msgstr "Edit device"
-
-#: app/templates/cards/device.html:122
+#: app/templates/cards/device.html:139
 msgid "Nouvel appareil"
 msgstr "New device"
+
+#: app/templates/cards/offer.html:5 app/templates/payments/main.html:196
+#: app/templates/payments/main.html:215 app/templates/payments/main.html:261
+#: app/templates/payments/pay.html:24
+msgid "Offre"
+msgstr "Offer"
+
+#: app/templates/cards/offer.html:18
+msgid "Description"
+msgstr "Description"
+
+#: app/templates/cards/offer.html:22
+msgid "Prix"
+msgstr "Price"
+
+#: app/templates/cards/offer.html:31
+msgid "Changer d'offre"
+msgstr "Change offer"
+
+#: app/templates/cards/payment.html:18
+msgid "Rezident"
+msgstr "Rezident"
+
+#: app/templates/cards/payment.html:22
+msgid "Montant"
+msgstr "Amount"
+
+#: app/templates/cards/payment.html:28 app/templates/payments/pay.html:70
+msgid "Mode de paiement"
+msgstr "Payment method"
+
+#: app/templates/cards/payment.html:29 app/templates/payments/pay.html:108
+msgid "Lydia / CB"
+msgstr "Lydia / Card"
+
+#: app/templates/cards/payment.html:29
+msgid "Autre"
+msgstr "Other"
+
+#: app/templates/cards/payment.html:33
+msgid "ID Lydia"
+msgstr "Lydia ID"
+
+#: app/templates/cards/payment.html:38
+msgid "Date et heure"
+msgstr "Date/time"
 
 #: app/templates/cards/profile.html:5
 msgid "Mon profil"
@@ -591,10 +896,6 @@ msgstr "My room"
 msgid "Nombre d'appareils"
 msgstr "# of devices"
 
-#: app/templates/cards/profile.html:29
-msgid "Voir mon profil"
-msgstr "Go to my profile"
-
 #: app/templates/cards/room.html:17
 msgid "Aucune location actuellement. "
 msgstr "No rental at the moment. "
@@ -603,11 +904,14 @@ msgstr "No rental at the moment. "
 msgid "Location actuelle"
 msgstr "Current rental"
 
-#: app/templates/cards/room.html:29
+#: app/templates/cards/room.html:29 app/templates/cards/subscription.html:59
+#: app/templates/cards/subscription.html:83 app/templates/payments/main.html:48
+#: app/templates/payments/main.html:67
 msgid "Depuis le"
 msgstr "From"
 
-#: app/templates/cards/room.html:33
+#: app/templates/cards/room.html:33 app/templates/cards/subscription.html:30
+#: app/templates/payments/main.html:25
 msgid "Jusqu'au"
 msgstr "To"
 
@@ -623,43 +927,101 @@ msgstr "Dates"
 msgid "Modifier les dates"
 msgstr "Edit dates"
 
-#: app/templates/devices/error.html:11
+#: app/templates/cards/subscription.html:5
+msgid "Mon abonnement"
+msgstr "My subscription"
+
+#: app/templates/cards/subscription.html:17
+#: app/templates/cards/subscription.html:41
+#: app/templates/cards/subscription.html:70
+msgid "État"
+msgstr "Status"
+
+#: app/templates/cards/subscription.html:20
+#: app/templates/gris/rezidents.html:194 app/templates/payments/main.html:18
+msgid "Abonné(e)"
+msgstr "Subscribed"
+
+#: app/templates/cards/subscription.html:34
+#: app/templates/cards/subscription.html:63 app/templates/payments/main.html:29
+#: app/templates/payments/main.html:52
+msgid "Coupure le"
+msgstr "Cut on"
+
+#: app/templates/cards/subscription.html:44
+#: app/templates/gris/rezidents.html:198 app/templates/payments/main.html:37
+msgid "Mois offert"
+msgstr "Free month"
+
+#: app/templates/cards/subscription.html:87 app/templates/payments/main.html:71
+msgid "Accès Internet"
+msgstr "Internet Access"
+
+#: app/templates/cards/subscription.html:88 app/templates/payments/main.html:72
+msgid "Suspendu"
+msgstr "Suspended"
+
+#: app/templates/cards/subscription.html:98
+msgid "Plus d'informations"
+msgstr "More information"
+
+#: app/templates/cards/subscription.html:103
+#: app/templates/payments/main.html:83
+msgid "Renouvellement possible à partir de la fin de l'abonnement actuel"
+msgstr "Renewal possible from the end of the current subscription"
+
+#: app/templates/cards/subscription.html:106
+#: app/templates/cards/subscription.html:114
+#: app/templates/cards/subscription.html:121
+#: app/templates/payments/main.html:86 app/templates/payments/main.html:94
+#: app/templates/payments/main.html:101
+msgid "Payer"
+msgstr "Pay"
+
+#: app/templates/devices/error.html:17
 msgid ""
 "Oh ! Nous ne pouvons pas détecter l'appareil utilisé pour accéder à ce "
 "site."
 msgstr "Oh! We can't detect the device used to access this site."
 
-#: app/templates/devices/error.html:15
+#: app/templates/devices/error.html:21
 msgid "Malheureusement, cela est nécessaire pour pouvoir accéder au réseau."
 msgstr "Unfortunately, this is necessary to grant access to the network."
 
-#: app/templates/devices/error.html:19
+#: app/templates/devices/error.html:25
 msgid "Cela peut être dû à une erreur temporaire."
 msgstr "This may be due to a temporary issue."
 
-#: app/templates/devices/error.html:20
+#: app/templates/devices/error.html:26
 msgid "Attendez un peu et réessayez."
 msgstr "Wait a litte and try again."
 
-#: app/templates/devices/error.html:28
+#: app/templates/devices/error.html:32
 msgid "Recharger la page"
 msgstr "Reload page"
 
-#: app/templates/devices/error.html:39 app/templates/main/connect_check.html:64
+#: app/templates/devices/error.html:43 app/templates/main/connect_check.html:68
 msgid "Si le problème persiste, "
 msgstr "If the issue goes on, "
 
-#: app/templates/devices/error.html:40 app/templates/main/connect_check.html:65
+#: app/templates/devices/error.html:44 app/templates/main/connect_check.html:69
 msgid "contactez-nous"
 msgstr "contact us"
 
-#: app/templates/devices/error.html:41 app/templates/main/connect_check.html:66
+#: app/templates/devices/error.html:45 app/templates/main/connect_check.html:70
 msgid "pour voir ensemble comment résoudre ce problème."
 msgstr "so we can see together how to address this issue."
 
-#: app/templates/devices/error.html:44
+#: app/templates/devices/error.html:48
 msgid "Code erreur :"
 msgstr "Error code:"
+
+#: app/templates/devices/modify.html:32
+#: app/templates/profile/modify_account.html:34
+#: app/templates/profile/update_password.html:31
+#: app/templates/rooms/modify.html:31
+msgid "Retour"
+msgstr "Back"
 
 #: app/templates/devices/register.html:31
 msgid "Enregistrer un appareil lui permet de se connecter au réseau."
@@ -1050,6 +1412,29 @@ msgstr ""
 "If you come from an external link, boolmark..., try accessing to the page"
 " you want through the application menus."
 
+#: app/templates/errors/503.html:21
+msgid "Un instant !"
+msgstr "One moment!"
+
+#: app/templates/errors/503.html:22
+msgid "L'IntraRez est actuellement en maintenance."
+msgstr "The IntraRez is currently under maintenance."
+
+#: app/templates/errors/503.html:26
+msgid ""
+"Les GRI travaillent en ce moment même au déploiement de nouvelles "
+"fonctionnalités ou à la résolution d'un problème."
+msgstr ""
+"The GRI are currently working deploying new features or resolving an issue."
+
+#: app/templates/errors/503.html:30
+msgid ""
+"Patience ! Le service devrait être revenu d'ici quelques minutes. L'accès"
+" des appareils à Internet n'est pas impacté."
+msgstr ""
+"Be patient! The service should be back in a few minutes. Devices access to "
+"the Internet is not impacted."
+
 #: app/templates/errors/other.html:9
 msgid "Une erreur inattendue est survenue."
 msgstr "An unexpected error has occured."
@@ -1066,29 +1451,67 @@ msgstr "GRI menu"
 msgid "Rezidents"
 msgstr "Rezidents"
 
-#: app/templates/gris/menu.html:14
+#: app/templates/gris/menu.html:18
 msgid "Monitoring (Darkstat)"
 msgstr "Monitoring (Darkstat)"
 
-#: app/templates/gris/menu.html:18
+#: app/templates/gris/menu.html:22
 msgid "Monitoring (Bandwidthd)"
 msgstr "Monitoring (Bandwidthd)"
 
-#: app/templates/gris/menu.html:22
+#: app/templates/gris/menu.html:26
 msgid "pgAdmin"
 msgstr "pgAdmin"
 
-#: app/templates/gris/menu.html:25
+#: app/templates/gris/menu.html:29
 msgid "À venir..."
 msgstr "Coming soon"
 
-#: app/templates/gris/rezidents.html:19
+#: app/templates/gris/monitoring_bw.html:8
+#: app/templates/gris/monitoring_ds.html:8
+msgid ""
+"Les statistiques ci-dessous sont protégées par l'authentification BASIC "
+"suivante :"
+msgstr ""
+"Statistics below are protected by the following BASIC authentification:"
+
+#: app/templates/gris/monitoring_bw.html:11
+#: app/templates/gris/monitoring_ds.html:11
+msgid "Username :"
+msgstr "Username:"
+
+#: app/templates/gris/monitoring_bw.html:13
+#: app/templates/gris/monitoring_ds.html:13
+msgid "Mot de passe :"
+msgstr "Password:"
+
+#: app/templates/gris/rezidents.html:21 app/templates/payments/main.html:195
 msgid "ID"
 msgstr "ID"
 
-#: app/templates/gris/rezidents.html:97
+#: app/templates/gris/rezidents.html:148
 msgid "Aucune"
 msgstr "None"
+
+#: app/templates/gris/rezidents.html:192
+msgid "Aucun"
+msgstr "None"
+
+#: app/templates/gris/rezidents.html:202
+msgid "Hors-la-loi"
+msgstr "Outlaw"
+
+#: app/templates/gris/run_script.html:14
+msgid "Choisir un script à exécuter :"
+msgstr "Chose a script to run:"
+
+#: app/templates/gris/run_script.html:17
+msgid ""
+"Attention : exécuter un script peut avoir des effets de bord, comme "
+"l'envoi d'un mail à la fin d'un abonnement."
+msgstr ""
+"Caution: running a script can have side effects, such as sending a mail "
+"at the end of a subscription."
 
 #: app/templates/main/changelog.html:11
 msgid ""
@@ -1103,38 +1526,148 @@ msgid "sur GitHub"
 msgstr "on GitHub"
 
 #: app/templates/main/changelog.html:21
+msgid "Mise en service des paiements : "
+msgstr "Payments commissioning:"
+
+#: app/templates/main/changelog.html:23
+msgid "Page générique d'information ;"
+msgstr "Generic information page;"
+
+#: app/templates/main/changelog.html:24
+msgid "Page de choix de l'offre et du moyen de paiement ;"
+msgstr "Offer / payment method choice page;"
+
+#: app/templates/main/changelog.html:26
+msgid "Pages de paiement par Lydia / CB, virement bancaire ou espèces ;"
+msgstr "Lydia / credit card, bank transfer and cash pay pages; "
+
+#: app/templates/main/changelog.html:28
+msgid "Page d'ajout / validation de paiement pour les GRI ;"
+msgstr "Payment add / validation page for GRI;"
+
+#: app/templates/main/changelog.html:30
+msgid ""
+"Souscription automatique à l'offre de bienvenue lors de la première "
+"connexion ;"
+msgstr ""
+"Automatic subscription to welcoming offer at first connection;"
+
+#: app/templates/main/changelog.html:32
+msgid "Intégration à la page d'accueil et à la barre de menu."
+msgstr "Integration to home page and navigation bar."
+
+#: app/templates/main/changelog.html:37
+msgid "Envoi de mails riches, au format HTML :"
+msgstr "Send rich mails (HTML format):"
+
+#: app/templates/main/changelog.html:39
+msgid "Lors de la création de compte ;"
+msgstr "When creating an account;"
+
+#: app/templates/main/changelog.html:40
+msgid "En cas d'oubli de mot de passe ;"
+msgstr "When you forgot your password;"
+
+#: app/templates/main/changelog.html:41
+msgid "Lors de la perte de sa chambre ;"
+msgstr "When losing its room;"
+
+#: app/templates/main/changelog.html:42
+msgid "À la validation d'un paiement ;"
+msgstr "When a payment is validated;"
+
+#: app/templates/main/changelog.html:43
+msgid "Un mois avant, une semaine avant et le jour d'expiration d'un abonnement."
+msgstr "One month before, one week before, and the day a subscription expires."
+
+#: app/templates/main/changelog.html:48
+msgid "Ajout de la possibilité de modifier : "
+msgstr "Added the possibility de modify:"
+
+#: app/templates/main/changelog.html:50
+msgid "Une information sur son profil ;"
+msgstr "Information on your profile;"
+
+#: app/templates/main/changelog.html:51
+msgid "Son mot de passe ;"
+msgstr "Your password;"
+
+#: app/templates/main/changelog.html:52
+msgid "Les dates d'une location ;"
+msgstr "A rental dates;"
+
+#: app/templates/main/changelog.html:53
+msgid "Les informations sur un appareil."
+msgstr "Information on a device."
+
+#: app/templates/main/changelog.html:57
+msgid ""
+"La langue préférée (français ou anglais, selon les paramètres du "
+"navigateur) est enregistrée pour chaque Rezident, et utilisée pour "
+"l'envoi des mails."
+msgstr ""
+"The preferred language (French or English, depending of your browser "
+"parameters) is registered for each Rezident, and used for sending mails."
+
+#: app/templates/main/changelog.html:62
+msgid "Ajout d'un mode maintenance activable par les GRI."
+msgstr "Added a maintenance mode activable by the GRI."
+
+#: app/templates/main/changelog.html:65
+msgid "Ajout d'une page GRI pour exécuter un script."
+msgstr "Added a GRI page to run a script."
+
+#: app/templates/main/changelog.html:73
+msgid ""
+"L'IntraRez est maintenant utilisable depuis l'extérieur de la Rezidence, "
+"à l'adresse "
+msgstr ""
+"IntraRez is now available from the outside of the Rezidente, at address "
+
+#: app/templates/main/changelog.html:77
+msgid "(sauf pour la création de compte)."
+msgstr "(except for account creation)."
+
+#: app/templates/main/changelog.html:80
+msgid ""
+"L'utilisation du formulaire de contact depuis l'extérieur est maintenant "
+"soumise à un captcha."
+msgstr ""
+"Using the contact form from the outside is now subject to a captcha."
+
+#: app/templates/main/changelog.html:89
 msgid "Ajout du mécanisme de changement de chambre."
 msgstr "Added the room change mechanism."
 
-#: app/templates/main/changelog.html:24
+#: app/templates/main/changelog.html:92
 msgid "Ajout de l'adresse IP attribuée aux appareils dans le profil."
 msgstr "Added device allocated IP address to the Profile."
 
-#: app/templates/main/changelog.html:28
+#: app/templates/main/changelog.html:96
 msgid ""
 "Les GRI peuvent maintenant gérer les chambres et les appareils des "
 "Rezidents."
 msgstr "GRI can now manage Rezidents rooms and devices."
 
-#: app/templates/main/changelog.html:32
+#: app/templates/main/changelog.html:100
 msgid "Ajout de cette page."
 msgstr "Added this page."
 
-#: app/templates/main/changelog.html:40
+#: app/templates/main/changelog.html:108
 msgid ""
 "Ajout d'options GRI pour la gestion des Rezidents et la surveillance du "
 "réseau."
 msgstr "Added GRI options for Rezidents managements and network monitoring."
 
-#: app/templates/main/changelog.html:49
+#: app/templates/main/changelog.html:117
 msgid "Mise en place d'un portail captif pour simplifier la connexion au réseau."
 msgstr "Added a captive portal to make connection easier."
 
-#: app/templates/main/changelog.html:56
+#: app/templates/main/changelog.html:124
 msgid "Première version publique."
 msgstr "First public version."
 
-#: app/templates/main/connect_check.html:30
+#: app/templates/main/connect_check.html:39
 msgid ""
 "C'est tout bon ! La passerelle va être configurée pour accorder l'accès à"
 " Internet à cet appareil."
@@ -1142,7 +1675,7 @@ msgstr ""
 "All good! The gateway will be configure to grant access to the  Internet "
 "to this device."
 
-#: app/templates/main/connect_check.html:34
+#: app/templates/main/connect_check.html:43
 msgid ""
 "Cette opération peut prendre quelques minutes. Cette page indiquera "
 "automatiquement quand ce sera bon !"
@@ -1150,15 +1683,15 @@ msgstr ""
 "This operation may take a few minutes. This page will show automatically "
 "when it's done!"
 
-#: app/templates/main/connect_check.html:45
+#: app/templates/main/connect_check.html:49
 msgid "Test de la connexion..."
 msgstr "Testing connection..."
 
-#: app/templates/main/connect_check.html:54
+#: app/templates/main/connect_check.html:58
 msgid "Accéder à Internet"
 msgstr "Access the Internet"
 
-#: app/templates/main/connect_check.html:60
+#: app/templates/main/connect_check.html:64
 msgid ""
 "Si il n'y a toujours rien après 10 minutes, essayez de débrancher / "
 "rebrancher l'appareil, puis de le redémarrer."
@@ -1174,23 +1707,23 @@ msgstr ""
 "If you have any question, comment or suggestion, please feel free to "
 "contact us:"
 
-#: app/templates/main/contact.html:65
+#: app/templates/main/contact.html:66
 msgid "Les GRIs"
 msgstr "The GRIs"
 
-#: app/templates/main/contact.html:85
+#: app/templates/main/contact.html:87
 msgid "Pas à la Rez"
 msgstr "Not in the Rez"
 
-#: app/templates/main/contact.html:98
+#: app/templates/main/contact.html:100
 msgid "Pas sur Messenger"
 msgstr "Not on Messenger"
 
-#: app/templates/main/contact.html:112
+#: app/templates/main/contact.html:114
 msgid "Pas sur Discord"
 msgstr "Not on Discord"
 
-#: app/templates/main/contact.html:120
+#: app/templates/main/contact.html:122
 #, python-format
 msgid ""
 "N'hésitez pas notemment à nous contacter pour nous rappeler de mettre à "
@@ -1201,8 +1734,9 @@ msgstr ""
 
 #: app/templates/main/external_home.html:11
 msgid "Ce site à pour fonction de gérer la connexion à Internet à la Rez."
-msgstr "The purpose of this site is to manage connection to the Internet "
-"from the Rez."
+msgstr ""
+"The purpose of this site is to manage connection to the Internet from the"
+" Rez."
 
 #: app/templates/main/external_home.html:15
 msgid ""
@@ -1216,12 +1750,12 @@ msgstr ""
 msgid "Visiter Internet"
 msgstr "Visit the Internet"
 
-#: app/templates/main/index.html:10 app/templates/main/test.html:5
+#: app/templates/main/index.html:7 app/templates/main/test.html:5
 #, python-format
 msgid "Bonjour, %(name)s !"
 msgstr "Hello, %(name)s!"
 
-#: app/templates/main/index.html:15
+#: app/templates/main/index.html:12
 msgid ""
 "Bienvenue sur l'IntraRez ! Cette version moderne du vieux site "
 "d'enregistrement que vous avez peut-être connu n'en est encore qu'à ses "
@@ -1231,6 +1765,14 @@ msgstr ""
 "Welcome on the IntraRez! This new version of the old registration site "
 "you may have known is still in its infancy, and we have a lot of new "
 "features ideas that should be available soon."
+
+#: app/templates/main/index.html:20
+msgid "Une idée, un commentaire ? N'hésitez pas à "
+msgstr "An idea, a comment? Do not hesitate to "
+
+#: app/templates/main/index.html:21
+msgid "nous en faire part"
+msgstr "tell us about it"
 
 #: app/templates/main/legal.html:11
 msgid "Ce site est créé, géré et hébergé par le club GRI – BDE ESPCI Paris - PSL."
@@ -1244,9 +1786,9 @@ msgid ""
 " créés que depuis le réseau interne à la Résidence de l'École, et "
 "certaines fonctions ne sont pas accessibles depuis l'extérieur."
 msgstr ""
-"It is publicly accessible; however, accounts can only be created from "
-"the internal network of the school's residence, and some features are "
-"not available from the outer world."
+"It is publicly accessible; however, accounts can only be created from the"
+" internal network of the school's residence, and some features are not "
+"available from the outer world."
 
 #: app/templates/main/legal.html:21
 msgid "Contactez-nous"
@@ -1260,7 +1802,505 @@ msgstr "for every question about the management of your data."
 msgid "Salutations, inconnu !"
 msgstr "Greetings, stranger!"
 
-#: app/templates/rooms/register.html:31
+#: app/templates/payments/main.html:17 app/templates/payments/main.html:36
+#: app/templates/payments/main.html:59
+msgid "État actuel"
+msgstr "Current state"
+
+#: app/templates/payments/main.html:111
+msgid "Fonctionnement"
+msgstr "How it works"
+
+#: app/templates/payments/main.html:113
+msgid ""
+"Pour accéder à Internet, tous les locataires doivent payer un petit "
+"montant par an / mois. Cet argent sert uniquement à <strong>financer "
+"l'abonnement Internet</strong> et le matériel permettant de vous "
+"distribuer Internet : nous ne sommes aucunement bénéficiaires – ce serait"
+" d'ailleurs illégal. N'hésitez pas à nous demander nos comptes."
+msgstr ""
+"To access the Internet, all the tenants must pay a small fee per year / "
+"month. This money is only used to <strong>finance the Internet "
+"subscription</strong> and the equipement to distribute the Internet to you: "
+"we do not make any profit in any way – this would be illegal. "
+"Don't hesitate to ask us for our financial accounts."
+
+#: app/templates/payments/main.html:121
+msgid ""
+"À votre premier accès au réseau (et à la mise en place de ce système), "
+"nous vous offrons <strong>un mois d'accès gratuit</strong>. Vous avez "
+"donc un mois pour choisir une offre (selon la durée de la location) et "
+"pour payer, sans quoi votre accès à Internet sera <strong>automatiquement"
+" suspendu</strong>."
+msgstr ""
+"When you first access the network (and when this system is commissionned), "
+"we offer you <strong>one free month of access</strong>. You therefore have "
+"one month to chose an offer (depending on your rental duration) and to pay, "
+"otherwise your Internet access will be <strong>automatically cut</strong>."
+
+#: app/templates/payments/main.html:129
+msgid ""
+"À la fin de chaque abonnement, vous disposez à nouveau d'un mois offert, "
+"pendant lequel vous pouvez prendre un nouvel abonnement si nécessaire. "
+"Pas de panique, nous vous enverrons des mails de rappel."
+msgstr ""
+"When each subscription ends, you have again one offered month, during which "
+"you can take a new subscription if necessary. Don't panik, we'll send you "
+"reminder emails."
+
+#: app/templates/payments/main.html:136
+msgid "Comment payer ?"
+msgstr "How to pay?"
+
+#: app/templates/payments/main.html:150 app/templates/payments/pay.html:121
+#, python-format
+msgid ""
+"Via <strong>Lydia</strong>, la célèbre solution de paiement en ligne. Si "
+"vous n'avez pas de compte Lydia, vous pouvez payer <strong>par carte "
+"bancaire</strong> via cette option, de manière 100 %% sécurisée, en "
+"quelques clics et sans créer de compte."
+msgstr ""
+"With <strong>Lydia</strong>, an online payment service. If you do not have "
+"a Lydia account, you can pay <strong>by credit card</strong> with this "
+"option in a 100%% secure way, in a few clicks and without creating an "
+"account."
+
+#: app/templates/payments/main.html:164 app/templates/payments/pay.html:150
+msgid ""
+"Par <strong>virement bancaire</strong>, au RIB précisé lors du paiement. "
+"Comptez quelques jours de délai avant validation de la transaction."
+msgstr ""
+"By <strong>bank transfer</strong>, to the IBAN specified when paying. "
+"Expect a few days delay before validation of the transaction."
+
+#: app/templates/payments/main.html:176 app/templates/payments/pay.html:177
+msgid ""
+"En <strong>espèces</strong> ou autre, directement auprès d'un GRI. Suivez"
+" les instructions lors du paiement."
+msgstr ""
+"By <strong>cash</strong> or other method, directly to a GRI. Follow the "
+"instructions when paying."
+
+#: app/templates/payments/main.html:187
+msgid "Historique"
+msgstr "History"
+
+#: app/templates/payments/main.html:197
+msgid "Date de début"
+msgstr "Start date"
+
+#: app/templates/payments/main.html:198
+msgid "Date de fin"
+msgstr "End date"
+
+#: app/templates/payments/main.html:199
+msgid "Date de coupure"
+msgstr "Cut date"
+
+#: app/templates/payments/main.html:230
+msgid "Offert"
+msgstr "Offered"
+
+#: app/templates/payments/pay.html:18
+msgid "Choisissez une offre et un moyen de paiement."
+msgstr "Chose an offer and a payment method."
+
+#: app/templates/payments/pay.html:46
+msgid "Abonnement valide jusqu'au"
+msgstr "Subscription valid until"
+
+#: app/templates/payments/pay.html:58
+msgid "Choisir cette offre"
+msgstr "Chose this offer"
+
+#: app/templates/payments/pay.html:81
+msgid "sudo payer"
+msgstr "sudo pay"
+
+#: app/templates/payments/pay.html:88
+msgid "Je suis un GRI je fais que ce que je veux, non ?"
+msgstr "I am a GRI so I do what I want, don't I?"
+
+#: app/templates/payments/pay.html:94
+msgid "Ajouter un paiement de _price_"
+msgstr "Add a payment of _price_"
+
+#: app/templates/payments/pay.html:131
+msgid "Payer _price_ avec Lydia"
+msgstr "Pay _price_ with Lydia"
+
+#: app/templates/payments/pay.html:143
+msgid "Virement"
+msgstr "Bank transfer"
+
+#: app/templates/payments/pay.html:158
+msgid "Payer _price_ par virement"
+msgstr "Pay _price_ by bank transfer"
+
+#: app/templates/payments/pay.html:170
+msgid "Espèces"
+msgstr "Cash"
+
+#: app/templates/payments/pay.html:185
+msgid "Payer _price_ en main propre"
+msgstr "Payer _price_ in person"
+
+#: app/templates/payments/pay.html:197
+msgid "Confirmation"
+msgstr "Confirmation"
+
+#: app/templates/payments/pay_lydia.html:14
+#: app/templates/payments/pay_magic.html:14
+#: app/templates/payments/pay_transfer.html:14
+msgid "Changer"
+msgstr "Change"
+
+#: app/templates/payments/pay_lydia.html:20
+#: app/templates/payments/pay_magic.html:20
+msgid "Procéder au paiement :"
+msgstr "Proceed to payment"
+
+#: app/templates/payments/pay_lydia.html:25
+msgid "[Intégration Lydia ici]"
+msgstr "[Lydia integration here]"
+
+#: app/templates/payments/pay_magic.html:25
+msgid ""
+"Bonjour ami GRI, avant d'ajouter le paiment merci de vérifier ces "
+"paramètres :"
+msgstr ""
+"Hello GRI friend, before adding a payment please check these parameters:"
+
+#: app/templates/payments/pay_magic.html:29
+msgid "Payeur :"
+msgstr "Payer:"
+
+#: app/templates/payments/pay_magic.html:35
+#: app/templates/payments/pay_transfer.html:48
+msgid "Montant :"
+msgstr "Amount:"
+
+#: app/templates/payments/mails/internet_cut.html:19
+#: app/templates/payments/mails/new_subscription.html:19
+#: app/templates/payments/mails/renew_reminder.html:19
+#: app/templates/payments/mails/subscription_expired.html:19
+#: app/templates/payments/pay_magic.html:41
+msgid "Offre :"
+msgstr "Offer:"
+
+#: app/templates/payments/pay_magic.html:43
+msgid "Voir sur la droite (ou en-dessous)"
+msgstr "See on the right (or below)"
+
+#: app/templates/payments/pay_magic.html:47
+msgid "GRI effectuant l'opération :"
+msgstr "GRI doing the transaction:"
+
+#: app/templates/payments/pay_magic.html:53
+msgid "Si c'est tout bon, il ne reste qu'à appuyer sur le bouton en bas de page."
+msgstr "If it's all good, just click the button at the bottom of the page."
+
+#: app/templates/payments/pay_magic.html:69
+msgid "Valider le paiement"
+msgstr "Validate payment"
+
+#: app/templates/payments/pay_transfer.html:20
+msgid "Instructions détaillées :"
+msgstr "Detailed instructions:"
+
+#: app/templates/payments/pay_transfer.html:25
+msgid ""
+"Il est possible de payer par virement bancaire, avec les paramètres "
+"suivants :"
+msgstr ""
+"It is possible to pay by bank transfer, with the following parameters:"
+
+#: app/templates/payments/pay_transfer.html:29
+msgid "IBAN :"
+msgstr "IBAN:"
+
+#: app/templates/payments/pay_transfer.html:35
+msgid "BIC :"
+msgstr "BIC:"
+
+#: app/templates/payments/pay_transfer.html:41
+msgid "Motif :"
+msgstr "Reason:"
+
+#: app/templates/payments/pay_transfer.html:54
+msgid ""
+"Une fois le virement effectué, merci de nous en informer en utilisant le "
+"bouton en bas de page."
+msgstr ""
+"Once the tranfer is made, please inform us using the button at the bottom "
+"of the page."
+
+#: app/templates/payments/pay_transfer.html:57
+msgid ""
+"Une fois le paiement reçu, une GRI enregistrera manuellement votre "
+"paiement, et vous recevrez un mail. N'hésitez pas à nous relancer si rien"
+" ne se passe après une ou deux semaines."
+msgstr ""
+"Once the payment is recieved, a GRI will manually register your payment, "
+"and you will recieve an email. Do not hesitate to contact us if nothing "
+"happens after one or two weeks."
+
+#: app/templates/payments/pay_transfer.html:61
+msgid ""
+"De fait, merci de n'utiliser cette solution <strong>que si le paiement "
+"Lydia/CB n'est pas envisageable</strong>."
+msgstr ""
+"So, please use this solution <strong>only if Lydia / credit card payment "
+"is not an option</strong>."
+
+#: app/templates/payments/pay_transfer.html:77
+msgid "Virement effectué : %(name)s (%(price)s)"
+msgstr "Bank transfer made: %(name)s (%(price)s)"
+
+#: app/templates/payments/pay_transfer.html:80
+#: app/templates/rooms/mails/room_transferred.html:43
+msgid "Nous prévenir"
+msgstr "Inform us"
+
+#: app/templates/payments/mails/internet_cut.html:14
+msgid ""
+"Votre abonnement actuel à Internet à la Rez a expiré il y a maintenant un"
+" mois :"
+msgstr ""
+"Your current subscription to the Internet at the Rezidence has expired "
+"a month ago:"
+
+#: app/templates/payments/mails/internet_cut.html:22
+#: app/templates/payments/mails/new_subscription.html:22
+#: app/templates/payments/mails/renew_reminder.html:22
+#: app/templates/payments/mails/subscription_expired.html:22
+msgid "Date d'achat :"
+msgstr "Purchase date:"
+
+#: app/templates/payments/mails/internet_cut.html:24
+#: app/templates/payments/mails/new_subscription.html:24
+#: app/templates/payments/mails/renew_reminder.html:24
+#: app/templates/payments/mails/subscription_expired.html:24
+msgid "(offert)"
+msgstr "(offered)"
+
+#: app/templates/payments/mails/internet_cut.html:27
+#: app/templates/payments/mails/new_subscription.html:27
+#: app/templates/payments/mails/renew_reminder.html:27
+#: app/templates/payments/mails/subscription_expired.html:27
+msgid "Validité :"
+msgstr "Validity:"
+
+#: app/templates/payments/mails/internet_cut.html:33
+msgid ""
+"En conséquence, <strong>votre accès Internet vient d'être coupé</strong>."
+" Vous pouvez toujours accéder à l'IntraRez et aux autres services "
+"internes."
+msgstr ""
+"As a result, <strong>your Internet access has been cut off</strong>. "
+"You still can access the IntraRez and other internal services."
+
+#: app/templates/payments/mails/internet_cut.html:39
+msgid ""
+"Si vous êtes encore à la Rezidence, il vous suffit de prendre un nouvel "
+"abonnement pour retrouver votre accès en quelques minutes."
+msgstr ""
+"If you are still in the Rezidence, you just have to take a new subscription "
+"to have Internet access again in a few minutes."
+
+#: app/templates/payments/mails/internet_cut.html:44
+msgid ""
+"Si vous avez quitté la Rezidence, il vous suffit de <strong>déclarer la "
+"fin de votre location</strong> et nous ne vous enverrons plus d'email."
+msgstr ""
+"If you left the Rezidence, you just have to <strong> declare the end of "
+"your rental</strong> and we'll stop sending you emails."
+
+#: app/templates/payments/mails/internet_cut.html:55
+#: app/templates/payments/mails/on_setup.html:45
+msgid "Prendre un abonnement"
+msgstr "Take a subscription"
+
+#: app/templates/payments/mails/internet_cut.html:59
+#: app/templates/payments/mails/renew_reminder.html:61
+#: app/templates/payments/mails/subscription_expired.html:61
+msgid "Terminer ma location"
+msgstr "Terminate my rental"
+
+#: app/templates/payments/mails/internet_cut.html:66
+#: app/templates/payments/mails/new_subscription.html:36
+#: app/templates/payments/mails/renew_reminder.html:68
+#: app/templates/payments/mails/subscription_expired.html:68
+msgid ""
+"Pour plus d'informations sur le fonctionnement des abonnements ou "
+"l'historique de vos paiements, visitez"
+msgstr ""
+"For more information about subscriptions or your payments history, see"
+
+#: app/templates/payments/mails/internet_cut.html:69
+#: app/templates/payments/mails/new_subscription.html:39
+#: app/templates/payments/mails/renew_reminder.html:71
+#: app/templates/payments/mails/subscription_expired.html:71
+msgid "votre page d'abonnement"
+msgstr "your subscription page"
+
+#: app/templates/payments/mails/new_subscription.html:7
+msgid "Votre nouvel abonnement est validé"
+msgstr "Your new subscription is validated"
+
+#: app/templates/payments/mails/new_subscription.html:14
+msgid "Votre nouvel abonnement à Internet à la Rez a bien été pris en compte :"
+msgstr "Your new subscription to Internet at the Rezidence has been taken "
+"into account:"
+
+#: app/templates/payments/mails/new_subscription.html:30
+msgid ""
+"puis <strong>un mois d'accès gratuit</strong> pendant lequel vous pourrez"
+" renouveler votre abonnement si besoin."
+msgstr ""
+"then <strong>one offered month</strong> during which you can renew "
+"your subscription if necessary."
+
+#: app/templates/payments/mails/on_setup.html:7
+msgid "Mise en place des paiements Internet"
+msgstr "Commissionning of Internet payments"
+
+#: app/templates/payments/mails/on_setup.html:14
+msgid ""
+"Vous recevez cet email car vous utilisez les services des GRI pour "
+"accéder à Internet à la Rezidence."
+msgstr ""
+"You recieve this email because you use GRI services to access to the "
+"Internet from the Rezidence."
+
+#: app/templates/payments/mails/on_setup.html:18
+msgid ""
+"Comme vous le savez peut-être, <strong>l'accès Internet n'est pas "
+"gratuit</strong> : en effet, nous payons tous les mois un abonnement à "
+"Internet et nous devons régulièrement remplacer le matériel utilisé pour "
+"la gestion du réseau."
+msgstr ""
+"As you may know, <strong>access to the Internet is not free</strong>: "
+"indeed, we pay each month a subscription to the Internet and we must "
+"replace the equipment used to manage the network on a regular basis."
+
+#: app/templates/payments/mails/on_setup.html:25
+msgid ""
+"Jusqu'à présent, les paiements étaient collectés à la main et au bon "
+"vouloir du trésorier du BDE, c'est-à-dire pas souvent. Un des objectifs "
+"de la mise en place du nouvel IntraRez était le développement d'un "
+"<strong>module de gestion d'abonnement</strong>, c'est maintenant chose "
+"faite."
+msgstr ""
+"Until now, payments were collected by hand and at the discretion of the "
+"ESPCI Students' Office treasurer, i.e. not often. One of the goals of "
+"the commissionning of the new IntraRez was the développement of a "
+"<strong>subscription management module</strong>, which is now done."
+
+#: app/templates/payments/mails/on_setup.html:33
+#, python-format
+msgid ""
+"Bien entendu, tout cela n'est pas rétroactif, et nous vous laissons "
+"<strong>un mois</strong> pour prendre un abonnement. Après cela, "
+"c'est-à-dire le %(date)s, votre accès Internet sera <strong>coupé "
+"automatiquement</strong>"
+msgstr ""
+"Of course, none of this is retroactive, and we let you "
+"<strong>one month</strong> to take a subscription. After that, i.e. "
+"on %(date)s, your Internet access will be <strong>cut off "
+"automatically</strong>"
+
+#: app/templates/payments/mails/on_setup.html:52
+msgid ""
+"Le paiement peut se faire par <strong>Lydia</strong> / "
+"<strong>CB</strong> (de préférence), <strong>virement bancaire</strong> "
+"ou <strong>espèces</strong>, pour une durée de 3 mois, 6 mois ou 12 mois."
+" Vous constaterez que le prix est dérisoire par rapport au coût d'un "
+"abonnement individuel auprès d'un FAI."
+msgstr ""
+"Payment can be done with <strong>Lydia</strong> / by "
+"<strong>credit card</strong> (preferably), <strong>bank transfer</strong> "
+"or <strong>cash</strong>, for a duration of 3 months, 6 months ou 12 months. "
+"You will notice that the price is derisory compared to the cost of an "
+"individual subscription with an ISP."
+
+#: app/templates/payments/mails/renew_reminder.html:7
+msgid "Votre accès Internet sera coupé dans une semaine"
+msgstr "Your Internet access will be cut off in a week"
+
+#: app/templates/payments/mails/renew_reminder.html:14
+msgid ""
+"Votre abonnement actuel à Internet à la Rez a expiré depuis maintenant "
+"trois semaines :"
+msgstr ""
+"Your current subscription to the Internet at the Rezidence has expired "
+"three weeks ago:"
+
+#: app/templates/payments/mails/renew_reminder.html:33
+#, python-format
+msgid ""
+"En conséquence, <strong>il ne vous reste plus qu'une semaine</strong> "
+"pour le renouveler, après quoi votre accès Internet sera "
+"<strong>automatiquement coupé</strong> (le %(date)s)."
+msgstr ""
+"As a result, <strong>you only has a week left</strong> to renew it, "
+"after which your Internet access will be <strong>automatically cut "
+"off</strong> (on %(date)s)."
+
+#: app/templates/payments/mails/renew_reminder.html:41
+msgid ""
+"Si vous restez à la Rezidence, prenez quelques instants pour prendre un "
+"nouvel abonnement en quelques clics via Lydia, CB, virement bancaire ou "
+"espèces."
+msgstr ""
+"If you stay at the Rezidence, please take a few moments to take a new "
+"subscription in a few clicks with Lydia, credit card, bank transfer or "
+"cash."
+
+#: app/templates/payments/mails/renew_reminder.html:46
+#: app/templates/payments/mails/subscription_expired.html:46
+msgid ""
+"Si vous avez quitté la Rezidence, il vous suffit de <strong>déclarer la "
+"fin de votre location</strong> et nous cesserons de vous envoyer ces "
+"emails."
+msgstr ""
+"If you left the Rezidence, you just have to <strong> declare the end of "
+"your rental</strong> and we'll stop sending you these emails."
+
+#: app/templates/payments/mails/renew_reminder.html:57
+#: app/templates/payments/mails/subscription_expired.html:57
+msgid "Renouveler mon abonnement"
+msgstr "Renew my subscription"
+
+#: app/templates/payments/mails/subscription_expired.html:7
+msgid "Votre abonnement a expiré"
+msgstr "Your subscription expired"
+
+#: app/templates/payments/mails/subscription_expired.html:14
+msgid "Votre abonnement actuel à Internet à la Rez vient d'expirer :"
+msgstr "Your Internet subscription at the Rezidence just expired:"
+
+#: app/templates/payments/mails/subscription_expired.html:33
+#, python-format
+msgid ""
+"Vous disposez d'<strong>un mois</strong> pour le renouveler, après quoi "
+"votre accès Internet sera <strong>automatiquement coupé</strong> (le "
+"%(date)s)."
+msgstr ""
+"You have <strong>one month</strong> to renew it, after which your Internet "
+"access will be <strong>automatically cut off</strong> (on %(date)s)."
+
+#: app/templates/payments/mails/subscription_expired.html:40
+#, python-format
+msgid ""
+"Si vous restez à la Rezidence, pas d'intérêt à attendre : que vous le "
+"prenez maintenant ou dans un mois, votre nouvel abonnement débutera le "
+"%(date)s."
+msgstr ""
+"If you stay at the Rezidence, no point in waiting: you can take your new "
+"subscription now or in a month, it will either way start on %(date)s."
+
+#: app/templates/rooms/register.html:37
 msgid ""
 "Merci de renseigner ta chambre actuelle, ainsi que le début de la "
 "location (approximativent)."
@@ -1268,20 +2308,20 @@ msgstr ""
 "Please fill in your current room, as well as the beginning of the rental "
 "period (approximately)."
 
-#: app/templates/rooms/register.html:35
+#: app/templates/rooms/register.html:41
 msgid "La date de fin n'est pas obligatoire."
 msgstr "The rental end date is not mandatory."
 
-#: app/templates/rooms/register.html:62
+#: app/templates/rooms/register.html:68
 msgid "Chambre déjà occupée !"
 msgstr "Room already rented!"
 
-#: app/templates/rooms/register.html:68
+#: app/templates/rooms/register.html:74
 #, python-format
 msgid "La chambre indiquée (%(num)d) est enregistrée comme déjà occupée !"
 msgstr "The indicated room (%(num)d) is registered as already occupied!"
 
-#: app/templates/rooms/register.html:73
+#: app/templates/rooms/register.html:79
 msgid ""
 "Soit vous venez de récupérer la chambre, auquel cas pas de panique, c'est"
 " simplement que l'ancien Rezident n'a pas signalé son départ. Validez "
@@ -1290,7 +2330,7 @@ msgstr ""
 "If you just got the room back, in which case don't panic, it's just that "
 "the former Rezident didn't report his departure. Validate without fear."
 
-#: app/templates/rooms/register.html:78
+#: app/templates/rooms/register.html:84
 msgid ""
 "Soit il s'agit d'une sous-location, auquel cas nous vous conseillons de "
 "voir avec le propriétaire pour plutôt qu'il enregistre votre appareil sur"
@@ -1301,7 +2341,7 @@ msgstr ""
 "rather register your device on its account. Without that, we will soon "
 "ask you to pay for the Internet connection."
 
-#: app/templates/rooms/register.html:84
+#: app/templates/rooms/register.html:90
 msgid ""
 "Soit il s'agit d'une colocation (ou autre cas de figure), auquel cas nous"
 " vous demendons d'utiliser un seul compte pour la chambre, au nom du "
@@ -1312,7 +2352,7 @@ msgstr ""
 "account for the room, in the name of the official room owner. Indeed, if "
 "you proceed, all devices previously registered will lose Internet access."
 
-#: app/templates/rooms/register.html:92
+#: app/templates/rooms/register.html:98
 msgid ""
 "N'essayez pas d'abuser du système ou de vous en servir à des fins peu "
 "recommendables ! Les GRI ouvrent l'œil, et vous n'avez pas envie de les "
@@ -1321,11 +2361,7 @@ msgstr ""
 "Do not try to abuse the system or use it for unsavory purposes! The GRI "
 "are keeping an eye on you, and you don't want to make them angry..."
 
-#: app/templates/rooms/register.html:100
-msgid "Modifier"
-msgstr "Edit"
-
-#: app/templates/rooms/register.html:103
+#: app/templates/rooms/register.html:109
 #, python-format
 msgid "Valider cette chambre (%(num)d)"
 msgstr "Validate this room (%(num)d)"
@@ -1335,7 +2371,7 @@ msgstr "Validate this room (%(num)d)"
 msgid "Mettre fin à ta location actuelle (chambre %(room)s) ?"
 msgstr "Terminate your current rental (room %(room)s)?"
 
-#: app/templates/rooms/terminate.html:16
+#: app/templates/rooms/terminate.html:17
 msgid ""
 "Cela permettra de déclarer une nouvelle location (ou non, en cas de "
 "départ de la résidence)."
@@ -1343,57 +2379,107 @@ msgstr ""
 "This will allow you to declare a new rental (or not, if leaving the "
 "residence)."
 
-#: app/templates/rooms/terminate.html:20
+#: app/templates/rooms/terminate.html:21
 msgid "Tes appareils risquent d'être déconnectés du réseau quelques instants."
 msgstr "Your devices may be disconnected a few instants."
 
-#: app/tools/validators.py:30
+#: app/templates/rooms/mails/room_transferred.html:7
+msgid "Votre chambre a été transférée !"
+msgstr "Your room has been transferred!"
+
+#: app/templates/rooms/mails/room_transferred.html:14
+#, python-format
+msgid ""
+"Un(e) autre Rezident(e) vient de déclarer une location dans la chambre "
+"que vous occupiez jusqu'à présent (%(room)s)."
+msgstr ""
+"An other Rezident just declared a location in the room occupying until now "
+"(%(room)s)."
+
+#: app/templates/rooms/mails/room_transferred.html:19
+msgid ""
+"En conséquence, le fonctionnement du système fait que <strong>votre accès"
+" Internet a été coupé</strong>."
+msgstr ""
+"As a result, the way the system works means that <strong>your Internet "
+"access has been cut off</strong>."
+
+#: app/templates/rooms/mails/room_transferred.html:23
+msgid ""
+"Si vous avez quitté la Rezidence, tout va bien : c'est simplement le ou "
+"la nouvelle occupant(e) de la chambre qui se connecte au réseau."
+msgstr ""
+"If you left the Rezidence, no worries: it is simply the new occupant of the "
+"room that connects to the network."
+
+#: app/templates/rooms/mails/room_transferred.html:28
+msgid ""
+"Si vous êtes toujours à la Rezidence en revanche, et qu'il n'y a pas "
+"d'histoire de sous-location ou autre, merci de <strong>nous en "
+"informer</strong> au plus vite (plutôt que de tenter de débuter une "
+"nouvelle location) pour que nous regardions de plus près."
+msgstr ""
+"However, if you are still at the Rezidence and that there is no "
+"question of subletting ou other, please <strong>inform us</strong> "
+"as soon as possible (rather than trying to start a new rental) "
+"so we can take a closer look."
+
+#: app/templates/rooms/mails/room_transferred.html:41
+#, python-format
+msgid "Quelqu'un vient de voler ma chambre (%(room)s) !"
+msgstr "Someone just stole my room (%(room)s)!"
+
+#: app/tools/utils.py:91
+msgid "Locataire non-ESPCI"
+msgstr "Not-ESPCI tenant"
+
+#: app/tools/utils.py:92
+msgid "Sous-locataire"
+msgstr "Subtenant"
+
+#: app/tools/validators.py:31
 msgid "Ce champ est requis."
 msgstr "This field is required."
 
-#: app/tools/validators.py:37
+#: app/tools/validators.py:38
 msgid "Adresse email invalide."
 msgstr "Invalid email address."
 
-#: app/tools/validators.py:44
+#: app/tools/validators.py:45
 msgid "Valeur différente du champ précédent."
 msgstr "The value differ from the previous field."
 
-#: app/tools/validators.py:51
+#: app/tools/validators.py:52
 msgid "Adresse MAC invalide (format attendu : xx:xx:xx:xx:xx:xx)."
 msgstr "Invalid MAC address (expected format: xx:xx:xx:xx:xx:xx)."
 
-#: app/tools/validators.py:63
+#: app/tools/validators.py:64
 #, python-format
 msgid "Doit faire moins de %(max)d caractères."
 msgstr "Must be less than %(max)d characters long."
 
-#: app/tools/validators.py:66
+#: app/tools/validators.py:67
 #, python-format
 msgid "Doit faire au moins %(min)d caractères."
 msgstr "Must be at least %(min)d characters long."
 
-#: app/tools/validators.py:69
+#: app/tools/validators.py:70
 #, python-format
 msgid "Doit faire entre %(min)d et %(max)d caractères."
 msgstr "Must be between %(min)d and %(max)d characters."
 
-#: app/tools/validators.py:75
-msgid "Nom d'utilisateur déjà utilisé."
-msgstr "User name already in use."
-
-#: app/tools/validators.py:82
+#: app/tools/validators.py:76
 msgid "Adresse e-mail déjà liée à un autre compte."
 msgstr "Mail address already linked to an account."
 
-#: app/tools/validators.py:89
+#: app/tools/validators.py:84
 msgid "Numéro de chambre invalide."
 msgstr "Invalid room number."
 
-#: app/tools/validators.py:96
+#: app/tools/validators.py:91
 msgid "Cette date doit être dans le passé !"
 msgstr "This date must be in the past!"
 
-#: app/tools/validators.py:105
+#: app/tools/validators.py:100
 msgid "Cette date doit être dans le futur !"
 msgstr "This date must be in the future!"
