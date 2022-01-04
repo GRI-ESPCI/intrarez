@@ -22,9 +22,7 @@ import flask_login
 import flask_mail
 import flask_moment
 import flask_babel
-from flask_babel import lazy_gettext as _l
 from werkzeug import urls as wku
-import wtforms
 
 from config import Config
 from app import enums
@@ -35,9 +33,6 @@ from app.tools import loggers, utils
 db = flask_sqlalchemy.SQLAlchemy()
 migrate = flask_migrate.Migrate()
 login = flask_login.LoginManager()
-login.login_view = "auth.login"         # login route function
-login.login_message = _l("Merci de vous connecter pour accéder à cette page.")
-login.login_message_category = "warning"
 mail = flask_mail.Mail()
 moment = flask_moment.Moment()
 babel = flask_babel.Babel()
@@ -61,29 +56,18 @@ def create_app(config_class=Config):
     mail.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
+
+    # Set up Jinja
+    app.jinja_env.trim_blocks = True
+    app.jinja_env.lstrip_blocks = True
     app.jinja_env.globals.update(**__builtins__)
     app.jinja_env.globals.update(**{name: getattr(enums, name)
                                     for name in enums.__all__})
     app.jinja_env.globals["__version__"] = __version__
     app.jinja_env.globals["babel"] = flask_babel
-    app.jinja_env.globals["alert_labels"] = {
-        "info": _l("Information :"),
-        "success": _l("Succès :"),
-        "danger": _l("Attention :"),
-        "warning": _l("Avertissement :"),
-    }
-    app.jinja_env.globals["alert_symbols"] = {
-        "info": "info-circle-fill",
-        "success": "check-circle-fill",
-        "danger": "exclamation-triangle-fill",
-        "warning": "exclamation-triangle-fill",
-    }
     app.jinja_env.globals["promotions"] = utils.promotions
-    app.jinja_env.globals["bootstrap_icon"] = utils.get_bootstrap_icon
-    app.jinja_env.globals['bootstrap_is_hidden_field'] = (
-        lambda field: isinstance(field, wtforms.fields.HiddenField)
-    )
 
+    # Register blueprints
     # ! Keep imports here to avoid circular import issues !
     from app import errors, main, auth, devices, rooms, gris, payments, profile
     app.register_blueprint(errors.bp)
@@ -95,17 +79,15 @@ def create_app(config_class=Config):
     app.register_blueprint(payments.bp, url_prefix="/payments")
     app.register_blueprint(profile.bp, url_prefix="/profile")
 
-    # Set up error handling
-    loggers.set_handlers(app)
+    # Configure logging
+    loggers.configure_logging(app)
     app.logger.info("Intrarez startup")
 
     # Set up mail processors building
     # ! Keep import here to avoid circular import issues !
     from app import email
-    @app.before_first_request
-    def _init_mail_processors():
-        email.init_premailer()
-        email.init_textifier()
+    app.before_first_request(email.init_premailer)
+    app.before_first_request(email.init_textifier)
 
     # Set up captive portal
     @app.before_request
@@ -146,7 +128,7 @@ def create_app(config_class=Config):
             user = "<anonymous>"
             try:
                 if flask.g.logged_in:
-                    user = repr(flask_login.current_user)
+                    user = repr(flask.g.logged_in_user)
                     if flask.g.doas:
                         user += f" AS {flask.g.rezident!r}"
             except AttributeError:
@@ -155,7 +137,14 @@ def create_app(config_class=Config):
             app.logger.info(msg)
         return response
 
+    # All set!
     return app
+
+
+
+# Import application models
+# ! Keep at the bottom to avoid circular import issues !
+from app import models
 
 
 # Set up locale
@@ -165,21 +154,15 @@ def _get_locale():
     locale = flask.request.accept_languages.best_match(
         flask.current_app.config["LANGUAGES"]
     )
-    if (flask_login.current_user.is_authenticated
-        and locale != flask_login.current_user.locale):
+    if flask.g.logged_in and locale != flask.g.logged_in_user.locale:
         # Do not use flask.g.rezident here, it would override user locale
         # by the locale of a GRI using doas
-        flask_login.current_user.locale = locale
+        flask.g.logged_in_user.locale = locale
         db.session.commit()
 
     return locale
 
-
-# Import application models
-# ! Keep at the bottom to avoid circular import issues !
-from app import models
-
-# Set up user loader locale
+# Set up user loader
 @login.user_loader
 def _load_user(id):
     """Function used by Flask-login to get the connected user.

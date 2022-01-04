@@ -17,7 +17,7 @@ from app.tools import utils
 def create_request_context():
     """Make checks about current request and define custom ``g`` properties.
 
-    Intended to be registerd by :func:`before_request`.
+    Intended to be registered by :func:`before_request`.
 
     Defines:
       * :attr:`flask.g.remote_ip` (default ``None``):
@@ -31,13 +31,16 @@ def create_request_context():
             :attr:`flask.g.internal` is ``True``.
       * :attr:`flask.g.logged_in` (default ``False``):
             Shorthand for :attr:`flask_login.current_user.is_authenticated`.
+      * :attr:`flask.g.logged_in_user` (default ``None``):
+            Shorthand for :attr:`flask_login.current_user`. Warning: ignores
+            doas mechanism; please use :attr:`flask.g.rezident` instead.
       * :attr:`flask.g.doas` (default ``False``):
             If ``True``, the logged in user is a GRI that is doing an action
             as another rezident.
       * :attr:`flask.g.rezident` (default ``None``):
             The rezident the request is made as: ``None`` if not
-            :attr:`flask.g.logged_in`, the controled rezident if
-            :attr:`~flask.g.doas`, or :attr:`flask_login.current_user`.
+            :attr:`flask.g.logged_in`, the controlled rezident if
+            :attr:`~flask.g.doas`, or :attr:`flask.g.logged_in_user`.
       * :attr:`flask.g.is_gri` (default ``False``):
             ``True`` if the user is logged in and is a GRI.
       * :attr:`flask.g.has_a_room` (default ``False``):
@@ -59,7 +62,7 @@ def create_request_context():
                 by him.
       * :attr:`flask.g.redemption_endpoint` (default ``None``):
             The endpoint of the page that the user must visit first to
-            regularize its situation.
+            regularize its situation (see :func:`.all_good_only`).
             Defined only if attr:`flask.g.all_good` is ``False``.
       * :attr:`flask.g.redemption_params` (default ``{}``):
             The query parameters for attr:`flask.g.redemption_endpoint`.
@@ -69,6 +72,7 @@ def create_request_context():
     g.mac = None
     g.internal = False
     g.logged_in = False
+    g.logged_in_user = None
     g.rezident = None
     g.is_gri = False
     g.doas = False
@@ -82,7 +86,8 @@ def create_request_context():
     # Get user
     g.logged_in = flask_login.current_user.is_authenticated
     if g.logged_in:
-        g.rezident = flask_login.current_user
+        g.logged_in_user = flask_login.current_user
+        g.rezident = g.logged_in_user       # May be overridden later if doas
         g.is_gri = g.rezident.is_gri
     else:
         g.all_good = False
@@ -139,6 +144,8 @@ def create_request_context():
     if not g.has_a_room:
         g.all_good = False
         g.redemption_endpoint = "rooms.register"
+        if not g.doas:
+            g.redemption_params = {"hello": True}
 
     if g.internal:
         # Get device
@@ -151,6 +158,8 @@ def create_request_context():
                 g.all_good = False
                 g.redemption_endpoint = "devices.register"
                 g.redemption_params = {"mac": g.mac}
+                if not g.doas:
+                    g.redemption_params["hello"] = True
             # Last check need a device
             return None
 
@@ -161,6 +170,8 @@ def create_request_context():
             g.all_good = False
             g.redemption_endpoint = "devices.transfer"
             g.redemption_params = {"mac": g.mac}
+            if not g.doas:
+                g.redemption_params["hello"] = True
             return None
 
     # Check at least one device
@@ -198,10 +209,10 @@ def _get_mac(remote_ip):
     output = subprocess.run(["/sbin/arp", "-a"], capture_output=True)
     # arp -a liste toutes les correspondances IP - mac connues
     # résultat : lignes "domain (ip) at mac_address ..."
-    mtch = re.search(rf"^.*? \({remote_ip}\) at ([0-9a-f:]{{17}}).*",
-                     output.stdout.decode(), re.M)
-    if mtch:
-        return mtch.group(1)
+    match = re.search(rf"^.*? \({remote_ip}\) at ([0-9a-f:]{{17}}).*",
+                      output.stdout.decode(), re.M)
+    if match:
+        return match.group(1)
     else:
         return None
 
@@ -322,7 +333,7 @@ def capture():
         # 10.0.0.100 - 10.0.0.199: Not registered
         return utils.safe_redirect("main.index")
     if _address_in_range(remote_ip, "10.0.8.0", "10.0.8.255"):
-        # 10.0.8.x: Not suscribed
+        # 10.0.8.x: Not subscribed
         return utils.safe_redirect("main.index")    # Not implemented
     if _address_in_range(remote_ip, "10.0.9.0", "10.0.9.255"):
         # 10.0.9.x: Banned

@@ -6,49 +6,47 @@
 {% endblock %}
 
 {% block card_icon %}
-{{ bootstrap_icon("laptop") }}
+{{ macros.bootstrap_icon("laptop") }}
 {% endblock %}
 
 {% block card_table %}
 {% if g.internal and rezident == g.rezident %}
-{% with device = rezident.current_device %}
 <tr>
     <th scope="row" class="ps-4">{{ _("Appareil actuel") }}</th>
-    <td class="text-break">{{ device.name }}</td>
+    <td class="text-break">{{ g.device.name }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Type") }}</th>
-    <td class="text-break">{{ device.type }}</td>
+    <td class="text-break">{{ g.device.type }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Adresse MAC") }}</th>
-    <td class="text-break">{{ device.mac_address }}</td>
+    <td class="text-break">{{ g.device.mac_address }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("IP attribuée") }}</th>
-    <td class="text-break">{{ device.current_ip }}</td>
+    <td class="text-break">{{ g.device.current_ip }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Enregistrement") }}</th>
     <td class="text-break">
-        <span title="{{ device.registered }} UTC">
-            {{ moment(device.registered).format("LL") }}
+        <span title="{{ g.device.registered }} UTC">
+            {{ moment(g.device.registered).format("LL") }}
         </span>
     </td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Dernière connexion") }}</th>
     <td class="text-break">
-        {% if device.last_seen %}
-        <span title="{{ device.last_seen }} UTC">
-            {{ moment(device.last_seen).fromNow() }}
+        {% if g.device.last_seen %}
+        <span title="{{ g.device.last_seen }} UTC">
+            {{ moment(g.device.last_seen).fromNow() }}
         </span>
         {% else %}
         <span>{{ _("Jamais") }}</span>
         {% endif %}
     </td>
 </tr>
-{% endwith %}
 {% else %}          {# if not g.internal #}
 <tr>
     <th scope="row" class="ps-4">{{ _("Appareil actuel") }}</th>
@@ -109,7 +107,7 @@
                     <svg class="bi flex-shrink-0" width="24"
                             height="24" role="img"
                             aria-label="{{ _("Détails") }}">
-                        {{ bootstrap_icon("eye") }}
+                        {{ macros.bootstrap_icon("eye") }}
                     </svg>
                 </button></td>
             </tr>
@@ -133,7 +131,7 @@
     {{ macros.badge("NEW") }}
 </a>
 <a class="btn btn-outline-dark"
-   href="{{ url_for("devices.register", force=True, doas=doas,
+   href="{{ url_for("devices.register", doas=doas,
                     next=request.url_rule.endpoint) }}">
     {{ _("Nouvel appareil") }}
 </a>

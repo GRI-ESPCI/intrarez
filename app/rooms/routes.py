@@ -18,6 +18,7 @@ def create_rez_rooms():
         rooms = Room.create_rez_rooms()
         db.session.add_all(rooms)
         db.session.commit()
+        flask.current_app.actions_logger.info(f"Created all rooms")
 
 
 @bp.route("/register", methods=["GET", "POST"])
@@ -36,10 +37,15 @@ def register():
         room = Room.query.get(form.room.data)
 
         def _register_room():
+            start = form.start.data
+            end = form.end.data
             rental = Rental(rezident=flask.g.rezident, room=room,
-                            start=form.start.data, end=form.end.data)
+                            start=start, end=end)
             db.session.add(rental)
             db.session.commit()
+            flask.current_app.actions_logger.info(
+                f"Added {rental} for period {start} – {end}"
+            )
             utils.run_script("gen_dhcp.py")       # Update DHCP rules
             flask.flash(_("Chambre enregistrée avec succès !"), "success")
             # OK
@@ -52,8 +58,13 @@ def register():
         if not form.submit.data:
             # The submit button used was not the form one (so it was the
             # warning one): already warned and chose to process, transfer room
-            email.send_room_transferred_email(room.current_rental.rezident)
-            room.current_rental.terminate()
+            old_rezident = room.current_rental.rezident
+            room.current_rental.end = datetime.date.today()     # = not current
+            db.session.commit()
+            flask.current_app.actions_logger.warning(
+                f"Rented {room}, formerly occupied by {old_rezident}"
+            )
+            email.send_room_transferred_email(old_rezident)
             return _register_room()
 
         # Else: Do not validate form, but put a warning message
@@ -75,6 +86,9 @@ def modify():
             rental.start = form.start.data
             rental.end = form.end.data
             db.session.commit()
+            flask.current_app.actions_logger.info(
+                f"Modified {rental}: {form.start.data} – {form.end.data}"
+            )
             flask.flash(_("Location modifiée avec succès !"), "success")
         else:
             flask.flash(_("Pas de location en cours !"), "danger")
@@ -103,6 +117,9 @@ def terminate():
         rental = flask.g.rezident.current_rental
         rental.end = form.end.data
         db.session.commit()
+        flask.current_app.actions_logger.info(
+            f"Terminated {rental} (end date {form.end.data})"
+        )
         return utils.redirect_to_next()
 
     return flask.render_template("rooms/terminate.html", form=form,

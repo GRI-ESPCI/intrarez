@@ -24,8 +24,6 @@ class DeviceModificationForm(FlaskForm):
                               validators=[Optional(), Length(max=64)])
     type = wtforms.StringField(_l("Type (optionnel)"),
                                validators=[Optional(), Length(max=64)])
-    mac = wtforms.StringField(_l("Adresse MAC"),
-                              validators=[DataRequired(), MacAddress()])
     submit = wtforms.SubmitField(_l("Modifier l'appareil"))
 
 

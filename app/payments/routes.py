@@ -4,7 +4,6 @@ import datetime
 
 import flask
 from flask_babel import _
-import flask_login
 
 from app import context, db
 from app.payments import bp, email
@@ -20,6 +19,7 @@ def create_first_offer():
         offer = Offer.create_first_offer()
         db.session.add(offer)
         db.session.commit()
+        flask.current_app.actions_logger.info(f"Created first offer ({offer})")
 
 
 @bp.route("/")
@@ -91,21 +91,34 @@ def add_payment(offer=None):
         flask.flash("Offre incorrecte", "danger")
         return utils.redirect_to_next()
 
-    # Determine new subscription start
+    # Determine new subscription dates
     start = rezident.current_subscription.renew_day
+    end = start + offer.delay
 
     # Add subscription
-    payment = Payment(rezident=rezident, amount=offer.price,
-                      timestamp=datetime.datetime.now(), lydia=False,
-                      gri=flask_login.current_user)
+    payment = Payment(
+        rezident=rezident,
+        amount=offer.price,
+        timestamp=datetime.datetime.now(),
+        lydia=False,
+        gri=flask.g.logged_in_user,
+    )
     db.session.add(payment)
-    subscription = Subscription(rezident=rezident, offer=offer,
-                                payment=payment, start=start,
-                                end=start + offer.delay)
+    subscription = Subscription(
+        rezident=rezident,
+        offer=offer,
+        payment=payment,
+        start=start,
+        end=end,
+    )
     db.session.add(subscription)
 
     rezident.sub_state = rezident.compute_sub_state()
     db.session.commit()
+    flask.current_app.actions_logger.info(
+        f"Added {subscription} to {offer}, with {payment} added by GRI, "
+        f"granting Internet access for {start} – {end}"
+    )
     if rezident.sub_state != SubState.subscribed:
         raise RuntimeError(
             f"payments.add_payment : Paiement {payment} ajouté, création "

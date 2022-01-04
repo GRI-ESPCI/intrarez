@@ -18,7 +18,7 @@
             <strong>{{ _("Abonné(e)") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-success"
                  width="24" height="24">
-                {{ bootstrap_icon("check-circle") }}
+                {{ macros.bootstrap_icon("check-circle") }}
             </svg>
         </li>
         <li>
@@ -37,11 +37,11 @@
             <strong>{{ _("Mois offert") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-warning"
                  width="24" height="24">
-                {{ bootstrap_icon("circle-fill") }}
+                {{ macros.bootstrap_icon("circle-fill") }}
             </svg>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-danger"
                  width="24" height="24">
-                {{ bootstrap_icon("exclamation-circle") }}
+                {{ macros.bootstrap_icon("exclamation-circle") }}
             </svg>
         </li>
         <li>
@@ -60,7 +60,7 @@
             <strong>{{ _("Paiement nécessaire") }}</strong>
             <svg class="ms-2 bi flex-shrink-0 position-absolute text-danger"
                  width="24" height="24">
-                {{ bootstrap_icon("x-circle-fill") }}
+                {{ macros.bootstrap_icon("x-circle-fill") }}
             </svg>
         </li>
         <li>
@@ -143,7 +143,7 @@
                             }}#lydia" />
                     </svg>
                     <svg class="bi flex-shrink-0" width="28" height="28">
-                        {{ bootstrap_icon("credit-card") }}
+                        {{ macros.bootstrap_icon("credit-card") }}
                     </svg>
                 </div>
                 <div class="col">
@@ -157,7 +157,7 @@
             <div class="row mb-3">
                 <div class="col-auto my-auto">
                     <svg class="bi flex-shrink-0" width="28" height="28">
-                        {{ bootstrap_icon("bank2") }}
+                        {{ macros.bootstrap_icon("bank2") }}
                     </svg>
                 </div>
                 <div class="col">
@@ -169,7 +169,7 @@
             <div class="row">
                 <div class="col-auto my-auto">
                     <svg class="bi flex-shrink-0" width="28" height="28">
-                        {{ bootstrap_icon("cash-coin") }}
+                        {{ macros.bootstrap_icon("cash-coin") }}
                     </svg>
                 </div>
                 <div class="col">
@@ -213,7 +213,7 @@
                             data-bs-toggle="modal">
                         <svg class="bi flex-shrink-0" width="24" height="24"
                              role="img" aria-label="{{ _("Offre") }}">
-                                {{ bootstrap_icon("clipboard") }}
+                                {{ macros.bootstrap_icon("clipboard") }}
                         </svg>
                     </button>
                 </span>
@@ -238,7 +238,7 @@
                             {% endif %}>
                         <svg class="bi flex-shrink-0" width="24" height="24"
                              role="img" aria-label="{{ _("Paiement") }}">
-                                {{ bootstrap_icon("credit-card") }}
+                                {{ macros.bootstrap_icon("credit-card") }}
                         </svg>
                     </button>
                 </span>

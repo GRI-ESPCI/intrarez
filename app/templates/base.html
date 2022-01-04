@@ -1,4 +1,4 @@
-{% import "_macros.html" as macros %}
+{% import "macros.html" as macros %}
 
 {% block doc %}
 <!DOCTYPE html>
@@ -144,40 +144,22 @@
         </nav>
         {% endblock navbar %}
         {% block content %}
-        <div class="container">
+        <div class="container position-relative">
             {% if g.doas %}
             <div class="row">{% include "doas.html" %}</div>
             {% endif %}
             {% block app_content %}{% endblock app_content %}
-        </div>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="toast-container position-absolute top-0 start-50 p-3 mt-5">
-            {% for category, message in messages %}
-            <div class="toast" role="alert" aria-live="assertive"
-                 aria-atomic="true">
-                <div class="toast-header text-white bg-{{ category }}">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24"
-                         role="img" aria-label="{{ alert_labels[category] }}">
-                        {{ bootstrap_icon(alert_symbols[category]) }}
-                    </svg>
-                    <strong class="me-auto">
-                        {{ alert_labels[category] }}
-                    </strong>
-                    <button type="button" class="btn-close"
-                            data-bs-dismiss="toast"
-                            aria-label="{{ _("Fermer") }}">
-                    </button>
-                </div>
-                <div class="toast-body">
-                    {{ message }}
-                </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="toast-container position-absolute top-0 end-0 px-3">
+                {% for category, message in messages %}
+                {{ macros.flashed_message(message, category) }}
+                {% endfor %}
             </div>
-            {% endfor %}
+            {% endif %}
+            {% endwith %}
         </div>
-        {% endif %}
-        {% endwith %}
 
         {% endblock content %}
         {% block footer %}

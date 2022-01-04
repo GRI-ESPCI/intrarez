@@ -13,7 +13,7 @@ def get_or_die(name):
     """Check availability and get the value of an environment variable.
 
     Args:
-        name (str): The envrionment variable to get.
+        name (str): The environment variable to get.
 
     Returns:
         The environment variable value, if it is set.
@@ -48,6 +48,7 @@ class Config():
     ADMINS = os.environ.get("ADMINS", "").split(";")
 
     ERROR_WEBHOOK = os.environ.get("ERROR_WEBHOOK")
+    LOGGING_WEBHOOK = os.environ.get("LOGGING_WEBHOOK")
     MESSAGE_WEBHOOK = os.environ.get("MESSAGE_WEBHOOK")
     MAIL_WEBHOOK = os.environ.get("MAIL_WEBHOOK")
     GRI_ROLE_ID = os.environ.get("GRI_ROLE_ID")

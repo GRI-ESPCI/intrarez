@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased - 2022-01-02
+## Unreleased - 2022-01-04
 
 ### STILL TO DO
 
@@ -74,9 +74,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         and when a rezident's room is transferred (``rooms/room_transferred``);
   * New promised rules ``profile.modify_account``, ``profile.update_password``,
     ``rooms.modify`` and ``devices.modify`` (and revealed buttons in profile
-    page, cards...) ;
+    page, cards...) and delete device button (but not implemented) ;
   * New GRI page ``run_script`` to execute scripts from the web interface;
-  * New maintenance mode (``MAINTENANCE`` environment variable and 503 page).
+  * New maintenance mode (``MAINTENANCE`` environment variable and 503 page);
+  * New attribute :attr:`flask.g.logged_in_user` as a shorthand for
+    :attr:`flask_login.current_user` (ignores doas).
 
 ### Changed
 
@@ -91,23 +93,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Moved ``auth.forms.promotions_list`` to :func:`tools.utils.promotions`,
     and it now has a cache mechanism to compute it once a day maximum, and
     returns a dict rather than a list of tuples;
+  * Modified application logging (:mod:`.tools.loggers`):
+      * Use timed-rotating instead of rotating, to keep all logs;
+      * No more mail logging (redundant with mails transfer to Discord);
+      * Added a sub-logger ``app.actions_logger`` to report to Discord
+        (through webhook ``LOGGING_WEBHOOK``):
+          * Account creation / modification;
+          * Password change / reset;
+          * Device registration / modification / transfer;
+          * Rental creation / modification / termination;
+          * Room transfer and forced rental termination (warning);
+          * First subscription automatic add;
+          * Subscription (and payment) add by GRI;
+          * Daily sub state changes;
+          * First offer / rooms creation, and offers update.
+  * Displaying green progress bar on device/rental registration
+    (and redirecting to connect check) is now done only if query argument
+    ``hello`` is set (opt-in), not if ``force`` is NOT set as before;
   * Captive portal redirection is now managed by :func:`context.capture`;
   * 401 / 403 / 404 errors are no more reported to Discord, and IP is now
     reported;
   * Changed the way Darkstat and Bandwidthd monitoring systems are integrated
     to work under HTTPS; updated configuration models consequently (new
     environment variable ``GRI_BASIC_PASSWORD``);
-  * "NEW" /star badges are now set through a macro, in
-    ``app/templates/_macro.html``.
+  * "NEW" /star badges, ``bootstrap_icon`` and flashed messages toast
+    are now set using Jinja macros written in ``app/templates/macros.html``.
+
+### Removed
+
+  * :meth:`.models.Rental.terminate` (2 lines of code called only once);
+  * :func:`.utils.tools.get_bootstrap_icon` (replaced by macro);
+  * In Jinja context, ``bootstrap_is_hidden_field`` function (not used),
+    ``alert_labels`` and ``alert_symbols`` dicts (integrated in macro).
 
 ### Fixed
 
-  * Trying to log with wrong credentials caused a 500 Internat Error;
+  * Corrected flashed messages position on page and navbar menu display
+    on small screens;
+  * Trying to log with wrong credentials caused a 500 Internal Error;
   * Error report crashed if the error occurred too early (before setting up
     custom request context);
-  * :mod:`context` decorators did not handle arguments routes;
+  * :mod:`context` decorators did not handle arguments in routes functions;
   * Password reset email was not send, and password reset page crashed;
-  * Arbitrary ``doas`` query arguments could induce crashs.
+  * :attr:`flask.g` context attributes were not modified when logging out,
+    which could cause crashs;
+  * Arbitrary ``doas`` query arguments could induce crashs;
+  * A lot of small typos, especially in English translation.
 
 
 ## 1.4.1 - 2021-12-21

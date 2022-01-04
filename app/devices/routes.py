@@ -24,21 +24,25 @@ def register():
         if Device.query.filter_by(mac_address=mac_address).first():
             flask.flash(_("Cet appareil est déjà enregistré !"), "danger")
         else:
-            now = datetime.datetime.now(datetime.timezone.utc)
             device = Device(
-                rezident=g.rezident, name=form.nom.data,
-                mac_address=mac_address, type=form.type.data,
-                registered=now, last_seen=None,
+                rezident=g.rezident,
+                name=form.nom.data,
+                mac_address=mac_address,
+                type=form.type.data,
+                registered=datetime.datetime.now(datetime.timezone.utc),
             )
             db.session.add(device)
             db.session.commit()
+            flask.current_app.actions_logger.info(
+                f"Registered {device} ({mac_address}, type '{device.type}')"
+            )
             utils.run_script("gen_dhcp.py")       # Update DHCP rules
             flask.flash(_("Appareil enregistré avec succès !"), "success")
             # OK
-            if flask.g.doas or flask.request.args.get("force"):
-                return utils.redirect_to_next()
-            return utils.safe_redirect("main.connect_check",
-                                       **flask.request.args)
+            if flask.request.args.get("hello"):
+                # First connection: go to connect check
+                return utils.safe_redirect("main.connect_check", hello=True)
+            return utils.redirect_to_next()
 
     return flask.render_template("devices/register.html",
                                  title=_("Enregistrer l'appareil"),
@@ -61,14 +65,21 @@ def modify(device_id=None):
 
     form = forms.DeviceModificationForm()
     if form.validate_on_submit():
-        device.name = form.nom.data
-        device.type = form.type.data
-        mac_address = form.mac.data.lower()
-        if device.mac_address != mac_address:
-            device.mac_address = mac_address
-            utils.run_script("gen_dhcp.py")       # Update DHCP rules
+        if form.submit.data:
+            # The submit button used was the form one: modify the device
+            device.name = form.nom.data
+            device.type = form.type.data
+            flask.flash(_("Appareil modifié avec succès !"), "success")
+        else:
+            # The submit button used was not the form one (so it was the
+            # confirm-delete one): delete the device
+            # device.active = False
+            flask.flash(_("Action non implémentée"), "warning")
+
         db.session.commit()
-        flask.flash(_("Appareil modifié avec succès !"), "success")
+        flask.current_app.actions_logger.info(
+            f"Modified {device} (type '{device.type}')"
+        )
         return utils.redirect_to_next()
 
     return flask.render_template("devices/modify.html",
@@ -90,16 +101,19 @@ def transfer():
         elif device.rezident == g.rezident:
             flask.flash(_("Cet appareil vous appartient déjà !"), "danger")
         else:
+            old_rezident = device.rezident
             device.rezident = g.rezident
             db.session.commit()
+            flask.current_app.actions_logger.info(
+                f"Transferred {device}, formerly owned by {old_rezident}"
+            )
             utils.run_script("gen_dhcp.py")       # Update DHCP rules
             flask.flash(_("Appareil transféré avec succès !"), "success")
             # OK
-            if flask.g.doas or flask.request.args.get("force"):
-                return utils.redirect_to_next()
-            else:
-                return utils.safe_redirect("main.connect_check",
-                                           **flask.request.args)
+            if flask.request.args.get("hello"):
+                # First connection: go to connect check
+                return utils.safe_redirect("main.connect_check", hello=True)
+            return utils.redirect_to_next()
 
     mac = flask.request.args.get("mac", "")
     device = Device.query.filter_by(mac_address=mac).first()

@@ -64,6 +64,10 @@ def register():
         rezident.set_password(form.password.data)
         db.session.add(rezident)
         db.session.commit()
+        flask.current_app.actions_logger.info(
+            f"Registered account {rezident} ({rezident.prenom} {rezident.nom} "
+            f"{rezident.promo}, {rezident.email})"
+        )
         flask.flash(_("Compte créé avec succès !"), "success")
         flask_login.login_user(rezident, remember=False)
         email.send_account_registered_email(rezident)
@@ -103,6 +107,10 @@ def logout():
     """IntraRez logout page."""
     if flask.g.logged_in:
         flask_login.logout_user()
+        flask.g.logged_in = False
+        flask.g.logged_in_user = None
+        flask.g.rezident = None
+        flask.g.is_gri = False
         flask.flash(_("Vous avez été déconnecté."), "success")
 
     return utils.redirect_to_next()
@@ -146,6 +154,7 @@ def reset_password(token):
     if form.validate_on_submit():
         rezident.set_password(form.password.data)
         db.session.commit()
+        flask.current_app.actions_logger.info(f"Reset password of {rezident}")
         flask.flash(_("Le mot de passe a été réinitialisé avec succès."),
                     "success")
         return utils.safe_redirect("auth.login")

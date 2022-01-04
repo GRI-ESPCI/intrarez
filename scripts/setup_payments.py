@@ -77,7 +77,6 @@ def main():
         print(f"Ajout de l'abonnement... ", end="")
         sys.stdout.flush()
         rezident.add_first_subscription()
-        db.session.commit()     # On commit à chaque fois, au cas où ça crash
         print(f"Envoi du mail... ", end="")
         sys.stdout.flush()
         send_on_setup_email(rezident)

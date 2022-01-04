@@ -22,11 +22,16 @@ def modify_account():
     """IntraRez account modification page."""
     form = forms.AccountModificationForm()
     if form.validate_on_submit():
-        flask.g.rezident.nom = form.nom.data.title()
-        flask.g.rezident.prenom = form.prenom.data.title()
-        flask.g.rezident.promo = form.promo.data
-        flask.g.rezident.email = form.email.data
+        rezident = flask.g.rezident
+        rezident.nom = form.nom.data.title()
+        rezident.prenom = form.prenom.data.title()
+        rezident.promo = form.promo.data
+        rezident.email = form.email.data
         db.session.commit()
+        flask.current_app.actions_logger.info(
+            f"Modified account {rezident} ({rezident.prenom} {rezident.nom} "
+            f"{rezident.promo}, {rezident.email})"
+        )
         flask.flash(_("Compte modifié avec succès !"), "success")
         return utils.redirect_to_next()
 
@@ -44,6 +49,9 @@ def update_password():
         if flask.g.rezident.check_password(form.current_password.data):
             flask.g.rezident.set_password(form.password.data)
             db.session.commit()
+            flask.current_app.actions_logger.info(
+                f"Updated password of {flask.g.rezident}"
+            )
             flask.flash(_("Mot de passe mis à jour !"), "success")
             return utils.redirect_to_next()
         else:

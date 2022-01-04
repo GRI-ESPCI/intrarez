@@ -69,8 +69,10 @@ def other_error(error):
             is_gri = False
         if is_gri:
             # GRI: show traceback
-            tb = str(flask.escape(traceback.format_exc()))
-            tb = flask.Markup(tb.replace("\n", "<br/>").replace(" ", "&nbsp;"))
+            tb_str = str(flask.escape(traceback.format_exc()))
+            tb = flask.Markup(
+                tb_str.replace("\n", "<br/>").replace(" ", "&nbsp;")
+            )
             err_descr = "[debug mode - traceback below]" + flask.Markup(
                 flask.render_template("errors/_tb.html", tb=tb)
             )

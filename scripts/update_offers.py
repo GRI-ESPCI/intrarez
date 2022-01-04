@@ -25,8 +25,10 @@ Ce script peut uniquement être appelé depuis Flask :
 
 import sys
 
+import flask
+
 try:
-    from app import db
+    from app import db, __version__
     from app.models import Offer
 except ImportError:
     sys.stderr.write(
@@ -141,4 +143,7 @@ def main():
             db.session.add(offer)
 
     db.session.commit()
+    flask.current_app.actions_logger.info(
+        f"Updated offers to those in `update_offers.py` in v{__version__}"
+    )
     print("Modifications effectuées.")

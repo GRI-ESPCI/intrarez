@@ -104,6 +104,7 @@ def test():
     # return flask.render_template("errors/other.html")
     # flask.abort(403)
     # raise RuntimeError("obanon")
+    flask.current_app.actions_logger.info("Bonjour ceci est un test")
     flask.flash("Succès", "success")
     flask.flash("Info", "info")
     flask.flash("Warning", "warning")

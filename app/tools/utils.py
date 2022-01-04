@@ -107,19 +107,6 @@ def promotions():
     return _promotions
 
 
-def get_bootstrap_icon(name):
-    """Build the SVG code used to include a Bootstrap icon.
-
-    Args:
-        name (str): the name of the Bootstrap icon.
-
-    return:
-        A :class:`flask.Markup` with the SVG code to include the icon.
-    """
-    file = flask.url_for("static", filename="svg/bootstrap-icons.svg")
-    return flask.Markup(f"<use href=\"{file}#{name}\" />")
-
-
 def run_script(name):
     """Run an IntraRez script.
 

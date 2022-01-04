@@ -17,6 +17,8 @@ Ce script peut uniquement être appelé depuis Flask :
 import datetime
 import sys
 
+import flask
+
 try:
     from app import db
     from app.enums import SubState
@@ -43,6 +45,7 @@ def main():
         sub_state = rezident.compute_sub_state()
         if rezident.sub_state == sub_state:
             if (sub_state == SubState.trial
+                and rezident.current_subscription
                 and rezident.current_subscription.cut_day == in_a_week
                 and rezident.has_a_room):
                 # Coupure dans une semaine : mail de rappel
@@ -56,5 +59,8 @@ def main():
             print(f"{rezident.sub_state.name} -> {sub_state}")
             rezident.sub_state = sub_state
             db.session.commit()     # On commit à chaque fois, au cas où
+            flask.current_app.actions_logger.info(
+                f"Sub state of {rezident} changed to {sub_state}"
+            )
             if rezident.has_a_room:
                 email.send_state_change_email(rezident, rezident.sub_state)

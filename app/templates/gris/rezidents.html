@@ -86,7 +86,7 @@
                 <span class="d-flex user-select-none" onclick="sort('flag');">
                     <span>
                         <svg class="bi flex-shrink-0" width="22" height="22">
-                            {{ bootstrap_icon("globe") }}
+                            {{ macros.bootstrap_icon("globe") }}
                         </svg>
                     </span>
                     <span class="mx-auto">
@@ -134,7 +134,7 @@
                             data-bs-toggle="modal">
                         <svg class="bi flex-shrink-0" width="24" height="24"
                                 role="img" aria-label="{{ _("Compte") }}">
-                                {{ bootstrap_icon("person-badge") }}
+                                {{ macros.bootstrap_icon("person-badge") }}
                         </svg>
                     </button>
                 </span>
@@ -161,7 +161,7 @@
                             {% endif %}>
                         <svg class="bi flex-shrink-0" width="24" height="24"
                                 role="img" aria-label="{{ _("Chambre") }}">
-                            {{ bootstrap_icon("door-closed") }}
+                            {{ macros.bootstrap_icon("door-closed") }}
                         </svg>
                     </button>
                 </span>
@@ -180,7 +180,7 @@
                             {% endif %}>
                         <svg class="bi flex-shrink-0" width="24" height="24"
                                 role="img" aria-label="{{ _("Appareil") }}">
-                            {{ bootstrap_icon("laptop") }}
+                            {{ macros.bootstrap_icon("laptop") }}
                         </svg>
                     </button>
                 </span>
@@ -214,22 +214,22 @@
                         {% if not subscription %}
                         <svg class="bi flex-shrink-0 text-muted"
                              width="24" height="24">
-                            {{ bootstrap_icon("circle-fill") }}
+                            {{ macros.bootstrap_icon("circle-fill") }}
                         </svg>
                         {% elif rezident.sub_state == SubState.subscribed %}
                         <svg class="bi flex-shrink-0 text-success"
                              width="24" height="24">
-                            {{ bootstrap_icon("check-circle") }}
+                            {{ macros.bootstrap_icon("check-circle") }}
                         </svg>
                         {% elif rezident.sub_state == SubState.trial %}
                         <svg class="bi flex-shrink-0 text-warning"
                              width="24" height="24">
-                            {{ bootstrap_icon("exclamation-circle-fill") }}
+                            {{ macros.bootstrap_icon("exclamation-circle-fill") }}
                         </svg>
                         {% else %}
                         <svg class="bi flex-shrink-0 text-danger"
                              width="24" height="24">
-                            {{ bootstrap_icon("x-circle-fill") }}
+                            {{ macros.bootstrap_icon("x-circle-fill") }}
                         </svg>
                         {% endif %}
                     </button>
@@ -326,7 +326,7 @@
 </div>
 {% endif %}
 
-{% if subscription %}
+{% if rezident.current_subscription %}
 <div class="modal fade" id="mo-sub-{{ rezident.id }}" tabindex="-1"
      aria-labelledby="mo-sub-lab" aria-hidden="true">
     <div class="modal-dialog"><div class="modal-content">
@@ -348,7 +348,6 @@
 </div>
 {% endif %}
 
-<!-- Modals devices -->
 {% for device in rezident.other_devices %}
 {% include "cards/device_modal.html" %}
 {% endfor %}
@@ -358,10 +357,10 @@
 
 <!-- Sort icons templates -->
 <div id="icon-template-down">
-    {{ bootstrap_icon("caret-down-fill") }}
+    {{ macros.bootstrap_icon("caret-down-fill") }}
 </div>
 <div id="icon-template-up">
-    {{ bootstrap_icon("caret-up-fill") }}
+    {{ macros.bootstrap_icon("caret-up-fill") }}
 </div>
 
 {% endblock %}

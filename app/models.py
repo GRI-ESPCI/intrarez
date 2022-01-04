@@ -185,14 +185,19 @@ class Rezident(flask_login.UserMixin, db.Model):
         The subscription starts the day the Rezident registered its first
         device (usually today), and ends today.
         """
+        offer = Offer.first_offer()
         start = (self.first_seen.date() if self.devices
                  else datetime.date.today())
-        sub = Subscription(rezident=self, offer=Offer.first_offer(),
+        sub = Subscription(rezident=self, offer=offer,
                            payment=None, start=start,
                            end=datetime.date.today())
         db.session.add(sub)
         self.sub_state = SubState.trial
         db.session.commit()
+        flask.current_app.actions_logger.info(
+            f"Added {sub} to {offer}, with no payment, "
+            f"granting Internet access for {start} – {start + offer.delay}"
+        )
 
     def set_password(self, password):
         """Save or modify rezident password.
@@ -351,11 +356,6 @@ class Rental(db.Model):
     def is_current(cls):
         return ((cls.end.is_(None)) | (cls.end > datetime.date.today()))
 
-    def terminate(self):
-        """Set the rental end date to today (not current)"""
-        self.end = datetime.date.today()
-        db.session.commit()
-
 
 class Room(db.Model):
     """A Rezidence room."""
@@ -428,7 +428,7 @@ class Allocation(db.Model):
 
     def __repr__(self):
         """Returns repr(self)."""
-        return f"<Allocation #{self.id}: {self.ip}>"
+        return f"<Allocation #{self.id}: {self.ip} to {self.device}>"
 
 
 class Subscription(db.Model):
@@ -486,7 +486,7 @@ class Payment(db.Model):
     lydia_id = db.Column(db.BigInteger())
     _gri_id = db.Column(db.ForeignKey("rezident.id"))
     gri = db.relationship("Rezident", back_populates="payments_created",
-                               foreign_keys=_gri_id)
+                          foreign_keys=_gri_id)
 
     subscriptions = db.relationship("Subscription", back_populates="payment")
 
@@ -496,7 +496,7 @@ class Payment(db.Model):
 
 
 class Offer(db.Model):
-    """An offer to subscibe to the Internet connection."""
+    """An offer to subscribe to the Internet connection."""
     slug = db.Column(db.String(32), primary_key=True)
     name_fr = db.Column(db.String(64), nullable=False)
     name_en = db.Column(db.String(64), nullable=False)

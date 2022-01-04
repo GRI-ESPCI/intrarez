@@ -43,9 +43,10 @@ def run_script():
         finally:
             sys.stdin = _stdin
 
-        output = str(flask.escape(output))
-        output = flask.Markup(output.replace("\n", "<br/>").replace(" ",
-                                                                    "&nbsp;"))
+        output_str = str(flask.escape(output))
+        output = flask.Markup(
+            output_str.replace("\n", "<br/>").replace(" ", "&nbsp;")
+        )
         return flask.render_template("gris/run_script.html", form=form,
                                      output=output,
                                      title=_("Exécuter un script"))

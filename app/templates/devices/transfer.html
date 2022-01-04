@@ -3,7 +3,7 @@
 
 {% block app_content %}
 
-{% if not request.args.get("force") %}
+{% if request.args.get("hello") %}
 <div class="row mt-3 mb-5">
     <div class="col"><div class="progress registration-steps fs-5">
         <div class="progress-bar w-25 bg-success bg-gradient">

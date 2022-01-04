@@ -33,7 +33,9 @@
 <div class="row text-muted"><p>
     <div class="col-auto d-flex align-items-center pe-0 text-muted">
         <svg class="bi flex-shrink-0 me-2" width="36" height="36"
-             role="img" aria-label="Bug">{{ bootstrap_icon("bug-fill") }}</svg>
+             role="img" aria-label="Bug">
+             {{ macros.bootstrap_icon("bug-fill") }}
+            </svg>
     </div>
     <div class="col d-flex align-items-center ps-2">
         <span><strong>{{ err_name }}:</strong> {{ err_descr }}</span>
