@@ -25,7 +25,6 @@ import flask_babel
 from flask_babel import _
 
 try:
-    from app import db
     from app.email import send_email
     from app.models import Rezident
 except ImportError:
@@ -39,26 +38,26 @@ except ImportError:
     sys.exit(1)
 
 
-def send_on_setup_email(rezident):
+def send_on_setup_email(rezident: Rezident) -> None:
     with flask_babel.force_locale(rezident.locale or "fr"):
         # Render mail content, in rezident language
         subject = _("IMPORTANT - Paiement d'Internet")
         html_body = flask.render_template(
-            f"payments/mails/on_setup.html",
+            "payments/mails/on_setup.html",
             rezident=rezident,
             sub=rezident.current_subscription,
         )
 
     # Send email
     send_email(
-        f"payments/on_setup",
+        "payments/on_setup",
         subject=f"[IntraRez] {subject}",
         recipients={rezident.email: rezident.full_name},
         html_body=html_body,
     )
 
 
-def main():
+def main() -> None:
     rezidents = Rezident.query.all()
     n_rez = len(rezidents)
 
@@ -74,10 +73,10 @@ def main():
             continue
 
         # Un appareil mais pas d'abonnement : c tipar
-        print(f"Ajout de l'abonnement... ", end="")
+        print("Ajout de l'abonnement... ", end="")
         sys.stdout.flush()
         rezident.add_first_subscription()
-        print(f"Envoi du mail... ", end="")
+        print("Envoi du mail... ", end="")
         sys.stdout.flush()
         send_on_setup_email(rezident)
-        print(f"Fait !")
+        print("Fait !")

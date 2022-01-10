@@ -9,7 +9,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, ".env"))
 
 
-def get_or_die(name):
+def get_or_die(name: str) -> str:
     """Check availability and get the value of an environment variable.
 
     Args:

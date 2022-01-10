@@ -10,18 +10,18 @@ import unidecode
 from app import context, db
 from app.auth import bp, forms, email
 from app.models import Rezident
-from app.tools import utils
+from app.tools import typing, utils
 
 
-def new_username(prenom, nom):
+def new_username(prenom: str, nom: str) -> str:
     """Create a new rezident unique username from a forname and a name.
 
     Args:
-        prenom (str): The rezident's forname.
-        nom (str): The rezident's last name.
+        prenom: The rezident's forname.
+        nom: The rezident's last name.
 
     Returns:
-        :class:`str`: The first non-existing corresponding username.
+        The first non-existing corresponding username.
     """
     pnom = prenom.lower()[0] + nom.lower()[:7]
     # Exclude non-alphanumerics characters
@@ -36,10 +36,10 @@ def new_username(prenom, nom):
 
 
 @bp.route("/auth_needed")
-def auth_needed():
+def auth_needed() -> typing.RouteReturn:
     """Authentification needed page."""
     if not flask.g.internal:
-        return utils.safe_redirect("main.external_home")
+        return utils.ensure_safe_redirect("main.external_home")
 
     return flask.render_template("auth/auth_needed.html",
                                  title=_("Accès à Internet"))
@@ -47,7 +47,7 @@ def auth_needed():
 
 @bp.route("/register", methods=["GET", "POST"])
 @context.internal_only
-def register():
+def register() -> typing.RouteReturn:
     """IntraRez registration page."""
     if flask.g.logged_in:
         return utils.redirect_to_next()
@@ -64,7 +64,7 @@ def register():
         rezident.set_password(form.password.data)
         db.session.add(rezident)
         db.session.commit()
-        flask.current_app.actions_logger.info(
+        utils.log_action(
             f"Registered account {rezident} ({rezident.prenom} {rezident.nom} "
             f"{rezident.promo}, {rezident.email})"
         )
@@ -78,7 +78,7 @@ def register():
 
 
 @bp.route("/login", methods=["GET", "POST"])
-def login():
+def login() -> typing.RouteReturn:
     """IntraRez login page."""
     if flask.g.logged_in:
         return utils.redirect_to_next()
@@ -87,7 +87,7 @@ def login():
     if form.validate_on_submit():
         # Check user / password
         rezident = (Rezident.query.filter_by(username=form.login.data).first()
-            or Rezident.query.filter_by(email=form.login.data).first())
+                    or Rezident.query.filter_by(email=form.login.data).first())
         if rezident is None:
             flask.flash(_("Nom d'utilisateur inconnu"), "danger")
         elif not rezident.check_password(form.password.data):
@@ -103,7 +103,7 @@ def login():
 
 
 @bp.route("/logout")
-def logout():
+def logout() -> typing.RouteReturn:
     """IntraRez logout page."""
     if flask.g.logged_in:
         flask_login.logout_user()
@@ -117,7 +117,7 @@ def logout():
 
 
 @bp.route("/reset_password_request", methods=["GET", "POST"])
-def reset_password_request():
+def reset_password_request() -> typing.RouteReturn:
     """IntraRez password reset request page."""
     if flask.g.logged_in:
         return utils.redirect_to_next()
@@ -130,14 +130,14 @@ def reset_password_request():
         flask.flash(_("Un email a été envoyé avec les instructions pour "
                       "réinitialiser le mot de passe. Pensez à vérifier vos "
                       "spams."), "info")
-        return utils.safe_redirect("auth.login")
+        return utils.ensure_safe_redirect("auth.login")
 
     return flask.render_template("auth/reset_password_request.html",
                                  title=_("Mot de passe oublié"), form=form)
 
 
 @bp.route("/reset_password/<token>", methods=["GET", "POST"])
-def reset_password(token):
+def reset_password(token) -> typing.RouteReturn:
     """IntraRez password reset page (link sent by mail)."""
     if flask.g.logged_in:
         flask.flash(_("Ce lien n'est pas utilisable en étant authentifié."),
@@ -154,10 +154,10 @@ def reset_password(token):
     if form.validate_on_submit():
         rezident.set_password(form.password.data)
         db.session.commit()
-        flask.current_app.actions_logger.info(f"Reset password of {rezident}")
+        utils.log_action(f"Reset password of {rezident}")
         flask.flash(_("Le mot de passe a été réinitialisé avec succès."),
                     "success")
-        return utils.safe_redirect("auth.login")
+        return utils.ensure_safe_redirect("auth.login")
 
     return flask.render_template("auth/reset_password.html",
                                  title=_("Nouveau mot de passe"), form=form)

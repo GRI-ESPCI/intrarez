@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased - 2022-01-04
+## Unreleased - 2022-01-10
 
 ### STILL TO DO
 
@@ -78,7 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * New GRI page ``run_script`` to execute scripts from the web interface;
   * New maintenance mode (``MAINTENANCE`` environment variable and 503 page);
   * New attribute :attr:`flask.g.logged_in_user` as a shorthand for
-    :attr:`flask_login.current_user` (ignores doas).
+    :attr:`flask_login.current_user` (ignores doas);
+  * Type annotations!
 
 ### Changed
 
@@ -96,8 +97,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Modified application logging (:mod:`.tools.loggers`):
       * Use timed-rotating instead of rotating, to keep all logs;
       * No more mail logging (redundant with mails transfer to Discord);
-      * Added a sub-logger ``app.actions_logger`` to report to Discord
-        (through webhook ``LOGGING_WEBHOOK``):
+      * New sub-logger ``app.actions_logger`` (and
+        :func:`.tools.utils.log_action`) to report to Discord (through
+        webhook ``LOGGING_WEBHOOK``):
           * Account creation / modification;
           * Password change / reset;
           * Device registration / modification / transfer;
@@ -117,12 +119,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     to work under HTTPS; updated configuration models consequently (new
     environment variable ``GRI_BASIC_PASSWORD``);
   * "NEW" /star badges, ``bootstrap_icon`` and flashed messages toast
-    are now set using Jinja macros written in ``app/templates/macros.html``.
+    are now set using Jinja macros written in ``app/templates/macros.html``;
+  * "External link" icon is now shown for ``rel=external`` links rather
+    than ``target=_blank`` ones;
+  * Loading speed optimizations: small GRI logo image, deferred loading of
+    ``moment.js`` (copied in ``static/js``), automatic gzip compression and
+    of static files;
+  * Flask app is now a member of custom :class:`.IntraRezApp`;
+  * Copyright is now defined in ``app/__init__.py``, centered below
+    application name and updated to 2022.
 
 ### Removed
 
   * :meth:`.models.Rental.terminate` (2 lines of code called only once);
   * :func:`.utils.tools.get_bootstrap_icon` (replaced by macro);
+  * :attr:`.models.Rezident.has_a_room` / :attr:`models.Rental.is_current`
+    hybrid properties mechanism (properties on class, not used) and
+    :attr:`models.Rental.is_currently_rented` (not used);
   * In Jinja context, ``bootstrap_is_hidden_field`` function (not used),
     ``alert_labels`` and ``alert_symbols`` dicts (integrated in macro).
 
@@ -138,7 +151,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * :attr:`flask.g` context attributes were not modified when logging out,
     which could cause crashs;
   * Arbitrary ``doas`` query arguments could induce crashs;
-  * A lot of small typos, especially in English translation.
+  * A lot of small typos (especially in English translation) / style misses.
 
 
 ## 1.4.1 - 2021-12-21

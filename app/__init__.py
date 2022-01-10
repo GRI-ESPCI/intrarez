@@ -6,8 +6,8 @@ See github.com/GRI-ESPCI/intrarez for informations.
 __title__ = "intrarez"
 __author__ = "Loïc Simon, Louis Grandvaux & other GRIs"
 __license__ = "MIT"
-__copyright__ = "Copyright 2021 GRIs – ESPCI Paris - PSL"
-__all__ = "create_app"
+__copyright__ = "2021-2022 GRIs – ESPCI Paris - PSL"
+__all__ = ["create_app"]
 
 
 import json
@@ -26,8 +26,27 @@ from werkzeug import urls as wku
 
 from config import Config
 from app import enums
-from app.tools import loggers, utils
 
+
+in_app_copyright = "2021-2022 GRI ESPCI"
+
+
+# Define Flask subclass
+class IntraRezApp(flask.Flask):
+    """:class:`flask.Flask` subclass. Only adds anew logger:
+
+    Attrs:
+        actions_logger (logging.Logger): Child of app logger used to
+            report important actions (see :mod:`.tools.loggers`).
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add rezidents actions logger
+        self.actions_logger = self.logger.getChild("actions")
+
+
+# Imports needing IntraRezApp - don't move!
+from app.tools import loggers, utils, typing
 
 # Load extensions
 db = flask_sqlalchemy.SQLAlchemy()
@@ -38,7 +57,7 @@ moment = flask_moment.Moment()
 babel = flask_babel.Babel()
 
 
-def create_app(config_class=Config):
+def create_app(config_class: type = Config) -> IntraRezApp:
     """Create and initialize a new Flask application instance.
 
     Args:
@@ -46,7 +65,7 @@ def create_app(config_class=Config):
             Default: :class:`.config.Config`.
     """
     # Initialize application
-    app = flask.Flask(__name__)
+    app = IntraRezApp(__name__)
     app.config.from_object(config_class)
 
     # Initialize extensions
@@ -64,6 +83,7 @@ def create_app(config_class=Config):
     app.jinja_env.globals.update(**{name: getattr(enums, name)
                                     for name in enums.__all__})
     app.jinja_env.globals["__version__"] = __version__
+    app.jinja_env.globals["copyright"] = in_app_copyright
     app.jinja_env.globals["babel"] = flask_babel
     app.jinja_env.globals["promotions"] = utils.promotions
 
@@ -91,7 +111,7 @@ def create_app(config_class=Config):
 
     # Set up captive portal
     @app.before_request
-    def _captive_portal():
+    def _captive_portal() -> typing.RouteReturn | None:
         """Captive portal: redirect external requests to homepage."""
         netlocs = app.config["NETLOCS"]
         if netlocs is None or app.debug or app.testing:
@@ -113,7 +133,7 @@ def create_app(config_class=Config):
 
     # Set up custom logging
     @app.after_request
-    def logafter(response):
+    def _log_after(response: flask.Response) -> flask.Response:
         """Add a logging entry describing the response served."""
         if flask.request.endpoint != "static":
             endpoint = flask.request.endpoint or f"[CP:<{flask.request.url}>]"
@@ -141,7 +161,6 @@ def create_app(config_class=Config):
     return app
 
 
-
 # Import application models
 # ! Keep at the bottom to avoid circular import issues !
 from app import models
@@ -149,7 +168,7 @@ from app import models
 
 # Set up locale
 @babel.localeselector
-def _get_locale():
+def _get_locale() -> str | None:
     """Get the application language preferred by the remote user."""
     locale = flask.request.accept_languages.best_match(
         flask.current_app.config["LANGUAGES"]
@@ -164,7 +183,7 @@ def _get_locale():
 
 # Set up user loader
 @login.user_loader
-def _load_user(id):
+def _load_user(id: str) -> models.Rezident | None:
     """Function used by Flask-login to get the connected user.
 
     Args:

@@ -5,15 +5,15 @@ import flask_babel
 from flask_babel import _
 
 from app.email import send_email
-from app.enums import SubState
+from app.models import Rezident, SubState
 
 
-def send_state_change_email(rezident, sub_state):
+def send_state_change_email(rezident: Rezident, sub_state: SubState) -> None:
     """Send an email informing a Rezident of a subscription state change.
 
     Args:
-        rezident (~models.Rezident): the Rezident in question.
-        sub_state (~enums.SubState): the new Rezident subscription state.
+        rezident: The Rezident in question.
+        sub_state: The new Rezident subscription state.
     """
     with flask_babel.force_locale(rezident.locale or "en"):
         # Render mail content in rezident's language
@@ -41,23 +41,23 @@ def send_state_change_email(rezident, sub_state):
     )
 
 
-def send_reminder_email(rezident):
+def send_reminder_email(rezident: Rezident) -> None:
     """Send an email informing a Rezident its access will be cut soon.
 
     Args:
-        rezident (~models.Rezident): the Rezident in question.
+        rezident: The Rezident in question.
     """
     with flask_babel.force_locale(rezident.locale or "en"):
         # Render mail content in rezident's language
         subject = _("IMPORTANT - Votre accès Internet va bientôt couper !")
         html_body = flask.render_template(
-            f"payments/mails/renew_reminder.html",
+            "payments/mails/renew_reminder.html",
             rezident=rezident,
             sub=rezident.current_subscription,
         )
 
     send_email(
-        f"payments/renew_reminder",
+        "payments/renew_reminder",
         subject=f"[IntraRez] {subject}",
         recipients={rezident.email: rezident.full_name},
         html_body=html_body,

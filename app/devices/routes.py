@@ -10,12 +10,12 @@ from flask_babel import _
 from app import db, context
 from app.devices import bp, forms
 from app.models import Device
-from app.tools import utils
+from app.tools import utils, typing
 
 
 @bp.route("/register", methods=["GET", "POST"])
 @context.all_good_only
-def register():
+def register() -> typing.RouteReturn:
     """Device register page."""
     form = forms.DeviceRegistrationForm()
     if form.validate_on_submit():
@@ -33,7 +33,7 @@ def register():
             )
             db.session.add(device)
             db.session.commit()
-            flask.current_app.actions_logger.info(
+            utils.log_action(
                 f"Registered {device} ({mac_address}, type '{device.type}')"
             )
             utils.run_script("gen_dhcp.py")       # Update DHCP rules
@@ -41,7 +41,8 @@ def register():
             # OK
             if flask.request.args.get("hello"):
                 # First connection: go to connect check
-                return utils.safe_redirect("main.connect_check", hello=True)
+                return utils.ensure_safe_redirect("main.connect_check",
+                                                  hello=True)
             return utils.redirect_to_next()
 
     return flask.render_template("devices/register.html",
@@ -52,7 +53,7 @@ def register():
 @bp.route("/modify", methods=["GET", "POST"])
 @bp.route("/modify/<device_id>", methods=["GET", "POST"])
 @context.all_good_only
-def modify(device_id=None):
+def modify(device_id: str | None = None) -> typing.RouteReturn:
     """Rental modification page."""
     device = None
     if device_id is None:
@@ -77,7 +78,7 @@ def modify(device_id=None):
             flask.flash(_("Action non implémentée"), "warning")
 
         db.session.commit()
-        flask.current_app.actions_logger.info(
+        utils.log_action(
             f"Modified {device} (type '{device.type}')"
         )
         return utils.redirect_to_next()
@@ -89,7 +90,7 @@ def modify(device_id=None):
 
 @bp.route("/transfer", methods=["GET", "POST"])
 @context.all_good_only
-def transfer():
+def transfer() -> typing.RouteReturn:
     """Device transfer page."""
     form = forms.DeviceTransferForm()
     if form.validate_on_submit():
@@ -104,7 +105,7 @@ def transfer():
             old_rezident = device.rezident
             device.rezident = g.rezident
             db.session.commit()
-            flask.current_app.actions_logger.info(
+            utils.log_action(
                 f"Transferred {device}, formerly owned by {old_rezident}"
             )
             utils.run_script("gen_dhcp.py")       # Update DHCP rules
@@ -112,7 +113,8 @@ def transfer():
             # OK
             if flask.request.args.get("hello"):
                 # First connection: go to connect check
-                return utils.safe_redirect("main.connect_check", hello=True)
+                return utils.ensure_safe_redirect("main.connect_check",
+                                                  hello=True)
             return utils.redirect_to_next()
 
     mac = flask.request.args.get("mac", "")
@@ -128,7 +130,7 @@ def transfer():
 
 @bp.route("/error")
 @context.all_good_only
-def error():
+def error() -> typing.RouteReturn:
     """Device error page."""
     if g.all_good:
         # All good: no error, so out of here!
@@ -151,7 +153,7 @@ def error():
         _("Attention, je vais commencer à dire des choses aléatoires."),
         _("Je vous aurai prévenu !"),
     ]
-    reason = flask.request.args.get("reason")
+    reason = flask.request.args.get("reason") or "Unknown"
     step = flask.request.args.get("step", 0)
     try:
         step = int(step)
@@ -161,5 +163,5 @@ def error():
         step = random.randrange(1, len(blabla))
     return flask.render_template("devices/error.html",
                                  title=_("Détection d'appareil impossible"),
-                                 reason=messages.get(reason, "Unknown"),
+                                 reason=messages.get(reason),
                                  message=blabla[step])

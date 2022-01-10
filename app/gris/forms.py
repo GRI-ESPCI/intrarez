@@ -9,8 +9,8 @@ from flask_wtf import FlaskForm
 from app.tools.validators import DataRequired
 
 
-def scripts_list():
-    """Build the list of exisint scripts in app/scripts.
+def scripts_list() -> list[tuple[str, str]]:
+    """Build the list of existing scripts in app/scripts.
 
     Returns:
         ``list((value, label))`` options for :class:`wtforms.SelectField`.
@@ -35,5 +35,5 @@ def scripts_list():
 class ChoseScriptForm(FlaskForm):
     """WTForm used to chose a script to execute."""
     script = wtforms.SelectField(_l("Script"), choices=scripts_list(),
-                                validators=[DataRequired()])
+                                 validators=[DataRequired()])
     submit = wtforms.SubmitField(_l("Exécuter"))

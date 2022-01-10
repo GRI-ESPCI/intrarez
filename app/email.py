@@ -8,7 +8,7 @@ import flask
 import flask_mail
 import premailer
 
-from app import mail
+from app import IntraRezApp, mail, typing
 
 
 # Set up specific logging for mails
@@ -26,11 +26,13 @@ class_files = [
 
 # Mail-formatting objects, built by init_premailer() / init_textifier()
 # registered by app.before_first_request
-_premailer = None
-_textifier = None
+_premailer = typing.cast(premailer.Premailer, None)
+_textifier = typing.cast(html2text.HTML2Text, None)
 
 
-def _send_email(app: flask.Flask, template, msg):
+def _send_email(app: IntraRezApp,
+                template: str,
+                msg: flask_mail.Message) -> None:
     with app.app_context():
         try:
             mail.send(msg)
@@ -42,16 +44,22 @@ def _send_email(app: flask.Flask, template, msg):
             )
 
 
-def send_email(template, *, subject, recipients, html_body, text_body=None):
+def send_email(template: str,
+               *,
+               subject: str,
+               recipients: dict[str | None, str],
+               html_body: str,
+               text_body: str | None = None
+    ) -> None:
     """Send an email using Flask-Mail, asynchronously.
 
     Args:
-        template (str): The mail template name.
-        subject (str): The mail subject.
-        sender (str): The sender address.
-        recipients (dict[str]): The recipients addresses -> names dict.
-        html_body (str): The mail content to print in HTML mode.
-        text_body (str): The mail content to print in plain text mode.
+        template: The mail template name.
+        subject: The mail subject.
+        sender: The sender address.
+        recipients: The recipients addresses -> names dict.
+        html_body: The mail content to print in HTML mode.
+        text_body: The mail content to print in plain text mode.
             If not set, it will be constructed from ``html_body`` using
             :func:`.html_to_plaintext`.
     """
@@ -61,33 +69,32 @@ def send_email(template, *, subject, recipients, html_body, text_body=None):
         text_body = html_to_plaintext(html_body)
 
     # Construct mail
+    recipients_f = {addr: name for addr, name in recipients.items() if addr}
     sender_mail = flask.current_app.config["ADMINS"][0]
     msg = flask_mail.Message(
         subject=subject,
         sender=f"IntraRez <{sender_mail}>",
-        recipients=[f"{name} <{addr}>" for addr, name in recipients.items()],
+        recipients=[f"{name} <{addr}>" for addr, name in recipients_f.items()],
         body=text_body,
         html=html_body,
         extra_headers={
             "List-Unsubscribe": f"<mailto: {sender_mail}?subject=Unsubscribe: "
-                                f"{', '.join(recipients.keys())}>"
+                                f"{', '.join(recipients_f.keys())}>"
         }
     )
 
     # Send mail
     mail_logger.info(f"Sending '{template}' to {msg.recipients}")
+    app = typing.cast(IntraRezApp, flask.current_app._get_current_object())
     threading.Thread(
         target=_send_email,
-        args=(flask.current_app._get_current_object(), template, msg)
+        args=(app, template, msg)
     ).start()
 
 
-def init_premailer():
-    """Construct the Premailer object used to prepare mails HTML body.
-
-    Returns:
-        :class:`premailer.Premailer`: The Premailer instance to use.
-    """
+def init_premailer() -> None:
+    """Construct the :class:`premailer.Premailer` object used to prepare
+    mails HTML body."""
     global _premailer
 
     class_files_contents = []
@@ -109,23 +116,17 @@ def init_premailer():
     )
 
 
-def init_textifier():
-    """Construct the HTML2Text object used to prepare mails plain text body.
-
-    Returns:
-        :class:`html2text.HTML2Text`: The HTML2Text instance to use.
-    """
+def init_textifier() -> None:
+    """Construct the :class:`html2text.HTML2Text` object used to prepare
+    mails plain text body."""
     global _textifier
     _textifier = html2text.HTML2Text()
     _textifier.body_width = 79
     _textifier.protect_links = True
     _textifier.images_to_alt = True
     _textifier.wrap_list_items = True
-    _textifier.decode_errors = "replace"
     _textifier.default_image_alt = "(image)"
     _textifier.emphasis_mark = "*"
-
-
 
 
 def process_html(body):

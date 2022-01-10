@@ -7,6 +7,9 @@ from logging.handlers import TimedRotatingFileHandler
 
 import flask
 from discord_webhook import DiscordWebhook
+import requests
+
+from app import IntraRezApp
 
 
 class DiscordHandler(StreamHandler):
@@ -16,33 +19,33 @@ class DiscordHandler(StreamHandler):
         webhook (str): Webhook ID to use
             ("https://discord.com/api/webhooks/<server>/<id>")
     """
-    def __init__(self, webhook):
+    def __init__(self, webhook: DiscordWebhook) -> None:
         """Initializes self."""
         super().__init__()
         self.webhook = webhook
 
-    def emit(self, record):
+    def emit(self, record: logging.LogRecord) -> requests.Response:
         """Method called to make this handler send a record."""
         content = self.format(record)
         webhook = DiscordWebhook(url=self.webhook, content=content)
-        webhook.execute()
+        return webhook.execute()        # type: ignore
 
 
 class InfoErrorFormatter(logging.Formatter):
     """Utility formatter allowing to use different formats for info and errors.
 
     Args:
-        info_fmt (str): Formatter format to use for levels DEBUG and INFO.
-        error_fmt (str): Formatter format to use for levels above INFO.
+        info_fmt: Formatter format to use for levels DEBUG and INFO.
+        error_fmt: Formatter format to use for levels above INFO.
         *args, **kwargs: Passed to :class:`logging.Formatter`
     """
-    def __init__(self, info_fmt, error_fmt, *args, **kwargs):
+    def __init__(self, info_fmt: str, error_fmt: str, *args, **kwargs) -> None:
         """Initializes self."""
         super().__init__(info_fmt, *args, **kwargs)
         self.info_fmt = info_fmt
         self.error_fmt = error_fmt
 
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
         """Method called to make this formatter format a record."""
         format_orig = self._fmt
         if record.levelno > logging.INFO:
@@ -61,12 +64,12 @@ class DiscordFormatter(logging.Formatter):
         role_id (str): Optional 18-digit ID used to mention a specific role
             in subclasses using :attr:`DiscordFormatter.role_mention`.
     """
-    def __init__(self, role_id=None):
+    def __init__(self, role_id: str | None = None) -> None:
         """Initializes self."""
         super().__init__()
         self.role_mention = f"<@&{role_id}> " if role_id else ""
 
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
         """Method called to make this formatter format a record.
 
         Truncates message to 1900 characters (Discord limits to 2000).
@@ -79,7 +82,7 @@ class DiscordFormatter(logging.Formatter):
 
 class DiscordErrorFormatter(DiscordFormatter):
     """:class:`.DiscordFormatter` subclass used to transmit error messages."""
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
         """Method called to make this formatter format a record.
 
         Retrieves request IP and logged-in rezident name if applicable.
@@ -99,10 +102,11 @@ class DiscordErrorFormatter(DiscordFormatter):
         return (f"{self.role_mention}ALED ça a planté ! (chez {remote_ip})\n"
                 f"```{msg}```")
 
+
 # Custom formatter
 class DiscordLoggingFormatter(DiscordFormatter):
     """:class:`.DiscordFormatter` subclass used to transmit actions infos."""
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
         """Method called to make this formatter format a record.
 
         Retrieves logged-in rezident and doaser names if applicable.
@@ -120,7 +124,7 @@ class DiscordLoggingFormatter(DiscordFormatter):
             return f"`{user}: {msg}`"
 
 
-def configure_logging(app):
+def configure_logging(app: IntraRezApp) -> None:
     """Configure logging for the IntraRez web app.
 
     Setup :attr:`app.logger <flask.Flask.logger>` to log errors to
@@ -128,9 +132,6 @@ def configure_logging(app):
     journalized file, and adds a child logger  ``app.actions_logger``
     ("app.actions") logging actions to ``app.config["LOGGING_WEBHOOK"]``.
     """
-    # Add rezidents actions logger
-    app.actions_logger = app.logger.getChild("actions")
-
     if app.config["ERROR_WEBHOOK"] and not (app.debug or app.testing):
         # Alert messages for errors
         discord_errors_handler = DiscordHandler(app.config["ERROR_WEBHOOK"])

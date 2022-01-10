@@ -29,7 +29,7 @@ except ImportError:
     sys.exit(1)
 
 
-def main():
+def main() -> None:
     rules = ""
 
     rooms = Room.query.all()
@@ -52,7 +52,7 @@ def main():
             )
 
     # Écriture dans le fichier
-    file = os.getenv("DHCP_HOSTS_FILE")
+    file = os.getenv("DHCP_HOSTS_FILE") or ""
     if not os.path.isfile(file):
         raise FileNotFoundError(f"Le ficher d'hôtes DHCP '{file}' n'existe "
                                 "pas (variable d'environment DHCP_HOSTS_FILE)")

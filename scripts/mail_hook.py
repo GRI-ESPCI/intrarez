@@ -19,6 +19,7 @@ Cependant, cela ne servirait à rien de l'appeler autrement que via
 
 import email
 import email.policy
+import email.utils
 import time
 import sys
 
@@ -38,7 +39,7 @@ except ImportError:
     sys.exit(1)
 
 
-def report_mail():
+def report_mail() -> None:
     """"Get mail, process it into an Embed and send it to Discord."""
     # Parse email contents from stdin
     mail = email.message_from_file(sys.stdin, policy=email.policy.default)
@@ -88,17 +89,17 @@ def report_mail():
     role_id = flask.current_app.config["GRI_ROLE_ID"]
     webhook = DiscordWebhook(url,  content=f"<@&{role_id}> Nouveau mail !")
     webhook.add_embed(embed)
-    reponse = webhook.execute()
+    response = webhook.execute()
 
-    if not reponse:
+    if not response:
         raise RuntimeError(
-            f"Discord API responded with {reponse.code}: {reponse.text}"
+            f"Discord API responded with {response.code}: {response.text}"
         )
 
     print(f"Mail de {sender} transmis.")
 
 
-def main():
+def main() -> None:
     try:
         report_mail()
     except Exception:

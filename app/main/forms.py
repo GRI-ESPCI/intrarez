@@ -20,12 +20,8 @@ class ContactForm(FlaskForm):
     message = wtforms.TextAreaField(_l("Message"), validators=[DataRequired()])
     submit = wtforms.SubmitField(_l("Envoyer"))
 
-    def create_embed(self):
-        """Create a Discord embed describing the contact request.
-
-        Returns:
-            :class:`discord_webhook.DiscordEmbed`
-        """
+    def create_embed(self) -> DiscordEmbed:
+        """Create a Discord embed describing the contact request."""
         embed = DiscordEmbed(title=self.title.data,
                              description=self.message.data,
                              color="64b9e9")

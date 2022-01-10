@@ -73,6 +73,9 @@ update:
 	env/bin/flask db upgrade
 	env/bin/flask translate compile
 	env/bin/flask sass compile
+	@echo "Compressing static files..."
+	find app/static -name "*.gz" -type f -delete
+	gzip -krf app/static
 	@echo "Starting application..."
 	sudo supervisorctl start intrarez
 	@echo "Update live!"

@@ -21,9 +21,9 @@ import flask
 
 try:
     from app import db
-    from app.enums import SubState
-    from app.models import Rezident
+    from app.models import Rezident, SubState
     from app.payments import email
+    from app.tools import utils
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
@@ -35,7 +35,7 @@ except ImportError:
     sys.exit(1)
 
 
-def main():
+def main() -> None:
     rezidents = Rezident.query.all()
     in_a_week = datetime.date.today() + datetime.timedelta(days=7)
 
@@ -49,7 +49,7 @@ def main():
                 and rezident.current_subscription.cut_day == in_a_week
                 and rezident.has_a_room):
                 # Coupure dans une semaine : mail de rappel
-                print(f"coupure dans une semaine, rappel")
+                print("coupure dans une semaine, rappel")
                 email.send_reminder_email(rezident)
             else:
                 # État à jour
@@ -59,7 +59,7 @@ def main():
             print(f"{rezident.sub_state.name} -> {sub_state}")
             rezident.sub_state = sub_state
             db.session.commit()     # On commit à chaque fois, au cas où
-            flask.current_app.actions_logger.info(
+            utils.log_action(
                 f"Sub state of {rezident} changed to {sub_state}"
             )
             if rezident.has_a_room:

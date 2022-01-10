@@ -4,7 +4,7 @@ import flask
 import requests
 
 
-def verify_captcha():
+def verify_captcha() -> bool:
     """Query Google reCAPTCHA v2 API to verify just posted captcha.
 
     Should only be called from a route after form validation
@@ -13,7 +13,7 @@ def verify_captcha():
     Implements https://developers.google.com/recaptcha/docs/verify.
 
     Returns:
-        :class:`bool`: If the verification succeeded.
+        Whether the verification succeeded.
     """
     response = flask.request.form.get("g-recaptcha-response")
     if not response:

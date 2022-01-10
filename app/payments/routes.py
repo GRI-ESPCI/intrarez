@@ -9,22 +9,22 @@ from app import context, db
 from app.payments import bp, email
 from app.enums import SubState
 from app.models import Offer, Payment, Subscription
-from app.tools import utils
+from app.tools import utils, typing
 
 
 @bp.before_app_first_request
-def create_first_offer():
+def create_first_offer() -> None:
     """Create subscription welcome order if not already present."""
     if not Offer.query.first():
         offer = Offer.create_first_offer()
         db.session.add(offer)
         db.session.commit()
-        flask.current_app.actions_logger.info(f"Created first offer ({offer})")
+        utils.log_action(f"Created first offer ({offer})")
 
 
 @bp.route("/")
 @context.all_good_only
-def main():
+def main() -> typing.RouteReturn:
     """Subscriptions informations page."""
     subscriptions = sorted(flask.g.rezident.subscriptions,
                            key=lambda sub: sub.start, reverse=True)
@@ -35,7 +35,7 @@ def main():
 
 @bp.route("/pay")
 @context.all_good_only
-def pay():
+def pay() -> typing.RouteReturn:
     """Payment page."""
     if flask.g.rezident.sub_state == SubState.subscribed:
         flask.flash(_("Vous avez déjà un abonnement en cours !"), "warning")
@@ -50,7 +50,7 @@ def pay():
 @bp.route("/pay/<method>/")
 @bp.route("/pay/<method>/<offer>")
 @context.all_good_only
-def pay_(method, offer=None):
+def pay_(method: str, offer: str | None = None) -> typing.RouteReturn:
     """Payment page."""
     if flask.g.rezident.sub_state == SubState.subscribed:
         flask.flash(_("Vous avez déjà un abonnement en cours !"), "warning")
@@ -71,12 +71,12 @@ def pay_(method, offer=None):
                                          title=methods[method], offer=offer)
 
     # Bad arguments
-    return utils.safe_redirect("payments.pay", next=None)
+    return utils.ensure_safe_redirect("payments.pay", next=None)
 
 
 @bp.route("/add_payment/<offer>")
 @context.all_good_only
-def add_payment(offer=None):
+def add_payment(offer: str = None) -> typing.RouteReturn:
     """Add an arbitrary payment by a GRI."""
     if not flask.g.doas:
         flask.abort(403)
@@ -90,6 +90,8 @@ def add_payment(offer=None):
     if not (offer and offer.visible and offer.active):
         flask.flash("Offre incorrecte", "danger")
         return utils.redirect_to_next()
+
+    offer = typing.cast(Offer, offer)   # type check only
 
     # Determine new subscription dates
     start = rezident.current_subscription.renew_day
@@ -115,7 +117,7 @@ def add_payment(offer=None):
 
     rezident.sub_state = rezident.compute_sub_state()
     db.session.commit()
-    flask.current_app.actions_logger.info(
+    utils.log_action(
         f"Added {subscription} to {offer}, with {payment} added by GRI, "
         f"granting Internet access for {start} – {end}"
     )

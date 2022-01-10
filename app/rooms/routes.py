@@ -8,22 +8,22 @@ from flask_babel import _
 from app import context, db
 from app.models import Room, Rental
 from app.rooms import bp, email, forms
-from app.tools import utils
+from app.tools import utils, typing
 
 
 @bp.before_app_first_request
-def create_rez_rooms():
+def create_rez_rooms() -> None:
     """Create Rezidence rooms if not already present."""
     if not Room.query.first():
         rooms = Room.create_rez_rooms()
         db.session.add_all(rooms)
         db.session.commit()
-        flask.current_app.actions_logger.info(f"Created all rooms")
+        utils.log_action("Created all rooms")
 
 
 @bp.route("/register", methods=["GET", "POST"])
 @context.all_good_only
-def register():
+def register() -> typing.RouteReturn:
     """Room register page."""
     room = flask.g.rezident.current_room
     if room:
@@ -35,15 +35,16 @@ def register():
     already_rented = None
     if form.validate_on_submit():
         room = Room.query.get(form.room.data)
+        room = typing.cast(Room, room)  # type check only
 
-        def _register_room():
+        def _register_room() -> typing.RouteReturn:
             start = form.start.data
             end = form.end.data
             rental = Rental(rezident=flask.g.rezident, room=room,
                             start=start, end=end)
             db.session.add(rental)
             db.session.commit()
-            flask.current_app.actions_logger.info(
+            utils.log_action(
                 f"Added {rental} for period {start} – {end}"
             )
             utils.run_script("gen_dhcp.py")       # Update DHCP rules
@@ -61,8 +62,9 @@ def register():
             old_rezident = room.current_rental.rezident
             room.current_rental.end = datetime.date.today()     # = not current
             db.session.commit()
-            flask.current_app.actions_logger.warning(
-                f"Rented {room}, formerly occupied by {old_rezident}"
+            utils.log_action(
+                f"Rented {room}, formerly occupied by {old_rezident}",
+                warning=True
             )
             email.send_room_transferred_email(old_rezident)
             return _register_room()
@@ -77,7 +79,7 @@ def register():
 
 @bp.route("/modify", methods=["GET", "POST"])
 @context.all_good_only
-def modify():
+def modify() -> typing.RouteReturn:
     """Rental modification page."""
     form = forms.RentalModificationForm()
     if form.validate_on_submit():
@@ -86,7 +88,7 @@ def modify():
             rental.start = form.start.data
             rental.end = form.end.data
             db.session.commit()
-            flask.current_app.actions_logger.info(
+            utils.log_action(
                 f"Modified {rental}: {form.start.data} – {form.end.data}"
             )
             flask.flash(_("Location modifiée avec succès !"), "success")
@@ -101,12 +103,12 @@ def modify():
 
 @bp.route("/terminate", methods=["GET", "POST"])
 @context.all_good_only
-def terminate():
+def terminate() -> typing.RouteReturn:
     """Room terminate page."""
     room = flask.g.rezident.current_room
     if not room:
         # No current rental: go to register
-        return utils.safe_redirect(
+        return utils.ensure_safe_redirect(
             "rooms.register",
             doas=flask.g.doas,
             next=flask.request.args.get("next"),
@@ -117,7 +119,7 @@ def terminate():
         rental = flask.g.rezident.current_rental
         rental.end = form.end.data
         db.session.commit()
-        flask.current_app.actions_logger.info(
+        utils.log_action(
             f"Terminated {rental} (end date {form.end.data})"
         )
         return utils.redirect_to_next()

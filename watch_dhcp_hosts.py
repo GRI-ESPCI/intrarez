@@ -20,13 +20,14 @@ logging.basicConfig(level=logging.DEBUG, style="{",
                     format="{asctime} {levelname}:{name}:{message}")
 load_dotenv()
 file = os.getenv("DHCP_HOSTS_FILE")
-if not os.path.isfile(file):
+if not file or not os.path.isfile(file):
     raise FileNotFoundError(f"Le ficher à surveiller '{file}' n'existe pas "
                             "(variable d'environment DHCP_HOSTS_FILE)")
+
 last_event = time.time()
 
 
-def restart_dhpc_server(event):
+def restart_dhpc_server(_event) -> None:
     # Fonction appelée à chaque modification détectée
     global last_event
     now = time.time()
@@ -34,13 +35,13 @@ def restart_dhpc_server(event):
         # Ignorer les doubles appels (trop rapprochés)
         return
     last_event = now
-    logging.info(f"File modification detected, restarting DHCP server...")
+    logging.info("File modification detected, restarting DHCP server...")
     try:
         retcode = subprocess.call(["systemctl", "restart", "isc-dhcp-server"])
         if retcode < 0:
             logging.error(f"ERROR - Restart terminated by signal {-retcode}")
         elif retcode == 0:
-            logging.info(f"DHCP server restarted!")
+            logging.info("DHCP server restarted!")
         else:
             logging.error(f"ERROR - Restart order returned {retcode}")
     except OSError as exc:

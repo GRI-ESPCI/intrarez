@@ -44,14 +44,14 @@
              style="padding-right: 5%; padding-left: 5%;">
         <div class="container py-3">
         <div class="row">
-            <div class="col-auto me-5">
+            <div class="col-auto me-5 text-center">
                 <a class="d-inline-flex align-items-center mb-2
                             link-dark text-decoration-none fs-5"
                     href="{{ url_for("main.index") }}">
                     Intranet de la Rez
                 </a>
                 <div class="small text-muted mb-3">
-                    &copy;&nbsp;2021 GRI ESPCI –
+                    &copy;&nbsp;{{ copyright }}<br/>
                     <a href="{{ url_for("main.changelog") }}"
                         class="text-muted">
                         {{ _("Version") }} {{ __version__ }}

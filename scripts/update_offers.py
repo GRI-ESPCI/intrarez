@@ -25,11 +25,10 @@ Ce script peut uniquement être appelé depuis Flask :
 
 import sys
 
-import flask
-
 try:
     from app import db, __version__
     from app.models import Offer
+    from app.tools import utils, typing
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
@@ -41,7 +40,7 @@ except ImportError:
     sys.exit(1)
 
 
-def offers():
+def offers() -> dict[str, dict[str, typing.Any]]:
     """Offres à définir. Modifier cette fonction pour modifier les offres.
 
     L'argument `active` signifie que l'offre peut être utilisée pour créer
@@ -143,7 +142,7 @@ def main():
             db.session.add(offer)
 
     db.session.commit()
-    flask.current_app.actions_logger.info(
+    utils.log_action(
         f"Updated offers to those in `update_offers.py` in v{__version__}"
     )
     print("Modifications effectuées.")
