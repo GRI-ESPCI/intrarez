@@ -4,22 +4,36 @@ import os
 import logging
 from logging import StreamHandler
 from logging.handlers import TimedRotatingFileHandler
+import threading
 
 import flask
 from discord_webhook import DiscordWebhook
 import requests
 
 from app import IntraRezApp
+from app.tools import typing
+
+
+def _execute_webhook(app: IntraRezApp,
+                     webhook: DiscordWebhook) -> None:
+    # To be called in a separate tread
+    with app.app_context():
+        response = webhook.execute()        # type: ignore
+        if not response:
+            app.logger.error(
+                f"ATTENTION : Échec lors de l'envoi du webhook {webhook.url} "
+                f"({webhook.content}): {response.code} {response.text}"
+            )
 
 
 class DiscordHandler(StreamHandler):
     """Logging handler using a webhook to send log to a Discord server
 
     Args:
-        webhook (str): Webhook ID to use
-            ("https://discord.com/api/webhooks/<server>/<id>")
+        webhook: Webhook URL to use
+            (``"https://discord.com/api/webhooks/<server>/<id>"``)
     """
-    def __init__(self, webhook: DiscordWebhook) -> None:
+    def __init__(self, webhook: str) -> None:
         """Initializes self."""
         super().__init__()
         self.webhook = webhook
@@ -28,7 +42,9 @@ class DiscordHandler(StreamHandler):
         """Method called to make this handler send a record."""
         content = self.format(record)
         webhook = DiscordWebhook(url=self.webhook, content=content)
-        return webhook.execute()        # type: ignore
+        # Send in a separate thread
+        app = typing.cast(IntraRezApp, flask.current_app._get_current_object())
+        threading.Thread(target=_execute_webhook, args=(app, webhook)).start()
 
 
 class InfoErrorFormatter(logging.Formatter):

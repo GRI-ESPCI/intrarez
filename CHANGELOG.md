@@ -125,6 +125,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Loading speed optimizations: small GRI logo image, deferred loading of
     ``moment.js`` (copied in ``static/js``), automatic gzip compression and
     of static files;
+  * Discord webhooks are now sent in a separate thread;
   * Flask app is now a member of custom :class:`.IntraRezApp`;
   * Copyright is now defined in ``app/__init__.py``, centered below
     application name and updated to 2022.

@@ -33,6 +33,7 @@ _textifier = typing.cast(html2text.HTML2Text, None)
 def _send_email(app: IntraRezApp,
                 template: str,
                 msg: flask_mail.Message) -> None:
+    # To be called in a separate tread
     with app.app_context():
         try:
             mail.send(msg)

@@ -17,7 +17,7 @@ _Q = typing.TypeVar("_Q")
 def column(sa_type: sqlalchemy.types.TypeEngine[_Q],
            *,
            primary_key: bool,
-    ) -> Column[_Q]:
+    ) -> Column: # [_Q]:
     ...
 @typing.overload        # Non-nullable column
 def column(sa_type: sqlalchemy.types.TypeEngine[_Q],
@@ -25,23 +25,23 @@ def column(sa_type: sqlalchemy.types.TypeEngine[_Q],
            nullable: bool,
            default: _Q | None = None,
            unique: bool = False,
-    ) -> Column[_Q]:
+    ) -> Column: # [_Q]:
     ...
 @typing.overload        # Nullable column
 def column(sa_type: sqlalchemy.types.TypeEngine[_Q],
            *,
            default: _Q | None = None,
            unique: bool = False,
-    ) -> Column[_Q | None]:
+    ) -> Column: # [_Q | None]:
     ...
 @typing.overload        # Non-nullable foreign column
 def column(sa_type: sqlalchemy.ForeignKey,
            *,
            nullable: bool,
-    ) -> Column[typing.Any]:
+    ) -> Column: # [typing.Any]:
     ...
 @typing.overload        # Nullable foreign column
-def column(sa_type: sqlalchemy.ForeignKey) -> Column[typing.Any]:
+def column(sa_type: sqlalchemy.ForeignKey) -> Column: # [typing.Any]:
     ...
 def column(sa_type, *, primary_key=False, nullable=False, default=None,
            unique=False):
@@ -55,9 +55,11 @@ def column(sa_type, *, primary_key=False, nullable=False, default=None,
     column = Column(sa_type, primary_key=primary_key, nullable=nullable,
                     default=default, unique=unique)
     if isinstance(sa_type, sqlalchemy.ForeignKey):
-        return typing.cast(Column[object], column)
+        return typing.cast(Column # [object]
+                           , column)
     else:
-        return typing.cast(Column[sa_type.python_type], column)
+        return typing.cast(Column # [sa_type.python_type]
+                           , column)
 
 
 def _relationship(table_dot_back_populates: str, **kwargs) -> Relationship:
@@ -72,7 +74,7 @@ def _relationship(table_dot_back_populates: str, **kwargs) -> Relationship:
 
 def one_to_many(table_dot_back_populates: str,
                 **kwargs
-                ) -> "Relationship[list[typing.Any]]":
+                ) -> "Relationship": #[list[typing.Any]]":
     """Constructs a one-to-many relationship to an other table.
 
     Args:
@@ -85,7 +87,7 @@ def one_to_many(table_dot_back_populates: str,
 
 def many_to_one(table_dot_back_populates: str,
                 **kwargs
-                ) -> "Relationship[typing.Any]":
+                ) -> "Relationship": # [typing.Any]":
     """Constructs a many-to-one relationship to an other table.
 
     Args:
