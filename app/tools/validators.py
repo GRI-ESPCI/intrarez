@@ -112,3 +112,11 @@ class FutureDate(CustomValidator):
         if not field.data:
             return True
         return (field.data >= datetime.date.today())
+
+
+class PhoneNumber(CustomValidator):
+    message = _l("Numéro de téléphone invalide (il doit être français).")
+
+    def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
+        num = field.data.replace("+33", "0").replace(" ", "")
+        return (num.isdigit() and len(num) == 10 and num.startswith("0"))

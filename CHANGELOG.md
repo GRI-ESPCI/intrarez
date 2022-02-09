@@ -5,11 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased - 2022-01-10
+## Unreleased - 2022-02-09
 
 ### STILL TO DO
 
-  * Lydia integration
+  * Test Lydia integration (and last translations)
   * BDE roles to add payments?
 
 ### Added
@@ -30,19 +30,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
       * New page ``payments/pay`` where Rezidents can chose an offer and a
         payment method, leading to page ``payments/pay/<method>/<offer>``
         to "proceed to" payment. Available methods:
-          * /lydia (Lydia / CB);
+          * /lydia (Lydia / CB, form to chose and indicate mobile phone);
           * /transfer (bank transfer);
           * /cash (or other hand-to-hant transaction);
           * /magic (special for GRI to add arbitrary payments).
       * New route ``payments.add_payment/<offer>`` to GRI to add payments;
+      * Lydia integration:
+          * New routes ``payment.lydia_callback_[confirm/cancel]`` called by
+            Lydia server once payment made / cancelled;
+          * New routes ``payment.lydia_[success/fail]`` the user is redirected
+            to after payment made / cancelled;
+          * New routes ``payment.lydia_validate/<payment_id>`` used only if
+            the callback did not work, to register payment in the Intrarez;
+          * New module ``tools.lydia`` with Lydia API / utility functions;
+          * New environment variables ``LYDIA_BASE_URL``,
+            ``LYDIA_VENDOR_TOKEN`` and ``LYDIA_PRIVATE_TOKEN``;
       * New mails templates ``payments/new_subscription``,
         ``payments/subscription_expired``, ``payments/renew_reminder`` and
         ``payments/internet_cut``, ``payments.on_setup``;
   * First offer automatically subscribed if necessary during context creation;
   * Added payments info card to index;
   * Added Rezidents subscription state to GRI rezidents list;
-  * Added data Enums handling in ``app/enums.py`` and
-    :class:`.enums.SubState` for subscription states;
+  * Added data Enums handling in ``app/enums.py``,
+    :class:`.enums.SubState` for subscription states and
+    :class:`.enums.PaymentStatus` for payments status;
   * New script ``update_sub_state`` to be called every day to update
     Rezidents subscription state and send calendar-based mails;
   * New script ``update_offers`` holding basic offers data allowing to
@@ -76,6 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     ``rooms.modify`` and ``devices.modify`` (and revealed buttons in profile
     page, cards...) and delete device button (but not implemented) ;
   * New GRI page ``run_script`` to execute scripts from the web interface;
+  * New form validator for French phone numbers;
   * New maintenance mode (``MAINTENANCE`` environment variable and 503 page);
   * New attribute :attr:`flask.g.logged_in_user` as a shorthand for
     :attr:`flask_login.current_user` (ignores doas);

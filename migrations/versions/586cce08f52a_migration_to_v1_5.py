@@ -42,15 +42,21 @@ def upgrade() -> None:
         sa.Column('active', sa.Boolean(), nullable=False),
         sa.PrimaryKeyConstraint('slug')
     )
+    postgresql.ENUM('manual', 'creating', 'waiting', 'accepted', 'refused',
+                    'cancelled', 'error',
+                    name='paymentstatus').create(op.get_bind())
+    enum = sa.Enum('manual', 'creating', 'waiting', 'accepted', 'refused',
+                   'cancelled', 'error', name='paymentstatus')
     op.create_table(
         'payment',
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('_rezident_id', sa.Integer(), nullable=False),
         sa.Column('amount', sa.Numeric(precision=6, scale=2, asdecimal=False),
                   nullable=False),
-        sa.Column('timestamp', sa.DateTime(), nullable=False),
-        sa.Column('lydia', sa.Boolean(), nullable=False),
-        sa.Column('lydia_id', sa.BigInteger(), nullable=True),
+        sa.Column('created', sa.DateTime(), nullable=False),
+        sa.Column('payed', sa.DateTime(), nullable=True),
+        sa.Column('status', enum, nullable=False),
+        sa.Column('lydia_uuid', sa.String(length=32), nullable=True),
         sa.Column('_gri_id', sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(['_gri_id'], ['rezident.id'], ),
         sa.ForeignKeyConstraint(['_rezident_id'], ['rezident.id'], ),
@@ -84,6 +90,9 @@ def downgrade() -> None:
     op.drop_table('offer')
     op.drop_column('rezident', 'sub_state')
 
+    postgresql.ENUM('manual', 'creating', 'waiting', 'accepted', 'refused',
+                    'cancelled', 'error',
+                    name='paymentstatus').drop(op.get_bind())
     postgresql.ENUM('subscribed', 'trial', 'outlaw',
                     name='substate').drop(op.get_bind())
     # ### end Alembic commands ###

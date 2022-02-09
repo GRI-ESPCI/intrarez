@@ -143,6 +143,6 @@ def main():
 
     db.session.commit()
     utils.log_action(
-        f"Updated offers to those in `update_offers.py` in v{__version__}"
+        f"Updated offers to those in 'update_offers.py' in v{__version__}"
     )
     print("Modifications effectuées.")

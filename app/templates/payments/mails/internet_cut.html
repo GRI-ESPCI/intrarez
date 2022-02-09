@@ -20,7 +20,7 @@
             </li>
             <li>
                 {{ _("Date d'achat :") }}
-                {{ babel.format_date(sub.payment.timestamp, format="long")
+                {{ babel.format_date(sub.payment.payed, format="long")
                    if sub.payment else _("(offert)") }}
             </li>
             <li>

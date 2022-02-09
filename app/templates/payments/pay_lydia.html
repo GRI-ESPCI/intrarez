@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% import "_form.html" as wtf %}
 
 {% block app_content %}
 
 <div class="row">
-    <div class="col">
+    <div class="col col-lg-6">
         <div class="row mb-3">
             <div class="col-auto">
                 <h1>{{ title }}</h1>
@@ -17,14 +18,33 @@
         </div>
         <div class="row mb-3">
             <div class="col">
-                <h2>{{ _("Procéder au paiement :") }}</h2>
+                <h2>{{ _("Informations de paiement :") }}</h2>
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="col">
-                <p>{{ _("[Intégration Lydia ici]") }}</p>
+        <form action="" method="post" role="form">
+            <div class="row row-cols-1 row-cols-xxl-2 text-center
+                        d-flex align-items-center">
+                {{ form.hidden_tag() }}
+                <div class="col mb-2">
+                    <div class="form-floating">
+                        {{ wtf.form_field(form.phone) }}
+                    </div>
+                </div>
+                <div class="col mb-2">
+                    {{ wtf.form_field(form.submit_lydia) }}
+                </div>
             </div>
-        </div>
+            <div class="row my-3 text-center">
+                <div class="col fw-bold">
+                    – {{ _("OU") }} –
+                </div>
+            </div>
+            <div class="row mb-4 text-center">
+                <div class="col">
+                    {{ wtf.form_field(form.submit_cb) }}
+                </div>
+            </div>
+        </form>
     </div>
     <div class="col col-auto mb-auto">
         {% with can_change = True %}

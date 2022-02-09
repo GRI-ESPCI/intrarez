@@ -128,12 +128,15 @@ class DiscordLoggingFormatter(DiscordFormatter):
         Retrieves logged-in rezident and doaser names if applicable.
         """
         msg = super().format(record)
-        if flask.g.logged_in:
-            user = flask.g.logged_in_user.username
-            if flask.g.doas:
-                user += f" AS {flask.g.rezident.username}"
-        else:
-            user = "(anonymous)"
+        try:
+            if flask.g.logged_in:
+                user = flask.g.logged_in_user.username
+                if flask.g.doas:
+                    user += f" AS {flask.g.rezident.username}"
+            else:
+                user = "(anonymous)"
+        except AttributeError:
+            user = "(before context)"
         if record.levelno > logging.INFO:
             return f"`{user}: {record.levelname}: {msg}` ({self.role_mention})"
         else:

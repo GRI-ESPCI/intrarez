@@ -14,14 +14,14 @@ import sqlalchemy as sa
 from werkzeug import security as wzs
 
 from app import db
-from app.enums import SubState
+from app.enums import PaymentStatus, SubState
 from app.tools import typing, utils
 from app.tools.columns import (column, one_to_many, many_to_one, my_enum,
                                Column, Relationship)
 
 
 Model = typing.cast(type[type], db.Model)   # type checking hack
-sa.Enum = my_enum                           # type checking hack
+Enum = my_enum                              # type checking hack
 
 
 class Rezident(flask_login.UserMixin, Model):
@@ -45,7 +45,7 @@ class Rezident(flask_login.UserMixin, Model):
     email: Column[str | None] = column(sa.String(120), unique=True)
     locale: Column[str | None] = column(sa.String(8))
     is_gri: Column[bool] = column(sa.Boolean(), nullable=False, default=False)
-    sub_state: Column[SubState] = column(sa.Enum(SubState), nullable=False,
+    sub_state: Column[SubState] = column(Enum(SubState), nullable=False,
                                          default=SubState.trial)
     _password_hash: Column[str | None] = column(sa.String(128))
 
@@ -469,28 +469,28 @@ class Payment(Model):
     _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"),
                                        nullable=False)
     rezident: Relationship[Rezident] = many_to_one("Rezident.payments",
-                                     foreign_keys=_rezident_id)
-    amount: Column[float] = typing.cast(    # Decimal -> float cast
-        Column[float], column(sa.Numeric(6, 2, asdecimal=False),
-                              nullable=False)
+                                                   foreign_keys=_rezident_id)
+    amount: Column[float] = column(sa.Numeric(6, 2, asdecimal=False),
+                                   nullable=False)
+    created: Column[datetime.date] = column(sa.DateTime(), nullable=False)
+    payed: Column[datetime.date] = column(sa.DateTime())
+    status: Column[PaymentStatus] = column(
+        Enum(PaymentStatus), nullable=False, default=PaymentStatus.creating
     )
-    timestamp: Column[datetime.date] = column(sa.DateTime(), nullable=False)
-    lydia: Column[bool] = column(sa.Boolean(), nullable=False)
-    lydia_id: Column[int | None] = column(sa.BigInteger())
+    lydia_uuid: Column[int | None] = column(sa.String(32))
     _gri_id: Column[int | None] = column(sa.ForeignKey("rezident.id"))
     gri: Relationship[Rezident] = many_to_one("Rezident.payments_created",
-                                foreign_keys=_gri_id)
+                                              foreign_keys=_gri_id)
 
-    subscriptions: Relationship[list[Subscription]] = one_to_many("Subscription.payment")
+    subscriptions: Relationship[list[Subscription]] = one_to_many(
+        "Subscription.payment"
+    )
 
     def __repr__(self) -> str:
         """Returns repr(self)."""
         return f"<Payment #{self.id} of €{self.amount} by {self.rezident}>"
 
 
-import dataclasses
-
-# @dataclasses.dataclass
 class Offer(Model):
     """An offer to subscribe to the Internet connection."""
     slug: Column[str] = column(sa.String(32), primary_key=True)
@@ -577,6 +577,6 @@ class Offer(Model):
             name_fr="<call `flask script update_offers`>",
             name_en="<call `flask script update_offers`>",
             price=0.0,
-            visible="False",
+            visible=False,
             active=True,
         )

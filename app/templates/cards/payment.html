@@ -26,16 +26,16 @@
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Mode de paiement") }}</th>
-    <td>{{ _("Lydia / CB") if payment.lydia else _("Autre") }}</td>
+    <td>{{ _("Lydia / CB") if payment.lydia_uuid else _("Autre") }}</td>
 </tr>
-{% if payment.lydia %}
+{% if payment.lydia_uuid %}
 <tr>
     <th scope="row" class="ps-4">{{ _("ID Lydia") }}</th>
-    <td>{{ payment.lydia_id }}</td>
+    <td>{{ payment.lydia_uuid }}</td>
 </tr>
 {% endif %}
 <tr>
     <th scope="row" class="ps-4">{{ _("Date et heure") }}</th>
-    <td>{{ moment(payment.timestamp).format("LLL") }}</td>
+    <td>{{ moment(payment.payed).format("LLL") }}</td>
 </tr>
 {% endblock %}

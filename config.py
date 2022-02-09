@@ -53,6 +53,9 @@ class Config():
     MAIL_WEBHOOK = os.environ.get("MAIL_WEBHOOK")
     GRI_ROLE_ID = os.environ.get("GRI_ROLE_ID")
 
+    LYDIA_BASE_URL = os.environ.get("LYDIA_BASE_URL")
+    LYDIA_VENDOR_TOKEN = os.environ.get("LYDIA_VENDOR_TOKEN")
+
     GOOGLE_RECAPTCHA_SITEKEY = os.environ.get("GOOGLE_RECAPTCHA_SITEKEY")
     GOOGLE_RECAPTCHA_SECRET = os.environ.get("GOOGLE_RECAPTCHA_SECRET")
 
