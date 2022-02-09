@@ -42,9 +42,6 @@ def upgrade() -> None:
         sa.Column('active', sa.Boolean(), nullable=False),
         sa.PrimaryKeyConstraint('slug')
     )
-    postgresql.ENUM('manual', 'creating', 'waiting', 'accepted', 'refused',
-                    'cancelled', 'error',
-                    name='paymentstatus').create(op.get_bind())
     enum = sa.Enum('manual', 'creating', 'waiting', 'accepted', 'refused',
                    'cancelled', 'error', name='paymentstatus')
     op.create_table(

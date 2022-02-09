@@ -166,7 +166,7 @@ def check_signature(sig: str, **params: str) -> bool:
     Returns:
         Whether the signature validates with the params and private token.
     """
-    sorted_params = sorted(params.items(), key=lambda k, v: k)
+    sorted_params = sorted(params.items(), key=lambda kv: kv[0])
     query = "&".join(f"{key}={val}" for key, val in sorted_params)
     raw_sig = query + "&" + flask.current_app.config["LYDIA_PRIVATE_TOKEN"]
-    return (hashlib.md5(raw_sig.encode()).hexdigest == sig)
+    return (hashlib.md5(raw_sig.encode()).hexdigest() == sig)

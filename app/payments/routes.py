@@ -172,7 +172,6 @@ def add_payment(offer: str = None) -> typing.RouteReturn:
 
 
 @bp.route("/lydia_callback/confirm", methods=["POST"])
-@context.all_good_only
 def lydia_callback_confirm() -> typing.RouteReturn:
     """Route called by Lydia server on payment success.
 
@@ -188,7 +187,7 @@ def lydia_callback_confirm() -> typing.RouteReturn:
         order_ref = flask.request.form["order_ref"]
         sig = flask.request.form["sig"]
     except LookupError as exc:
-        return f"Missing POST parameter: {exc}", 400
+        return "Wrong parameters", 400
 
     if not lydia.check_signature(
         sig,
@@ -205,10 +204,13 @@ def lydia_callback_confirm() -> typing.RouteReturn:
     payment = Payment.query.get(int(order_ref))
     if not payment:
         return f"Payment not existing: {order_ref}", 404
+    if payment.status != PaymentStatus.waiting:
+        return f"Bad payment state: {payment.status.name}", 400
     if payment.amount != float(amount):
         return f"Bad amount {amount}: expected {payment.amount}", 400
 
     payment.status = PaymentStatus.accepted
+    payment.payed = datetime.datetime.now()
     rezident = payment.rezident
     offer = Offer.query.filter_by(price=payment.amount).one_or_none()
     if not offer:
@@ -218,11 +220,10 @@ def lydia_callback_confirm() -> typing.RouteReturn:
     utils.log_action(
         f"Added {subscription} to {offer}, with {payment} via Lydia CONFIRM"
     )
-    return 200
+    return "", 204
 
 
 @bp.route("/lydia_callback/cancel", methods=["POST"])
-@context.all_good_only
 def lydia_callback_cancel() -> typing.RouteReturn:
     """Route called by Lydia server on payment cancel / expiration.
 
@@ -237,7 +238,7 @@ def lydia_callback_cancel() -> typing.RouteReturn:
         order_ref = flask.request.form["order_ref"]
         sig = flask.request.form["sig"]
     except LookupError as exc:
-        return f"Missing POST parameter: {exc}", 400
+        return "Wrong parameters", 400
 
     if not lydia.check_signature(
         sig,
@@ -253,12 +254,14 @@ def lydia_callback_cancel() -> typing.RouteReturn:
     payment = Payment.query.get(int(order_ref))
     if not payment:
         return f"Payment not existing: {order_ref}", 404
+    if payment.status != PaymentStatus.waiting:
+        return f"Bad payment state: {payment.status.name}", 400
     if payment.amount != float(amount):
         return f"Bad amount {amount}: expected {payment.amount}", 400
 
     payment.status = PaymentStatus.refused
     db.session.commit()
-    return 200
+    return "", 204
 
 
 @bp.route("/lydia/success")
@@ -277,7 +280,7 @@ def lydia_fail() -> typing.RouteReturn:
     return utils.ensure_safe_redirect("payments.pay", next=None)
 
 
-@bp.route("/lydia/validate/<payment>")
+@bp.route("/lydia/validate/<payment_id>")
 @context.all_good_only
 def lydia_validate(payment_id: int) -> typing.RouteReturn:
     """Route to register a payment done but not validated (callback error)."""
@@ -289,8 +292,9 @@ def lydia_validate(payment_id: int) -> typing.RouteReturn:
     if not payment:
         return f"Payment not existing: {payment_id}", 404
     if payment.status != PaymentStatus.accepted:
-        return f"Payment not accepted, cannot validate!", 503
+        return "Payment not accepted, cannot validate!", 503
 
+    payment.payed = datetime.datetime.now()
     rezident = payment.rezident
     offer = Offer.query.filter_by(price=payment.amount).one_or_none()
     if not offer:
@@ -300,5 +304,5 @@ def lydia_validate(payment_id: int) -> typing.RouteReturn:
     utils.log_action(
         f"Added {subscription} to {offer}, with {payment} via Lydia VALIDATE"
     )
-    flask.flash(_("Paiement validé !", "success"))
+    flask.flash(_("Paiement validé !"), "success")
     return utils.redirect_to_next()
