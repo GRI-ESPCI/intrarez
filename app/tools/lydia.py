@@ -87,6 +87,7 @@ def create_payment(rezident: Rezident, offer: Offer, phone: str | None) -> str:
                                          _external=True),
             "cancel_url": flask.url_for("payments.lydia_callback_cancel",
                                         _external=True),
+            "display_confirmation": "no",
             "expire_url": flask.url_for("payments.lydia_callback_cancel",
                                         _external=True),
             "end_mobile_url": flask.url_for("payments.lydia_success",

@@ -268,8 +268,21 @@ def lydia_callback_cancel() -> typing.RouteReturn:
 @context.all_good_only
 def lydia_success() -> typing.RouteReturn:
     """Route the user is sent back by Lydia after paying."""
-    flask.flash(_("Paiement validé !"), "success")
-    return utils.redirect_to_next(next=None)
+    if flask.g.rezident.sub_state == SubState.subscribed:
+        flask.flash(_("Paiement validé !"), "success")
+        return utils.redirect_to_next(next=None)
+
+    try:
+        payment = next(payment for payment in flask.g.rezident.payments
+                       if payment.status == PaymentStatus.waiting)
+    except StopIteration:
+        flask.flash(_("Pas de paiement détecté"), "warning")
+        return utils.redirect_to_next(next=None)
+    else:
+        lydia.update_payment(payment)
+        return utils.ensure_safe_redirect("payments.lydia_validate",
+                                          payment_id=payment.id, next=None)
+
 
 
 @bp.route("/lydia/fail")
@@ -285,22 +298,29 @@ def lydia_fail() -> typing.RouteReturn:
 def lydia_validate(payment_id: int) -> typing.RouteReturn:
     """Route to register a payment done but not validated (callback error)."""
     if not payment_id.isdigit():
-        return "order_ref invalid", 400
+        flask.flash(_("Numéro de paiement invalide"), "warning")
+        return utils.ensure_safe_redirect("payments.pay", next=None)
 
     # Retrieve payment
     payment = Payment.query.get(int(payment_id))
     if not payment:
-        return f"Payment not existing: {payment_id}", 404
-    if payment.status != PaymentStatus.accepted:
-        return "Payment not accepted, cannot validate!", 503
+        flask.flash(_("Numéro de paiement invalide"), "warning")
+        return utils.ensure_safe_redirect("payments.pay", next=None)
+    if payment.status == PaymentStatus.waiting:
+        flask.flash(_("Paiement en attente, réessayer"), "warning")
+        return utils.ensure_safe_redirect("payments.pay", next=None)
+    elif payment.status != PaymentStatus.accepted:
+        flask.flash(_("Paiement invalide, réessayer"), "warning")
+        return utils.ensure_safe_redirect("payments.pay", next=None)
 
     payment.payed = datetime.datetime.now()
-    rezident = payment.rezident
+    db.session.commit()
+
     offer = Offer.query.filter_by(price=payment.amount).one_or_none()
     if not offer:
         return f"No offer for price {payment.amount}", 404
 
-    subscription = add_subscription(rezident, offer, payment)
+    subscription = add_subscription(payment.rezident, offer, payment)
     utils.log_action(
         f"Added {subscription} to {offer}, with {payment} via Lydia VALIDATE"
     )
