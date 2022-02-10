@@ -76,7 +76,7 @@ def ensure_safe_redirect(endpoint: str,
     """Like :func:`.safe_redirect`, but raises an exception if cannot redirect.
 
     Args:
-        endpoint, *parmams: Passed to :func:`.safe_redirect`.
+        endpoint, *params: Passed to :func:`.safe_redirect`.
 
     Returns:
         The redirection response.

@@ -81,7 +81,6 @@ def create_payment(rezident: Rezident, offer: Offer, phone: str | None) -> str:
             "payment_method": "lydia" if phone else "cb",
             "order_ref": payment.id,
             "message": _("Offre Internet à la Rez :") + f" {offer.name}",
-            "notify": "no",
             "notify_collector": "no",
             "confirm_url": flask.url_for("payments.lydia_callback_confirm",
                                          _external=True),
@@ -117,26 +116,39 @@ def update_payment(payment: Payment) -> None:
 
     Updates the associated IntraRez payment if the status changed.
 
+    Checks the returned signature to check that it matches our private key
+    and so that the payment is real.
+
     Args:
         payment: The payment to update status of. ``lydia_uuid`` must be set.
     """
     rep = requests.post(
         flask.current_app.config["LYDIA_BASE_URL"] + "/api/request/state.json",
-        data={"request_uuid": payment.lydia_uuid},
+        data={
+            "request_uuid": payment.lydia_uuid,
+            "vendor_token": flask.current_app.config["LYDIA_VENDOR_TOKEN"],
+        },
     )
-    if rep:
-        state = rep.json()["state"]
-        payment.status = {
-            "0": PaymentStatus.waiting,
-            "1": PaymentStatus.accepted,
-            "5": PaymentStatus.refused,
-            "6": PaymentStatus.cancelled,
-        }.get(state, PaymentStatus.error)
-        db.session.commit()
-    else:
+    if not rep or "error" in rep.json():
         raise RuntimeError(
             f"Lydia Request Check Failed: {rep.request.body} >>> {rep.text}"
         )
+
+    if not check_signature(rep.json().get("signature"),
+                           amount=format(float(payment.amount), ".2f"),
+                           request_uuid=payment.lydia_uuid):
+        flask.flash(_("Signature invalide, impossible de valider le paiement"),
+                    "danger")
+        return
+
+    state = rep.json().get("state")
+    payment.status = {
+        "0": PaymentStatus.waiting,
+        "1": PaymentStatus.accepted,
+        "5": PaymentStatus.refused,
+        "6": PaymentStatus.cancelled,
+    }.get(state, PaymentStatus.error)
+    db.session.commit()
 
 
 def build_payment_url(request_uuid: str, method: str = "auto") -> str:

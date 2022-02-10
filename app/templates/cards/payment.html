@@ -12,7 +12,7 @@
 {% block card_table %}
 <tr>
     <th scope="row" class="ps-4">{{ _("Identifiant") }}</th>
-    <td class="text-break">{{ payment.id }}</td>
+    <td>{{ payment.id }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Rezident") }}</th>
@@ -20,9 +20,7 @@
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Montant") }}</th>
-    <td class="text-break">
-        {{ babel.format_currency(payment.amount, "EUR") }}
-    </td>
+    <td>{{ babel.format_currency(payment.amount, "EUR") }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Mode de paiement") }}</th>
@@ -31,7 +29,9 @@
 {% if payment.lydia_uuid %}
 <tr>
     <th scope="row" class="ps-4">{{ _("ID Lydia") }}</th>
-    <td>{{ payment.lydia_uuid }}</td>
+    <td class="text-break font-monospace">
+        {{ payment.lydia_transaction_id or "<unknown>" }}
+    </td>
 </tr>
 {% endif %}
 <tr>

@@ -54,6 +54,7 @@ def upgrade() -> None:
         sa.Column('payed', sa.DateTime(), nullable=True),
         sa.Column('status', enum, nullable=False),
         sa.Column('lydia_uuid', sa.String(length=32), nullable=True),
+        sa.Column('lydia_transaction_id', sa.String(length=32), nullable=True),
         sa.Column('_gri_id', sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(['_gri_id'], ['rezident.id'], ),
         sa.ForeignKeyConstraint(['_rezident_id'], ['rezident.id'], ),

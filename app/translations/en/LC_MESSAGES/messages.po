@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version:  1.5.0-beta.4.1\n"
+"Project-Id-Version:  1.5.0-beta.7.3\n"
 "Report-Msgid-Bugs-To: intrarez@pc-est-magique.fr\n"
-"POT-Creation-Date: 2022-01-04 02:25+0100\n"
-"PO-Revision-Date: 2022-01-04 02:32+0100\n"
+"POT-Creation-Date: 2022-02-10 18:20+0100\n"
+"PO-Revision-Date: 2022-02-10 15:10+0100\n"
 "Last-Translator: Loïc Simon <intrarez@pc-est-magique.fr>\n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/context.py:114
+#: app/context.py:119
 msgid "Le site est en mode maintenance : seuls les GRI peuvent y accéder."
 msgstr "The site is under maintenance: only GRI can access it."
 
-#: app/context.py:282 app/context.py:307
+#: app/context.py:296 app/context.py:322
 msgid "Veuillez vous authentifier pour accéder à cette page."
 msgstr "Please log in to access to this page."
 
-#: app/auth/email.py:16 app/auth/routes.py:71
+#: app/auth/email.py:17 app/auth/routes.py:71
 msgid "Compte créé avec succès !"
 msgstr "Account successfully created!"
 
-#: app/auth/email.py:37 app/templates/auth/mails/reset_password.html:7
+#: app/auth/email.py:38 app/templates/auth/mails/reset_password.html:7
 msgid "Réinitialisation du mot de passe"
 msgstr "Password reset"
 
@@ -49,7 +49,7 @@ msgstr "Remember me"
 #: app/auth/forms.py:19 app/auth/routes.py:101
 #: app/templates/auth/auth_needed.html:21 app/templates/auth/register.html:57
 #: app/templates/auth/reset_password.html:29
-#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:97
+#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:98
 #: app/templates/main/external_home.html:22
 msgid "Connexion"
 msgstr "Sign in"
@@ -158,7 +158,7 @@ msgstr "Type (optional)"
 msgid "Adresse MAC*"
 msgstr "MAC address*"
 
-#: app/devices/forms.py:18 app/devices/routes.py:48
+#: app/devices/forms.py:18 app/devices/routes.py:49
 msgid "Enregistrer l'appareil"
 msgstr "Register device"
 
@@ -172,7 +172,7 @@ msgstr "Edit device"
 msgid "Adresse MAC"
 msgstr "MAC address"
 
-#: app/devices/forms.py:38 app/devices/routes.py:125
+#: app/devices/forms.py:38 app/devices/routes.py:127
 msgid "Transférer l'appareil"
 msgstr "Transfer device"
 
@@ -184,79 +184,79 @@ msgstr "This device is already registered!"
 msgid "Appareil enregistré avec succès !"
 msgstr "Device successfully registered!"
 
-#: app/devices/routes.py:64
+#: app/devices/routes.py:65
 msgid "Appareil inconnu !"
 msgstr "Unknown device!"
 
-#: app/devices/routes.py:72
+#: app/devices/routes.py:73
 msgid "Appareil modifié avec succès !"
 msgstr "Device successfully modified!"
 
-#: app/devices/routes.py:77
+#: app/devices/routes.py:78
 msgid "Action non implémentée"
 msgstr "Action not implemented"
 
-#: app/devices/routes.py:86
+#: app/devices/routes.py:87
 msgid "Modifier un appareil"
 msgstr "Edit a device"
 
-#: app/devices/routes.py:99
+#: app/devices/routes.py:100
 msgid "Cet appareil n'est pas encore enregistré !"
 msgstr "This device is not already registered!"
 
-#: app/devices/routes.py:102
+#: app/devices/routes.py:103
 msgid "Cet appareil vous appartient déjà !"
 msgstr "This device already belong to you!"
 
-#: app/devices/routes.py:111
+#: app/devices/routes.py:112
 msgid "Appareil transféré avec succès !"
 msgstr "Device successfully transferred!"
 
-#: app/devices/routes.py:143
+#: app/devices/routes.py:145
 msgid "Hmm, ça n'a pas marché..."
 msgstr "Hmm, it didn't work..."
 
-#: app/devices/routes.py:144
+#: app/devices/routes.py:146
 msgid "Non, toujours pas..."
 msgstr "No, still not..."
 
-#: app/devices/routes.py:145
+#: app/devices/routes.py:147
 msgid "Ah ! Ah non, non plus..."
 msgstr "Oh! Oh no, no more..."
 
-#: app/devices/routes.py:146
+#: app/devices/routes.py:148
 msgid "Nan mais quand ça veut pas, ça veut pas..."
 msgstr "You know, when it won't, it won't..."
 
-#: app/devices/routes.py:147
+#: app/devices/routes.py:149
 msgid "Ça va sinon ?"
 msgstr "How are you, btw?"
 
-#: app/devices/routes.py:148
+#: app/devices/routes.py:150
 msgid "Il ne va plus se passer grand chose, hein, je pense."
 msgstr "No much more to come, I think."
 
-#: app/devices/routes.py:149
+#: app/devices/routes.py:151
 msgid "Après on sait jamais, sur un malentendu..."
 msgstr "But you never know, on a misunderstanding..."
 
-#: app/devices/routes.py:150
+#: app/devices/routes.py:152
 msgid "zzzzzzzzzzzzzzzzzzzzzzzzz"
 msgstr "zzzzzzzzzzzzzzzzzzzzzzzzz"
 
-#: app/devices/routes.py:151
+#: app/devices/routes.py:153
 msgid "Attention, je vais commencer à dire des choses aléatoires."
 msgstr "Careful, I'll start saying random things."
 
-#: app/devices/routes.py:152
+#: app/devices/routes.py:154
 msgid "Je vous aurai prévenu !"
 msgstr "I'll have warned you!"
 
-#: app/devices/routes.py:163
+#: app/devices/routes.py:165
 msgid "Détection d'appareil impossible"
 msgstr "Device detection impossible"
 
-#: app/errors/handlers.py:20 app/errors/handlers.py:29
+#: app/errors/handlers.py:21 app/errors/handlers.py:31
 #: app/templates/errors/401.html:8 app/templates/errors/403.html:8
 msgid "Accès restreint"
 msgstr "Access restricted"
@@ -273,15 +273,15 @@ msgstr "Run"
 msgid "Gestion des Rezidents"
 msgstr "Rezidents management"
 
-#: app/gris/routes.py:52 app/gris/routes.py:55 app/templates/gris/menu.html:14
+#: app/gris/routes.py:53 app/gris/routes.py:56 app/templates/gris/menu.html:14
 msgid "Exécuter un script"
 msgstr "Run a script"
 
-#: app/gris/routes.py:63
+#: app/gris/routes.py:64
 msgid "Darkstat network monitoring"
 msgstr "Darkstat network monitoring"
 
-#: app/gris/routes.py:71
+#: app/gris/routes.py:72
 msgid "Bandwidthd network monitoring"
 msgstr "Bandwidthd network monitoring"
 
@@ -348,7 +348,8 @@ msgstr "Changelog"
 msgid "Test"
 msgstr "Test"
 
-#: app/payments/email.py:21
+#: app/payments/email.py:21 app/payments/routes.py:273
+#: app/payments/routes.py:332
 msgid "Paiement validé !"
 msgstr "Payment validated!"
 
@@ -365,36 +366,68 @@ msgstr "Your Internet access has been cut"
 msgid "IMPORTANT - Votre accès Internet va bientôt couper !"
 msgstr "IMPORTANT - Your Internet access will soon be cut off!"
 
-#: app/payments/routes.py:32
+#: app/payments/forms.py:13
+msgid "Numéro de téléphone associé à Lydia"
+msgstr "Phone number associated with Lydia"
+
+#: app/payments/forms.py:15
+msgid "Envoyer une demande via Lydia"
+msgstr "Send a Lydia payment request"
+
+#: app/payments/forms.py:16
+msgid "Payer par carte bancaire"
+msgstr "Pay with a credit card"
+
+#: app/payments/routes.py:74
 msgid "Mon abonnement Internet"
 msgstr "My Internet subscription"
 
-#: app/payments/routes.py:41 app/payments/routes.py:56
-#: app/payments/routes.py:86
+#: app/payments/routes.py:83 app/payments/routes.py:98
+#: app/payments/routes.py:142
 msgid "Vous avez déjà un abonnement en cours !"
 msgstr "You already have an active subscription!"
 
-#: app/payments/routes.py:46 app/templates/cards/payment.html:5
+#: app/payments/routes.py:88 app/templates/cards/payment.html:5
 #: app/templates/payments/main.html:200 app/templates/payments/main.html:240
 #: app/templates/payments/main.html:287
 msgid "Paiement"
 msgstr "Payment"
 
-#: app/payments/routes.py:60 app/templates/payments/pay.html:132
+#: app/payments/routes.py:102 app/templates/payments/pay.html:132
 msgid "Payer avec Lydia"
 msgstr "Pay with Lydia"
 
-#: app/payments/routes.py:61 app/templates/payments/pay.html:159
+#: app/payments/routes.py:103 app/templates/payments/pay.html:159
 msgid "Payer par virement"
 msgstr "Pay by bank transfer"
 
-#: app/payments/routes.py:62 app/templates/payments/pay.html:186
+#: app/payments/routes.py:104 app/templates/payments/pay.html:186
 msgid "Payer en main propre"
 msgstr "Pay in person"
 
-#: app/payments/routes.py:63 app/templates/payments/pay.html:96
+#: app/payments/routes.py:105 app/templates/payments/pay.html:96
 msgid "Ajouter un paiement"
 msgstr "Add a payment"
+
+#: app/payments/routes.py:280
+msgid "Pas de paiement détecté"
+msgstr "No payment detected"
+
+#: app/payments/routes.py:296
+msgid "Paiement annulé"
+msgstr "Payment cancelled"
+
+#: app/payments/routes.py:305 app/payments/routes.py:311
+msgid "Numéro de paiement invalide"
+msgstr "Invalid payment number"
+
+#: app/payments/routes.py:314
+msgid "Paiement en attente, réessayer"
+msgstr "Payment pending, try again"
+
+#: app/payments/routes.py:317
+msgid "Paiement invalide, réessayer"
+msgstr "Payment invalid, try again"
 
 #: app/profile/forms.py:24 app/profile/forms.py:36
 msgid "Mettre à jour"
@@ -404,31 +437,31 @@ msgstr "Update"
 msgid "Mot de passe actuel"
 msgstr "Current password"
 
-#: app/profile/routes.py:16 app/templates/base.html:131
+#: app/profile/routes.py:15 app/templates/base.html:132
 msgid "Profil"
 msgstr "Profile"
 
-#: app/profile/routes.py:35
+#: app/profile/routes.py:34
 msgid "Compte modifié avec succès !"
 msgstr "Account successfully modified!"
 
-#: app/profile/routes.py:39
+#: app/profile/routes.py:38
 msgid "Mettre à jour mon compte"
 msgstr "Update my account"
 
-#: app/profile/routes.py:55
+#: app/profile/routes.py:54
 msgid "Mot de passe mis à jour !"
 msgstr "Password updated!"
 
-#: app/profile/routes.py:58
+#: app/profile/routes.py:57
 msgid "Mot de passe actuel incorrect"
 msgstr "Wrong current password"
 
-#: app/profile/routes.py:61
+#: app/profile/routes.py:60
 msgid "Modifier mon mot de passe"
 msgstr "Change my password"
 
-#: app/rooms/email.py:18
+#: app/rooms/email.py:19
 msgid "Attention : Chambre transférée, Internet coupé"
 msgstr "Warning: Room transferred, Internet cut"
 
@@ -470,50 +503,50 @@ msgstr "Terminate rental"
 msgid "Vous avez déjà une location en cours !"
 msgstr "You already have a rental in progress!"
 
-#: app/rooms/routes.py:50
+#: app/rooms/routes.py:51
 msgid "Chambre enregistrée avec succès !"
 msgstr "Room successfully registered!"
 
-#: app/rooms/routes.py:74
+#: app/rooms/routes.py:76
 msgid "Nouvelle location"
 msgstr "New rental"
 
-#: app/rooms/routes.py:92
+#: app/rooms/routes.py:94
 msgid "Location modifiée avec succès !"
 msgstr "Rental successfully modified!"
 
-#: app/rooms/routes.py:94
+#: app/rooms/routes.py:96
 msgid "Pas de location en cours !"
 msgstr "No rental in progress!"
 
-#: app/rooms/routes.py:98
+#: app/rooms/routes.py:100
 msgid "Mettre à jour ma location"
 msgstr "Modify rental"
 
-#: app/rooms/routes.py:126 app/templates/cards/room.html:95
+#: app/rooms/routes.py:128 app/templates/cards/room.html:95
 msgid "Changer de chambre"
 msgstr "Change room"
 
 #: app/templates/auth/auth_needed.html:26
 #: app/templates/auth/auth_needed.html:34 app/templates/auth/login.html:33
-#: app/templates/auth/login.html:41 app/templates/base.html:104
-#: app/templates/base.html:114
+#: app/templates/auth/login.html:41 app/templates/base.html:105
+#: app/templates/base.html:115
 msgid "Créer un compte"
 msgstr "Sign up"
 
 #: app/templates/auth/auth_needed.html:31 app/templates/auth/login.html:38
-#: app/templates/base.html:110
+#: app/templates/base.html:111
 msgid ""
 "La création de compte n'est possible que depuis le réseau local de la "
 "Rezidence."
 msgstr "Accounts can only be created from the Rezidence internal network."
 
-#: app/templates/base.html:124 app/templates/gris/rezidents.html:65
+#: app/templates/base.html:125 app/templates/gris/rezidents.html:65
 #: app/templates/gris/rezidents.html:334
 msgid "Abonnement"
 msgstr "Subscription"
 
-#: app/templates/base.html:137 app/templates/devices/transfer.html:42
+#: app/templates/base.html:138 app/templates/devices/transfer.html:42
 msgid "Déconnexion"
 msgstr "Sign out"
 
@@ -861,19 +894,19 @@ msgstr "Rezident"
 msgid "Montant"
 msgstr "Amount"
 
-#: app/templates/cards/payment.html:28 app/templates/payments/pay.html:70
+#: app/templates/cards/payment.html:26 app/templates/payments/pay.html:70
 msgid "Mode de paiement"
 msgstr "Payment method"
 
-#: app/templates/cards/payment.html:29 app/templates/payments/pay.html:108
+#: app/templates/cards/payment.html:27 app/templates/payments/pay.html:108
 msgid "Lydia / CB"
 msgstr "Lydia / Card"
 
-#: app/templates/cards/payment.html:29
+#: app/templates/cards/payment.html:27
 msgid "Autre"
 msgstr "Other"
 
-#: app/templates/cards/payment.html:33
+#: app/templates/cards/payment.html:31
 msgid "ID Lydia"
 msgstr "Lydia ID"
 
@@ -1003,6 +1036,7 @@ msgid "Si le problème persiste, "
 msgstr "If the issue goes on, "
 
 #: app/templates/devices/error.html:44 app/templates/main/connect_check.html:69
+#: app/templates/payments/pay_lydia.html:77
 msgid "contactez-nous"
 msgstr "contact us"
 
@@ -1492,11 +1526,11 @@ msgstr "Monitoring (Darkstat)"
 msgid "Monitoring (Bandwidthd)"
 msgstr "Monitoring (Bandwidthd)"
 
-#: app/templates/gris/menu.html:26
+#: app/templates/gris/menu.html:27
 msgid "pgAdmin"
 msgstr "pgAdmin"
 
-#: app/templates/gris/menu.html:29
+#: app/templates/gris/menu.html:30
 msgid "À venir..."
 msgstr "Coming soon"
 
@@ -1996,7 +2030,7 @@ msgid "Confirmation"
 msgstr "Confirmation"
 
 #: app/templates/payments/pay_cash.html:14
-#: app/templates/payments/pay_lydia.html:14
+#: app/templates/payments/pay_lydia.html:15
 #: app/templates/payments/pay_magic.html:14
 #: app/templates/payments/pay_transfer.html:14
 msgid "Changer"
@@ -2051,14 +2085,53 @@ msgstr "In-person payment request: %(name)s (%(price)s)"
 msgid "Faire une demande"
 msgstr "Make a request"
 
-#: app/templates/payments/pay_lydia.html:20
+#: app/templates/payments/pay_lydia.html:21
+msgid "Informations de paiement :"
+msgstr "Payment data:"
+
+#: app/templates/payments/pay_lydia.html:39
+msgid "OU"
+msgstr "OR"
+
+#: app/templates/payments/pay_lydia.html:57
+msgid ""
+"Il est possible que le paiement ne soit pas validé automatiquement. Dans "
+"le doute, merci de cliquer sur"
+msgstr ""
+"The payment may not be validated automatically. Just in case, please "
+"click on"
+
+#: app/templates/payments/pay_lydia.html:61
+msgid "Retour sur le site marchand"
+msgstr "Back to the vendor site (Retour sur le site marchand)"
+
+#: app/templates/payments/pay_lydia.html:63
+msgid ""
+"en bas de la page une fois le paiement validé, si la redirection n'est "
+"pas automatique."
+msgstr ""
+"at the bottom of the page once the payment is validated, if you are not "
+"automatically redirected."
+
+#: app/templates/payments/pay_lydia.html:67
+msgid "Si votre paiement n'est toujours pas validé, essayez de"
+msgstr "If your payment is still not validated, try to"
+
+#: app/templates/payments/pay_lydia.html:71
+msgid "cliquer ici"
+msgstr "click here"
+
+#: app/templates/payments/pay_lydia.html:73
+msgid "pour résoudre la situation, ou"
+msgstr "to address the situation, or"
+
+#: app/templates/payments/pay_lydia.html:75
+msgid "Lydia est méchant avec moi"
+msgstr "Lydia is mean to me"
+
 #: app/templates/payments/pay_magic.html:20
 msgid "Procéder au paiement :"
 msgstr "Proceed to payment"
-
-#: app/templates/payments/pay_lydia.html:25
-msgid "[Intégration Lydia ici]"
-msgstr "[Lydia integration here]"
 
 #: app/templates/payments/pay_magic.html:25
 msgid ""
@@ -2512,57 +2585,69 @@ msgstr ""
 msgid "Quelqu'un vient de voler ma chambre (%(room)s) !"
 msgstr "Someone just stole my room (%(room)s)!"
 
-#: app/tools/utils.py:91
+#: app/tools/lydia.py:83
+msgid "Offre Internet à la Rez :"
+msgstr "Rezidence Internet offer:"
+
+#: app/tools/lydia.py:137
+msgid "Signature invalide, impossible de valider le paiement"
+msgstr "Invalid signature, unable to validate payment"
+
+#: app/tools/utils.py:139
 msgid "Locataire non-ESPCI"
 msgstr "Not-ESPCI tenant"
 
-#: app/tools/utils.py:92
+#: app/tools/utils.py:140
 msgid "Sous-locataire"
 msgstr "Subtenant"
 
-#: app/tools/validators.py:31
+#: app/tools/validators.py:35
 msgid "Ce champ est requis."
 msgstr "This field is required."
 
-#: app/tools/validators.py:38
+#: app/tools/validators.py:42
 msgid "Adresse email invalide."
 msgstr "Invalid email address."
 
-#: app/tools/validators.py:45
+#: app/tools/validators.py:51
 msgid "Valeur différente du champ précédent."
 msgstr "The value differ from the previous field."
 
-#: app/tools/validators.py:52
+#: app/tools/validators.py:58
 msgid "Adresse MAC invalide (format attendu : xx:xx:xx:xx:xx:xx)."
 msgstr "Invalid MAC address (expected format: xx:xx:xx:xx:xx:xx)."
 
-#: app/tools/validators.py:64
+#: app/tools/validators.py:73
 #, python-format
 msgid "Doit faire moins de %(max)d caractères."
 msgstr "Must be less than %(max)d characters long."
 
-#: app/tools/validators.py:67
+#: app/tools/validators.py:76
 #, python-format
 msgid "Doit faire au moins %(min)d caractères."
 msgstr "Must be at least %(min)d characters long."
 
-#: app/tools/validators.py:70
+#: app/tools/validators.py:79
 #, python-format
 msgid "Doit faire entre %(min)d et %(max)d caractères."
 msgstr "Must be between %(min)d and %(max)d characters."
 
-#: app/tools/validators.py:76
+#: app/tools/validators.py:85
 msgid "Adresse e-mail déjà liée à un autre compte."
 msgstr "Mail address already linked to an account."
 
-#: app/tools/validators.py:84
+#: app/tools/validators.py:93
 msgid "Numéro de chambre invalide."
 msgstr "Invalid room number."
 
-#: app/tools/validators.py:91
+#: app/tools/validators.py:100
 msgid "Cette date doit être dans le passé !"
 msgstr "This date must be in the past!"
 
-#: app/tools/validators.py:100
+#: app/tools/validators.py:109
 msgid "Cette date doit être dans le futur !"
 msgstr "This date must be in the future!"
+
+#: app/tools/validators.py:118
+msgid "Numéro de téléphone invalide (il doit être français)."
+msgstr "Invalid phone number (must be a French one)."

@@ -477,7 +477,8 @@ class Payment(Model):
     status: Column[PaymentStatus] = column(
         Enum(PaymentStatus), nullable=False, default=PaymentStatus.creating
     )
-    lydia_uuid: Column[int | None] = column(sa.String(32))
+    lydia_uuid: Column[str | None] = column(sa.String(32))
+    lydia_transaction_id: Column[str | None] = column(sa.String(32))
     _gri_id: Column[int | None] = column(sa.ForeignKey("rezident.id"))
     gri: Relationship[Rezident] = many_to_one("Rezident.payments_created",
                                               foreign_keys=_gri_id)

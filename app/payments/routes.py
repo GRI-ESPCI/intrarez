@@ -211,6 +211,7 @@ def lydia_callback_confirm() -> typing.RouteReturn:
 
     payment.status = PaymentStatus.accepted
     payment.payed = datetime.datetime.now()
+    payment.lydia_transaction_id = transaction_identifier
     rezident = payment.rezident
     offer = Offer.query.filter_by(price=payment.amount).one_or_none()
     if not offer:
@@ -280,8 +281,11 @@ def lydia_success() -> typing.RouteReturn:
         return utils.redirect_to_next(next=None)
     else:
         lydia.update_payment(payment)
+        transaction = flask.request.args.get("transaction", "<unknown>")
         return utils.ensure_safe_redirect("payments.lydia_validate",
-                                          payment_id=payment.id, next=None)
+                                          payment_id=payment.id,
+                                          transaction=transaction,
+                                          next=None)
 
 
 
@@ -314,6 +318,7 @@ def lydia_validate(payment_id: int) -> typing.RouteReturn:
         return utils.ensure_safe_redirect("payments.pay", next=None)
 
     payment.payed = datetime.datetime.now()
+    payment.lydia_transaction_id = flask.request.args.get("transaction")
     db.session.commit()
 
     offer = Offer.query.filter_by(price=payment.amount).one_or_none()
