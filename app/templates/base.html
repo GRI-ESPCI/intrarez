@@ -166,40 +166,45 @@
         <footer class="bd-footer pt-3 mt-5 bg-light">
         <div class="container py-3">
             <div class="row gx-4">
-                <div class="col-lg-auto text-center">
+                <div class="col-auto">
                     <a class="d-inline-flex align-items-center mb-2
-                              link-dark text-decoration-none fs-5"
-                       href="{{ url_for("main.index") }}">
+                            link-dark text-decoration-none fs-5"
+                    href="{{ url_for("main.index") }}">
                         Intranet de la Rez
                     </a>
-                    <div class="small text-muted mb-3">
+                    <div class="small text-muted mb-4 mb-lg-0 text-center">
                         &copy;&nbsp;{{ copyright }}<br/>
                         <a class="text-muted"
-                           href="{{ url_for("main.changelog") }}">
+                        href="{{ url_for("main.changelog") }}">
                             {{ _("Version") }} {{ __version__ }}
                         </a>
                     </div>
                 </div>
-                <div class="col-6 col-lg-auto offset-lg-1 mb-2 me-lg-4">
+                <div class="col-lg-auto px-0"></div>
+                <div class="col-6 col-lg-auto offset-lg-1 mb-2 me-lg-4
+                            d-flex align-items-center">
                     <a class="link-secondary"
                        href="{{ url_for("main.index") }}">
                         {{ _("Accueil") }}
                     </a>
                 </div>
-                <div class="col-6 col-lg-auto mb-2 me-lg-4">
+                <div class="col-6 col-lg-auto mb-2 me-lg-4
+                            d-flex align-items-center">
                     <a class="link-secondary"
                        href="{{ url_for("main.contact") }}">
                         {{ _("Nous contacter") }}
                     </a>
                 </div>
-                <div class="col-6 col-lg-auto mb-2 me-lg-4">
+                <div class="col-6 col-lg-auto mb-2 me-lg-4
+                            d-flex align-items-center">
                     <a class="link-secondary"
                        href="https://github.com/GRI-ESPCI/intrarez"
                        target="_blank" rel="external">
                         {{ _("Code source") -}}
                     </a>
                 </div>
-                <div class="col-6 col-lg-auto mb-2 me-lg-4">
+                <div class="col-6 col-lg-auto mb-2 me-lg-4
+                            d-flex align-items-center">
                     <a class="link-secondary"
                        href="{{ url_for("main.legal") }}">
                         {{ _("Mentions légales") }}
