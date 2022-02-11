@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
-{% block app_content %}
-
+{% block scripts %}
+{{ super() }}
 <script src="{{ url_for("static", filename="js/gris-rezidents.js") }}"
         defer></script>
-<script src="{{ url_for("static", filename="js/tooltips.js") }}"
-        defer></script>
+{% endblock %}
+
+{% block app_content %}
 
 <div class="row mb-3">
     <div class="col">
@@ -15,75 +16,125 @@
 <div class="row mb-3"><div class="col table-responsive">
     <table class="table table-striped table-hover table-bordered"><thead>
         <tr>
-            <th scope="col"><span class="d-flex" onclick="sort('id');">
-                <span>{{ _("ID") }}</span>
-                <span class="mx-auto">
-                    <svg class="bi flex-shrink-0" width="16" height="16"
-                         id="sort-svg-id">
-                        <!-- Sort button insered through JS -->
-                    </svg>
+            <th scope="col">
+                <span class="d-flex user-select-none" onclick="sort('id');">
+                    <span>{{ _("ID") }}</span>
+                    <span class="mx-auto">
+                        <svg class="bi flex-shrink-0" width="16" height="16"
+                            id="sort-svg-id">
+                            <!-- Sort button inserted through JS -->
+                        </svg>
+                    </span>
                 </span>
-            </span></th>
-            <th scope="col"><span class="d-flex" onclick="sort('user');">
-                <span>{{ _("Compte") }}</span>
-                <span class="mx-auto">
-                    <svg class="bi flex-shrink-0" width="16" height="16"
-                         id="sort-svg-user">
-                        <!-- Sort button insered through JS -->
-                    </svg>
+            </th>
+            <th scope="col">
+                <span class="d-flex user-select-none" onclick="sort('acc');">
+                    <span>{{ _("Compte") }}</span>
+                    <span class="mx-auto">
+                        <svg class="bi flex-shrink-0" width="16" height="16"
+                            id="sort-svg-user">
+                            <!-- Sort button inserted through JS -->
+                        </svg>
+                    </span>
                 </span>
-            </span></th>
-            <th scope="col"><span class="d-flex" onclick="sort('room');">
-                <span>{{ _("Chambre") }}</span>
-                <span class="mx-auto">
-                    <svg class="bi flex-shrink-0" width="16" height="16"
-                         id="sort-svg-room">
-                        <!-- Sort button insered through JS -->
-                    </svg>
+            </th>
+            <th scope="col">
+                <span class="d-flex user-select-none" onclick="sort('room');">
+                    <span>{{ _("Chambre") }}</span>
+                    <span class="mx-auto">
+                        <svg class="bi flex-shrink-0" width="16" height="16"
+                            id="sort-svg-room">
+                            <!-- Sort button inserted through JS -->
+                        </svg>
+                    </span>
                 </span>
-            </span></th>
-            <th scope="col"><span class="d-flex" onclick="sort('dev');">
-                <span>{{ _("Appareils") }}</span>
-                <span class="mx-auto">
-                    <svg class="bi flex-shrink-0" width="16" height="16"
-                         id="sort-svg-dev">
-                        <!-- Sort button insered through JS -->
-                    </svg>
+            </th>
+            <th scope="col">
+                <span class="d-flex user-select-none" onclick="sort('dev');">
+                    <span>{{ _("Appareils") }}</span>
+                    <span class="mx-auto">
+                        <svg class="bi flex-shrink-0" width="16" height="16"
+                            id="sort-svg-dev">
+                            <!-- Sort button inserted through JS -->
+                        </svg>
+                    </span>
                 </span>
-            </span></th>
-            <th scope="col"><span class="d-flex" onclick="sort('ls');">
-                <span>{{ _("Dernière connexion") }}</span>
-                <spa class="mx-auto"n>
-                    <svg class="bi flex-shrink-0" width="16" height="16"
-                         id="sort-svg-ls">
-                        <!-- Sort button insered through JS -->
-                    </svg>
+            </th>
+            <th scope="col">
+                <span class="d-flex user-select-none" onclick="sort('sub');">
+                    <span>{{ _("Abonnement") }}</span>
+                    <span class="mx-auto">
+                        <svg class="bi flex-shrink-0" width="16" height="16"
+                            id="sort-svg-sub">
+                            <!-- Sort button inserted through JS -->
+                        </svg>
+                    </span>
                 </span>
-            </span></th>
+            </th>
+            <th scope="col">
+                <span class="d-flex user-select-none" onclick="sort('ls');">
+                    <span>{{ _("Dernière connexion") }}</span>
+                    <span class="mx-auto">
+                        <svg class="bi flex-shrink-0" width="16" height="16"
+                            id="sort-svg-ls">
+                            <!-- Sort button inserted through JS -->
+                        </svg>
+                    </span>
+                </span>
+            </th>
+            <th scope="col">
+                <span class="d-flex user-select-none" onclick="sort('flag');">
+                    <span>
+                        <svg class="bi flex-shrink-0" width="22" height="22">
+                            {{ macros.bootstrap_icon("globe") }}
+                        </svg>
+                    </span>
+                    <span class="mx-auto">
+                        <svg class="bi flex-shrink-0" width="16" height="16"
+                            id="sort-svg-flag">
+                            <!-- Sort button inserted through JS -->
+                        </svg>
+                    </span>
+                </span>
+            </th>
         </tr></thead>
         <tbody id="rezidents-table">
-        {% for user in users %}
-        <tr data-id="{{ str(user.id).rjust(4, '0') }}"
-            data-user="{{ user.full_name }}"
-            data-room="{{ user.current_room.num if user.current_room else 0 }}"
-            data-dev="{{ len(user.devices) }}"
-            data-ls="{{ user.last_seen.timestamp() if user.last_seen else 0 }}"
+        {% for rezident in rezidents %}
+        {% with subscription = rezident.current_subscription %}
+        <tr data-id="{{ str(rezident.id).rjust(4, '0') }}"
+            data-acc="{{ rezident.full_name }}"
+            data-room="{{ rezident.current_room.num
+                          if rezident.current_room else 0 }}"
+            data-dev="{{ len(rezident.devices) }}"
+            {% if not subscription %}
+            data-sub="0"
+            {% elif rezident.sub_state == SubState.subscribed %}
+            data-sub="{{ 200000 + subscription.end.toordinal() }}"
+            {% elif rezident.sub_state == SubState.trial %}
+            data-sub="{{ 100000 + subscription.end.toordinal() }}"
+            {% else %}
+            data-sub="{{ subscription.end.toordinal() }}"
+            {% endif %}
+            data-ls="{{ rezident.last_seen.timestamp()
+                        if rezident.last_seen else 0 }}"
+            data-flag="{{ rezident.locale or "" }}"
         >
-            <td{% if user.is_gri %} class="text-danger fw-bold"{% endif %}>
-                {{ user.id }}
+            <td{% if rezident.is_gri %} class="text-danger fw-bold"{% endif %}>
+                {{ rezident.id }}
             </td>
 
             <td><span class="d-flex">
                 <span>
-                    {{ user.prenom }} {{ user.nom }} {{ user.promo }}
+                    {{ rezident.prenom }} {{ rezident.nom }}
+                    {{ rezident.promo }}
                 </span>
                 <span class="ms-auto">
                     <button type="button" class="btn p-0 me-1 d-inline-block"
-                            data-bs-target="#mo-account-{{ user.id }}"
+                            data-bs-target="#mo-account-{{ rezident.id }}"
                             data-bs-toggle="modal">
                         <svg class="bi flex-shrink-0" width="24" height="24"
                                 role="img" aria-label="{{ _("Compte") }}">
-                                {{ bootstrap_icon("person-badge") }}
+                                {{ macros.bootstrap_icon("person-badge") }}
                         </svg>
                     </button>
                 </span>
@@ -91,25 +142,26 @@
 
             <td><span class="d-flex">
                 <span>
-                    {% if user.current_room %}
-                    {{ user.current_room.num }}
+                    {% if rezident.current_room %}
+                    {{ rezident.current_room.num }}
                     {% else %}
                     {{ _("Aucune") }}
                     {% endif %}
-                    {% if user.old_rentals %}
-                    (+{{ len(user.old_rentals) }})
+                    {% if rezident.old_rentals %}
+                    (+{{ len(rezident.old_rentals) }})
                     {% endif %}
                 </span>
                 <span class="ms-auto">
                     <button type="button" class="btn p-0 me-1 d-inline-block"
-                            {% if user.current_room or user.old_rentals %}
-                            data-bs-target="#mo-room-{{ user.id }}"
+                            {% if rezident.current_room
+                                  or rezident.old_rentals %}
+                            data-bs-target="#mo-room-{{ rezident.id }}"
                             data-bs-toggle="modal"
                             {% else %} disabled
                             {% endif %}>
                         <svg class="bi flex-shrink-0" width="24" height="24"
                                 role="img" aria-label="{{ _("Chambre") }}">
-                            {{ bootstrap_icon("door-closed") }}
+                            {{ macros.bootstrap_icon("door-closed") }}
                         </svg>
                     </button>
                 </span>
@@ -117,40 +169,104 @@
 
             <td><span class="d-flex">
                 <span>
-                    {{ len(user.devices) }}
+                    {{ len(rezident.devices) }}
                 </span>
                 <span class="ms-auto">
                     <button type="button" class="btn p-0 me-1 d-inline-block"
-                            {% if user.current_device %}
-                            data-bs-target="#mo-device-{{ user.id }}"
+                            {% if rezident.current_device %}
+                            data-bs-target="#mo-device-{{ rezident.id }}"
                             data-bs-toggle="modal"
                             {% else %} disabled
                             {% endif %}>
                         <svg class="bi flex-shrink-0" width="24" height="24"
                                 role="img" aria-label="{{ _("Appareil") }}">
-                            {{ bootstrap_icon("laptop") }}
+                            {{ macros.bootstrap_icon("laptop") }}
                         </svg>
                     </button>
                 </span>
             </span></td>
 
+            <td><span class="d-flex">
+                <span>
+                    {% if not subscription %}
+                    {{ _("Aucun") }}
+                    {% elif rezident.sub_state == SubState.subscribed %}
+                    {{ _("Abonné(e)") }} (&rarr; {{ moment(
+                            subscription.end
+                        ).format("LL") }})
+                    {% elif rezident.sub_state == SubState.trial %}
+                    {{ _("Mois offert") }} (&rarr; {{ moment(
+                            subscription.cut_day
+                        ).format("LL") }})
+                    {% else %}
+                    {{ _("Hors-la-loi") }} (&#9587; {{ moment(
+                            subscription.cut_day
+                        ).format("LL") }})
+                    {% endif %}
+                </span>
+                <span class="ms-auto">
+                    <button type="button" class="btn p-0 me-1 d-inline-block"
+                            {% if subscription %}
+                            data-bs-target="#mo-sub-{{ rezident.id }}"
+                            data-bs-toggle="modal"
+                            {% else %} disabled
+                            {% endif %}>
+                        {% if not subscription %}
+                        <svg class="bi flex-shrink-0 text-muted"
+                             width="24" height="24">
+                            {{ macros.bootstrap_icon("circle-fill") }}
+                        </svg>
+                        {% elif rezident.sub_state == SubState.subscribed %}
+                        <svg class="bi flex-shrink-0 text-success"
+                             width="24" height="24">
+                            {{ macros.bootstrap_icon("check-circle") }}
+                        </svg>
+                        {% elif rezident.sub_state == SubState.trial %}
+                        <svg class="bi flex-shrink-0 text-warning"
+                             width="24" height="24">
+                            {{ macros.bootstrap_icon("exclamation-circle-fill") }}
+                        </svg>
+                        {% else %}
+                        <svg class="bi flex-shrink-0 text-danger"
+                             width="24" height="24">
+                            {{ macros.bootstrap_icon("x-circle-fill") }}
+                        </svg>
+                        {% endif %}
+                    </button>
+                </span>
+            </span></td>
+
             <td>
-            {% if user.current_device %}
-                <span title="{{ user.current_device.last_seen }} UTC">
-                {{ moment(user.current_device.last_seen).format("LLL") }}
+            {% if rezident.current_device %}
+                <span title="{{ rezident.current_device.last_seen }} UTC">
+                {{ moment(rezident.current_device.last_seen).format("LLL") }}
                 </span>
             {% endif %}
             </td>
 
+            <td>
+                {% if rezident.locale %}
+                <img class="flex-shrink-0" src="{{
+                        url_for("static",
+                                filename="svg/lang/{}.svg".format(rezident.locale))
+                     }}" width="22" height="22">
+                </img>
+                {% else %}
+                –
+                {% endif %}
+           </svg>
+            </td>
+
         </tr>
+        {% endwith %}
         {% endfor %}
     </tbody></table>
 </div></div>
 
 <!-- Modals -->
-{% for user in users %}
-{% with doas = user.id %}
-<div class="modal fade" id="mo-account-{{ user.id }}" tabindex="-1"
+{% for rezident in rezidents %}
+{% with doas = rezident.id %}
+<div class="modal fade" id="mo-account-{{ rezident.id }}" tabindex="-1"
      aria-labelledby="mo-account-lab" aria-hidden="true">
     <div class="modal-dialog"><div class="modal-content">
         <div class="modal-header">
@@ -169,7 +285,7 @@
     </div></div>
 </div>
 
-<div class="modal fade" id="mo-room-{{ user.id }}" tabindex="-1"
+<div class="modal fade" id="mo-room-{{ rezident.id }}" tabindex="-1"
      aria-labelledby="mo-room-lab" aria-hidden="true">
     <div class="modal-dialog"><div class="modal-content">
         <div class="modal-header">
@@ -188,8 +304,8 @@
     </div></div>
 </div>
 
-{% if user.current_device %}
-<div class="modal fade" id="mo-device-{{ user.id }}" tabindex="-1"
+{% if rezident.current_device %}
+<div class="modal fade" id="mo-device-{{ rezident.id }}" tabindex="-1"
      aria-labelledby="mo-device-lab" aria-hidden="true">
     <div class="modal-dialog"><div class="modal-content">
         <div class="modal-header">
@@ -210,8 +326,29 @@
 </div>
 {% endif %}
 
-<!-- Modals devices -->
-{% for device in user.other_devices %}
+{% if rezident.current_subscription %}
+<div class="modal fade" id="mo-sub-{{ rezident.id }}" tabindex="-1"
+     aria-labelledby="mo-sub-lab" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="mo-sub-lab">{{ _("Abonnement") }}
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="{{ _("Fermer") }}"></button>
+        </div>
+        <div class="modal-body">
+            {% include "cards/subscription.html" %}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                {{ _("Fermer") }}
+            </button>
+        </div>
+    </div></div>
+</div>
+{% endif %}
+
+{% for device in rezident.other_devices %}
 {% include "cards/device_modal.html" %}
 {% endfor %}
 
@@ -220,10 +357,10 @@
 
 <!-- Sort icons templates -->
 <div id="icon-template-down">
-    {{ bootstrap_icon("caret-down-fill") }}
+    {{ macros.bootstrap_icon("caret-down-fill") }}
 </div>
 <div id="icon-template-up">
-    {{ bootstrap_icon("caret-up-fill") }}
+    {{ macros.bootstrap_icon("caret-up-fill") }}
 </div>
 
 {% endblock %}

@@ -1,8 +1,17 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+{{ super() }}
+<script src={{ url_for("static",
+                       filename="bower_components/web-pingjs/ping.js") }}
+        defer></script>
+<script src={{ url_for("static", filename="js/device-connect-check.js") }}
+        defer></script>
+{% endblock %}
+
 {% block app_content %}
 
-{% if not request.args.get("force") %}
+{% if request.args.get("hello") %}
 <div class="row mt-3 mb-5">
     <div class="col"><div class="progress registration-steps fs-5">
         <div class="progress-bar w-25 bg-success bg-gradient">
@@ -35,11 +44,6 @@
          "indiquera automatiquement quand ce sera bon !") }}
 </p></div>
 <div class="row mt-2 mb-4">
-    <script src={{ url_for("static",
-                           filename="bower_components/web-pingjs/ping.js")}}
-            defer></script>
-    <script src={{ url_for("static", filename="js/device-connect-check.js")}}
-            defer></script>
     <div>
         <div class="d-flex align-items-center">
             {{ _("Test de la connexion...") }}

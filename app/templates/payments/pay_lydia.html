@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% import "_form.html" as wtf %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col col-lg-6">
+        <div class="row mb-3">
+            <div class="col-auto">
+                <h1>{{ title }}</h1>
+            </div>
+            <div class="col my-auto me-auto">
+                <a class="btn btn-outline-secondary"
+                   href="{{ url_for("payments.pay") }}">
+                    {{ _("Changer") }}
+                </a>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <h2>{{ _("Informations de paiement :") }}</h2>
+            </div>
+        </div>
+        <form action="" method="post" role="form" target="_blank">
+            <div class="row row-cols-1 row-cols-xxl-2 text-center
+                        d-flex align-items-center">
+                {{ form.hidden_tag() }}
+                <div class="col mb-2">
+                    <div class="form-floating">
+                        {{ wtf.form_field(form.phone) }}
+                    </div>
+                </div>
+                <div class="col mb-2">
+                    {{ wtf.form_field(form.submit_lydia) }}
+                </div>
+            </div>
+            <div class="row my-3 text-center">
+                <div class="col fw-bold">
+                    – {{ _("OU") }} –
+                </div>
+            </div>
+            <div class="row mb-4 text-center">
+                <div class="col">
+                    {{ wtf.form_field(form.submit_cb) }}
+                </div>
+            </div>
+        </form>
+        <div class="row mt-5 mb-3">
+            <div class="col p-3 mx-4 bg-warning rounded-3 position-relative">
+                <div class="position-absolute mt-1">
+                    <svg class="bi flex-shrink-0" width="28" height="28">
+                        {{ macros.bootstrap_icon("exclamation-triangle") }}
+                    </svg>
+                </div>
+                <div class="ms-5">
+                    <p>
+                        {{ _("Il est possible que le paiement ne soit pas "
+                             "validé automatiquement. Dans le doute, merci de "
+                             "cliquer sur") }}
+                        <span class="text-muted">
+                            {{ _("Retour sur le site marchand") }}
+                        </span>
+                        {{ _("en bas de la page une fois le paiement validé, "
+                             "si la redirection n'est pas automatique.") }}
+                    </p>
+                    <p class="mb-1">
+                        {{ _("Si votre paiement n'est toujours pas validé, "
+                             "essayez de") }}
+                        <a href="{{ url_for("payments.lydia_success") }}"
+                           class="text-secondary">
+                            {{ _("cliquer ici") -}}
+                        </a>
+                        {{ _("pour résoudre la situation, ou" )}}
+                        <a href="{{ url_for("main.contact",
+                                title=_("Lydia est méchant avec moi")) }}"
+                           class="text-secondary">
+                            {{ _("contactez-nous") -}}
+                        </a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col col-auto mb-auto">
+        {% with can_change = True %}
+        {% include "cards/offer.html" %}
+        {% endwith %}
+    </div>
+</div>
+
+
+{% endblock %}

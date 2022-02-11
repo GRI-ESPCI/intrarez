@@ -45,7 +45,8 @@
             {% endif %}
         </div>
         <div class="form-floating mb-3">
-            {{ wtf.form_field(form.title) }}
+            {{ wtf.form_field(form.title, value=request.args.get("title",
+                                                                 "")) }}
         </div>
         <div class="form-floating mb-3">
             {{ wtf.form_field(form.message, class="lines-6") }}
@@ -73,7 +74,8 @@
             <h5 class="card-title">{{ gri["name"] }}</h5>
             <h6 class="card-subtitle text-muted">
                 {% if gri["role"] %}
-                {{ gri["role"].get(get_locale(), gri["role"]["fr"]) }}
+                {{ gri["role"].get(babel.get_locale().language[:2],
+                                   gri["role"]["en"]) }}
                 {% endif %}
             </h6>
         </div>
@@ -117,7 +119,7 @@
     {% endfor %}
 </div>
 <div class="row fst-italic"><p>
-    {{ _("N'hésitez pas notemment à nous contacter pour nous rappeler de "
+    {{ _("N'hésitez pas notamment à nous contacter pour nous rappeler de "
          "mettre à jour cette liste. On va 100 %% oublier.") }}
 </p></div>
 

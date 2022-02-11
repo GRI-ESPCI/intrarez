@@ -1,0 +1,58 @@
+{% extends "mails_base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h2>{{ _("Votre nouvel abonnement est validé") }}</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>{{ _("Bonjour %(name)s,", name=rezident.prenom) }}</p>
+        <p>
+            {{ _("Votre nouvel abonnement à Internet à la Rez a bien "
+                 "été pris en compte :") }}
+        </p>
+        <ul class="mb-4">
+            <li>
+                {{ _("Offre :") }} {{ sub.offer.name }}
+            </li>
+            <li>
+                {{ _("Date d'achat :") }}
+                {{ babel.format_date(sub.payment.payed, format="long")
+                   if sub.payment else _("(offert)") }}
+            </li>
+            <li>
+                {{ _("Validité :") }}
+                {{ babel.format_date(sub.start, format="long") }}
+                – {{ babel.format_date(sub.end, format="long") }},
+                {{ _("puis <strong>un mois d'accès gratuit</strong> "
+                     "pendant lequel vous pourrez renouveler votre "
+                     "abonnement si besoin.") }}
+            </li>
+        </ul>
+        <p>
+            {{ _("Pour plus d'informations sur le fonctionnement des "
+                 "abonnements ou l'historique de vos paiements, visitez") }}
+            <a href="{{ url_for("payments.main") }}" class="link-secondary">
+                {{ _("votre page d'abonnement") }}</a>.
+        </p>
+        <p>
+            {{ _("Pour toute question ou pour plus d'informations, vous "
+                 "pouvez simplement répondre à cet email.") }}
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>
+            {{ _("Très bonne journée,") }}
+        </p>
+        <p>
+            {{ _("Les GRI") }}
+        </p>
+    </div>
+</div>
+
+{% endblock %}

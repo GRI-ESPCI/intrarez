@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% import "_form.html" as wtf %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <form action="" method="post" role="form">
+        {{ form.hidden_tag() }}
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.start,
+                              value=g.rezident.current_rental.start) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.end,
+                              value=g.rezident.current_rental.end) }}
+        </div></div>
+        <div>
+            {{ wtf.form_field(form.submit) }}
+        </div>
+    </form>
+</div>
+<div class="row"><p>
+    <a class="btn btn-outline-secondary"
+       href="{{ url_for("profile.main", doas=request.args.get("doas")) }}">
+        {{ _("Retour") }}
+    </a>
+</p></div>
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col">
+        <div class="row mb-3">
+            <div class="col-auto">
+                <h1>{{ title }}</h1>
+            </div>
+            <div class="col my-auto me-auto">
+                <a class="btn btn-outline-secondary"
+                   href="{{ url_for("payments.pay") }}">
+                    {{ _("Changer") }}
+                </a>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <h2>{{ _("Procéder au paiement :") }}</h2>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <p>{{ _("Bonjour ami GRI, avant d'ajouter le paiement merci "
+                        "de vérifier ces paramètres :") }}</p>
+                <ul>
+                    <li>
+                        {{ _("Payeur :") }}
+                        <span class="fw-bold font-monospace ps-1">
+                            {{ g.rezident.full_name }}
+                        </span>
+                    </li>
+                    <li>
+                        {{ _("Montant :") }}
+                        <span class="fw-bold font-monospace ps-1">
+                            {{ babel.format_currency(offer.price, "EUR") }}
+                        </span>
+                    </li>
+                    <li>
+                        {{ _("Offre :") }}
+                        <span class="fw-bold font-monospace ps-1">
+                            {{ _("Voir sur la droite (ou en-dessous)") }}
+                        </span>
+                    </li>
+                    <li>
+                        {{ _("GRI effectuant l'opération :") }}
+                        <span class="fw-bold font-monospace ps-1">
+                            {{ current_user.full_name }}
+                        </span>
+                    </li>
+                </ul>
+                <p>{{ _("Si c'est tout bon, il ne reste qu'à appuyer sur "
+                        "le bouton en bas de page.") }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col col-auto mb-auto">
+        {% with can_change = True %}
+        {% include "cards/offer.html" %}
+        {% endwith %}
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col text-center">
+        <a class="btn btn-secondary ms-2"
+           href="{{ url_for("payments.add_payment", offer=offer.slug,
+                             doas=request.args.get("doas")) }}">
+            {{ _("Valider le paiement") }}
+        </a>
+    </div>
+</div>
+
+
+{% endblock %}

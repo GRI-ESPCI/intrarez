@@ -6,8 +6,8 @@ See github.com/GRI-ESPCI/intrarez for informations.
 __title__ = "intrarez"
 __author__ = "Loïc Simon, Louis Grandvaux & other GRIs"
 __license__ = "MIT"
-__copyright__ = "Copyright 2021 GRIs – ESPCI Paris - PSL"
-__all__ = "create_app"
+__copyright__ = "2021-2022 GRIs – ESPCI Paris - PSL"
+__all__ = ["create_app"]
 
 
 import json
@@ -22,28 +22,42 @@ import flask_login
 import flask_mail
 import flask_moment
 import flask_babel
-from flask_babel import lazy_gettext as _l
 from werkzeug import urls as wku
-import wtforms
 
 from config import Config
 from app import enums
-from app.tools import loggers, utils
 
+
+in_app_copyright = "2021-2022 GRI ESPCI"
+
+
+# Define Flask subclass
+class IntraRezApp(flask.Flask):
+    """:class:`flask.Flask` subclass. Only adds anew logger:
+
+    Attrs:
+        actions_logger (logging.Logger): Child of app logger used to
+            report important actions (see :mod:`.tools.loggers`).
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add rezidents actions logger
+        self.actions_logger = self.logger.getChild("actions")
+
+
+# Imports needing IntraRezApp - don't move!
+from app.tools import loggers, utils, typing
 
 # Load extensions
 db = flask_sqlalchemy.SQLAlchemy()
 migrate = flask_migrate.Migrate()
 login = flask_login.LoginManager()
-login.login_view = "auth.login"         # login route function
-login.login_message = _l("Merci de vous connecter pour accéder à cette page.")
-login.login_message_category = "warning"
 mail = flask_mail.Mail()
 moment = flask_moment.Moment()
 babel = flask_babel.Babel()
 
 
-def create_app(config_class=Config):
+def create_app(config_class: type = Config) -> IntraRezApp:
     """Create and initialize a new Flask application instance.
 
     Args:
@@ -51,7 +65,7 @@ def create_app(config_class=Config):
             Default: :class:`.config.Config`.
     """
     # Initialize application
-    app = flask.Flask(__name__)
+    app = IntraRezApp(__name__)
     app.config.from_object(config_class)
 
     # Initialize extensions
@@ -61,45 +75,43 @@ def create_app(config_class=Config):
     mail.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
-    app.jinja_env.add_extension("jinja2.ext.do")
+
+    # Set up Jinja
+    app.jinja_env.trim_blocks = True
+    app.jinja_env.lstrip_blocks = True
     app.jinja_env.globals.update(**__builtins__)
     app.jinja_env.globals.update(**{name: getattr(enums, name)
                                     for name in enums.__all__})
     app.jinja_env.globals["__version__"] = __version__
-    app.jinja_env.globals["get_locale"] = utils.get_locale
-    app.jinja_env.globals["alert_labels"] = {
-        "info": _l("Information :"),
-        "success": _l("Succès :"),
-        "danger": _l("Attention :"),
-        "warning": _l("Avertissement :"),
-    }
-    app.jinja_env.globals["alert_symbols"] = {
-        "info": "info-circle-fill",
-        "success": "check-circle-fill",
-        "danger": "exclamation-triangle-fill",
-        "warning": "exclamation-triangle-fill",
-    }
-    app.jinja_env.globals["bootstrap_icon"] = utils.get_bootstrap_icon
-    app.jinja_env.globals['bootstrap_is_hidden_field'] = (
-        lambda field: isinstance(field, wtforms.fields.HiddenField)
-    )
+    app.jinja_env.globals["copyright"] = in_app_copyright
+    app.jinja_env.globals["babel"] = flask_babel
+    app.jinja_env.globals["promotions"] = utils.promotions
 
+    # Register blueprints
     # ! Keep imports here to avoid circular import issues !
-    from app import errors, main, auth, devices, rooms, gris
+    from app import errors, main, auth, devices, rooms, gris, payments, profile
     app.register_blueprint(errors.bp)
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(devices.bp, url_prefix="/devices")
     app.register_blueprint(rooms.bp, url_prefix="/rooms")
     app.register_blueprint(gris.bp, url_prefix="/gris")
+    app.register_blueprint(payments.bp, url_prefix="/payments")
+    app.register_blueprint(profile.bp, url_prefix="/profile")
 
-    # Set up error handling
-    loggers.set_handlers(app)
+    # Configure logging
+    loggers.configure_logging(app)
     app.logger.info("Intrarez startup")
+
+    # Set up mail processors building
+    # ! Keep import here to avoid circular import issues !
+    from app import email
+    app.before_first_request(email.init_premailer)
+    app.before_first_request(email.init_textifier)
 
     # Set up captive portal
     @app.before_request
-    def captive_portal():
+    def _captive_portal() -> typing.RouteReturn | None:
         """Captive portal: redirect external requests to homepage."""
         netlocs = app.config["NETLOCS"]
         if netlocs is None or app.debug or app.testing:
@@ -110,7 +122,7 @@ def create_app(config_class=Config):
             return None
         if wku.url_parse(flask.request.url).netloc not in netlocs:
             # Requested URL not in netlocs: redirect
-            return utils.safe_redirect("main.index")
+            return context.capture()
         # Valid URL
         return None
 
@@ -121,7 +133,7 @@ def create_app(config_class=Config):
 
     # Set up custom logging
     @app.after_request
-    def logafter(response):
+    def _log_after(response: flask.Response) -> flask.Response:
         """Add a logging entry describing the response served."""
         if flask.request.endpoint != "static":
             endpoint = flask.request.endpoint or f"[CP:<{flask.request.url}>]"
@@ -136,7 +148,7 @@ def create_app(config_class=Config):
             user = "<anonymous>"
             try:
                 if flask.g.logged_in:
-                    user = repr(flask_login.current_user)
+                    user = repr(flask.g.logged_in_user)
                     if flask.g.doas:
                         user += f" AS {flask.g.rezident!r}"
             except AttributeError:
@@ -145,28 +157,41 @@ def create_app(config_class=Config):
             app.logger.info(msg)
         return response
 
+    # All set!
     return app
 
-
-# Set up locale
-babel.localeselector(utils.get_locale)
 
 # Import application models
 # ! Keep at the bottom to avoid circular import issues !
 from app import models
 
-# Set up user loader locale
+
+# Set up locale
+@babel.localeselector
+def _get_locale() -> str | None:
+    """Get the application language preferred by the remote user."""
+    locale = flask.request.accept_languages.best_match(
+        flask.current_app.config["LANGUAGES"]
+    )
+    if flask.g.logged_in and locale != flask.g.logged_in_user.locale:
+        # Do not use flask.g.rezident here, it would override user locale
+        # by the locale of a GRI using doas
+        flask.g.logged_in_user.locale = locale
+        db.session.commit()
+
+    return locale
+
+# Set up user loader
 @login.user_loader
-def load_user(id):
+def _load_user(id: str) -> models.Rezident | None:
     """Function used by Flask-login to get the connected user.
 
     Args:
         id (str): the ID of the connected user (stored in the session).
 
     Returns:
-        :class:`Rezident`
+        :class:`Rezident` | ``None``
     """
     if not id.isdigit():
-        return False
-    user = models.Rezident.query.get(int(id))
-    return user
+        return None
+    return models.Rezident.query.get(int(id))

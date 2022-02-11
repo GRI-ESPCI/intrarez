@@ -1,4 +1,4 @@
-{# Rooms list card - used variables: user #}
+{# Rooms list card - used variables: rezident #}
 {% extends "cards/base.html" %}
 
 {% block card_title %}
@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block card_icon %}
-{{ bootstrap_icon("door-closed") }}
+{{ macros.bootstrap_icon("door-closed") }}
 {% endblock %}
 
 {% block card_body %}
-{% if user.current_rental %}
+{% if rezident.current_rental %}
 {{ super() }}   {# Active card_table #}
 {% else %}
 <div class="card-body fst-italic mx-2">
@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block card_table %}      {# Affichage conditionné par le bloc précédent #}
-{% with rental = user.current_rental %}
+{% with rental = rezident.current_rental %}
 <tr>
     <th scope="row" class="ps-4">{{ _("Location actuelle") }}</th>
     <td class="text-break">Chambre {{ rental.room.num }}</td>
@@ -48,21 +48,21 @@
                 data-bs-target="#coll-room-h" aria-expanded="true"
                 aria-controls="coll-room-h">
             {{ _("Anciennes locations :") }}&nbsp;
-            <strong>{{ len(user.old_rentals) }}</strong>
+            <strong>{{ len(rezident.old_rentals) }}</strong>
         </button>
     </h3>
     <div id="coll-room-h" class="accordion-collapse collapse"
             aria-labelledby="acco-room-h"
             data-bs-parent="#acco-room">
     <div class="accordion-body bg-pc5 p-0">
-        {% if user.old_rentals %}
+        {% if rezident.old_rentals %}
         <table class="table table-striped table-borderless mb-0">
         <tbody>
             <tr>
                 <th scope="col" class="ps-3">{{ _("Chambre") }}</th>
                 <th scope="col">{{ _("Période") }}</th>
             </tr>
-            {% for rental in user.old_rentals %}
+            {% for rental in rezident.old_rentals %}
             <tr>
                 <td class="ps-3">{{ rental.room.num }}</td>
                 <td class="text-break">
@@ -83,17 +83,16 @@
 
 {% block card_footer_class %}{{ super() }} px-auto{% endblock %}
 {% block card_footer %}
-<div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
-     data-bs-placement="top" title="{{ _("Fonctionnalité à venir") }}">
-    <button class="btn btn-outline-dark" disabled>
-        {{ _("Modifier les dates") }}
-    </button>
-</div>
 <a class="btn btn-outline-dark me-3 mb-2 position-relative"
+   href="{{ url_for("rooms.modify", doas=doas,
+                    next=request.url_rule.endpoint) }}">
+    {{ _("Modifier les dates") }}
+    {{ macros.badge("NEW") }}
+</a>
+<a class="btn btn-outline-dark me-3 position-relative"
    href="{{ url_for("rooms.terminate", doas=doas,
                     next=request.url_rule.endpoint) }}">
     {{ _("Changer de chambre") }}
-    <span class="position-absolute top-0 start-100 translate-middle
-                 badge rounded-pill bg-success">NEW</span>
+    {{ macros.badge("NEW") }}
 </a>
 {% endblock %}

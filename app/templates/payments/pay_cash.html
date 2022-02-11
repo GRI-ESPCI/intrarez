@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col">
+        <div class="row mb-3">
+            <div class="col-auto">
+                <h1>{{ title }}</h1>
+            </div>
+            <div class="col my-auto me-auto">
+                <a class="btn btn-outline-secondary"
+                   href="{{ url_for("payments.pay") }}">
+                    {{ _("Changer") }}
+                </a>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <h2>{{ _("Instructions détaillées :") }}</h2>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <p>{{ _("Il est possible de payer de la manière qui vous "
+                        "arrange (sous réserve) : espèces, Lydia, bières... "
+                        "auprès d'un GRI (ou du Trésorier du BDE).") }}</p>
+                <p>{{ _("Le GRI en question enregistrera ensuite manuellement "
+                        "votre paiement, et vous recevrez un mail. N'hésitez "
+                        "pas à le relancer si rien ne se passe au bout de "
+                        "quelques jours.") }}</p>
+                <p>{{ _("De fait, merci de n'utiliser cette solution "
+                        "<strong>que si le paiement Lydia/CB n'est pas "
+                        "envisageable</strong>.") }}</p>
+                <p>{{ _("Dans ce cas, vous pouvez directement contacter "
+                        "un GRI ou utiliser le bouton en bas de page.") }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col col-auto mb-auto">
+        {% with can_change = True %}
+        {% include "cards/offer.html" %}
+        {% endwith %}
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col text-center">
+        <a class="btn btn-secondary ms-2"
+           href="{{ url_for("main.contact") }}?title={{
+                 _("Demande de paiement en main propre : %(name)s (%(price)s)",
+                   name=offer.name,
+                   price=babel.format_currency(offer.price, "EUR")) }}">
+            {{ _("Faire une demande") }}
+        </a>
+    </div>
+</div>
+
+
+{% endblock %}

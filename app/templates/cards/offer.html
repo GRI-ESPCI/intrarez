@@ -1,0 +1,34 @@
+{# Offer card - used variables: offer #}
+{% extends "cards/base.html" %}
+
+{% block card_title %}
+{{ _("Offre") }}
+{% endblock %}
+
+{% block card_icon %}
+{{ macros.bootstrap_icon("clipboard") }}
+{% endblock %}
+
+{% block card_table %}
+<tr>
+    <th scope="row" class="ps-4">{{ _("Nom") }}</th>
+    <td class="text-break">{{ offer.name }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Description") }}</th>
+    <td class="text-break">{{ offer.description }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Prix") }}</th>
+    <td>{{ babel.format_currency(offer.price, "EUR") }}</td>
+</tr>
+{% endblock %}
+
+{% block card_footer %}
+{% if can_change %}
+<a class="btn btn-outline-dark"
+   href="{{ url_for("payments.pay") }}">
+    {{ _("Changer d'offre") }}
+</a>
+{% endif %}
+{% endblock %}

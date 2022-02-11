@@ -1,0 +1,61 @@
+<!-- More or less useful macros, can be use in any IntraRez template -->
+
+
+<!-- Outputs the SVG <use> tag that includes a given Bootstrap icon.
+
+    Args:
+        name (str): the name of the Bootstrap icon.
+-->
+{% macro bootstrap_icon(name) %}
+    <use href="{{ url_for("static",
+                          filename="svg/bootstrap-icons.svg") }}#{{ name }}" />
+{% endmacro %}
+
+
+<!-- Adds a badge to the upper right corner of its closest positioned ancestor.
+
+    (i.e. its nearest parent with the class "position-relative")
+
+    Args:
+        content (str): The text in the badge (defaults to a star)
+-->
+{% macro badge(content="★") %}
+    <span class="position-absolute top-0 start-100 translate-middle
+                badge rounded-pill bg-success">{{ content }}</span>
+{% endmacro %}
+
+
+<!-- Outputs a toast div containing the flashed message.
+
+    Args:
+        message (str): The message text
+        category (str): The message category (should be one of "info"
+            (default), "success", "danger" or "warning")
+-->
+{% macro flashed_message(message, category="info") %}
+    {% with alert_label, alert_icon = {
+            "info":     (_("Information :"),    "info-circle-fill"),
+            "success":  (_("Succès :"),         "check-circle-fill"),
+            "warning":  (_("Avertissement :"),  "exclamation-triangle-fill"),
+            "danger":   (_("Attention :"),      "exclamation-triangle-fill"),
+        }.get(category, ("",                    ""))
+    %}
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header text-white bg-{{ category }}">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24"
+                 role="img" aria-label="{{ alert_label }}">
+                {{ bootstrap_icon(alert_icon) }}
+            </svg>
+            <strong class="me-auto">
+                {{ alert_label }}
+            </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                    aria-label="{{ _("Fermer") }}">
+            </button>
+        </div>
+        <div class="toast-body">
+            {{ message }}
+        </div>
+    </div>
+    {% endwith %}
+{% endmacro %}

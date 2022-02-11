@@ -2,17 +2,25 @@
 
 {% block app_content %}
 
-<script src="{{ url_for("static", filename="js/gris-rezidents.js") }}"
-        defer></script>
-
 <div class="row mb-3">
     <div class="col">
         <h1>{{ title }}</h1>
+        <p>{{ _("Les statistiques ci-dessous sont protégées par "
+                "l'authentification BASIC suivante :") }}</p>
+        <ul>
+            <li>{{ _("Username :" )}} <code>gri</code></li>
+            <li>
+                {{ _("Mot de passe :" )}}
+                <code>{{ config["GRI_BASIC_PASSWORD"] }}</code>
+                {# Bah on va pas le mettre en dur quand même, c'est
+                   open source... #}
+            </li>
+        </ul>
     </div>
 </div>
 <div class="row mb-3">
     <div class="col">
-        <iframe src="http://10.0.0.1:668" class="w-100 vh-100"></iframe>
+        <iframe src="/_bandwidthd" class="w-100 vh-100"></iframe>
     </div>
 </div>
 

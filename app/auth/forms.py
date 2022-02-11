@@ -1,31 +1,12 @@
 """Intranet de la Rez - Authentication Forms"""
 
-import datetime
-
 import wtforms
 from wtforms.fields import html5
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 
-from app.models import Rezident
-from app.tools.validators import (DataRequired, Email, EqualTo, Length,
-                                  NewUsername, NewEmail)
-
-
-def promotions_list():
-    """Build the list of possible promotions depending on the current date.
-
-    Returns:
-        ``list((value, label))`` options for :class:`wtforms.SelectField`.
-    """
-    year = datetime.datetime.now().year
-    max_promo = year - 1882         # Promotion 1 en 1882
-    if datetime.datetime.now().month > 6:       # > juin : nouvelle promotion
-        max_promo += 1
-    promos = [(str(promo), str(promo))
-              for promo in range(max_promo, max_promo - 6, - 1)]
-    return promos + [("ext", _l("Locataire non-ESPCI")),
-                     ("sousloc", _l("Sous-locataire"))]
+from app.tools.validators import DataRequired, Email, EqualTo, Length, NewEmail
+from app.tools import utils
 
 
 class LoginForm(FlaskForm):
@@ -44,7 +25,8 @@ class RegistrationForm(FlaskForm):
                                                      Length(max=64)])
     prenom = wtforms.StringField(_l("Prénom"), validators=[DataRequired(),
                                                            Length(max=64)])
-    promo = wtforms.SelectField(_l("Promotion"), choices=promotions_list(),
+    promo = wtforms.SelectField(_l("Promotion"),
+                                choices=utils.promotions().items(),
                                 validators=[DataRequired()])
     email = html5.EmailField(_l("Adresse e-mail"),
                              validators=[DataRequired(), Length(max=120),

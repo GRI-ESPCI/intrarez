@@ -1,0 +1,66 @@
+{% extends "mails_base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h2>{{ _("Votre chambre a été transférée !") }}</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>{{ _("Bonjour %(name)s,", name=rezident.prenom) }}</p>
+        <p>
+            {{ _("Un(e) autre Rezident(e) vient de déclarer une location dans "
+                 "la chambre que vous occupiez jusqu'à présent (%(room)s).",
+                 room=rezident.current_room.num) }}
+        </p>
+        <p>
+            {{ _("En conséquence, le fonctionnement du système fait que "
+                 "<strong>votre accès Internet a été coupé</strong>.") }}
+        <ul>
+            <li>
+                {{ _("Si vous avez quitté la Rezidence, tout va bien : "
+                    "c'est simplement le ou la nouvelle occupant(e) de la "
+                    "chambre qui se connecte au réseau.") }}
+            </li>
+            <li>
+                {{ _("Si vous êtes toujours à la Rezidence en revanche, et "
+                     "qu'il n'y a pas d'histoire de sous-location ou autre, "
+                     "merci de <strong>nous en informer</strong> au plus vite "
+                     "(plutôt que de tenter de débuter une nouvelle location) "
+                     "pour que nous regardions de plus près.") }}
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col text-center">
+        <a class="btn btn-secondary mx-3 my-2"
+           href="{{ url_for("main.contact") }}?title={{
+               _("Quelqu'un vient de voler ma chambre (%(room)s) !",
+                 room=rezident.current_room.num) }}">
+            {{ _("Nous prévenir") }}
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col mb-3">
+        <p>
+            {{ _("Pour toute question ou pour plus d'informations, vous "
+                 "pouvez simplement répondre à cet email.") }}
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>
+            {{ _("Très bonne journée,") }}
+        </p>
+        <p>
+            {{ _("Les GRI") }}
+        </p>
+    </div>
+</div>
+
+{% endblock %}

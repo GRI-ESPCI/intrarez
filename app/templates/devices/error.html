@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+{{ super() }}
+<script src={{ url_for("static", filename="js/device-error-reload.js")}}
+        defer></script>
+{% endblock %}
+
 {% block app_content %}
 
 <div class="row mb-3">
@@ -20,8 +26,6 @@
     {{ _("Attendez un peu et réessayez.") }}
 </p></div>
 <div class="row mt-2 mb-4">
-    <script src={{ url_for("static", filename="js/device-error-reload.js")}}
-            defer></script>
     <div>
         <button type="button" class="btn btn-outline-primary"
                 onClick="reload();">

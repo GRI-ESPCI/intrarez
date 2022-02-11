@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "_form.html" as wtf %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>
+            {{ _("Choisir un script à exécuter :") }}
+        </p>
+        <p class="bg-warning rounded-pill px-3 py-2">
+            {{ _("Attention : exécuter un script peut avoir des effets de "
+                 "bord, comme l'envoi d'un mail à la fin d'un abonnement.") }}
+        </p>
+    </div>
+</div>
+<div class="row mb-4">
+    <form action="" method="post" role="form">
+        {{ form.hidden_tag() }}
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.script) }}
+        </div></div>
+        <div>
+            {{ wtf.form_field(form.submit) }}
+        </div>
+    </form>
+</div>
+
+{% if output != None %}
+<div class="row mb-3">
+    <div class="col">
+        <h3>Résultat de l'exécution :</h3>
+        <div class="mt-2 ms-3 p-2 bg-dark">
+            <code class="text-light">{{ output }}</code>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,125 @@
+{# Subscription card - used variables: rezident #}
+{% extends "cards/base.html" %}
+
+{% block card_title %}
+{{ _("Mon abonnement") }}
+{% endblock %}
+
+{% block card_icon %}
+{{ macros.bootstrap_icon("coin") }}     <!-- COIN COIN -->
+{% endblock %}
+
+
+{% block card_table %}
+{% if rezident.sub_state == SubState.subscribed %}
+
+<tr>
+    <th scope="row" class="ps-4">{{ _("État") }}</th>
+    <td>
+        <div class="m-auto position-relative pe-3">
+            {{ _("Abonné(e)") }}
+            <svg class="ms-2 bi flex-shrink-0 position-absolute
+                        top-50 translate-middle-y text-success"
+                    width="24" height="24" role="img">
+                {{ macros.bootstrap_icon("check-circle") }}
+            </svg>
+        </div>
+    </td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Jusqu'au") }}</th>
+    <td>{{ moment(rezident.current_subscription.end).format("LL") }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Coupure le") }}</th>
+    <td>{{ moment(rezident.current_subscription.cut_day).format("LL") }}</td>
+</tr>
+
+{% elif rezident.sub_state == SubState.trial %}
+
+<tr>
+    <th scope="row" class="ps-4">{{ _("État") }}</th>
+    <td>
+        <div class="m-auto position-relative pe-3">
+            {{ _("Mois offert") }}
+            <svg class="ms-2 bi flex-shrink-0 position-absolute
+                        top-50 translate-middle-y text-warning"
+                    width="24" height="24" role="img">
+                {{ macros.bootstrap_icon("circle-fill") }}
+            </svg>
+            <svg class="ms-2 bi flex-shrink-0 position-absolute
+                        top-50 translate-middle-y text-danger"
+                    width="24" height="24" role="img">
+                {{ macros.bootstrap_icon("exclamation-circle") }}
+            </svg>
+        </div>
+    </td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Depuis le") }}</th>
+    <td>{{ moment(rezident.current_subscription.end).format("LL") }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Coupure le") }}</th>
+    <td>{{ moment(rezident.current_subscription.cut_day).format("LL") }}</td>
+</tr>
+
+{% else %}
+
+<tr>
+    <th scope="row" class="ps-4">{{ _("État") }}</th>
+    <td>
+        <div class="m-auto position-relative pe-3">
+            {{ _("Paiement nécessaire") }}
+            <svg class="ms-2 bi flex-shrink-0 position-absolute
+                        top-50 translate-middle-y text-danger"
+                    width="24" height="24" role="img">
+                {{ macros.bootstrap_icon("x-circle-fill") }}
+            </svg>
+        </div>
+    </td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Depuis le") }}</th>
+    <td>{{ moment(rezident.old_subscriptions[0].cut_day).format("LL") }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Accès Internet") }}</th>
+    <td>{{ _("Suspendu") }}</td>
+</tr>
+
+{% endif %}
+{% endblock %}
+
+
+{% block card_footer %}
+<a href="{{ url_for("payments.main", doas=doas) }}"
+   class="btn btn-outline-dark">
+    {{ _("Plus d'informations") }}
+</a>
+{% if rezident.sub_state == SubState.subscribed %}
+
+<div class="d-inline-block me-3" data-bs-toggle="tooltip"
+     data-bs-placement="top" title="{{ _("Renouvellement possible à partir de "
+                                         "la fin de l'abonnement actuel") }}">
+    <button class="ms-2 btn btn-outline-dark" disabled>
+        {{ _("Payer") }}
+    </button>
+</div>
+
+{% elif rezident.sub_state == SubState.trial %}
+
+<a href="{{ url_for("payments.pay", doas=doas) }}"
+   class="btn btn-outline-dark btn-primary ms-2">
+    {{ _("Payer") }}
+</a>
+
+{% else %}
+
+<a href="{{ url_for("payments.pay", doas=doas) }}"
+   class="btn btn-danger btn-outline-dark text-white ms-2">
+    {{ _("Payer") }}
+</a>
+
+{% endif %}
+{% endblock %}

@@ -2,9 +2,6 @@
 
 {% block app_content %}
 
-<script src="{{ url_for("static", filename="js/tooltips.js") }}"
-        defer></script>
-
 <div class="row mb-3">
     <div class="col">
         <h1>{{ _("Bonjour, %(name)s !", name=g.rezident.prenom) }}</h1>
@@ -26,9 +23,12 @@
     </p></div>
 </div>
 <div class="row row-cols row-cols-xl-3 gy-4 gx-1">
-    {% with user = g.rezident %}
+    {% with rezident = g.rezident %}
     <div class="col">
         {% include "cards/profile.html" %}
+    </div>
+    <div class="col">
+        {% include "cards/subscription.html" %}
     </div>
     {% endwith %}
     <div class="col">

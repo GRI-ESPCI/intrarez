@@ -1,0 +1,90 @@
+{% extends "mails_base.html" %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h2>{{ _("Votre accès Internet sera coupé dans une semaine") }}</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>{{ _("Bonjour %(name)s,", name=rezident.prenom) }}</p>
+        <p>
+            {{ _("Votre abonnement actuel à Internet à la Rez a expiré "
+                 "depuis maintenant trois semaines :") }}
+        </p>
+        <ul class="mb-4">
+            <li>
+                {{ _("Offre :") }} {{ sub.offer.name }}
+            </li>
+            <li>
+                {{ _("Date d'achat :") }}
+                {{ babel.format_date(sub.payment.payed, format="long")
+                   if sub.payment else _("(offert)") }}
+            </li>
+            <li>
+                {{ _("Validité :") }}
+                {{ babel.format_date(sub.start, format="long") }}
+                – {{ babel.format_date(sub.end, format="long") }}
+            </li>
+        </ul>
+        <p>
+            {{ _("En conséquence, <strong>il ne vous reste plus qu'une "
+                 "semaine</strong> pour le renouveler, après quoi votre accès "
+                 "Internet sera <strong>automatiquement coupé</strong> "
+                 "(le %(date)s).",
+                 date=babel.format_date(sub.cut_day, format="long")) }}
+        </p>
+        <ul>
+            <li>
+                {{ _("Si vous restez à la Rezidence, prenez quelques instants "
+                     "pour prendre un nouvel abonnement en quelques clics via "
+                     "Lydia, CB, virement bancaire ou espèces.") }}
+            </li>
+            <li>
+                {{ _("Si vous avez quitté la Rezidence, il vous suffit de "
+                     "<strong>déclarer la fin de votre location</strong> et "
+                     "nous cesserons de vous envoyer ces emails.") }}
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col text-center">
+        <a class="btn btn-primary mx-3 my-2"
+           href="{{ url_for("payments.pay") }}">
+            {{ _("Renouveler mon abonnement") }}
+        </a>
+        <a class="btn btn-secondary mx-3 my-2"
+           href="{{ url_for("rooms.terminate") }}">
+            {{ _("Terminer ma location") }}
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col mb-3">
+        <p>
+            {{ _("Pour plus d'informations sur le fonctionnement des "
+                 "abonnements ou l'historique de vos paiements, visitez") }}
+            <a href="{{ url_for("payments.main") }}" class="link-secondary">
+                {{ _("votre page d'abonnement") }}</a>.
+        </p>
+        <p>
+            {{ _("Pour toute question ou pour plus d'informations, vous "
+                 "pouvez simplement répondre à cet email.") }}
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>
+            {{ _("Très bonne journée,") }}
+        </p>
+        <p>
+            {{ _("Les GRI") }}
+        </p>
+    </div>
+</div>
+
+{% endblock %}

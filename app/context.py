@@ -1,5 +1,6 @@
 """"IntraRez - Custom request context"""
 
+from ipaddress import IPv4Address
 import functools
 import re
 import subprocess
@@ -10,13 +11,13 @@ from flask_babel import _
 import flask_login
 
 from app.models import Device, Rezident
-from app.tools import utils
+from app.tools import utils, typing
 
 
-def create_request_context():
+def create_request_context() -> typing.RouteReturn | None:
     """Make checks about current request and define custom ``g`` properties.
 
-    Intended to be registerd by :func:`before_request`.
+    Intended to be registered by :func:`before_request`.
 
     Defines:
       * :attr:`flask.g.remote_ip` (default ``None``):
@@ -30,13 +31,16 @@ def create_request_context():
             :attr:`flask.g.internal` is ``True``.
       * :attr:`flask.g.logged_in` (default ``False``):
             Shorthand for :attr:`flask_login.current_user.is_authenticated`.
+      * :attr:`flask.g.logged_in_user` (default ``None``):
+            Shorthand for :attr:`flask_login.current_user`. Warning: ignores
+            doas mechanism; please use :attr:`flask.g.rezident` instead.
       * :attr:`flask.g.doas` (default ``False``):
             If ``True``, the logged in user is a GRI that is doing an action
             as another rezident.
       * :attr:`flask.g.rezident` (default ``None``):
             The rezident the request is made as: ``None`` if not
-            :attr:`flask.g.logged_in`, the controled rezident if
-            :attr:`~flask.g.doas`, or :attr:`flask_login.current_user`.
+            :attr:`flask.g.logged_in`, the controlled rezident if
+            :attr:`~flask.g.doas`, or :attr:`flask.g.logged_in_user`.
       * :attr:`flask.g.is_gri` (default ``False``):
             ``True`` if the user is logged in and is a GRI.
       * :attr:`flask.g.has_a_room` (default ``False``):
@@ -58,7 +62,7 @@ def create_request_context():
                 by him.
       * :attr:`flask.g.redemption_endpoint` (default ``None``):
             The endpoint of the page that the user must visit first to
-            regularize its situation.
+            regularize its situation (see :func:`.all_good_only`).
             Defined only if attr:`flask.g.all_good` is ``False``.
       * :attr:`flask.g.redemption_params` (default ``{}``):
             The query parameters for attr:`flask.g.redemption_endpoint`.
@@ -68,6 +72,7 @@ def create_request_context():
     g.mac = None
     g.internal = False
     g.logged_in = False
+    g.logged_in_user = None
     g.rezident = None
     g.is_gri = False
     g.doas = False
@@ -79,26 +84,42 @@ def create_request_context():
     g.redemption_params = {}
 
     # Get user
-    g.logged_in = flask_login.current_user.is_authenticated
+    current_user = typing.cast(
+        flask_login.AnonymousUserMixin | Rezident,
+        flask_login.current_user
+    )
+    g.logged_in = current_user.is_authenticated
     if g.logged_in:
-        g.rezident = flask_login.current_user
+        g.logged_in_user = typing.cast(Rezident, current_user)
+        g.rezident = g.logged_in_user       # May be overridden later if doas
         g.is_gri = g.rezident.is_gri
     else:
         g.all_good = False
         g.redemption_endpoint = "auth.auth_needed"
 
     # Check doas
-    doas = flask.request.args.get("doas", type=Rezident.query.get)
+    doas_id = flask.request.args.get("doas", "")
+    doas = Rezident.query.get(doas_id) if doas_id.isdigit() else None
     if doas:
         if g.is_gri:
             g.rezident = doas
+            g.is_gri = g.rezident.is_gri
             g.doas = True
         else:
             # Not authorized to do things as other rezidents!
             new_args = flask.request.args.copy()
             del new_args["doas"]
-            return flask.redirect(flask.url_for(flask.request.endpoint,
-                                                **new_args))
+            return flask.redirect(flask.url_for(
+                flask.request.endpoint or "main.index", **new_args
+            ))
+
+    # Check maintenance
+    if flask.current_app.config["MAINTENANCE"]:
+        if g.is_gri:
+            flask.flash(_("Le site est en mode maintenance : seuls les GRI "
+                          "peuvent y accéder."), "warning")
+        else:
+            flask.abort(503)    # 503 Service Unavailable
 
     # Get IP
     g.remote_ip = flask.current_app.config["FORCE_IP"] or _get_remote_ip()
@@ -114,7 +135,7 @@ def create_request_context():
             return utils.safe_redirect("devices.error", reason="ip")
 
     # Get MAC
-    g.mac = False and flask.current_app.config["FORCE_MAC"] or _get_mac(g.remote_ip)
+    g.mac = flask.current_app.config["FORCE_MAC"] or _get_mac(g.remote_ip)
     g.internal = bool(g.mac)
     if not g.internal and not g.all_good:
         g.redemption_endpoint = "main.external_home"
@@ -123,42 +144,59 @@ def create_request_context():
         # All further checks need a logged-in user
         return None
 
+    # Inform type-checker we now have a real rezident
+    g.rezident = typing.cast(Rezident, g.rezident)
+
     # Check room
     g.has_a_room = g.rezident.has_a_room
     if not g.has_a_room:
         g.all_good = False
         g.redemption_endpoint = "rooms.register"
+        if not g.doas:
+            g.redemption_params = {"hello": True}
 
-    if not g.internal:
-        # All further checks need an internal user
-        return None
+    if g.internal:
+        # Get device
+        g.device = Device.query.filter_by(mac_address=g.mac).first()
+        if g.device:
+            g.device.update_last_seen()
+        else:
+            if g.all_good:
+                # Internal but device not registered: must register
+                g.all_good = False
+                g.redemption_endpoint = "devices.register"
+                g.redemption_params = {"mac": g.mac}
+                if not g.doas:
+                    g.redemption_params["hello"] = True
+            # Last check need a device
+            return None
 
-    # Get device
-    g.device = Device.query.filter_by(mac_address=g.mac).first()
-    if g.device:
-        g.device.update_last_seen()
-    else:
-        if g.all_good:
-            # Internal but device not registered: must register
+        # Check device owner
+        g.own_device = (g.rezident == g.device.rezident)
+        if g.all_good and not g.own_device:
+            # Internal, device but not owned: must transfer
             g.all_good = False
-            g.redemption_endpoint = "devices.register"
+            g.redemption_endpoint = "devices.transfer"
             g.redemption_params = {"mac": g.mac}
-        # Last check need a device
+            if not g.doas:
+                g.redemption_params["hello"] = True
+            return None
+
+    # Check at least one device
+    if g.all_good and not g.rezident.devices:
+        g.all_good = False
+        g.redemption_endpoint = "devices.register"
         return None
 
-    # Check device owner
-    g.own_device = (g.rezident == g.device.rezident)
-    if g.all_good and not g.own_device:
-        # Internal, device but not owned: must transfer
-        g.all_good = False
-        g.redemption_endpoint = "devices.transfer"
-        g.redemption_params = {"mac": g.mac}
+    # Add first subscription if necessary
+    if g.all_good and not g.rezident.current_subscription:
+        g.rezident.add_first_subscription()
 
     # All set!
     return None
 
 
-def _get_remote_ip():
+def _get_remote_ip() -> str | None:
     """Fetch the remote IP from the request headers.
 
     Returns:
@@ -167,7 +205,7 @@ def _get_remote_ip():
     return flask.request.headers.get("X-Real-Ip")
 
 
-def _get_mac(remote_ip):
+def _get_mac(remote_ip) -> str | None:
     """Fetch the remote rezident MAC address from the ARP table.
 
     Args:
@@ -179,103 +217,141 @@ def _get_mac(remote_ip):
     output = subprocess.run(["/sbin/arp", "-a"], capture_output=True)
     # arp -a liste toutes les correspondances IP - mac connues
     # résultat : lignes "domain (ip) at mac_address ..."
-    mtch = re.search(rf"^.*? \({remote_ip}\) at ([0-9a-f:]{{17}}).*",
-                     output.stdout.decode(), re.M)
-    if mtch:
-        return mtch.group(1)
+    match = re.search(rf"^.*? \({remote_ip}\) at ([0-9a-f:]{{17}}).*",
+                      output.stdout.decode(), re.M)
+    if match:
+        return match.group(1)
     else:
         return None
 
 
-def all_good_only(routine):
+# Type variables for decoraters below
+_RP = typing.ParamSpec("_RP")
+_Route = typing.Callable[_RP, typing.RouteReturn]
+
+
+def all_good_only(route: _Route) -> _Route:
     """Route function decorator to restrict route to all-good users.
 
     Redirects user to :attr:`flask.g.redemption_endpoint` if
     :attr:`flask.g.all_good` is ``False``.
 
     Args:
-        routine (function): The route function to restrict access to.
+        route: The route function to restrict access to.
 
     Returns:
-        The protected routine.
+        The protected route.
     """
-    @functools.wraps(routine)
-    def new_routine():
+    @functools.wraps(route)
+    def new_route(*args: _RP.args, **kwargs: _RP.kwargs) -> typing.RouteReturn:
         if g.all_good:
-            return routine()
+            return route(*args, **kwargs)
         else:
             return (utils.safe_redirect(g.redemption_endpoint,
-                                        **g.redemption_params) or routine())
+                                        **g.redemption_params) or route())
 
-    return new_routine
+    return new_route
 
 
-def internal_only(routine):
+def internal_only(route: _Route) -> _Route:
     """Route function decorator to restrict route to internal network.
 
     Aborts with a 401 Unauthorized if the request comes from the Internet
     (:attr:`flask.g.internal` is ``False``).
 
     Args:
-        routine (function): The route function to restrict access to.
+        route: The route function to restrict access to.
 
     Returns:
-        The protected routine.
+        The protected route.
     """
-    @functools.wraps(routine)
-    def new_routine():
+    @functools.wraps(route)
+    def new_route(*args: _RP.args, **kwargs: _RP.kwargs) -> typing.RouteReturn:
         if g.internal:
-            return routine()
+            return route(*args, **kwargs)
         else:
             flask.abort(401)    # 401 Unauthorized
+            raise   # never reached, just to tell the type checker
 
-    return new_routine
+    return new_route
 
 
-def logged_in_only(routine):
+def logged_in_only(route: _Route) -> _Route:
     """Route function decorator to restrict route to logged in users.
 
     Redirects user to "auth.auth_needed" if :attr:`flask.g.logged_in`
     is ``False``.
 
     Args:
-        routine (function): The route function to restrict access to.
+        route: The route function to restrict access to.
 
     Returns:
-        The protected routine.
+        The protected route.
     """
-    @functools.wraps(routine)
-    def new_routine():
+    @functools.wraps(route)
+    def new_route(*args: _RP.args, **kwargs: _RP.kwargs) -> typing.RouteReturn:
         if g.logged_in:
-            return routine()
+            return route(*args, **kwargs)
         else:
             flask.flash(_("Veuillez vous authentifier pour accéder "
                           "à cette page."), "warning")
-            return utils.safe_redirect("auth.auth_needed")
+            return utils.ensure_safe_redirect("auth.auth_needed")
 
-    return new_routine
+    return new_route
 
 
-def gris_only(routine):
+def gris_only(route: _Route) -> _Route:
     """Route function decorator to restrict route to logged in GRIs.
 
     Aborts with a 403 if :attr:`flask.g.is_gri` is ``False``.
 
     Args:
-        routine (function): The route function to restrict access to.
+        route: The route function to restrict access to.
 
     Returns:
-        The protected routine.
+        The protected route.
     """
-    @functools.wraps(routine)
-    def new_routine():
+    @functools.wraps(route)
+    def new_route(*args: _RP.args, **kwargs: _RP.kwargs) -> typing.RouteReturn:
         if g.is_gri:
-            return routine()
+            return route(*args, **kwargs)
         elif g.logged_in:
             flask.abort(403)    # 403 Not Authorized
+            raise   # never reached, just to tell the type checker
         else:
             flask.flash(_("Veuillez vous authentifier pour accéder "
                           "à cette page."), "warning")
-            return utils.safe_redirect("auth.login")
+            return utils.ensure_safe_redirect("auth.login")
 
-    return new_routine
+    return new_route
+
+
+def _address_in_range(address: str, start: str, stop: str) -> bool:
+    return (IPv4Address(start) <= IPv4Address(address) <= IPv4Address(stop))
+
+
+def capture() -> typing.RouteReturn | None:
+    """"Redirect request to the adequate page based on its remote IP.
+
+    Function called by the captive portal if the requested address is not one
+    of the IntraRez.
+
+    Returns:
+        The return value of :func:`flask.redirect`, or ``None`` if we are
+        already on the adequate page (process request).
+    """
+    remote_ip = _get_remote_ip()
+    if not remote_ip:
+        # X-Real-Ip header not set by Nginx: application bug?
+        return utils.safe_redirect("devices.error", reason="ip")
+    if _address_in_range(remote_ip, "10.0.0.100", "10.0.0.199"):
+        # 10.0.0.100 - 10.0.0.199: Not registered
+        return utils.safe_redirect("main.index")
+    if _address_in_range(remote_ip, "10.0.8.0", "10.0.8.255"):
+        # 10.0.8.x: Not subscribed
+        return utils.safe_redirect("main.index")    # Not implemented
+    if _address_in_range(remote_ip, "10.0.9.0", "10.0.9.255"):
+        # 10.0.9.x: Banned
+        return utils.safe_redirect("main.index")    # Not implemented
+
+    return utils.safe_redirect("main.index")

@@ -9,11 +9,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, ".env"))
 
 
-def get_or_die(name):
+def get_or_die(name: str) -> str:
     """Check availability and get the value of an environment variable.
 
     Args:
-        name (str): The envrionment variable to get.
+        name (str): The environment variable to get.
 
     Returns:
         The environment variable value, if it is set.
@@ -48,12 +48,19 @@ class Config():
     ADMINS = os.environ.get("ADMINS", "").split(";")
 
     ERROR_WEBHOOK = os.environ.get("ERROR_WEBHOOK")
+    LOGGING_WEBHOOK = os.environ.get("LOGGING_WEBHOOK")
     MESSAGE_WEBHOOK = os.environ.get("MESSAGE_WEBHOOK")
     MAIL_WEBHOOK = os.environ.get("MAIL_WEBHOOK")
     GRI_ROLE_ID = os.environ.get("GRI_ROLE_ID")
 
+    LYDIA_BASE_URL = os.environ.get("LYDIA_BASE_URL")
+    LYDIA_VENDOR_TOKEN = os.environ.get("LYDIA_VENDOR_TOKEN")
+    LYDIA_PRIVATE_TOKEN = os.environ.get("LYDIA_PRIVATE_TOKEN")
+
     GOOGLE_RECAPTCHA_SITEKEY = os.environ.get("GOOGLE_RECAPTCHA_SITEKEY")
     GOOGLE_RECAPTCHA_SECRET = os.environ.get("GOOGLE_RECAPTCHA_SECRET")
+
+    GRI_BASIC_PASSWORD = os.environ.get("GRI_BASIC_PASSWORD")
 
     BRANCH = os.environ.get("BRANCH")
     FORCE_IP = os.environ.get("FORCE_IP")
@@ -62,3 +69,5 @@ class Config():
     NETLOCS = os.environ.get("NETLOCS")
     if NETLOCS is not None:
         NETLOCS = NETLOCS.split(";")
+
+    MAINTENANCE = bool(os.environ.get("MAINTENANCE"))

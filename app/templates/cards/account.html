@@ -1,4 +1,4 @@
-{# Account card - used variables: user #}
+{# Account card - used variables: rezident #}
 {% extends "cards/base.html" %}
 
 {% block card_title %}
@@ -6,45 +6,47 @@
 {% endblock %}
 
 {% block card_icon %}
-{{ bootstrap_icon("person-badge") }}
+{{ macros.bootstrap_icon("person-badge") }}
 {% endblock %}
 
 {% block card_table %}
 <tr>
     <th scope="row" class="ps-4">{{ _("Identifiant") }}</th>
-    <td>{{ user.username }}</td>
+    <td>{{ rezident.username }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Nom") }}</th>
-    <td class="text-break">{{ user.nom }}</td>
+    <td class="text-break">{{ rezident.nom }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Prénom") }}</th>
-    <td class="text-break">{{ user.prenom }}</td>
+    <td class="text-break">{{ rezident.prenom }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Promotion") }}</th>
-    <td>{{ user.promo }}</td>
+    <td>{{ promotions().get(rezident.promo, rezident.promo) }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Email") }}</th>
     <td class="text-break">
-        <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+        <a href="mailto:{{ rezident.email }}" class="text-dark">
+            {{ rezident.email }}
+        </a>
     </td>
 </tr>
 {% endblock %}
 
 {% block card_footer %}
-<div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
-     data-bs-placement="top" title="{{ _("Fonctionnalité à venir") }}">
-    <button class="btn btn-outline-dark" disabled>
-        {{ _("Modifier une information") }}
-    </button>
-</div>
-<div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
-     data-bs-placement="top" title="{{ _("Fonctionnalité à venir") }}">
-    <button class="btn btn-outline-dark" disabled>
-        {{ _("Changer de mot de passe") }}
-    </button>
-</div>
+<a class="btn btn-outline-dark me-3 mb-2 position-relative"
+   href="{{ url_for("profile.modify_account", doas=doas,
+                    next=request.url_rule.endpoint) }}">
+    {{ _("Modifier une information") }}
+    {{ macros.badge("NEW") }}
+</a>
+<a class="btn btn-outline-dark me-3 position-relative"
+   href="{{ url_for("profile.update_password", doas=doas,
+                    next=request.url_rule.endpoint) }}">
+    {{ _("Changer de mot de passe") }}
+    {{ macros.badge("NEW") }}
+</a>
 {% endblock %}

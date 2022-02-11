@@ -10,7 +10,8 @@
 </div>
 
 <div class="row"><p>
-    {{ _("Mettre fin à ta location actuelle (chambre %(room)s) ?", room=room) }}
+    {{ _("Mettre fin à ta location actuelle (chambre %(room)s) ?",
+         room=room) }}
 </p></div>
 <div class="row"><p>
     {{ _("Cela permettra de déclarer une nouvelle location (ou non, en cas "
@@ -21,7 +22,7 @@
          "instants.") }}
 </p></div>
 <div class="row">
-    <form action="" method="post" role="form" id="rental_form">
+    <form action="" method="post" role="form">
         {{ form.hidden_tag() }}
         <div class="col"><div class="form-floating mb-3">
             {{ wtf.form_field(form.end, value=today) }}

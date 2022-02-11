@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 {% import "_form.html" as wtf %}
 
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for("static", filename="js/rooms-register.js") }}"
+        defer></script>
+{% endblock %}
+
 {% block app_content %}
 
-{% if not request.args.get("force") and not g.doas %}
+{% if request.args.get("hello") %}
 <div class="row mt-3 mb-5">
     <div class="col"><div class="progress registration-steps fs-5">
         <div class="progress-bar w-25 bg-success bg-gradient">
@@ -29,7 +35,7 @@
 
 <div class="row"><p>
     {{ _("Merci de renseigner ta chambre actuelle, ainsi que le début de la "
-          "location (approximativent).") }}
+          "location (approximativement).") }}
 </p></div>
 <div class="row"><p>
     {{ _("La date de fin n'est pas obligatoire.") }}
@@ -78,19 +84,19 @@
             {{ _("Soit il s'agit d'une sous-location, auquel cas nous vous "
                  "conseillons de voir avec le propriétaire pour plutôt qu'il "
                  "enregistre votre appareil sur son compte. Sans cela, nous "
-                 "vous demenderons bientôt de payer la connexion Internet.") }}
+                 "vous demanderons bientôt de payer la connexion Internet.") }}
         </li>
         <li>
             {{ _("Soit il s'agit d'une colocation (ou autre cas de figure), "
-                 "auquel cas nous vous demendons d'utiliser un seul compte "
+                 "auquel cas nous vous demandons d'utiliser un seul compte "
                  "pour la chambre, au nom du propriétaire officiel. En effet, "
                  "si vous continuez, tous les appareils précédemment "
-                 "enregistrés ici perderont l'accès au réseau.") }}
+                 "enregistrés ici perdront l'accès au réseau.") }}
         </li>
         </ul>
         <p class="text-danger">
             {{ _("N'essayez pas d'abuser du système ou de vous en servir "
-                 "à des fins peu recommendables ! Les GRI ouvrent l'œil, "
+                 "à des fins peu recommandables ! Les GRI ouvrent l'œil, "
                  "et vous n'avez pas envie de les fâcher...") }}
         </p>
     </div>
@@ -106,8 +112,6 @@
     </div>
 </div>
 </div>
-<script src="{{ url_for("static", filename="js/rooms-register.js") }}" defer>
-</script>
 {% endif %}
 
 {% endblock %}

@@ -4,7 +4,9 @@ Pour toutes les chambres, attribue une adresse IP aux appareils de
 l'occupant actuel.
 
 Ce script peut uniquement être appelé depuis Flask :
-/home/intrarez/intrarez/env/bin/flask script gen_dhcp.py
+  * Soit depuis l'interface en ligne (menu GRI) ;
+  * Soit par ligne de commande :
+    cd /home/intrarez/intrarez; " ./env/bin/flask script gen_dhcp.py
 
 10/2021 Loïc 137
 """
@@ -12,17 +14,22 @@ Ce script peut uniquement être appelé depuis Flask :
 import os
 import sys
 
+import flask
+
 try:
     from app.models import Room
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
-        "/home/intrarez/intrarez/env/bin/flask script gen_dhcp.py\n"
+        "  * Soit depuis l'interface en ligne (menu GRI) ;\n"
+        "  * Soit par ligne de commande :\n"
+        "    cd /home/intrarez/intrarez; "
+        "    ./env/bin/flask script update_sub_states.py\n"
     )
     sys.exit(1)
 
 
-def main():
+def main() -> None:
     rules = ""
 
     rooms = Room.query.all()
@@ -45,7 +52,7 @@ def main():
             )
 
     # Écriture dans le fichier
-    file = os.getenv("DHCP_HOSTS_FILE")
+    file = os.getenv("DHCP_HOSTS_FILE") or ""
     if not os.path.isfile(file):
         raise FileNotFoundError(f"Le ficher d'hôtes DHCP '{file}' n'existe "
                                 "pas (variable d'environment DHCP_HOSTS_FILE)")
@@ -56,9 +63,10 @@ def main():
             f"# ({__file__}).\n"
             "# Ne PAS le modifier à la main, ce serait écrasé !\n#\n"
             "#   * Pour ajouter un appareil à un Rezident,\n"
-            "#       - utiliser l'interface en ligne\n"
+            "#       - utiliser l'interface en ligne \n"
+            f"#         ({flask.url_for('gris.rezidents')})\n"
             "#       - OU utiliser `flask shell` pour l'ajouter en base,\n"
-            "#         puis regénérer avec `flask script gen_dhcp.py`\n"
+            "#         puis régénérer avec `flask script gen_dhcp.py`\n"
             "#         (flask = /home/intrarez/intrarez/env/bin/flask)\n#\n"
             "#   * Pour ajouter toute autre règle, modifier directement\n"
             "#     /env/dhcp/dhcpd.conv\n#\n"

@@ -2,16 +2,13 @@
 
 {% block app_content %}
 
-<script src="{{ url_for("static", filename="js/tooltips.js") }}"
-        defer></script>
-
 <div class="row mb-3">
     <div class="col">
         <h1>{{ title }}</h1>
     </div>
 </div>
 <div class="row row-cols row-cols-xl-3 gy-4 gx-1">
-    {% with user = g.rezident, doas = None %}
+    {% with rezident = g.rezident, doas = None %}
     <div class="col">{% include "cards/account.html" %}</div>
     <div class="col">{% include "cards/room.html" %}</div>
     <div class="col">{% include "cards/device.html" %}</div>
@@ -20,7 +17,7 @@
 
 <!-- Modals devices -->
 {% for device in g.rezident.other_devices %}
-{% with user = g.rezident %}
+{% with rezident = g.rezident %}
 {% include "cards/device_modal.html" %}
 {% endwith %}
 {% endfor %}

@@ -1,4 +1,4 @@
-{# Devices list card - used variables: user #}
+{# Devices list card - used variables: rezident #}
 {% extends "cards/base.html" %}
 
 {% block card_title %}
@@ -6,48 +6,61 @@
 {% endblock %}
 
 {% block card_icon %}
-{{ bootstrap_icon("laptop") }}
+{{ macros.bootstrap_icon("laptop") }}
 {% endblock %}
 
 {% block card_table %}
-{% with device = user.current_device %}
+{% if g.internal and rezident == g.rezident %}
 <tr>
     <th scope="row" class="ps-4">{{ _("Appareil actuel") }}</th>
-    <td class="text-break">{{ device.name }}</td>
+    <td class="text-break">{{ g.device.name }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Type") }}</th>
-    <td class="text-break">{{ device.type }}</td>
+    <td class="text-break">{{ g.device.type }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Adresse MAC") }}</th>
-    <td class="text-break">{{ device.mac_address }}</td>
+    <td class="text-break">{{ g.device.mac_address }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("IP attribuée") }}</th>
-    <td class="text-break">{{ device.current_ip }}</td>
+    <td class="text-break">{{ g.device.current_ip }}</td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Enregistrement") }}</th>
     <td class="text-break">
-        <span title="{{ device.registered }} UTC">
-            {{ moment(device.registered).format("LL") }}
+        <span title="{{ g.device.registered }} UTC">
+            {{ moment(g.device.registered).format("LL") }}
         </span>
     </td>
 </tr>
 <tr>
     <th scope="row" class="ps-4">{{ _("Dernière connexion") }}</th>
     <td class="text-break">
-        {% if device.last_seen %}
-        <span title="{{ device.last_seen }} UTC">
-            {{ moment(device.last_seen).fromNow() }}
+        {% if g.device.last_seen %}
+        <span title="{{ g.device.last_seen }} UTC">
+            {{ moment(g.device.last_seen).fromNow() }}
         </span>
         {% else %}
         <span>{{ _("Jamais") }}</span>
         {% endif %}
     </td>
 </tr>
-{% endwith %}
+{% else %}          {# if not g.internal #}
+<tr>
+    <th scope="row" class="ps-4">{{ _("Appareil actuel") }}</th>
+    <td class="text-break">{{ _("[Connexion extérieure]") }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Adresse MAC") }}</th>
+    <td class="text-break">{{ _("(inconnue)") }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("IP distante") }}</th>
+    <td class="text-break">{{ g.remote_ip }}</td>
+</tr>
+{% endif %}
 {% endblock %}
 
 {% block card_prefooter %}
@@ -59,21 +72,22 @@
                 type="button" data-bs-toggle="collapse"
                 data-bs-target="#coll-dev-h" aria-expanded="true"
                 aria-controls="coll-dev-h">
-            {{ _("Autres appareils :") }}&nbsp;
-            <strong>{{ len(user.other_devices) }}</strong>
+            {{ _("Autres appareils :") if g.internal and rezident == g.rezident
+              else _("Appareils :") }}&nbsp;
+            <strong>{{ len(rezident.other_devices) }}</strong>
         </button>
     </h3>
     <div class="accordion-collapse collapse" id="coll-dev-h"
          aria-labelledby="acco-dev-h" data-bs-parent="#acco-dev">
     <div class="accordion-body bg-pc5 p-0">
-        {% if user.other_devices %}
+        {% if rezident.other_devices %}
         <table class="table table-striped table-borderless mb-0">
         <tbody>
             <tr>
                 <th scope="col" class="ps-3">{{ _("Nom") }}</th>
                 <th scope="col" colspan=2>{{ _("Dernière connexion") }}</th>
             </tr>
-            {% for device in user.other_devices %}
+            {% for device in rezident.other_devices %}
             <tr class="align-middle">
                 <td class="text-break ps-3">{{ device.name }}</td>
                 <td>
@@ -88,12 +102,12 @@
                 <td class="text-end">
                     <button type="button" class="btn p-0 me-1"
                             data-bs-target=
-                                "#mo-device-{{ user.id }}-{{ device.id }}"
+                                "#mo-device-{{ rezident.id }}-{{ device.id }}"
                             data-bs-toggle="modal">
                     <svg class="bi flex-shrink-0" width="24"
                             height="24" role="img"
                             aria-label="{{ _("Détails") }}">
-                        {{ bootstrap_icon("eye") }}
+                        {{ macros.bootstrap_icon("eye") }}
                     </svg>
                 </button></td>
             </tr>
@@ -110,14 +124,14 @@
 
 {% block card_footer_class %}{{ super() }} px-auto{% endblock %}
 {% block card_footer %}
-<div class="d-inline-block me-3 mb-2" data-bs-toggle="tooltip"
-     data-bs-placement="top" title="{{ _("Fonctionnalité à venir") }}">
-    <button class="btn btn-outline-dark" disabled>
-        {{ _("Modifier l'appareil") }}
-    </button>
-</div>
+<a class="btn btn-outline-dark me-3 position-relative"
+   href="{{ url_for("devices.modify", doas=doas,
+                    next=request.url_rule.endpoint) }}">
+    {{ _("Modifier l'appareil") }}
+    {{ macros.badge("NEW") }}
+</a>
 <a class="btn btn-outline-dark"
-   href="{{ url_for("devices.register", force=True, doas=doas,
+   href="{{ url_for("devices.register", doas=doas,
                     next=request.url_rule.endpoint) }}">
     {{ _("Nouvel appareil") }}
 </a>

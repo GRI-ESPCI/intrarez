@@ -20,6 +20,7 @@ Flask-Moment==1.0.2
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==0.15.1
 greenlet==1.1.1
+html2text==2020.1.16
 idna==3.2
 importlib-resources==5.2.2
 itsdangerous==2.0.1

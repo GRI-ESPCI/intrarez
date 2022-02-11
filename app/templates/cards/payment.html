@@ -1,0 +1,41 @@
+{# Payment card - used variables: payment #}
+{% extends "cards/base.html" %}
+
+{% block card_title %}
+{{ _("Paiement") }}
+{% endblock %}
+
+{% block card_icon %}
+{{ macros.bootstrap_icon("credit-card") }}
+{% endblock %}
+
+{% block card_table %}
+<tr>
+    <th scope="row" class="ps-4">{{ _("Identifiant") }}</th>
+    <td>{{ payment.id }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Rezident") }}</th>
+    <td class="text-break">{{ payment.rezident.full_name }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Montant") }}</th>
+    <td>{{ babel.format_currency(payment.amount, "EUR") }}</td>
+</tr>
+<tr>
+    <th scope="row" class="ps-4">{{ _("Mode de paiement") }}</th>
+    <td>{{ _("Lydia / CB") if payment.lydia_uuid else _("Autre") }}</td>
+</tr>
+{% if payment.lydia_uuid %}
+<tr>
+    <th scope="row" class="ps-4">{{ _("ID Lydia") }}</th>
+    <td class="text-break font-monospace">
+        {{ payment.lydia_transaction_id or "<unknown>" }}
+    </td>
+</tr>
+{% endif %}
+<tr>
+    <th scope="row" class="ps-4">{{ _("Date et heure") }}</th>
+    <td>{{ moment(payment.payed).format("LLL") }}</td>
+</tr>
+{% endblock %}

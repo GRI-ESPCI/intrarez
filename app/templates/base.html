@@ -1,26 +1,36 @@
+{% import "macros.html" as macros %}
+
 {% block doc %}
 <!DOCTYPE html>
-<html lang="{{ get_locale() }}">
+<html lang="{{ babel.get_locale() }}">
     {% block html %}
     <head>
         {% block head %}
         {% block metas %}
+        <!-- Metas -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% endblock metas %}
-        <title>
-            {% block title %}
-            {% if title %}{{ title }} – IntraRez{% else %}IntraRez{% endif %}
-            {% endblock %}
-        </title>
+        {% block title %}
+        <!-- Title -->
+        {% if title %}
+        <title>{{ title }} – IntraRez</title>
+        {% else %}
+        <title>IntraRez</title>
+        {% endif %}
+        {% endblock title %}
         {% block styles %}
-        <link href="{{ url_for("static", filename="css/custom.css") }}"
+        <!-- Styles: Bootstrap, custom -->
+        {% for filename in [
+            "css/compiled/custom-bootstrap.css",
+            "css/custom.css",
+        ] %}
+        <link href="{{ url_for("static", filename=filename) }}"
               rel="stylesheet" />
-        <!-- Bootstrap 5.0.2 core CSS -->
-        <link href="{{ url_for("static", filename="css/compiled/custom-bootstrap.css") }}"
-              rel="stylesheet" />
+        {% endfor %}
         {% endblock styles %}
-
+        {% block favicon %}
+        <!-- Favicon: Depending if anonymous, logged_in or GRI -->
         {% if g.is_gri %}
         <link href="{{ url_for("static", filename="favicon_gri.png") }}"
               rel="icon" />
@@ -31,20 +41,19 @@
         <link href="{{ url_for("static", filename="favicon.png") }}"
               rel="icon" />
         {% endif %}
-
+        {% endblock favicon %}
         {% block scripts %}
-        <!-- Bootstrap 5.0.2 Bundle with Popper (loaded asynchroniously) -->
-        <script src="{{ url_for("static",
-            filename="bower_components/bootstrap/dist/js/bootstrap.bundle.min.js") }}" defer></script>
-        <script src="{{ url_for("static", filename="js/tooltips.js") }}"
-                defer></script>
-        {{ moment.include_moment(local_js=url_for("static",
-            filename="bower_components/moment/min/moment-with-locales.min.js"))
-        }}
-        <script>
-            moment.locale(window.navigator.userLanguage
-                          || window.navigator.language)
+        <!-- Scripts: Bootstrap, moment.js, tooltips and toasts trigger -->
+        {% for filename in [
+            "bower_components/bootstrap/dist/js/bootstrap.bundle.min.js",
+            "bower_components/moment/min/moment-with-locales.min.js",
+            "js/moment.js",
+            "js/tooltips.js",
+            "js/toasts.js",
+        ] %}
+        <script src="{{ url_for("static", filename=filename) }}" defer>
         </script>
+        {% endfor %}
         {% endblock scripts %}
         {% endblock head %}
     </head>
@@ -57,9 +66,11 @@
         <div class="container-fluid ps-0">
             <a class="navbar-brand p-0" href="{{ url_for("main.index") }}">
                 <img src="{{ url_for("static", filename="img/gri.png") }}"
-                        width="80" height="80"
-                        class="d-inline-block m-0" alt="GRI">
-                <span class="align-text-top">/&nbsp;<b>IntraRez</b></span>
+                     width="80" height="80" class="d-inline-block m-0"
+                     alt="GRI" />
+                <span class="align-text-top">
+                    /&nbsp;<strong>IntraRez</strong>
+                </span>
                 {% if config.get("BRANCH") %}
                 <span class="badge rounded-pill bg-warning text-dark ms-2">
                     {{ config["BRANCH"] }}
@@ -67,20 +78,19 @@
                 {% endif %}
             </a>
             <button class="navbar-toggler m-2" type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+                    data-bs-toggle="collapse" data-bs-target="#navbar_content"
+                    aria-controls="navbar_content" aria-expanded="false"
+                    aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar navbar-collapse"
-                 id="navbarSupportedContent">
-                <ul class="navbar-nav mx-auto mb-12 mb-1sm-0">
+            <div class="collapse navbar navbar-collapse" id="navbar_content">
+                <ul class="navbar-nav mx-auto flex-row flex-wrap
+                           justify-content-end">
                     {% if g.is_gri %}
                     {% include "gris/menu.html" %}
                     {% endif %}
                 </ul>
-                <ul class="navbar-nav ms-auto mb-12 mb-1sm-0">
+                <ul class="navbar-nav flex-row flex-wrap justify-content-end">
                     {% if not g.logged_in %}
                     <li class="nav-item">
                         <a class="btn btn-outline-secondary mx-2 my-1"
@@ -109,14 +119,22 @@
                     </li>
                     {% else %}      {# Utilisateur connecté #}
                     <li class="nav-item">
+                        <a class="btn btn-outline-secondary mx-2 my-1
+                                  position-relative"
+                           href="{{ url_for("payments.main") }}">
+                            {{ _("Abonnement") }}
+                            {{ macros.badge() }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="btn btn-outline-secondary mx-2 my-1"
-                            href="{{ url_for("main.profile") }}">
+                           href="{{ url_for("profile.main") }}">
                             {{ _("Profil") }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-outline-secondary mx-2 my-1"
-                            href="{{ url_for("auth.logout") }}">
+                           href="{{ url_for("auth.logout") }}">
                             {{ _("Déconnexion") }}
                         </a>
                     </li>
@@ -127,88 +145,73 @@
         </nav>
         {% endblock navbar %}
         {% block content %}
-        <div class="container">
+        <div class="container position-relative">
             {% if g.doas %}
             <div class="row">{% include "doas.html" %}</div>
             {% endif %}
             {% block app_content %}{% endblock app_content %}
-        </div>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="toast-container position-absolute top-0 start-50 p-3 mt-5">
-            {% for category, message in messages %}
-            <div class="toast" role="alert" aria-live="assertive"
-                 aria-atomic="true">
-                <div class="toast-header text-white bg-{{ category }}">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24"
-                         role="img" aria-label="{{ alert_labels[category] }}">
-                        {{ bootstrap_icon(alert_symbols[category]) }}
-                    </svg>
-                    <strong class="me-auto">
-                        {{ alert_labels[category] }}
-                    </strong>
-                    <button type="button" class="btn-close"
-                            data-bs-dismiss="toast"
-                            aria-label="{{ _("Fermer") }}">
-                    </button>
-                </div>
-                <div class="toast-body">
-                    {{ message }}
-                </div>
+            <!-- Flashed messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="toast-container position-absolute top-0 end-0 px-3">
+                {% for category, message in messages %}
+                {{ macros.flashed_message(message, category) }}
+                {% endfor %}
             </div>
-            {% endfor %}
+            {% endif %}
+            {% endwith %}
         </div>
-        <script src="{{ url_for("static", filename="js/toasts.js") }}" defer>
-        </script>
-        {% endif %}
-        {% endwith %}
-
         {% endblock content %}
         {% block footer %}
         <footer class="bd-footer pt-3 mt-5 bg-light">
-            <div class="container py-3"><div class="row gx-4">
-                <div class="col-lg-auto">
+        <div class="container py-3">
+            <div class="row gx-4">
+                <div class="col-auto">
                     <a class="d-inline-flex align-items-center mb-2
-                              link-dark text-decoration-none fs-5"
-                       href="{{ url_for("main.index") }}"
-                       aria-label="Intranet de la Rez">
+                            link-dark text-decoration-none fs-5"
+                    href="{{ url_for("main.index") }}">
                         Intranet de la Rez
                     </a>
-                    <div class="small text-muted mb-3">
-                        &copy;&nbsp;2021 GRI ESPCI –
-                        <a href="{{ url_for("main.changelog") }}"
-                           class="text-muted">
+                    <div class="small text-muted mb-4 mb-lg-0 text-center">
+                        &copy;&nbsp;{{ copyright }}<br/>
+                        <a class="text-muted"
+                        href="{{ url_for("main.changelog") }}">
                             {{ _("Version") }} {{ __version__ }}
                         </a>
                     </div>
                 </div>
-                <div class="col-6 col-lg-auto offset-lg-1 mb-2 me-lg-4">
-                    <a href="{{ url_for("main.index") }}"
-                       class="link-secondary">
+                <div class="col-lg-auto px-0"></div>
+                <div class="col-6 col-lg-auto offset-lg-1 mb-2 me-lg-4
+                            d-flex align-items-center">
+                    <a class="link-secondary"
+                       href="{{ url_for("main.index") }}">
                         {{ _("Accueil") }}
                     </a>
                 </div>
-                <div class="col-6 col-lg-auto mb-2 me-lg-4">
-                    <a href="{{ url_for("main.contact") }}"
-                       class="link-secondary">
+                <div class="col-6 col-lg-auto mb-2 me-lg-4
+                            d-flex align-items-center">
+                    <a class="link-secondary"
+                       href="{{ url_for("main.contact") }}">
                         {{ _("Nous contacter") }}
                     </a>
                 </div>
-                <div class="col-6 col-lg-auto mb-2 me-lg-4">
-                    <a href="https://github.com/GRI-ESPCI/intrarez"
-                       class="link-secondary"
-                       target="_blank" rel="noopener noreferrer">
+                <div class="col-6 col-lg-auto mb-2 me-lg-4
+                            d-flex align-items-center">
+                    <a class="link-secondary"
+                       href="https://github.com/GRI-ESPCI/intrarez"
+                       target="_blank" rel="external">
                         {{ _("Code source") -}}
                     </a>
                 </div>
-                <div class="col-6 col-lg-auto mb-2 me-lg-4">
-                    <a href="{{ url_for("main.legal") }}"
-                       class="link-secondary">
+                <div class="col-6 col-lg-auto mb-2 me-lg-4
+                            d-flex align-items-center">
+                    <a class="link-secondary"
+                       href="{{ url_for("main.legal") }}">
                         {{ _("Mentions légales") }}
                     </a>
                 </div>
-            </div></div>
+            </div>
+        </div>
         </footer>
         {% endblock footer %}
         {% endblock body %}

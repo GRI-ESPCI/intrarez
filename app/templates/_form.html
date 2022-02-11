@@ -1,13 +1,13 @@
 {# Code deriving from Flask-Bootstrap WTForm support:
    https://github.com/mbr/flask-bootstrap/blob/master/flask_bootstrap/templates/bootstrap/wtf.html
    Adapted to our style
+   but code pretty ugly, sorry
 #}
 
 {% macro form_errors(form, hiddens=True) %}
   {%- if form.errors %}
     {%- for fieldname, errors in form.errors.items() %}
-      {%- if bootstrap_is_hidden_field(form[fieldname]) and hiddens or
-             not bootstrap_is_hidden_field(form[fieldname]) and hiddens != 'only' %}
+      {%- if hiddens != 'only' %}
         {%- for error in errors %}
           <div class="invalid-feedback">{{error}}</div>
         {%- endfor %}
@@ -83,12 +83,10 @@ the necessary fix for required=False attributes, but will also not set the requi
        <fieldset>
          <legend>{{field.label}}</legend>
          {%- for subfield in field %}
-           {% if not bootstrap_is_hidden_field(subfield) -%}
              {{ form_field(subfield,
                            form_type=form_type,
                            horizontal_columns=horizontal_columns,
                            button_map=button_map) }}
-           {%- endif %}
          {%- endfor %}
        </fieldset>
     {# </div> #}
@@ -195,7 +193,7 @@ action="" is what we want, from http://www.ietf.org/rfc/rfc2396.txt:
 
  -#}
 {#- if any file fields are inside the form and enctype is automatic, adjust
-    if file fields are found. could really use the equalto test of jinja2
+    if file fields are found. could really use the equal to test of jinja2
     here, but latter is not available until 2.8
 
     warning: the code below is guaranteed to make you cry =(
@@ -234,12 +232,10 @@ action="" is what we want, from http://www.ietf.org/rfc/rfc2396.txt:
   {# <div class="mb-3"> #}
       {%- for field in form %}
       <div class="col-md-5">
-            {% if not bootstrap_is_hidden_field(field) -%}
               {{ form_field(field,
                             form_type=form_type,
                             horizontal_columns=horizontal_columns,
                             button_map=button_map) }}
-            {%- endif %}
       </div>
       {%- endfor %}
   {# </div> #}

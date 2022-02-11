@@ -3,7 +3,7 @@
 
 {% block app_content %}
 
-{% if not request.args.get("force") and not g.doas %}
+{% if request.args.get("hello") %}
 <div class="row mt-3 mb-5">
     <div class="col"><div class="progress registration-steps fs-5">
         <div class="progress-bar w-25 bg-success bg-gradient">
@@ -67,9 +67,9 @@
          "voici quelques informations sur comment la trouver :") }}
 </p></div>
 
-<div class="accordion" id="accordeon">
+<div class="accordion" id="accordion">
     <div class="accordion-item">
-        <h2 class="accordion-header" id="accordeon-gen">
+        <h2 class="accordion-header" id="accordion-gen">
             <button class="accordion-button collapsed" type="button"
                     data-bs-toggle="collapse" data-bs-target="#collapse-gen"
                     aria-expanded="true" aria-controls="collapse-gen">
@@ -77,7 +77,7 @@
             </button>
         </h2>
         <div id="collapse-gen" class="accordion-collapse collapse"
-             aria-labelledby="accordeon-gen" data-bs-parent="#accordeon">
+             aria-labelledby="accordion-gen" data-bs-parent="#accordion">
             <div class="accordion-body">
                 <p>{{ _("Chaque appareil est identifié par une <strong>adresse
 MAC</strong> (<em>Media Access Control</em>), ou adresse physique, qui lui est
@@ -85,7 +85,7 @@ théoriquement unique. Tous les appareils accédant à un réseau informatique,
 même les plus basiques, disposent d'une telle adresse. Votre ordinateur peut
 même en avoir plusieurs, si différent composants lui permettent d'accéder
 à Internet.") }}</p>
-                <p>{{ _("Ces adresses ont une longeur de 6 octets (48 bits) et
+                <p>{{ _("Ces adresses ont une longueur de 6 octets (48 bits) et
 sont généralement représentées sous forme hexadécimale, en séparant les octets
 deux-points :") }} <code>xx:xx:xx:xx:xx:xx</code>.</p>
                 <p>{{ _("Contrairement à l'adresse IP, qui identifie votre
@@ -94,14 +94,14 @@ sites que vous visitez. Nous ne pouvons la détecter que grâce un tour de
 passe-passe, faisable uniquement en réseau local.") }}</p>
                 <p><em>{{ _("Pour en savoir plus :") }}</em>
                 <a href="{{ _("https://fr.wikipedia.org/wiki/Adresse_MAC") }}"
-                   target="_blank" rel="noopener noreferrer">
+                   target="_blank" rel="external noopener noreferrer">
                     {{ _("Adresse MAC — Wikipédia</a>") }}
                 </a></p>
             </div>
         </div>
     </div>
     <div class="accordion-item">
-        <h2 class="accordion-header" id="accordeon-win">
+        <h2 class="accordion-header" id="accordion-win">
             <button class="accordion-button collapsed" type="button"
                     data-bs-toggle="collapse" data-bs-target="#collapse-win"
                     aria-expanded="true" aria-controls="collapse-win">
@@ -109,7 +109,7 @@ passe-passe, faisable uniquement en réseau local.") }}</p>
             </button>
         </h2>
         <div id="collapse-win" class="accordion-collapse collapse"
-             aria-labelledby="accordeon-win" data-bs-parent="#accordeon">
+             aria-labelledby="accordion-win" data-bs-parent="#accordion">
             <div class="accordion-body">
                 <ol>
                     <li>{{ _("Clic droit sur le <strong>Menu Démarrer</strong>
@@ -126,7 +126,7 @@ représentant la carte Ethernet ou la carte Wi-Fi, selon les cas.") }}</li>
         </div>
     </div>
     <div class="accordion-item">
-        <h2 class="accordion-header" id="accordeon-mac">
+        <h2 class="accordion-header" id="accordion-mac">
             <button class="accordion-button collapsed" type="button"
                     data-bs-toggle="collapse" data-bs-target="#collapse-mac"
                     aria-expanded="true" aria-controls="collapse-mac">
@@ -134,7 +134,7 @@ représentant la carte Ethernet ou la carte Wi-Fi, selon les cas.") }}</li>
             </button>
         </h2>
         <div id="collapse-mac" class="accordion-collapse collapse"
-             aria-labelledby="accordeon-mac" data-bs-parent="#accordeon">
+             aria-labelledby="accordion-mac" data-bs-parent="#accordion">
             <div class="accordion-body">
                 <p>{{ _("Contrairement à ce qu'on pourrait penser, il n'est pas
 particulièrement plus facile de trouver l'adresse MAC d'un Mac.") }}</p>
@@ -162,7 +162,7 @@ ou <strong>Adresse Wi-Fi</strong>") }}</li>
         </div>
     </div>
     <div class="accordion-item">
-        <h2 class="accordion-header" id="accordeon-linux">
+        <h2 class="accordion-header" id="accordion-linux">
             <button class="accordion-button collapsed" type="button"
                     data-bs-toggle="collapse" data-bs-target="#collapse-linux"
                     aria-expanded="true" aria-controls="collapse-linux">
@@ -170,7 +170,7 @@ ou <strong>Adresse Wi-Fi</strong>") }}</li>
             </button>
         </h2>
         <div id="collapse-linux" class="accordion-collapse collapse"
-             aria-labelledby="accordeon-linux" data-bs-parent="#accordeon">
+             aria-labelledby="accordion-linux" data-bs-parent="#accordion">
             <div class="accordion-body">
                 <p><em>{{ _("La méthode peut varier selon la distribution
 installée et sa version.") }}</em></p>
@@ -187,7 +187,7 @@ utilisée.") }}</li>
         </div>
     </div>
     <div class="accordion-item">
-        <h2 class="accordion-header" id="accordeon-android">
+        <h2 class="accordion-header" id="accordion-android">
             <button class="accordion-button collapsed" type="button"
                     data-bs-toggle="collapse" data-bs-target="#collapse-android"
                     aria-expanded="true" aria-controls="collapse-android">
@@ -195,7 +195,7 @@ utilisée.") }}</li>
             </button>
         </h2>
         <div id="collapse-android" class="accordion-collapse collapse"
-             aria-labelledby="accordeon-android" data-bs-parent="#accordeon">
+             aria-labelledby="accordion-android" data-bs-parent="#accordion">
             <div class="accordion-body">
                 <p><em>{{ _("La méthode exacte peut varier selon
 l'appareil.") }}</em></p>
@@ -211,7 +211,7 @@ téléphone)") }}</li>
         </div>
     </div>
     <div class="accordion-item">
-        <h2 class="accordion-header" id="accordeon-iphone">
+        <h2 class="accordion-header" id="accordion-iphone">
             <button class="accordion-button collapsed" type="button"
                     data-bs-toggle="collapse" data-bs-target="#collapse-iphone"
                     aria-expanded="true" aria-controls="collapse-iphone">
@@ -219,7 +219,7 @@ téléphone)") }}</li>
             </button>
         </h2>
         <div id="collapse-iphone" class="accordion-collapse collapse"
-             aria-labelledby="accordeon-iphone" data-bs-parent="#accordeon">
+             aria-labelledby="accordion-iphone" data-bs-parent="#accordion">
             <div class="accordion-body">
                 <ol>
                     <li>{{ _("Ouvrir <strong>Paramètres</strong> >
@@ -232,7 +232,7 @@ téléphone)") }}</li>
         </div>
     </div>
     <div class="accordion-item">
-        <h2 class="accordion-header" id="accordeon-other">
+        <h2 class="accordion-header" id="accordion-other">
             <button class="accordion-button collapsed" type="button"
                     data-bs-toggle="collapse" data-bs-target="#collapse-other"
                     aria-expanded="true" aria-controls="collapse-other">
@@ -240,7 +240,7 @@ téléphone)") }}</li>
             </button>
         </h2>
         <div id="collapse-other" class="accordion-collapse collapse"
-             aria-labelledby="accordeon-other" data-bs-parent="#accordeon">
+             aria-labelledby="accordion-other" data-bs-parent="#accordion">
             <div class="accordion-body">
                 <p>{{ _("De manière générale, l'adresse MAC est indiquée dans
 les informations système / matérielles de l'appareil. Il arrive aussi qu'elle

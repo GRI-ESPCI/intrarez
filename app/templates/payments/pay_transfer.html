@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col">
+        <div class="row mb-3">
+            <div class="col-auto">
+                <h1>{{ title }}</h1>
+            </div>
+            <div class="col my-auto me-auto">
+                <a class="btn btn-outline-secondary"
+                   href="{{ url_for("payments.pay") }}">
+                    {{ _("Changer") }}
+                </a>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <h2>{{ _("Instructions détaillées :") }}</h2>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <p>{{ _("Il est possible de payer par virement bancaire, avec "
+                        "les paramètres suivants :") }}</p>
+                <ul>
+                    <li>
+                        {{ _("IBAN :") }}
+                        <span class="fw-bold font-monospace ps-1">
+                            FR04 3000 2008 0700 0000 6386 H29
+                        </span>
+                    </li>
+                    <li>
+                        {{ _("BIC :") }}
+                        <span class="fw-bold font-monospace ps-1">
+                            CRLYFRPP
+                        </span>
+                    </li>
+                    <li>
+                        {{ _("Motif :") }}
+                        <span class="fw-bold font-monospace ps-1">
+                            INTERNET {{ g.rezident.username.upper() }}
+                            {{ offer.slug.upper() }}
+                        </span>
+                    </li>
+                    <li>
+                        {{ _("Montant :") }}
+                        <span class="fw-bold font-monospace ps-1">
+                            {{ babel.format_currency(offer.price, "EUR") }}
+                        </span>
+                    </li>
+                </ul>
+                <p>{{ _("Une fois le virement effectué, merci de nous "
+                        "en informer en utilisant le bouton en bas de "
+                        "page.") }}</p>
+                <p>{{ _("Une fois le paiement reçu, une GRI enregistrera "
+                        "manuellement votre paiement, et vous recevrez un "
+                        "mail. N'hésitez pas à nous relancer si rien ne se "
+                        "passe après une ou deux semaines.") }}</p>
+                <p>{{ _("De fait, merci de n'utiliser cette solution "
+                        "<strong>que si le paiement Lydia/CB n'est pas "
+                        "envisageable</strong>.") }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col col-auto mb-auto">
+        {% with can_change = True %}
+        {% include "cards/offer.html" %}
+        {% endwith %}
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col text-center">
+        <a class="btn btn-secondary ms-2"
+           href="{{ url_for("main.contact") }}?title={{
+                 _("Virement effectué : %(name)s (%(price)s)",
+                   name=offer.name,
+                   price=babel.format_currency(offer.price, "EUR")) }}">
+            {{ _("Nous prévenir") }}
+        </a>
+    </div>
+</div>
+
+
+{% endblock %}

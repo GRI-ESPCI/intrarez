@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% import "_form.html" as wtf %}
+
+{% block scripts %}
+{{ super() }}
+<script src={{ url_for("static", filename="js/tooltips.js") }}
+        defer></script>
+{% endblock %}
+
+{% block app_content %}
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col"><p>
+        {{ _("Pour plus d'informations sur les adresses MAC et comment "
+            "la trouver pour un appareil, voir en bas de ") }}
+        <a href="{{ url_for("devices.register") }}">
+            {{ _("la page d'enregistrement") }}</a>.
+    </p></div>
+</div>
+
+<div class="row mb-4">
+    <form action="" method="post" role="form" id="modify_form">
+        {{ form.hidden_tag() }}
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.nom, value=device.name) }}
+        </div></div>
+        <div class="col"><div class="form-floating mb-3">
+            {{ wtf.form_field(form.type, value=device.type) }}
+        </div></div>
+        <div class="col">
+            {{ wtf.form_field(form.submit) }}
+            {% if device != g.device %}
+
+            <div class="d-inline-block ms-3" data-bs-toggle="tooltip"
+                 title="{{ _("Fonctionnalité à venir") }}">
+                <button type="button" class="btn btn-outline-danger"
+                        data-bs-toggle="modal" data-bs-target="#warning"
+                        disabled>   <!-- Action non implémentée -->
+                    {{ _("Supprimer l'appareil") }}
+                </button>
+            </div>
+
+
+            {% endif %}
+        </div>
+    </form>
+</div>
+<div class="row"><p>
+    <a class="btn btn-outline-secondary"
+       href="{{ url_for("profile.main", doas=request.args.get("doas")) }}">
+        {{ _("Retour") }}
+    </a>
+</p></div>
+
+<!-- Modal -->
+<div class="modal fade" id="warning" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">{{ _("Supprimer l'appareil ?") }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="{{ _("Fermer") }}"></button>
+    </div>
+    <div class="modal-body">
+        <p>
+            {{ _("Supprimer l'appareil « %(name)s » ?", name=device.name) }}
+        </p>
+        <p class="text-danger">
+            L'appareil perdra tout connexion au réseau.
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark"
+                data-bs-dismiss="modal">
+            {{ _("Annuler" )}}
+        </button>
+        <button type="submit" form="modify_form" class="btn btn-danger">
+            {{ _("Supprimer l'appareil") }}
+        </button>
+    </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
