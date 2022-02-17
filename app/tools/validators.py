@@ -6,7 +6,7 @@ import flask
 import wtforms
 from flask_babel import lazy_gettext as _l
 
-from app.models import Rezident, Room
+from app.models import Rezident, Room, Ban
 from app.tools.typing import JinjaStr
 
 
@@ -89,11 +89,27 @@ class NewEmail(CustomValidator):
         return (rezident is None) or (rezident == flask.g.rezident)
 
 
+class ValidRezidentID(CustomValidator):
+    message = _l("Rezident ID invalide.")
+
+    def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
+        return (field.data.isdigit()
+                and bool(Rezident.query.get(int(field.data))))
+
+
 class ValidRoom(CustomValidator):
     message = _l("Numéro de chambre invalide.")
 
     def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
         return bool(Room.query.get(field.data))
+
+
+class ValidBanID(CustomValidator):
+    message = _l("Ban ID invalide.")
+
+    def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
+        return (field.data.isdigit()
+                and bool(Ban.query.get(int(field.data))))
 
 
 class PastDate(CustomValidator):

@@ -101,6 +101,11 @@ def transfer() -> typing.RouteReturn:
                         "danger")
         elif device.rezident == g.rezident:
             flask.flash(_("Cet appareil vous appartient déjà !"), "danger")
+        elif device.rezident.is_banned:
+            flask.flash(_("Cet appareil appartient à un utilisateur banni. "
+                          "Son transfert est donc bloqué pour éviter les "
+                          "tentatives de contournement ; contactez-nous si "
+                          "la demande est légitime."), "danger")
         else:
             old_rezident = device.rezident
             device.rezident = g.rezident

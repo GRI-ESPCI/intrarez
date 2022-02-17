@@ -60,6 +60,7 @@ class Rezident(flask_login.UserMixin, Model):
     payments_created: Relationship[list[Payment]] = one_to_many(
         "Payment.gri", foreign_keys="Payment._gri_id"
     )
+    bans: Relationship[list[Ban]] = one_to_many("Ban.rezident")
 
     def __repr__(self) -> str:
         """Returns repr(self)."""
@@ -74,7 +75,7 @@ class Rezident(flask_login.UserMixin, Model):
     def first_seen(self) -> datetime.datetime:
         """The first time the rezident registered a device, or now."""
         if not self.devices:
-            return datetime.datetime.now()
+            return datetime.datetime.utcnow()
         return min(device.registered for device in self.devices)
 
     @property
@@ -194,6 +195,19 @@ class Rezident(flask_login.UserMixin, Model):
             f"granting Internet access for {start} – {start + offer.delay}"
         )
 
+    @property
+    def current_ban(self) -> Ban | None:
+        """The rezident's current ban, or ``None``."""
+        try:
+            return next(ban for ban in self.bans if ban.is_active)
+        except StopIteration:
+            return None
+
+    @property
+    def is_banned(self) -> bool:
+        """Whether the rezident is currently under a ban."""
+        return (self.current_ban is not None)
+
     def set_password(self, password: str) -> None:
         """Save or modify rezident password.
 
@@ -307,6 +321,12 @@ class Device(Model):
         Returns:
             The allocated IP.
         """
+        if self.rezident.is_banned:
+            # Rezident banned: IP in 10.0.8-255.0-255 (encoding ban ID)
+            # (i.e. a range of 126975 bans)
+            ban = self.rezident.current_ban
+            return f"10.0.{8 + (ban.id // 256)}.{ban.id % 256}"
+
         alloc = Allocation.query.filter_by(device=self, room=room).first()
         if alloc:
             # Already allocated
@@ -581,3 +601,33 @@ class Offer(Model):
             visible=False,
             active=True,
         )
+
+
+class Ban(Model):
+    """A ban of a Rezident from accessing the Internet."""
+    id: Column[int] = column(sa.Integer(), primary_key=True)
+    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"),
+                                       nullable=False)
+    rezident: Relationship[Rezident] = many_to_one("Rezident.bans")
+    start: Column[datetime.datetime] = column(sa.DateTime(), nullable=False)
+    end: Column[datetime.datetime | None] = column(sa.DateTime())
+    reason: Column[str | None] = column(sa.String(32), nullable=False)
+    message: Column[str | None] = column(sa.String(2000))
+
+    def __repr__(self) -> str:
+        """Returns repr(self)."""
+        return f"<Ban #{self.id} of {self.rezident} ({self.start}-{self.end})>"
+
+    @property
+    def duration(self) -> relativedelta.relativedelta | None:
+        """Relative delta ``end - start``, or ``None`` if no end."""
+        if self.end:
+            return relativedelta.relativedelta(self.end, self.start)
+        else:
+            return None
+
+    @property
+    def is_active(self) -> bool:
+        """Whether the ban is currently active."""
+        now = datetime.datetime.utcnow()
+        return (self.start <= now) and ((not self.end) or now < self.end)

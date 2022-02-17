@@ -40,3 +40,69 @@ function sort(col) {
         do_sort(col, sort_way)
     }
 }
+
+
+// Ban modal
+var moBan = document.getElementById("mo-ban")
+var title = moBan.querySelector('.modal-title')
+var [template_new, template_update] = title.textContent.split(" || ")
+var submit =  moBan.querySelector('#submit')
+var [submit_text_new, submit_text_update] = submit.value.split(" || ")
+moBan.addEventListener("show.bs.modal", function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Update the modal's content.
+    moBan.querySelector('#rezident').value = button.dataset["rezidentId"]
+    moBan.querySelectorAll(".form-control").forEach(elem => elem.value = null)
+    moBan.querySelector('#infinite').checked = true
+    update_checkbox()
+    if (button.dataset["banId"]) {
+        // Update existing ban
+        title.textContent = template_update
+            .replace("_name_", button.dataset["rezidentName"])
+        moBan.querySelector('#ban_id').value = button.dataset["banId"]
+        if (button.dataset["banEnd"]) {
+            moBan.querySelector('#infinite').checked = false
+            update_checkbox()
+            var end = moment.utc(new Number(button.dataset["banEnd"]) * 1000);
+            var interval = moment.duration(end.diff());
+            moBan.querySelector('#hours').value = interval.hours()
+            moBan.querySelector('#days').value = interval.days()
+            moBan.querySelector('#months').value = interval.months()
+        }
+        moBan.querySelector('#reason').value = button.dataset["banReason"]
+        moBan.querySelector('#message').value = button.dataset["banMessage"]
+        submit.value = submit_text_update
+        moBan.querySelector('#unban').hidden = false
+    } else {
+        // New ban
+        moBan.querySelector('#ban_id').value = null
+        title.textContent = template_new
+            .replace("_name_", button.dataset["rezidentName"])
+        submit.value = submit_text_new
+        moBan.querySelector('#unban').hidden = true
+    }
+})
+
+
+function update_checkbox() {
+    if (infiniteCheckbox.checked) {
+        moBan.querySelectorAll(".duration-control").forEach(
+            elem => elem.classList.add("text-muted")
+            )
+        moBan.querySelectorAll(".duration-input").forEach(
+            elem => elem.disabled = true
+        )
+    } else {
+        moBan.querySelectorAll(".duration-control").forEach(
+            elem => elem.classList.remove("text-muted")
+            )
+        moBan.querySelectorAll(".duration-input").forEach(
+            elem => elem.disabled = false
+        )
+    }
+}
+
+// Ban modal checkbox
+var infiniteCheckbox = moBan.querySelector('#infinite')
+infiniteCheckbox.addEventListener("change", update_checkbox)

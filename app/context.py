@@ -345,13 +345,12 @@ def capture() -> typing.RouteReturn | None:
         # X-Real-Ip header not set by Nginx: application bug?
         return utils.safe_redirect("devices.error", reason="ip")
     if _address_in_range(remote_ip, "10.0.0.100", "10.0.0.199"):
-        # 10.0.0.100 - 10.0.0.199: Not registered
+        # 10.0.0.100-199: Not registered
         return utils.safe_redirect("main.index")
-    if _address_in_range(remote_ip, "10.0.8.0", "10.0.8.255"):
-        # 10.0.8.x: Not subscribed
-        return utils.safe_redirect("main.index")    # Not implemented
-    if _address_in_range(remote_ip, "10.0.9.0", "10.0.9.255"):
-        # 10.0.9.x: Banned
-        return utils.safe_redirect("main.index")    # Not implemented
+    if _address_in_range(remote_ip, "10.0.8.0", "10.0.255.255"):
+        # 10.0.8-255.0-255: Banned (IP stores ban ID)
+        a, b, c, d = flask.g.remote_ip.split(".")
+        flask.g._ban = (int(c) - 8) * 256 + int(d)
+        return utils.safe_redirect("main.banned")
 
     return utils.safe_redirect("main.index")

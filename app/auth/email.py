@@ -33,7 +33,7 @@ def send_password_reset_email(rezident: Rezident) -> None:
     Args:
         rezident: The rezident to reset password of.
     """
-    with flask_babel.force_locale(rezident.locale or "en"):
+    with flask_babel.force_locale(rezident.locale or "fr"):
         # Render mail content in rezident's language (if doas, ...)
         subject = _("Réinitialisation du mot de passe")
         html_body = flask.render_template(

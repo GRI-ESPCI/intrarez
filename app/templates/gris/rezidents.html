@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_form.html" as wtf %}
 
 {% block scripts %}
 {{ super() }}
@@ -83,6 +84,21 @@
                 </span>
             </th>
             <th scope="col">
+                <span class="d-flex user-select-none" onclick="sort('ban');">
+                    <span>
+                        <svg class="bi flex-shrink-0" width="22" height="22">
+                            {{ macros.bootstrap_icon("hammer") }}
+                        </svg>
+                    </span>
+                    <span class="mx-auto">
+                        <svg class="bi flex-shrink-0" width="16" height="16"
+                            id="sort-svg-ban">
+                            <!-- Sort button inserted through JS -->
+                        </svg>
+                    </span>
+                </span>
+            </th>
+            <th scope="col">
                 <span class="d-flex user-select-none" onclick="sort('flag');">
                     <span>
                         <svg class="bi flex-shrink-0" width="22" height="22">
@@ -117,6 +133,12 @@
             {% endif %}
             data-ls="{{ rezident.last_seen.timestamp()
                         if rezident.last_seen else 0 }}"
+            {% if rezident.current_ban %}
+            data-ban="{{ int(rezident.current_ban.end.timestamp())
+                         if rezident.current_ban.end else 9999999999 }}"
+            {% else %}
+            data-ban="{{ 0 }}"
+            {% endif %}
             data-flag="{{ rezident.locale or "" }}"
         >
             <td{% if rezident.is_gri %} class="text-danger fw-bold"{% endif %}>
@@ -245,16 +267,47 @@
             </td>
 
             <td>
+                {% if rezident.is_banned %}
+                {% with ban = rezident.current_ban %}
+                <button class="btn btn-danger p-1 pt-0"
+                        data-bs-target="#mo-ban" data-bs-toggle="modal"
+                        data-rezident-id="{{ rezident.id }}"
+                        data-rezident-name="{{ rezident.full_name }}"
+                        data-ban-id="{{ ban.id }}"
+                        data-ban-end="{{ ban.end.timestamp()
+                                         if ban.end else "" }}"
+                        data-ban-reason="{{ ban.reason }}"
+                        data-ban-message="{{ ban.message }}">
+                    <svg class="bi flex-shrink-0" width="18" height="18">
+                        {{ macros.bootstrap_icon("hammer") }}
+                    </svg>
+                </button>
+                &nbsp;{{ moment(ban.end).fromNow(no_suffix=True)
+                    if ban.end else "∞" }}
+                {% endwith %}
+                {% else %}
+                <button class="btn btn-outline-danger p-1 pt-0"
+                        data-bs-target="#mo-ban" data-bs-toggle="modal"
+                        data-rezident-id="{{ rezident.id }}"
+                        data-rezident-name="{{ rezident.full_name }}">
+                    <svg class="bi flex-shrink-0" width="18" height="18">
+                        {{ macros.bootstrap_icon("hammer") }}
+                    </svg>
+                </button>
+                {% endif %}
+            </td>
+
+            <td>
                 {% if rezident.locale %}
                 <img class="flex-shrink-0" src="{{
                         url_for("static",
-                                filename="svg/lang/{}.svg".format(rezident.locale))
+                                filename="svg/lang/{}.svg"
+                                         .format(rezident.locale))
                      }}" width="22" height="22">
                 </img>
                 {% else %}
                 –
                 {% endif %}
-           </svg>
             </td>
 
         </tr>
@@ -354,6 +407,68 @@
 
 {% endwith %}
 {% endfor %}
+
+<!-- Ban modal -->
+<div class="modal fade" id="mo-ban" tabindex="-1"
+     aria-labelledby="mo-ban-lab" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="mo-ban-lab">
+                {{ _("Bannir _name_ || Ban de _name_") }}
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="{{ _("Fermer") }}"></button>
+        </div>
+        <form action="" method="post" role="form">
+            <div class="modal-body container">
+                {{ form.hidden_tag() }}
+                <div class="row d-flex align-items-center mb-3">
+                    <div class="col-3">
+                        <div class="form-check form-switch">
+                        {{ wtf.form_field(form.infinite) }}
+                        </div>
+                    </div>
+                    <div class="col-3 px-1">
+                        <div class="form-floating duration-control text-muted">
+                            {{ wtf.form_field(form.hours, disabled=True,
+                                            class="duration-input") }}
+                        </div>
+                    </div>
+                    <div class="col-3 px-1">
+                        <div class="form-floating duration-control text-muted">
+                            {{ wtf.form_field(form.days, disabled=True,
+                                            class="duration-input") }}
+                        </div>
+                    </div>
+                    <div class="col-3 ps-1">
+                        <div class="form-floating duration-control text-muted">
+                            {{ wtf.form_field(form.months, disabled=True,
+                                            class="duration-input") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3"><div class="col">
+                    <div class="form-floating">
+                        {{ wtf.form_field(form.reason, maxlength=32) }}
+                    </div>
+                </div></div>
+                <div class="row mb-3"><div class="col">
+                    <div class="form-floating">
+                        {{ wtf.form_field(form.message, maxlength=2000) }}
+                    </div>
+                </div></div>
+            </div>
+            <div class="modal-footer">
+                {{ wtf.form_field(form.unban, class="btn btn-success",
+                                  hidden=True) }}
+                {{ wtf.form_field(form.submit, class="btn btn-danger") }}
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    {{ _("En fait non") }}
+                </button>
+            </div>
+        </form>
+    </div></div>
+</div>
 
 <!-- Sort icons templates -->
 <div id="icon-template-down">

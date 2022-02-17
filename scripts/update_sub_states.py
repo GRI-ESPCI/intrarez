@@ -9,7 +9,7 @@ au Rezident l'informant du changement d'état.
 Ce script peut uniquement être appelé depuis Flask :
   * Soit depuis l'interface en ligne (menu GRI) ;
   * Soit par ligne de commande :
-    cd /home/intrarez/intrarez; " ./env/bin/flask script update_sub_states.py
+    cd /home/intrarez/intrarez; ./env/bin/flask script update_sub_states.py
 
 12/2021 Loïc 137
 """
@@ -17,11 +17,12 @@ Ce script peut uniquement être appelé depuis Flask :
 import datetime
 import sys
 
-import flask
+import flask_babel
+from flask_babel import _
 
 try:
     from app import db
-    from app.models import Rezident, SubState
+    from app.models import Rezident, Ban, SubState
     from app.payments import email
     from app.tools import utils
 except ImportError:
@@ -57,6 +58,30 @@ def main() -> None:
         else:
             # État pas à jour : changer et envoyer un mail
             print(f"{rezident.sub_state.name} -> {sub_state}")
+
+            if sub_state == SubState.outlaw:
+                # Expiration mois gratuit : BANNEZ-MOI ÇA LES MODOS
+                with flask_babel.force_locale(rezident.locale or "en"):
+                    ban = Ban(
+                        rezident=rezident,
+                        start=datetime.datetime.now(datetime.timezone.utc),
+                        end=None,
+                        reason=_("Pas d'abonnement actif"),
+                        message=_("Afin de retrouver l'accès à Internet, "
+                                  "connectez-vous à votre compte et prenez "
+                                  "un abonnement à Internet.")
+                    )
+                    db.session.add(ban)
+                    db.session.commit()
+            elif (rezident.sub_state == SubState.outlaw
+                  and sub_state == SubState.subscribed
+                  and rezident.is_banned):
+                # Re-prise abonnement : ok on débanne
+                rezident.current_ban.end = datetime.datetime.now(
+                    datetime.timezone.utc
+                )
+                db.session.commit()
+
             rezident.sub_state = sub_state
             db.session.commit()     # On commit à chaque fois, au cas où
             utils.log_action(

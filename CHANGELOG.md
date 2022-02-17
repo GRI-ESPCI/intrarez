@@ -5,6 +5,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 1.6.0 - 2022-02-17
+
+### Added
+
+  * Ban mechanism:
+      * :class:`.models.Ban`, :meth:`.models.Rezident.current_ban` and
+        :attr:`.models.Rezident.is_banned`;
+      * New form for ban creation/modification in a modal in rezidents list;
+      * :func:`.models.Device.allocate_ip_for` gives an address in the range
+        ``10.0.8-255.0-255`` if the user is banned, storing the ban ID;
+      * Banned page redirected to when IP in this range;
+      * Navigation header red when banned;
+      * Form validators for Rezident / Ban by ID;
+      * Ban creation / deletion when subscription expires / is renewed.
+
+### Changed
+
+  * Default language for password reset is now French
+
+### Fixed
+
+  * ``PaymentStatus`` missing in ``.enums.__all__``;
+  * :attr:`Rezident.first_seen` was not in UTC timezone.
+
+
 ## 1.5.0 - 2022-02-11
 
 ### Added

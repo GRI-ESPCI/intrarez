@@ -9,6 +9,7 @@ from discord_webhook import DiscordWebhook
 
 from app import context
 from app.main import bp, forms
+from app.models import Ban
 from app.tools import captcha, utils, typing
 
 
@@ -85,6 +86,18 @@ def connect_check() -> typing.RouteReturn:
     """Connect check page."""
     return flask.render_template("main/connect_check.html",
                                  title=_("Accès à Internet"))
+
+
+@bp.route("/banned")
+def banned() -> typing.RouteReturn:
+    """Page shown when the Rezident is banned."""
+    flask.g._ban = 1
+    try:
+        ban = Ban.query.get(flask.g._ban)
+    except AttributeError:
+        return utils.redirect_to_next()
+    return flask.render_template("main/banned.html", ban=ban,
+                                 title=_("Accès à Internet restreint"))
 
 
 @bp.route("/home")

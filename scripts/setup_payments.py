@@ -13,7 +13,7 @@ Il sera probablement détruit lors d'une prochaine mise à jour.
 Ce script peut uniquement être appelé depuis Flask :
   * Soit depuis l'interface en ligne (menu GRI) ;
   * Soit par ligne de commande :
-    cd /home/intrarez/intrarez; " ./env/bin/flask script setup_payments.py
+    cd /home/intrarez/intrarez; ./env/bin/flask script setup_payments.py
 
 12/2021 Loïc 137
 """

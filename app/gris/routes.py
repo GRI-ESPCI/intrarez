@@ -1,6 +1,7 @@
 """Intranet de la Rez - Gris Pages Routes"""
 
 import contextlib
+import datetime
 import io
 import traceback
 import sys
@@ -8,17 +9,46 @@ import sys
 import flask
 from flask_babel import _
 
-from app import context
+from app import context, db
 from app.gris import bp, forms
-from app.models import Rezident
+from app.models import Rezident, Ban
 from app.tools import utils, typing
 
 
-@bp.route("/rezidents")
+@bp.route("/rezidents", methods=["GET", "POST"])
 @context.gris_only
 def rezidents() -> typing.RouteReturn:
     """Rezidents list page."""
-    return flask.render_template("gris/rezidents.html",
+    form = forms.BanForm()
+    if form.validate_on_submit():
+        if form.ban_id.data:
+            ban = Ban.query.get(int(form.ban_id.data))
+            if form.unban.data:
+                # Terminate existing ban
+                ban.end = datetime.datetime.now(datetime.timezone.utc)
+                flask.flash(_("Le ban a été terminé."), "success")
+            else:
+                # Update existing ban
+                ban.end = form.get_end(ban.start)
+                ban.reason = form.reason.data
+                ban.message = form.message.data
+                flask.flash(_("Le ban a bien été modifié."), "success")
+        else:
+            # New ban
+            rezident = Rezident.query.get(int(form.rezident.data))
+            if rezident.is_banned:
+                flask.flash(_("Ce rezident est déjà banni !"), "danger")
+            else:
+                start = datetime.datetime.now(datetime.timezone.utc)
+                end = form.get_end(start)
+                ban = Ban(rezident=rezident, start=start, end=end,
+                        reason=form.reason.data, message=form.message.data)
+                db.session.add(ban)
+                flask.flash(_("Le mécréant a bien été banni."), "success")
+        db.session.commit()
+        utils.run_script("gen_dhcp.py")       # Update DHCP rules
+
+    return flask.render_template("gris/rezidents.html", form=form,
                                  rezidents=Rezident.query.all(),
                                  title=_("Gestion des Rezidents"))
 
@@ -26,8 +56,8 @@ def rezidents() -> typing.RouteReturn:
 @bp.route("/run_script", methods=["GET", "POST"])
 @context.gris_only
 def run_script() -> typing.RouteReturn:
-    form = forms.ChoseScriptForm()
     """Run an IntraRez script."""
+    form = forms.ChoseScriptForm()
     if form.validate_on_submit():
         # Exécution du script
         _stdin = sys.stdin

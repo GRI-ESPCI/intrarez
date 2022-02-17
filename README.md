@@ -8,6 +8,41 @@ Application Flask de l'Intranet de la Rez.
 Seules les fonctionnalités majeures sont listées ici ; voir
 [`CHANGELOG.md`](CHANGELOG.md) pour les détails.
 
+### 1.6
+
+* Système de ban par les GRI / si non paiement, coupant l'accès Internet.
+
+### 1.5
+
+* Mise en service des paiements :
+  * Pages d'information, de choix de l'offre et de paiement ;
+  * Paiement par Lydia / CB (automatisé), virement bancaire ou espèces ;
+  * Ajout / validation de paiement manuel par les GRI ;
+  * Souscription automatique à l'offre de bienvenue à la première connexion.
+* Envoi de mails riches, au format HTML pour divers motifs.
+* Ajout de la possibilité de modifier diverses informations sur son profil ;
+* Enregistrement en base de la langue préférée de chaque utilisateur ;
+* Mode maintenance activable par les GRI et page pour exécuter un script.
+
+### 1.4
+
+* Accès extérieur et contexte de connexion.
+* Captcha pour le formulaire de contact depuis l'extérieur.
+
+### 1.3
+
+* Mécanisme de changement de chambre.
+* Affichages de l'adresse IP attribuée aux appareils dans le profil.
+* Gestion des chambres et appareils par les GRI (doas).
+
+### 1.2
+
+* Menu GRI pour la gestion des Rezidents et le monitoring réseau.
+
+### 1.1
+
+* Portail captif pour simplifier la connexion au réseau.
+
 ### 1.0
 
 * Release initiale, fonctionnalités de base :
@@ -18,11 +53,11 @@ Seules les fonctionnalités majeures sont listées ici ; voir
 
 ## Exigences
 
-* Python : Probablement >= 3.10 à terme, pour l'instant >= 3.8 suffit ;
+* Python >= 3.10 ;
 * Autres packages Linux : ``postgresql postfix git npm``, plus pour le
   déploiement : ``supervisor nginx`` ;
 * Package npm : ``bower sass``
-    * Package Bower : ``bootstrap webping-js``
+    * Package Bower : ``bootstrap webping-js moment``
 * Packages Python : Voir [`requirements.txt`](requirements.txt), plus pour le
   déploiement : ``gunicorn pymysql cryptography`` ;
 * Pour le déploiement : un utilisateur Linux ``intrarez`` dédié.
@@ -33,7 +68,7 @@ Seules les fonctionnalités majeures sont listées ici ; voir
 Je reprends pour l'essentiel le déploiement conseillé dans le tutoriel :
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deployment-on-linux
 
-* Installer les dépendences :
+* Installer les dépendances :
 
   ```
   sudo apt install postgresql postgresql-client postfix git npm [supervisor nginx]
@@ -151,23 +186,6 @@ Configuration de Nginx :
 sudo cp .conf_models/nginx.conf /etc/nginx/sites-enabled/intrarez
 sudo service nginx reload
 ```
-
-**Note : pour l'instant, l'application est configurée pour ne fonctionner
-qu'en HTTP, pas en HTTPS (problèmes de certificats en réseau interne).**
-
-Il faudra tester et voir ce qui marche mieux en terme d'avertissements des
-navigateurs et autres entre ça et un certificat auto-host : voir
-[`.conf_models/nginx.conf`](.conf_models/nginx.conf), avec
-
-```
-mkdir certs
-openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
-  -keyout certs/key.pem -out certs/cert.pem
-```
-
-Compliqué d'avoir un vrai certificat, parce qu'il faut un nom de domaine
-associé, mais si on veut mettre des services accessibles depuis l'extérieur
-ce sera une étape obligée.
 
 
 ### Mise à jour

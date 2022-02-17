@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row">
+    <div class="col col-md-10 col-lg-8 col-xl-7 col-xxl-6">
+        <p><img src="{{ url_for("static", filename="img/bonk.png") }}"
+                width="100%" /></p>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        {{ _("L'accès à Internet depuis le réseau des GRI vous est "
+            "actuellement interdit.") }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <ul>
+            <li>
+                {{ _("Durée du bannissement :") }}
+                <strong>
+                    {% if ban.end %}
+                    {% if ban.duration.months %}
+                    {{ ban.duration.months }} {{ _("mois") }}
+                    {% endif %}
+                    {% if ban.duration.days %}
+                    {{ ban.duration.days }} {{ _("jours") }}
+                    {% endif %}
+                    {% if ban.duration.hours %}
+                    {{ ban.duration.hours }} {{ _("heures") }}
+                    {% endif %}
+                    {% else %}
+                    {{ _("Indéterminée") }}
+                    {% endif %}
+                </strong>
+            </li>
+            {% if ban.end %}
+            <li>
+                {{ _("Restauration de l'accès :") }}
+                <strong>{{ moment(ban.end).format("LLLL") }}</strong>
+            </li>
+            {% endif %}
+            <li>
+                {{ _("Motif :") }}
+                <strong>{{ ban.reason }}</strong>
+            </li>
+        </ul>
+    </div>
+</div>
+{% if ban.message %}
+<div class="row"><p>
+    <div class="col-auto d-flex align-items-center pe-0 text-muted ms-4">
+        <svg class="bi flex-shrink-0 me-2" width="30" height="30"
+             role="img" aria-label="Bug">
+            {{ macros.bootstrap_icon("chat-square-quote") }}
+        </svg>
+    </div>
+    <div class="col d-flex align-items-center ps-2">
+        {{ ban.message }}
+    </div>
+</p></div>
+{% endif %}
+<div class="row my-4">
+    <div class="col">
+        <em>{{ _("L'ensemble de l'IntraRez et les autres services internes "
+                 "sont toujours accessibles.") }}
+            <br />
+            {{ _("Pour toute question ou réclamation, n'hésitez pas à ") }}
+            <a href="{{ url_for("main.contact") }}">
+                {{ _("nous contacter") -}}
+            </a>.
+        </em>
+    </div>
+</div>
+
+{% endblock %}

@@ -9,7 +9,7 @@ http://www.postfix.org/aliases.5.html.
 Ce script peut uniquement être appelé depuis Flask :
   * Soit depuis l'interface en ligne (menu GRI) ;
   * Soit par ligne de commande :
-    cd /home/intrarez/intrarez; " ./env/bin/flask script mail_hook.py
+    cd /home/intrarez/intrarez; ./env/bin/flask script mail_hook.py
 
 Cependant, cela ne servirait à rien de l'appeler autrement que via
 `/etc/aliases`, vu que le script attend le contenu du mail dans stdin.
@@ -34,7 +34,7 @@ except ImportError:
         "  * Soit depuis l'interface en ligne (menu GRI) ;\n"
         "  * Soit par ligne de commande :\n"
         "    cd /home/intrarez/intrarez; "
-        "    ./env/bin/flask script update_sub_states.py\n"
+        "    ./env/bin/flask script mail_hook.py\n"
     )
     sys.exit(1)
 

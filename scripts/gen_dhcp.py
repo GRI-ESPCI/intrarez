@@ -1,12 +1,13 @@
 """IntraRez - Génération des tables DHCP
 
 Pour toutes les chambres, attribue une adresse IP aux appareils de
-l'occupant actuel.
+l'occupant actuel. L'attribution d'IP elle-même (y compris en cas de
+bannissement est gérée par `Device.allocate_ip_for`).
 
 Ce script peut uniquement être appelé depuis Flask :
   * Soit depuis l'interface en ligne (menu GRI) ;
   * Soit par ligne de commande :
-    cd /home/intrarez/intrarez; " ./env/bin/flask script gen_dhcp.py
+    cd /home/intrarez/intrarez; ./env/bin/flask script gen_dhcp.py
 
 10/2021 Loïc 137
 """
@@ -24,7 +25,7 @@ except ImportError:
         "  * Soit depuis l'interface en ligne (menu GRI) ;\n"
         "  * Soit par ligne de commande :\n"
         "    cd /home/intrarez/intrarez; "
-        "    ./env/bin/flask script update_sub_states.py\n"
+        "    ./env/bin/flask script gen_dhcp.py\n"
     )
     sys.exit(1)
 

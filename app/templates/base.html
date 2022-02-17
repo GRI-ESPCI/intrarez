@@ -62,7 +62,10 @@
         {% block body %}
         {% block navbar %}
         <nav class="navbar navbar-expand-md navbar-light mb-4 py-0
-                    bg-primary border-bottom border-2 border-secondary">
+                    bg-{{ "danger" if hasattr(g, "_ban")
+                        or (hasattr(g, "rezident") and g.rezident.is_banned)
+                        else "primary" }}
+                    border-bottom border-2 border-secondary">
         <div class="container-fluid ps-0">
             <a class="navbar-brand p-0" href="{{ url_for("main.index") }}">
                 <img src="{{ url_for("static", filename="img/gri.png") }}"

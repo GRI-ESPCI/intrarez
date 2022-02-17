@@ -3,7 +3,7 @@
 import enum
 
 
-__all__ = ["SubState"]
+__all__ = ["SubState", "PaymentStatus"]
 
 
 class SubState(enum.Enum):
