@@ -21,9 +21,10 @@
                     border-2 border-secondary">
             <div class="container-fluid ps-0">
                 <a class="navbar-brand p-0" href="{{ url_for("main.index") }}">
-                    <img src="{{ url_for("static", filename="img/gri.png") }}"
-                         width="80" height="80"
-                         class="d-inline-block m-0" alt="GRI ESPCI">
+                    <img src="{{ url_for("static",
+                                         filename="img/gri_80x80.png") }}"
+                         width="80" height="80" class="d-inline-block m-0"
+                         alt="GRI ESPCI" />
                     <span class="align-text-top">/&nbsp;<b>IntraRez</b></span>
                     {% if config.get("BRANCH") %}
                     <span class="badge rounded-pill bg-warning text-dark ms-2">

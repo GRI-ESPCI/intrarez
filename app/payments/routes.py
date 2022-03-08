@@ -64,6 +64,7 @@ def create_first_offer() -> None:
         utils.log_action(f"Created first offer ({offer})")
 
 
+@bp.route("")
 @bp.route("/")
 @context.all_good_only
 def main() -> typing.RouteReturn:

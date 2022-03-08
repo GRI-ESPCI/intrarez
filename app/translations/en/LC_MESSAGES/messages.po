@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version:  1.5.0-beta.7.3\n"
+"Project-Id-Version:  1.6.1\n"
 "Report-Msgid-Bugs-To: intrarez@pc-est-magique.fr\n"
-"POT-Creation-Date: 2022-02-10 18:20+0100\n"
-"PO-Revision-Date: 2022-02-10 15:10+0100\n"
+"POT-Creation-Date: 2022-03-08 18:02+0100\n"
+"PO-Revision-Date: 2022-03-08 18:07+0100\n"
 "Last-Translator: Loïc Simon <intrarez@pc-est-magique.fr>\n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Le site est en mode maintenance : seuls les GRI peuvent y accéder."
 msgstr "The site is under maintenance: only GRI can access it."
 
-#: app/context.py:296 app/context.py:322
+#: app/context.py:298 app/context.py:324
 msgid "Veuillez vous authentifier pour accéder à cette page."
 msgstr "Please log in to access to this page."
 
@@ -49,8 +49,8 @@ msgstr "Remember me"
 #: app/auth/forms.py:19 app/auth/routes.py:101
 #: app/templates/auth/auth_needed.html:21 app/templates/auth/register.html:57
 #: app/templates/auth/reset_password.html:29
-#: app/templates/auth/reset_password_request.html:26 app/templates/base.html:98
-#: app/templates/main/external_home.html:22
+#: app/templates/auth/reset_password_request.html:26
+#: app/templates/base.html:102 app/templates/main/external_home.html:22
 msgid "Connexion"
 msgstr "Sign in"
 
@@ -98,7 +98,7 @@ msgstr "New password (validation)"
 msgid "Valider"
 msgstr "Validate"
 
-#: app/auth/routes.py:45 app/main/routes.py:87
+#: app/auth/routes.py:45 app/main/routes.py:88
 msgid "Accès à Internet"
 msgstr "Internet Access"
 
@@ -172,7 +172,7 @@ msgstr "Edit device"
 msgid "Adresse MAC"
 msgstr "MAC address"
 
-#: app/devices/forms.py:38 app/devices/routes.py:127
+#: app/devices/forms.py:38 app/devices/routes.py:132
 msgid "Transférer l'appareil"
 msgstr "Transfer device"
 
@@ -208,51 +208,61 @@ msgstr "This device is not already registered!"
 msgid "Cet appareil vous appartient déjà !"
 msgstr "This device already belong to you!"
 
-#: app/devices/routes.py:112
+#: app/devices/routes.py:105
+msgid ""
+"Cet appareil appartient à un utilisateur banni. Son transfert est donc "
+"bloqué pour éviter les tentatives de contournement ; contactez-nous si la"
+" demande est légitime."
+msgstr ""
+"This device is owned by a banned user. It is consequently not possible to"
+" transfer it to avoid ban bypass attempts; contact us if your request is "
+"legitimate."
+
+#: app/devices/routes.py:117
 msgid "Appareil transféré avec succès !"
 msgstr "Device successfully transferred!"
 
-#: app/devices/routes.py:145
+#: app/devices/routes.py:150
 msgid "Hmm, ça n'a pas marché..."
 msgstr "Hmm, it didn't work..."
 
-#: app/devices/routes.py:146
+#: app/devices/routes.py:151
 msgid "Non, toujours pas..."
 msgstr "No, still not..."
 
-#: app/devices/routes.py:147
+#: app/devices/routes.py:152
 msgid "Ah ! Ah non, non plus..."
 msgstr "Oh! Oh no, no more..."
 
-#: app/devices/routes.py:148
+#: app/devices/routes.py:153
 msgid "Nan mais quand ça veut pas, ça veut pas..."
 msgstr "You know, when it won't, it won't..."
 
-#: app/devices/routes.py:149
+#: app/devices/routes.py:154
 msgid "Ça va sinon ?"
 msgstr "How are you, btw?"
 
-#: app/devices/routes.py:150
+#: app/devices/routes.py:155
 msgid "Il ne va plus se passer grand chose, hein, je pense."
 msgstr "No much more to come, I think."
 
-#: app/devices/routes.py:151
+#: app/devices/routes.py:156
 msgid "Après on sait jamais, sur un malentendu..."
 msgstr "But you never know, on a misunderstanding..."
 
-#: app/devices/routes.py:152
+#: app/devices/routes.py:157
 msgid "zzzzzzzzzzzzzzzzzzzzzzzzz"
 msgstr "zzzzzzzzzzzzzzzzzzzzzzzzz"
 
-#: app/devices/routes.py:153
+#: app/devices/routes.py:158
 msgid "Attention, je vais commencer à dire des choses aléatoires."
 msgstr "Careful, I'll start saying random things."
 
-#: app/devices/routes.py:154
+#: app/devices/routes.py:159
 msgid "Je vous aurai prévenu !"
 msgstr "I'll have warned you!"
 
-#: app/devices/routes.py:165
+#: app/devices/routes.py:170
 msgid "Détection d'appareil impossible"
 msgstr "Device detection impossible"
 
@@ -261,27 +271,75 @@ msgstr "Device detection impossible"
 msgid "Accès restreint"
 msgstr "Access restricted"
 
-#: app/gris/forms.py:37
+#: app/gris/forms.py:41
 msgid "Script"
 msgstr "Script"
 
-#: app/gris/forms.py:39
+#: app/gris/forms.py:43
 msgid "Exécuter"
 msgstr "Run"
 
-#: app/gris/routes.py:23
+#: app/gris/forms.py:51
+msgid "Illimité"
+msgstr "Unlimited"
+
+#: app/gris/forms.py:52
+msgid "Heures"
+msgstr "Hours"
+
+#: app/gris/forms.py:53
+msgid "Jours"
+msgstr "Days"
+
+#: app/gris/forms.py:54
+msgid "Mois"
+msgstr "Months"
+
+#: app/gris/forms.py:55
+msgid "Motif court"
+msgstr "Short reason"
+
+#: app/gris/forms.py:57
+msgid "Message détaillé"
+msgstr "Detailed message"
+
+#: app/gris/forms.py:60
+msgid "Bannez-moi ça les modos || Mettre à jour le ban"
+msgstr "Ban this person || Update ban"
+
+#: app/gris/forms.py:62
+msgid "Mettre fin au ban"
+msgstr "Terminate ban"
+
+#: app/gris/routes.py:29
+msgid "Le ban a été terminé."
+msgstr "The ban has been terminated."
+
+#: app/gris/routes.py:35
+msgid "Le ban a bien été modifié."
+msgstr "The ban has been modified successfully."
+
+#: app/gris/routes.py:40
+msgid "Ce rezident est déjà banni !"
+msgstr "This rezident is already banned!"
+
+#: app/gris/routes.py:47
+msgid "Le mécréant a bien été banni."
+msgstr "The miscreant has been banned."
+
+#: app/gris/routes.py:53
 msgid "Gestion des Rezidents"
 msgstr "Rezidents management"
 
-#: app/gris/routes.py:53 app/gris/routes.py:56 app/templates/gris/menu.html:14
+#: app/gris/routes.py:83 app/gris/routes.py:86 app/templates/gris/menu.html:14
 msgid "Exécuter un script"
 msgstr "Run a script"
 
-#: app/gris/routes.py:64
+#: app/gris/routes.py:94
 msgid "Darkstat network monitoring"
 msgstr "Darkstat network monitoring"
 
-#: app/gris/routes.py:72
+#: app/gris/routes.py:102
 msgid "Bandwidthd network monitoring"
 msgstr "Bandwidthd network monitoring"
 
@@ -305,26 +363,26 @@ msgstr "Message"
 msgid "Envoyer"
 msgstr "Send"
 
-#: app/main/routes.py:20 app/templates/base.html:186
+#: app/main/routes.py:21 app/templates/base.html:192
 #: app/templates/errors/401.html:29 app/templates/errors/403.html:26
 #: app/templates/errors/404.html:23 app/templates/errors/other.html:17
-#: app/templates/mails_base.html:73
+#: app/templates/mails_base.html:74
 msgid "Accueil"
 msgstr "Home"
 
-#: app/main/routes.py:30
+#: app/main/routes.py:31
 msgid "Bienvenue sur l'IntraRez !"
 msgstr "Welcome on the IntraRez!"
 
-#: app/main/routes.py:42
+#: app/main/routes.py:43
 msgid "Le captcha n'a pas pu être vérifié. Veuillez réessayer."
 msgstr "The captcha could not be verified. Please try again."
 
-#: app/main/routes.py:53
+#: app/main/routes.py:54
 msgid "Message transmis !"
 msgstr "Message transmitted!"
 
-#: app/main/routes.py:56
+#: app/main/routes.py:57
 msgid ""
 "Oh non ! Le message n'a pas pu être transmis. N'hésitez pas à contacter "
 "un GRI aux coordonnées en bas de page.<br/>(Erreur : "
@@ -332,24 +390,28 @@ msgstr ""
 "O no! The message could not be transmitted. Please feel free to reach GRI"
 " at the contact information below.<br/>(Error: "
 
-#: app/main/routes.py:63
+#: app/main/routes.py:64
 msgid "Contact"
 msgstr "Contact"
 
-#: app/main/routes.py:71 app/templates/base.html:205
+#: app/main/routes.py:72 app/templates/base.html:214
 msgid "Mentions légales"
 msgstr "Legal notice"
 
-#: app/main/routes.py:78
+#: app/main/routes.py:79
 msgid "Notes de mise à jour"
 msgstr "Changelog"
 
-#: app/main/routes.py:122
+#: app/main/routes.py:100
+msgid "Accès à Internet restreint"
+msgstr "Internet access restricted"
+
+#: app/main/routes.py:135
 msgid "Test"
 msgstr "Test"
 
-#: app/payments/email.py:21 app/payments/routes.py:273
-#: app/payments/routes.py:332
+#: app/payments/email.py:21 app/payments/routes.py:274
+#: app/payments/routes.py:333
 msgid "Paiement validé !"
 msgstr "Payment validated!"
 
@@ -378,54 +440,54 @@ msgstr "Send a Lydia payment request"
 msgid "Payer par carte bancaire"
 msgstr "Pay with a credit card"
 
-#: app/payments/routes.py:74
+#: app/payments/routes.py:75
 msgid "Mon abonnement Internet"
 msgstr "My Internet subscription"
 
-#: app/payments/routes.py:83 app/payments/routes.py:98
-#: app/payments/routes.py:142
+#: app/payments/routes.py:84 app/payments/routes.py:99
+#: app/payments/routes.py:143
 msgid "Vous avez déjà un abonnement en cours !"
 msgstr "You already have an active subscription!"
 
-#: app/payments/routes.py:88 app/templates/cards/payment.html:5
+#: app/payments/routes.py:89 app/templates/cards/payment.html:5
 #: app/templates/payments/main.html:200 app/templates/payments/main.html:240
 #: app/templates/payments/main.html:287
 msgid "Paiement"
 msgstr "Payment"
 
-#: app/payments/routes.py:102 app/templates/payments/pay.html:132
+#: app/payments/routes.py:103 app/templates/payments/pay.html:132
 msgid "Payer avec Lydia"
 msgstr "Pay with Lydia"
 
-#: app/payments/routes.py:103 app/templates/payments/pay.html:159
+#: app/payments/routes.py:104 app/templates/payments/pay.html:159
 msgid "Payer par virement"
 msgstr "Pay by bank transfer"
 
-#: app/payments/routes.py:104 app/templates/payments/pay.html:186
+#: app/payments/routes.py:105 app/templates/payments/pay.html:186
 msgid "Payer en main propre"
 msgstr "Pay in person"
 
-#: app/payments/routes.py:105 app/templates/payments/pay.html:96
+#: app/payments/routes.py:106 app/templates/payments/pay.html:96
 msgid "Ajouter un paiement"
 msgstr "Add a payment"
 
-#: app/payments/routes.py:280
+#: app/payments/routes.py:281
 msgid "Pas de paiement détecté"
 msgstr "No payment detected"
 
-#: app/payments/routes.py:296
+#: app/payments/routes.py:297
 msgid "Paiement annulé"
 msgstr "Payment cancelled"
 
-#: app/payments/routes.py:305 app/payments/routes.py:311
+#: app/payments/routes.py:306 app/payments/routes.py:312
 msgid "Numéro de paiement invalide"
 msgstr "Invalid payment number"
 
-#: app/payments/routes.py:314
+#: app/payments/routes.py:315
 msgid "Paiement en attente, réessayer"
 msgstr "Payment pending, try again"
 
-#: app/payments/routes.py:317
+#: app/payments/routes.py:318
 msgid "Paiement invalide, réessayer"
 msgstr "Payment invalid, try again"
 
@@ -437,7 +499,7 @@ msgstr "Update"
 msgid "Mot de passe actuel"
 msgstr "Current password"
 
-#: app/profile/routes.py:15 app/templates/base.html:132
+#: app/profile/routes.py:15 app/templates/base.html:136
 msgid "Profil"
 msgstr "Profile"
 
@@ -468,8 +530,8 @@ msgstr "Warning: Room transferred, Internet cut"
 #: app/rooms/forms.py:14 app/templates/auth/register.html:12
 #: app/templates/cards/room.html:5 app/templates/cards/room.html:62
 #: app/templates/devices/register.html:13
-#: app/templates/devices/transfer.html:13 app/templates/gris/rezidents.html:43
-#: app/templates/gris/rezidents.html:163 app/templates/gris/rezidents.html:292
+#: app/templates/devices/transfer.html:13 app/templates/gris/rezidents.html:44
+#: app/templates/gris/rezidents.html:185 app/templates/gris/rezidents.html:345
 #: app/templates/main/connect_check.html:21 app/templates/main/contact.html:85
 #: app/templates/rooms/register.html:19
 msgid "Chambre"
@@ -529,37 +591,37 @@ msgstr "Change room"
 
 #: app/templates/auth/auth_needed.html:26
 #: app/templates/auth/auth_needed.html:34 app/templates/auth/login.html:33
-#: app/templates/auth/login.html:41 app/templates/base.html:105
-#: app/templates/base.html:115
+#: app/templates/auth/login.html:41 app/templates/base.html:109
+#: app/templates/base.html:119
 msgid "Créer un compte"
 msgstr "Sign up"
 
 #: app/templates/auth/auth_needed.html:31 app/templates/auth/login.html:38
-#: app/templates/base.html:111
+#: app/templates/base.html:115
 msgid ""
 "La création de compte n'est possible que depuis le réseau local de la "
 "Rezidence."
 msgstr "Accounts can only be created from the Rezidence internal network."
 
-#: app/templates/base.html:125 app/templates/gris/rezidents.html:65
-#: app/templates/gris/rezidents.html:334
+#: app/templates/base.html:129 app/templates/gris/rezidents.html:66
+#: app/templates/gris/rezidents.html:387
 msgid "Abonnement"
 msgstr "Subscription"
 
-#: app/templates/base.html:138 app/templates/devices/transfer.html:42
+#: app/templates/base.html:142 app/templates/devices/transfer.html:42
 msgid "Déconnexion"
 msgstr "Sign out"
 
-#: app/templates/base.html:179 app/templates/mails_base.html:57
+#: app/templates/base.html:183 app/templates/mails_base.html:58
 msgid "Version"
 msgstr "Version"
 
 #: app/templates/auth/reset_password_request.html:33
-#: app/templates/base.html:192 app/templates/devices/register.html:250
+#: app/templates/base.html:199 app/templates/devices/register.html:250
 msgid "Nous contacter"
 msgstr "Contact us"
 
-#: app/templates/base.html:199
+#: app/templates/base.html:207
 msgid "Code source"
 msgstr "Source code"
 
@@ -571,13 +633,14 @@ msgstr "Action done as %(doas)s"
 #: app/templates/cards/device_modal.html:10
 #: app/templates/cards/device_modal.html:66
 #: app/templates/devices/modify.html:67 app/templates/doas.html:5
-#: app/templates/gris/rezidents.html:275 app/templates/gris/rezidents.html:282
-#: app/templates/gris/rezidents.html:294 app/templates/gris/rezidents.html:301
-#: app/templates/gris/rezidents.html:315 app/templates/gris/rezidents.html:322
-#: app/templates/gris/rezidents.html:337 app/templates/gris/rezidents.html:344
-#: app/templates/macros.html:53 app/templates/payments/main.html:263
-#: app/templates/payments/main.html:272 app/templates/payments/main.html:289
-#: app/templates/payments/main.html:296 app/templates/rooms/register.html:70
+#: app/templates/gris/rezidents.html:328 app/templates/gris/rezidents.html:335
+#: app/templates/gris/rezidents.html:347 app/templates/gris/rezidents.html:354
+#: app/templates/gris/rezidents.html:368 app/templates/gris/rezidents.html:375
+#: app/templates/gris/rezidents.html:390 app/templates/gris/rezidents.html:397
+#: app/templates/gris/rezidents.html:420 app/templates/macros.html:53
+#: app/templates/payments/main.html:263 app/templates/payments/main.html:272
+#: app/templates/payments/main.html:289 app/templates/payments/main.html:296
+#: app/templates/rooms/register.html:70
 msgid "Fermer"
 msgstr "Close"
 
@@ -597,17 +660,17 @@ msgstr "Warning:"
 msgid "Attention :"
 msgstr "Caution:"
 
-#: app/templates/mails_base.html:65
+#: app/templates/mails_base.html:66
 msgid "Vous recevez cet email car vous avez un compte actif sur l'IntraRez."
 msgstr ""
 "You are receiving this email because you have an active account on the "
 "IntraRez. "
 
-#: app/templates/mails_base.html:78
+#: app/templates/mails_base.html:79
 msgid "Je ne souhaite plus recevoir d'e-mails"
 msgstr "I no longer wish to receive emails"
 
-#: app/templates/mails_base.html:81
+#: app/templates/mails_base.html:82
 msgid "Se désinscrire"
 msgstr "Unsubscribe"
 
@@ -624,7 +687,7 @@ msgstr "Please create an account per room to connect to the network."
 msgid "En cas de problème, n'hésitez pas à "
 msgstr "If any problem, do not hesitate to "
 
-#: app/templates/auth/auth_needed.html:42
+#: app/templates/auth/auth_needed.html:42 app/templates/main/banned.html:76
 #: app/templates/main/external_home.html:32
 msgid "nous contacter"
 msgstr "contact us"
@@ -643,8 +706,8 @@ msgstr "Reset"
 
 #: app/templates/auth/register.html:9 app/templates/cards/account.html:5
 #: app/templates/devices/register.html:10
-#: app/templates/devices/transfer.html:10 app/templates/gris/rezidents.html:32
-#: app/templates/gris/rezidents.html:136 app/templates/gris/rezidents.html:273
+#: app/templates/devices/transfer.html:10 app/templates/gris/rezidents.html:33
+#: app/templates/gris/rezidents.html:158 app/templates/gris/rezidents.html:326
 #: app/templates/main/connect_check.html:18
 #: app/templates/rooms/register.html:16
 msgid "Compte"
@@ -652,7 +715,7 @@ msgstr "Account"
 
 #: app/templates/auth/register.html:15 app/templates/cards/device_modal.html:8
 #: app/templates/devices/register.html:16
-#: app/templates/devices/transfer.html:16 app/templates/gris/rezidents.html:182
+#: app/templates/devices/transfer.html:16 app/templates/gris/rezidents.html:204
 #: app/templates/main/connect_check.html:24
 #: app/templates/rooms/register.html:22
 msgid "Appareil"
@@ -808,8 +871,8 @@ msgstr "Change password"
 msgid "À venir"
 msgstr "Coming soon"
 
-#: app/templates/cards/device.html:5 app/templates/gris/rezidents.html:54
-#: app/templates/gris/rezidents.html:312
+#: app/templates/cards/device.html:5 app/templates/gris/rezidents.html:55
+#: app/templates/gris/rezidents.html:365
 msgid "Appareils"
 msgstr "Devices"
 
@@ -831,7 +894,7 @@ msgstr "Register"
 
 #: app/templates/cards/device.html:39 app/templates/cards/device.html:88
 #: app/templates/cards/device_modal.html:44
-#: app/templates/gris/rezidents.html:76
+#: app/templates/gris/rezidents.html:77
 msgid "Dernière connexion"
 msgstr "Last connection"
 
@@ -970,7 +1033,7 @@ msgid "État"
 msgstr "Status"
 
 #: app/templates/cards/subscription.html:20
-#: app/templates/gris/rezidents.html:194 app/templates/payments/main.html:18
+#: app/templates/gris/rezidents.html:216 app/templates/payments/main.html:18
 msgid "Abonné(e)"
 msgstr "Subscribed"
 
@@ -980,7 +1043,7 @@ msgid "Coupure le"
 msgstr "Cut on"
 
 #: app/templates/cards/subscription.html:44
-#: app/templates/gris/rezidents.html:198 app/templates/payments/main.html:37
+#: app/templates/gris/rezidents.html:220 app/templates/payments/main.html:37
 msgid "Mois offert"
 msgstr "Free month"
 
@@ -1551,21 +1614,29 @@ msgstr "Username:"
 msgid "Mot de passe :"
 msgstr "Password:"
 
-#: app/templates/gris/rezidents.html:21 app/templates/payments/main.html:195
+#: app/templates/gris/rezidents.html:22 app/templates/payments/main.html:195
 msgid "ID"
 msgstr "ID"
 
-#: app/templates/gris/rezidents.html:148
+#: app/templates/gris/rezidents.html:170
 msgid "Aucune"
 msgstr "None"
 
-#: app/templates/gris/rezidents.html:192
+#: app/templates/gris/rezidents.html:214
 msgid "Aucun"
 msgstr "None"
 
-#: app/templates/gris/rezidents.html:202
+#: app/templates/gris/rezidents.html:224
 msgid "Hors-la-loi"
 msgstr "Outlaw"
+
+#: app/templates/gris/rezidents.html:417
+msgid "Bannir _name_ || Ban de _name_"
+msgstr "Ban _name_ || Ban of _name_"
+
+#: app/templates/gris/rezidents.html:466
+msgid "En fait non"
+msgstr "Well, no"
 
 #: app/templates/gris/run_script.html:14
 msgid "Choisir un script à exécuter :"
@@ -1578,6 +1649,53 @@ msgid ""
 msgstr ""
 "Caution: running a script can have side effects, such as sending a mail "
 "at the end of a subscription."
+
+#: app/templates/main/banned.html:18
+msgid ""
+"L'accès à Internet depuis le réseau des GRI vous est actuellement "
+"interdit."
+msgstr ""
+"You are currently restricted from accessing the Internet from the GRI-"
+"managed network."
+
+#: app/templates/main/banned.html:26
+msgid "Durée du bannissement :"
+msgstr "Ban duration:"
+
+#: app/templates/main/banned.html:30
+msgid "mois"
+msgstr "months"
+
+#: app/templates/main/banned.html:33
+msgid "jours"
+msgstr "days"
+
+#: app/templates/main/banned.html:36
+msgid "heures"
+msgstr "hours"
+
+#: app/templates/main/banned.html:39
+msgid "Indéterminée"
+msgstr "Undeterminate"
+
+#: app/templates/main/banned.html:45
+msgid "Restauration de l'accès :"
+msgstr "Restoring access:"
+
+#: app/templates/main/banned.html:50
+#: app/templates/payments/pay_transfer.html:41
+msgid "Motif :"
+msgstr "Reason:"
+
+#: app/templates/main/banned.html:71
+msgid ""
+"L'ensemble de l'IntraRez et les autres services internes sont toujours "
+"accessibles."
+msgstr "The IntraRez and other internal services are still available."
+
+#: app/templates/main/banned.html:74
+msgid "Pour toute question ou réclamation, n'hésitez pas à "
+msgstr "For any question or complaint, please feel free to "
 
 #: app/templates/main/changelog.html:11
 msgid ""
@@ -1592,80 +1710,91 @@ msgid "sur GitHub"
 msgstr "on GitHub"
 
 #: app/templates/main/changelog.html:21
+msgid ""
+"Système de coupure d'accès Internet en cas de non-paiement ou autre (en "
+"fait avant c'était du bluff eheh) ;"
+msgstr "Internet cut system if not paying or other reason (it was bluff "
+"before then hehe);"
+
+#: app/templates/main/changelog.html:26
+msgid "Correction de divers bugs mineurs."
+msgstr "Minor bug fixes."
+
+#: app/templates/main/changelog.html:34
 msgid "Mise en service des paiements : "
 msgstr "Payments commissioning:"
 
-#: app/templates/main/changelog.html:23
+#: app/templates/main/changelog.html:36
 msgid "Page générique d'information ;"
 msgstr "Generic information page;"
 
-#: app/templates/main/changelog.html:24
+#: app/templates/main/changelog.html:37
 msgid "Page de choix de l'offre et du moyen de paiement ;"
 msgstr "Offer / payment method choice page;"
 
-#: app/templates/main/changelog.html:26
+#: app/templates/main/changelog.html:39
 msgid "Pages de paiement par Lydia / CB, virement bancaire ou espèces ;"
 msgstr "Lydia / credit card, bank transfer and cash pay pages; "
 
-#: app/templates/main/changelog.html:28
+#: app/templates/main/changelog.html:41
 msgid "Page d'ajout / validation de paiement pour les GRI ;"
 msgstr "Payment add / validation page for GRI;"
 
-#: app/templates/main/changelog.html:30
+#: app/templates/main/changelog.html:43
 msgid ""
 "Souscription automatique à l'offre de bienvenue lors de la première "
 "connexion ;"
 msgstr "Automatic subscription to welcoming offer at first connection;"
 
-#: app/templates/main/changelog.html:32
+#: app/templates/main/changelog.html:45
 msgid "Intégration à la page d'accueil et à la barre de menu."
 msgstr "Integration to home page and navigation bar."
 
-#: app/templates/main/changelog.html:37
+#: app/templates/main/changelog.html:50
 msgid "Envoi de mails riches, au format HTML :"
 msgstr "Send rich mails (HTML format):"
 
-#: app/templates/main/changelog.html:39
+#: app/templates/main/changelog.html:52
 msgid "Lors de la création de compte ;"
 msgstr "When creating an account;"
 
-#: app/templates/main/changelog.html:40
+#: app/templates/main/changelog.html:53
 msgid "En cas d'oubli de mot de passe ;"
 msgstr "When you forgot your password;"
 
-#: app/templates/main/changelog.html:41
+#: app/templates/main/changelog.html:54
 msgid "Lors de la perte de sa chambre ;"
 msgstr "When losing its room;"
 
-#: app/templates/main/changelog.html:42
+#: app/templates/main/changelog.html:55
 msgid "À la validation d'un paiement ;"
 msgstr "When a payment is validated;"
 
-#: app/templates/main/changelog.html:43
+#: app/templates/main/changelog.html:56
 msgid "Un mois avant, une semaine avant et le jour d'expiration d'un abonnement."
 msgstr "One month before, one week before, and the day a subscription expires."
 
-#: app/templates/main/changelog.html:48
+#: app/templates/main/changelog.html:61
 msgid "Ajout de la possibilité de modifier : "
 msgstr "Added the possibility de modify:"
 
-#: app/templates/main/changelog.html:50
+#: app/templates/main/changelog.html:63
 msgid "Une information sur son profil ;"
 msgstr "Information on your profile;"
 
-#: app/templates/main/changelog.html:51
+#: app/templates/main/changelog.html:64
 msgid "Son mot de passe ;"
 msgstr "Your password;"
 
-#: app/templates/main/changelog.html:52
+#: app/templates/main/changelog.html:65
 msgid "Les dates d'une location ;"
 msgstr "A rental dates;"
 
-#: app/templates/main/changelog.html:53
+#: app/templates/main/changelog.html:66
 msgid "Les informations sur un appareil."
 msgstr "Information on a device."
 
-#: app/templates/main/changelog.html:57
+#: app/templates/main/changelog.html:70
 msgid ""
 "La langue préférée (français ou anglais, selon les paramètres du "
 "navigateur) est enregistrée pour chaque Rezident, et utilisée pour "
@@ -1674,59 +1803,59 @@ msgstr ""
 "The preferred language (French or English, depending of your browser "
 "parameters) is registered for each Rezident, and used for sending mails."
 
-#: app/templates/main/changelog.html:62
+#: app/templates/main/changelog.html:75
 msgid "Ajout d'un mode maintenance activable par les GRI."
 msgstr "Added a maintenance mode activable by the GRI."
 
-#: app/templates/main/changelog.html:65
+#: app/templates/main/changelog.html:78
 msgid "Ajout d'une page GRI pour exécuter un script."
 msgstr "Added a GRI page to run a script."
 
-#: app/templates/main/changelog.html:73
+#: app/templates/main/changelog.html:86
 msgid ""
 "L'IntraRez est maintenant utilisable depuis l'extérieur de la Rezidence, "
 "à l'adresse "
 msgstr "IntraRez is now available from the outside of the Rezidence, at address "
 
-#: app/templates/main/changelog.html:77
+#: app/templates/main/changelog.html:90
 msgid "(sauf pour la création de compte)."
 msgstr "(except for account creation)."
 
-#: app/templates/main/changelog.html:80
+#: app/templates/main/changelog.html:93
 msgid ""
 "L'utilisation du formulaire de contact depuis l'extérieur est maintenant "
 "soumise à un captcha."
 msgstr "Using the contact form from the outside is now subject to a captcha."
 
-#: app/templates/main/changelog.html:89
+#: app/templates/main/changelog.html:102
 msgid "Ajout du mécanisme de changement de chambre."
 msgstr "Added the room change mechanism."
 
-#: app/templates/main/changelog.html:92
+#: app/templates/main/changelog.html:105
 msgid "Ajout de l'adresse IP attribuée aux appareils dans le profil."
 msgstr "Added device allocated IP address to the Profile."
 
-#: app/templates/main/changelog.html:96
+#: app/templates/main/changelog.html:109
 msgid ""
 "Les GRI peuvent maintenant gérer les chambres et les appareils des "
 "Rezidents."
 msgstr "GRI can now manage Rezidents rooms and devices."
 
-#: app/templates/main/changelog.html:100
+#: app/templates/main/changelog.html:113
 msgid "Ajout de cette page."
 msgstr "Added this page."
 
-#: app/templates/main/changelog.html:108
+#: app/templates/main/changelog.html:121
 msgid ""
 "Ajout d'options GRI pour la gestion des Rezidents et la surveillance du "
 "réseau."
 msgstr "Added GRI options for Rezidents managements and network monitoring."
 
-#: app/templates/main/changelog.html:117
+#: app/templates/main/changelog.html:130
 msgid "Mise en place d'un portail captif pour simplifier la connexion au réseau."
 msgstr "Added a captive portal to make connection easier."
 
-#: app/templates/main/changelog.html:124
+#: app/templates/main/changelog.html:137
 msgid "Première version publique."
 msgstr "First public version."
 
@@ -2186,10 +2315,6 @@ msgstr "IBAN:"
 msgid "BIC :"
 msgstr "BIC:"
 
-#: app/templates/payments/pay_transfer.html:41
-msgid "Motif :"
-msgstr "Reason:"
-
 #: app/templates/payments/pay_transfer.html:54
 msgid ""
 "Une fois le virement effectué, merci de nous en informer en utilisant le "
@@ -2589,7 +2714,7 @@ msgstr "Someone just stole my room (%(room)s)!"
 msgid "Offre Internet à la Rez :"
 msgstr "Rezidence Internet offer:"
 
-#: app/tools/lydia.py:137
+#: app/tools/lydia.py:140
 msgid "Signature invalide, impossible de valider le paiement"
 msgstr "Invalid signature, unable to validate payment"
 
@@ -2637,17 +2762,25 @@ msgid "Adresse e-mail déjà liée à un autre compte."
 msgstr "Mail address already linked to an account."
 
 #: app/tools/validators.py:93
+msgid "Rezident ID invalide."
+msgstr "Invalid Rezident ID."
+
+#: app/tools/validators.py:101
 msgid "Numéro de chambre invalide."
 msgstr "Invalid room number."
 
-#: app/tools/validators.py:100
+#: app/tools/validators.py:108
+msgid "Ban ID invalide."
+msgstr "Invalid Ban ID."
+
+#: app/tools/validators.py:116
 msgid "Cette date doit être dans le passé !"
 msgstr "This date must be in the past!"
 
-#: app/tools/validators.py:109
+#: app/tools/validators.py:125
 msgid "Cette date doit être dans le futur !"
 msgstr "This date must be in the future!"
 
-#: app/tools/validators.py:118
+#: app/tools/validators.py:134
 msgid "Numéro de téléphone invalide (il doit être français)."
 msgstr "Invalid phone number (must be a French one)."

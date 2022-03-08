@@ -616,7 +616,7 @@ class Ban(Model):
 
     def __repr__(self) -> str:
         """Returns repr(self)."""
-        return f"<Ban #{self.id} of {self.rezident} ({self.start}-{self.end})>"
+        return f"<Ban #{self.id} of {self.rezident} (-> {self.end})>"
 
     @property
     def duration(self) -> relativedelta.relativedelta | None:

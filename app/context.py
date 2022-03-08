@@ -135,8 +135,10 @@ def create_request_context() -> typing.RouteReturn | None:
             return utils.safe_redirect("devices.error", reason="ip")
 
     # Get MAC
-    g.mac = flask.current_app.config["FORCE_MAC"] or _get_mac(g.remote_ip)
-    g.internal = bool(g.mac)
+    if not g.doas:
+        # Doas = never internal, because we are not on rezident's device
+        g.mac = flask.current_app.config["FORCE_MAC"] or _get_mac(g.remote_ip)
+        g.internal = bool(g.mac)
     if not g.internal and not g.all_good:
         g.redemption_endpoint = "main.external_home"
 

@@ -25,7 +25,7 @@ def rezidents() -> typing.RouteReturn:
             ban = Ban.query.get(int(form.ban_id.data))
             if form.unban.data:
                 # Terminate existing ban
-                ban.end = datetime.datetime.now(datetime.timezone.utc)
+                ban.end = datetime.datetime.utcnow()
                 flask.flash(_("Le ban a été terminé."), "success")
             else:
                 # Update existing ban
@@ -39,10 +39,10 @@ def rezidents() -> typing.RouteReturn:
             if rezident.is_banned:
                 flask.flash(_("Ce rezident est déjà banni !"), "danger")
             else:
-                start = datetime.datetime.now(datetime.timezone.utc)
+                start = datetime.datetime.utcnow()
                 end = form.get_end(start)
                 ban = Ban(rezident=rezident, start=start, end=end,
-                        reason=form.reason.data, message=form.message.data)
+                          reason=form.reason.data, message=form.message.data)
                 db.session.add(ban)
                 flask.flash(_("Le mécréant a bien été banni."), "success")
         db.session.commit()

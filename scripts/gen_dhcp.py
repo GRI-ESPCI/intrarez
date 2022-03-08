@@ -33,7 +33,7 @@ except ImportError:
 def main() -> None:
     rules = ""
 
-    rooms = Room.query.all()
+    rooms = Room.query.order_by(Room.num).all()
     for room in rooms:
         if not room.current_rental:
             print(f"Chambre {room.num} non occupée, on passe")
@@ -41,6 +41,8 @@ def main() -> None:
 
         rezident = room.current_rental.rezident
         print(f"Chambre {room.num} occupée par {rezident.full_name}")
+        if rezident.is_banned:
+            print(f"    -- BANNI : {rezident.current_ban} --")
 
         for device in rezident.devices:
             ip = device.allocate_ip_for(room)
