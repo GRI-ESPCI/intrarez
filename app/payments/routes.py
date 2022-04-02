@@ -17,6 +17,7 @@ def add_subscription(rezident: Rezident, offer: Offer,
     """Add a new subscription to a Rezident.
 
     Update sub state and send informative email.
+    Remove user's current ban if necessary.
 
     Args:
         rezident: The Rezident to add a subscription to.
@@ -50,6 +51,16 @@ def add_subscription(rezident: Rezident, offer: Offer,
             f"a toujours l'état {rezident.sub_state}..."
         )
 
+    # Remove ban and update DHCP
+    if rezident.is_banned:
+        rezident.current_ban.end = datetime.datetime.utcnow()
+        utils.log_action(
+            f"{rezident} subscribed, terminated {rezident.current_ban}"
+        )
+        db.session.commit()
+        utils.run_script("gen_dhcp.py")       # Update DHCP rules
+
+    # Send mail
     email.send_state_change_email(rezident, rezident.sub_state)
     return subscription
 

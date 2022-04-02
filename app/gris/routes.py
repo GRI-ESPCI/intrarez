@@ -26,12 +26,14 @@ def rezidents() -> typing.RouteReturn:
             if form.unban.data:
                 # Terminate existing ban
                 ban.end = datetime.datetime.utcnow()
+                utils.log_action(f"Terminated {ban}")
                 flask.flash(_("Le ban a été terminé."), "success")
             else:
                 # Update existing ban
                 ban.end = form.get_end(ban.start)
                 ban.reason = form.reason.data
                 ban.message = form.message.data
+                utils.log_action(f"Modified {ban}: {ban.end} / {ban.reason}")
                 flask.flash(_("Le ban a bien été modifié."), "success")
         else:
             # New ban
@@ -44,6 +46,7 @@ def rezidents() -> typing.RouteReturn:
                 ban = Ban(rezident=rezident, start=start, end=end,
                           reason=form.reason.data, message=form.message.data)
                 db.session.add(ban)
+                utils.log_action(f"Added {ban}: {ban.end} / {ban.reason}")
                 flask.flash(_("Le mécréant a bien été banni."), "success")
         db.session.commit()
         utils.run_script("gen_dhcp.py")       # Update DHCP rules

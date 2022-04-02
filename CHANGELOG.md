@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## 1.6.2 - 2022-04-02
+
+### Fixed
+
+  * Rezidents were not automatically unbanned when taking a new subscription;
+  * Ban-related actions were not logged.
+
+
 ## 1.6.1 - 2022-03-08
 
 ### Changed

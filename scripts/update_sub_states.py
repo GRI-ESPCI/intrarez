@@ -72,15 +72,10 @@ def main() -> None:
                                   "un abonnement à Internet.")
                     )
                     db.session.add(ban)
+                    utils.log_action(
+                        f"Subscription of {rezident} expired, added {ban}"
+                    )
                     db.session.commit()
-            elif (rezident.sub_state == SubState.outlaw
-                  and sub_state == SubState.subscribed
-                  and rezident.is_banned):
-                # Re-prise abonnement : ok on débanne
-                rezident.current_ban.end = datetime.datetime.now(
-                    datetime.timezone.utc
-                )
-                db.session.commit()
 
             rezident.sub_state = sub_state
             db.session.commit()     # On commit à chaque fois, au cas où
