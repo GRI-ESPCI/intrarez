@@ -8,7 +8,7 @@ from flask_babel import _
 import unidecode
 
 from app import context, db
-from app.auth import bp, forms, email
+from app.routes.auth import bp, forms, email
 from app.models import Rezident
 from app.tools import typing, utils
 

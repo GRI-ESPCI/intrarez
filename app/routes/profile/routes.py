@@ -4,7 +4,7 @@ import flask
 from flask_babel import _
 
 from app import context, db
-from app.profile import bp, forms
+from app.routes.profile import bp, forms
 from app.tools import utils, typing
 
 

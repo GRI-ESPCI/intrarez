@@ -23,7 +23,7 @@ from flask_babel import _
 try:
     from app import db
     from app.models import Rezident, Ban, SubState
-    from app.payments import email
+    from app.routes.payments import email
     from app.tools import utils
 except ImportError:
     sys.stderr.write(

@@ -10,7 +10,7 @@ import flask
 from flask_babel import _
 
 from app import context, db
-from app.gris import bp, forms
+from app.routes.gris import bp, forms
 from app.models import Rezident, Ban
 from app.tools import utils, typing
 

@@ -5,4 +5,4 @@ import flask
 bp = flask.Blueprint("payments", __name__)
 
 # ! Keep at the bottom to avoid circular import issues !
-from app.payments import routes
+from app.routes.payments import routes

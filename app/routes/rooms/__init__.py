@@ -5,4 +5,4 @@ import flask
 bp = flask.Blueprint("rooms", __name__)
 
 # ! Keep at the bottom to avoid circular import issues !
-from app.rooms import routes
+from app.routes.rooms import routes

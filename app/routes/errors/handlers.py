@@ -7,7 +7,7 @@ from flask_babel import _
 from werkzeug.exceptions import HTTPException
 
 from app import db
-from app.errors import bp
+from app.routes.errors import bp
 from app.tools import typing
 
 

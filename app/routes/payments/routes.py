@@ -6,7 +6,7 @@ import flask
 from flask_babel import _
 
 from app import context, db
-from app.payments import bp, email, forms
+from app.routes.payments import bp, email, forms
 from app.enums import PaymentStatus, SubState
 from app.models import Offer, Payment, Rezident, Subscription
 from app.tools import lydia, utils, typing

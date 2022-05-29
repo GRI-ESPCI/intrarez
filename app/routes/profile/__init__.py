@@ -5,4 +5,4 @@ import flask
 bp = flask.Blueprint("profile", __name__)
 
 # ! Keep at the bottom to avoid circular import issues !
-from app.profile import routes
+from app.routes.profile import routes

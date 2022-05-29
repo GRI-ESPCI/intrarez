@@ -91,7 +91,7 @@ def create_app(config_class: type = Config) -> IntraRezApp:
 
     # Register blueprints
     # ! Keep imports here to avoid circular import issues !
-    from app import errors, main, auth, devices, rooms, gris, payments, profile
+    from app.routes import auth, devices, errors, gris, main, payments, profile, rooms
 
     app.register_blueprint(errors.bp)
     app.register_blueprint(main.bp)

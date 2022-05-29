@@ -8,7 +8,7 @@ from flask import g
 from flask_babel import _
 
 from app import db, context
-from app.devices import bp, forms
+from app.routes.devices import bp, forms
 from app.models import Device
 from app.tools import utils, typing
 

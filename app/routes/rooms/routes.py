@@ -7,7 +7,7 @@ from flask_babel import _
 
 from app import context, db
 from app.models import Room, Rental
-from app.rooms import bp, email, forms
+from app.routes.rooms import bp, email, forms
 from app.tools import utils, typing
 
 
