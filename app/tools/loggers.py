@@ -41,7 +41,7 @@ class DiscordHandler(StreamHandler):
     def emit(self, record: logging.LogRecord) -> requests.Response:
         """Method called to make this handler send a record."""
         content = self.format(record)
-        webhook = DiscordWebhook(url=self.webhook, content=content)
+        webhook = DiscordWebhook(url=self.webhook, content=content, rate_limit_retry=True)
         # Send in a separate thread
         app = typing.cast(IntraRezApp, flask.current_app._get_current_object())
         threading.Thread(target=_execute_webhook, args=(app, webhook)).start()

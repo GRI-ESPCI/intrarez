@@ -87,7 +87,7 @@ def report_mail() -> None:
     # Send webhook
     url = flask.current_app.config["MAIL_WEBHOOK"]
     role_id = flask.current_app.config["GRI_ROLE_ID"]
-    webhook = DiscordWebhook(url,  content=f"<@&{role_id}> Nouveau mail !")
+    webhook = DiscordWebhook(url,  content=f"<@&{role_id}> Nouveau mail !", rate_limit_retry=True)
     webhook.add_embed(embed)
     response = webhook.execute()
 

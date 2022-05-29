@@ -47,6 +47,7 @@ def contact() -> typing.RouteReturn:
             webhook = DiscordWebhook(
                 url=flask.current_app.config["MESSAGE_WEBHOOK"],
                 content=f"<@&{role_id}> Nouveau message !",
+                rate_limit_retry=True,
             )
             webhook.add_embed(form.create_embed())
             rep = webhook.execute()
