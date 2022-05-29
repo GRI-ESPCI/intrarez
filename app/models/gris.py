@@ -12,14 +12,12 @@ from app.tools import typing
 from app.tools.columns import (
     column,
     many_to_one,
-    my_enum,
     Column,
     Relationship,
 )
 
 
 Model = typing.cast(type[type], db.Model)  # type checking hack
-Enum = my_enum  # type checking hack
 
 
 class Ban(Model):
