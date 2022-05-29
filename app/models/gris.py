@@ -3,19 +3,18 @@
 from __future__ import annotations
 
 import datetime
+import typing
 
 from dateutil import relativedelta
 import sqlalchemy as sa
 
 from app import db
-from app.tools import typing
-from app.tools.columns import (
+from app.utils.columns import (
     column,
     many_to_one,
     Column,
     Relationship,
 )
-
 
 Model = typing.cast(type[type], db.Model)  # type checking hack
 

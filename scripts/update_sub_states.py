@@ -24,7 +24,7 @@ try:
     from app import db
     from app.models import Rezident, Ban, SubState
     from app.routes.payments import email
-    from app.tools import utils
+    from app.utils import helpers
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
@@ -76,11 +76,13 @@ def main() -> None:
                         ),
                     )
                     db.session.add(ban)
-                    utils.log_action(f"Subscription of {rezident} expired, added {ban}")
+                    helpers.log_action(
+                        f"Subscription of {rezident} expired, added {ban}"
+                    )
                     db.session.commit()
 
             rezident.sub_state = sub_state
             db.session.commit()  # On commit à chaque fois, au cas où
-            utils.log_action(f"Sub state of {rezident} changed to {sub_state}")
+            helpers.log_action(f"Sub state of {rezident} changed to {sub_state}")
             if rezident.has_a_room:
                 email.send_state_change_email(rezident, rezident.sub_state)

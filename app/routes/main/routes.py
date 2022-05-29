@@ -10,7 +10,7 @@ from discord_webhook import DiscordWebhook
 from app import context
 from app.routes.main import bp, forms
 from app.models import Ban
-from app.tools import captcha, utils, typing
+from app.utils import captcha, helpers, typing
 
 
 @bp.route("/")
@@ -25,7 +25,7 @@ def index() -> typing.RouteReturn:
 def external_home() -> typing.RouteReturn:
     """IntraRez homepage for the Internet."""
     if flask.g.internal:
-        return utils.ensure_safe_redirect("auth.auth_needed")
+        return helpers.ensure_safe_redirect("auth.auth_needed")
 
     return flask.render_template(
         "main/external_home.html", title=_("Bienvenue sur l'IntraRez !")
@@ -56,7 +56,7 @@ def contact() -> typing.RouteReturn:
             rep = webhook.execute()
             if rep:
                 flask.flash(_("Message transmis !"), "success")
-                return utils.ensure_safe_redirect("main.index")
+                return helpers.ensure_safe_redirect("main.index")
 
             flask.flash(
                 flask.Markup(
@@ -103,7 +103,7 @@ def banned() -> typing.RouteReturn:
     try:
         ban = Ban.query.get(flask.g._ban)
     except AttributeError:
-        return utils.redirect_to_next()
+        return helpers.redirect_to_next()
     return flask.render_template(
         "main/banned.html", ban=ban, title=_("Accès à Internet restreint")
     )
@@ -128,7 +128,7 @@ def test() -> typing.RouteReturn:
     # return flask.render_template("errors/other.html")
     # flask.abort(403)
     # raise RuntimeError("obanon")
-    utils.log_action("Bonjour ceci est un test")
+    helpers.log_action("Bonjour ceci est un test")
     flask.flash("Succès", "success")
     flask.flash("Info", "info")
     flask.flash("Warning", "warning")

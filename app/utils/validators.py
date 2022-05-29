@@ -7,7 +7,7 @@ import wtforms
 from flask_babel import lazy_gettext as _l
 
 from app.models import Rezident, Room, Ban
-from app.tools.typing import JinjaStr
+from app.utils.typing import JinjaStr
 
 
 class CustomValidator:

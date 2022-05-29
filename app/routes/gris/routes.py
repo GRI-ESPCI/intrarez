@@ -12,7 +12,7 @@ from flask_babel import _
 from app import context, db
 from app.routes.gris import bp, forms
 from app.models import Rezident, Ban
-from app.tools import utils, typing
+from app.utils import helpers, typing
 
 
 @bp.route("/rezidents", methods=["GET", "POST"])
@@ -26,14 +26,14 @@ def rezidents() -> typing.RouteReturn:
             if form.unban.data:
                 # Terminate existing ban
                 ban.end = datetime.datetime.utcnow()
-                utils.log_action(f"Terminated {ban}")
+                helpers.log_action(f"Terminated {ban}")
                 flask.flash(_("Le ban a été terminé."), "success")
             else:
                 # Update existing ban
                 ban.end = form.get_end(ban.start)
                 ban.reason = form.reason.data
                 ban.message = form.message.data
-                utils.log_action(f"Modified {ban}: {ban.end} / {ban.reason}")
+                helpers.log_action(f"Modified {ban}: {ban.end} / {ban.reason}")
                 flask.flash(_("Le ban a bien été modifié."), "success")
         else:
             # New ban
@@ -51,10 +51,10 @@ def rezidents() -> typing.RouteReturn:
                     message=form.message.data,
                 )
                 db.session.add(ban)
-                utils.log_action(f"Added {ban}: {ban.end} / {ban.reason}")
+                helpers.log_action(f"Added {ban}: {ban.end} / {ban.reason}")
                 flask.flash(_("Le mécréant a bien été banni."), "success")
         db.session.commit()
-        utils.run_script("gen_dhcp.py")  # Update DHCP rules
+        helpers.run_script("gen_dhcp.py")  # Update DHCP rules
 
     return flask.render_template(
         "gris/rezidents.html",
@@ -71,7 +71,7 @@ def run_script() -> typing.RouteReturn:
     form = forms.ChoseScriptForm()
     if form.validate_on_submit():
         script = form.script.data
-        utils.log_action(f"Executing script from GRI menu: {script}")
+        helpers.log_action(f"Executing script from GRI menu: {script}")
         # Exécution du script
         _stdin = sys.stdin
         sys.stdin = io.StringIO()  # Block script for wainting for stdin
@@ -79,9 +79,9 @@ def run_script() -> typing.RouteReturn:
             with contextlib.redirect_stdout(io.StringIO()) as stdout:
                 with contextlib.redirect_stderr(sys.stdout):
                     try:
-                        utils.run_script(script)
+                        helpers.run_script(script)
                     except Exception as exc:
-                        utils.log_action(f" -> ERROR: {exc}", warning=True)
+                        helpers.log_action(f" -> ERROR: {exc}", warning=True)
                         output = stdout.getvalue() + traceback.format_exc()
                     else:
                         output = stdout.getvalue()

@@ -5,13 +5,13 @@ import logging
 from logging import StreamHandler
 from logging.handlers import TimedRotatingFileHandler
 import threading
+import typing
 
 import flask
 from discord_webhook import DiscordWebhook
 import requests
 
 from app import IntraRezApp
-from app.tools import typing
 
 
 def _execute_webhook(app: IntraRezApp, webhook: DiscordWebhook) -> None:

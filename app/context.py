@@ -11,7 +11,7 @@ from flask_babel import _
 import flask_login
 
 from app.models import Device, Rezident
-from app.tools import utils, typing
+from app.utils import helpers, typing
 
 
 def create_request_context() -> typing.RouteReturn | None:
@@ -135,7 +135,7 @@ def create_request_context() -> typing.RouteReturn | None:
             g.all_good = False
             g.redemption_endpoint = "devices.error"
             g.redemption_params = {"reason": "ip"}
-            return utils.safe_redirect("devices.error", reason="ip")
+            return helpers.safe_redirect("devices.error", reason="ip")
 
     # Get MAC
     if not g.doas:
@@ -255,7 +255,7 @@ def all_good_only(route: _Route) -> _Route:
             return route(*args, **kwargs)
         else:
             return (
-                utils.safe_redirect(g.redemption_endpoint, **g.redemption_params)
+                helpers.safe_redirect(g.redemption_endpoint, **g.redemption_params)
                 or route()
             )
 
@@ -307,7 +307,7 @@ def logged_in_only(route: _Route) -> _Route:
             flask.flash(
                 _("Veuillez vous authentifier pour accéder " "à cette page."), "warning"
             )
-            return utils.ensure_safe_redirect("auth.auth_needed")
+            return helpers.ensure_safe_redirect("auth.auth_needed")
 
     return new_route
 
@@ -335,7 +335,7 @@ def gris_only(route: _Route) -> _Route:
             flask.flash(
                 _("Veuillez vous authentifier pour accéder " "à cette page."), "warning"
             )
-            return utils.ensure_safe_redirect("auth.login")
+            return helpers.ensure_safe_redirect("auth.login")
 
     return new_route
 
@@ -357,14 +357,14 @@ def capture() -> typing.RouteReturn | None:
     remote_ip = _get_remote_ip()
     if not remote_ip:
         # X-Real-Ip header not set by Nginx: application bug?
-        return utils.safe_redirect("devices.error", reason="ip")
+        return helpers.safe_redirect("devices.error", reason="ip")
     if _address_in_range(remote_ip, "10.0.0.100", "10.0.0.199"):
         # 10.0.0.100-199: Not registered
-        return utils.safe_redirect("main.index")
+        return helpers.safe_redirect("main.index")
     if _address_in_range(remote_ip, "10.0.8.0", "10.0.255.255"):
         # 10.0.8-255.0-255: Banned (IP stores ban ID)
         a, b, c, d = flask.g.remote_ip.split(".")
         flask.g._ban = (int(c) - 8) * 256 + int(d)
-        return utils.safe_redirect("main.banned")
+        return helpers.safe_redirect("main.banned")
 
-    return utils.safe_redirect("main.index")
+    return helpers.safe_redirect("main.index")

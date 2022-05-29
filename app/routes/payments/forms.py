@@ -5,7 +5,7 @@ from wtforms.fields import html5
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 
-from app.tools.validators import Optional, PhoneNumber
+from app.utils.validators import Optional, PhoneNumber
 
 
 class LydiaPaymentForm(FlaskForm):

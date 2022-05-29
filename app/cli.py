@@ -7,7 +7,7 @@ from shutil import which
 import click
 
 from app import IntraRezApp
-from app.tools.utils import print_progressbar, run_script
+from app.utils.helpers import print_progressbar, run_script
 
 
 def register(app: IntraRezApp) -> None:

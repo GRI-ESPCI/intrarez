@@ -5,8 +5,8 @@ from wtforms.fields import html5
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 
-from app.tools.validators import DataRequired, Email, EqualTo, Length, NewEmail
-from app.tools import utils
+from app.utils.validators import DataRequired, Email, EqualTo, Length, NewEmail
+from app.utils import helpers
 
 
 class AccountModificationForm(FlaskForm):
@@ -17,7 +17,9 @@ class AccountModificationForm(FlaskForm):
         _l("Prénom"), validators=[DataRequired(), Length(max=64)]
     )
     promo = wtforms.SelectField(
-        _l("Promotion"), choices=utils.promotions().items(), validators=[DataRequired()]
+        _l("Promotion"),
+        choices=helpers.promotions().items(),
+        validators=[DataRequired()],
     )
     email = html5.EmailField(
         _l("Adresse e-mail"),

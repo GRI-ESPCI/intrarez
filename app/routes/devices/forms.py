@@ -4,7 +4,7 @@ import wtforms
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 
-from app.tools.validators import DataRequired, Optional, Length, MacAddress
+from app.utils.validators import DataRequired, Optional, Length, MacAddress
 
 
 class DeviceRegistrationForm(FlaskForm):

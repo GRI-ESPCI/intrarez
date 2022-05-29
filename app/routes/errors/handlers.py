@@ -8,7 +8,7 @@ from werkzeug.exceptions import HTTPException
 
 from app import db
 from app.routes.errors import bp
-from app.tools import typing
+from app.utils import typing
 
 
 @bp.app_errorhandler(401)

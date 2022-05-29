@@ -13,8 +13,8 @@ from werkzeug import security as wzs
 
 from app import db
 from app.enums import SubState
-from app.tools import typing, utils
-from app.tools.columns import (
+from app.utils import helpers, typing
+from app.utils.columns import (
     column,
     one_to_many,
     my_enum,
@@ -203,7 +203,7 @@ class Rezident(flask_login.UserMixin, Model):
         db.session.add(sub)
         self.sub_state = SubState.trial
         db.session.commit()
-        utils.log_action(
+        helpers.log_action(
             f"Added {sub} to {offer}, with no payment, "
             f"granting Internet access for {start} – {start + offer.delay}"
         )

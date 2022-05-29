@@ -28,7 +28,7 @@ import sys
 try:
     from app import db, __version__
     from app.models import Offer
-    from app.tools import utils, typing
+    from app.utils import helpers, typing
 except ImportError:
     sys.stderr.write(
         "ERREUR - Ce script peut uniquement être appelé depuis Flask :\n"
@@ -139,5 +139,7 @@ def main():
             db.session.add(offer)
 
     db.session.commit()
-    utils.log_action(f"Updated offers to those in 'update_offers.py' in v{__version__}")
+    helpers.log_action(
+        f"Updated offers to those in 'update_offers.py' in v{__version__}"
+    )
     print("Modifications effectuées.")

@@ -5,7 +5,7 @@ from wtforms.fields import html5
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 
-from app.tools.validators import DataRequired, Optional, ValidRoom, PastDate, FutureDate
+from app.utils.validators import DataRequired, Optional, ValidRoom, PastDate, FutureDate
 
 
 class RentalRegistrationForm(FlaskForm):

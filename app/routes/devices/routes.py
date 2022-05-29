@@ -10,7 +10,7 @@ from flask_babel import _
 from app import db, context
 from app.routes.devices import bp, forms
 from app.models import Device
-from app.tools import utils, typing
+from app.utils import helpers, typing
 
 
 @bp.route("/register", methods=["GET", "POST"])
@@ -33,16 +33,16 @@ def register() -> typing.RouteReturn:
             )
             db.session.add(device)
             db.session.commit()
-            utils.log_action(
+            helpers.log_action(
                 f"Registered {device} ({mac_address}, type '{device.type}')"
             )
-            utils.run_script("gen_dhcp.py")  # Update DHCP rules
+            helpers.run_script("gen_dhcp.py")  # Update DHCP rules
             flask.flash(_("Appareil enregistré avec succès !"), "success")
             # OK
             if flask.request.args.get("hello"):
                 # First connection: go to connect check
-                return utils.ensure_safe_redirect("main.connect_check", hello=True)
-            return utils.redirect_to_next()
+                return helpers.ensure_safe_redirect("main.connect_check", hello=True)
+            return helpers.redirect_to_next()
 
     return flask.render_template(
         "devices/register.html", title=_("Enregistrer l'appareil"), form=form
@@ -77,8 +77,8 @@ def modify(device_id: str | None = None) -> typing.RouteReturn:
             flask.flash(_("Action non implémentée"), "warning")
 
         db.session.commit()
-        utils.log_action(f"Modified {device} (type '{device.type}')")
-        return utils.redirect_to_next()
+        helpers.log_action(f"Modified {device} (type '{device.type}')")
+        return helpers.redirect_to_next()
 
     return flask.render_template(
         "devices/modify.html", title=_("Modifier un appareil"), device=device, form=form
@@ -111,20 +111,22 @@ def transfer() -> typing.RouteReturn:
             old_rezident = device.rezident
             device.rezident = g.rezident
             db.session.commit()
-            utils.log_action(f"Transferred {device}, formerly owned by {old_rezident}")
-            utils.run_script("gen_dhcp.py")  # Update DHCP rules
+            helpers.log_action(
+                f"Transferred {device}, formerly owned by {old_rezident}"
+            )
+            helpers.run_script("gen_dhcp.py")  # Update DHCP rules
             flask.flash(_("Appareil transféré avec succès !"), "success")
             # OK
             if flask.request.args.get("hello"):
                 # First connection: go to connect check
-                return utils.ensure_safe_redirect("main.connect_check", hello=True)
-            return utils.redirect_to_next()
+                return helpers.ensure_safe_redirect("main.connect_check", hello=True)
+            return helpers.redirect_to_next()
 
     mac = flask.request.args.get("mac", "")
     device = Device.query.filter_by(mac_address=mac).first()
     if (not device) or (device.rezident == g.rezident):
         # Block accessing this form to transfer a non-existing device
-        return utils.redirect_to_next()
+        return helpers.redirect_to_next()
 
     return flask.render_template(
         "devices/transfer.html",
@@ -140,7 +142,7 @@ def error() -> typing.RouteReturn:
     """Device error page."""
     if g.all_good:
         # All good: no error, so out of here!
-        return utils.redirect_to_next()
+        return helpers.redirect_to_next()
 
     messages = {
         "ip": "Missing X-Real-Ip header",

@@ -5,7 +5,7 @@ from flask_babel import _
 
 from app import context, db
 from app.routes.profile import bp, forms
-from app.tools import utils, typing
+from app.utils import helpers, typing
 
 
 @bp.route("/")
@@ -27,12 +27,12 @@ def modify_account() -> typing.RouteReturn:
         rezident.promo = form.promo.data
         rezident.email = form.email.data
         db.session.commit()
-        utils.log_action(
+        helpers.log_action(
             f"Modified account {rezident} ({rezident.prenom} {rezident.nom} "
             f"{rezident.promo}, {rezident.email})"
         )
         flask.flash(_("Compte modifié avec succès !"), "success")
-        return utils.redirect_to_next()
+        return helpers.redirect_to_next()
 
     return flask.render_template(
         "profile/modify_account.html", title=_("Mettre à jour mon compte"), form=form
@@ -48,9 +48,9 @@ def update_password() -> typing.RouteReturn:
         if flask.g.rezident.check_password(form.current_password.data):
             flask.g.rezident.set_password(form.password.data)
             db.session.commit()
-            utils.log_action(f"Updated password of {flask.g.rezident}")
+            helpers.log_action(f"Updated password of {flask.g.rezident}")
             flask.flash(_("Mot de passe mis à jour !"), "success")
-            return utils.redirect_to_next()
+            return helpers.redirect_to_next()
         else:
             flask.flash(_("Mot de passe actuel incorrect"), "danger")
 

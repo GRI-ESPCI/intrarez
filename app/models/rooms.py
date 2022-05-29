@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import datetime
+import typing
 
 import sqlalchemy as sa
 
 from app import db
-from app.tools import typing
-from app.tools.columns import (
+from app.utils.columns import (
     column,
     one_to_many,
     many_to_one,

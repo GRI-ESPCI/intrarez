@@ -47,7 +47,7 @@ class IntraRezApp(flask.Flask):
 
 
 # Imports needing IntraRezApp - don't move!
-from app.tools import loggers, utils, typing
+from app.utils import helpers, loggers, typing
 
 # Load extensions
 db = flask_sqlalchemy.SQLAlchemy()
@@ -87,7 +87,7 @@ def create_app(config_class: type = Config) -> IntraRezApp:
     app.jinja_env.globals["__version__"] = __version__
     app.jinja_env.globals["copyright"] = in_app_copyright
     app.jinja_env.globals["babel"] = flask_babel
-    app.jinja_env.globals["promotions"] = utils.promotions
+    app.jinja_env.globals["promotions"] = helpers.promotions
 
     # Register blueprints
     # ! Keep imports here to avoid circular import issues !
