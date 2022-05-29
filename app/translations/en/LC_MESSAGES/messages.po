@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  1.6.1\n"
 "Report-Msgid-Bugs-To: intrarez@pc-est-magique.fr\n"
-"POT-Creation-Date: 2022-05-29 17:30+0200\n"
-"PO-Revision-Date: 2022-05-29 17:30+0100\n"
+"POT-Creation-Date: 2022-05-29 17:45+0200\n"
+"PO-Revision-Date: 2022-05-29 17:45+0100\n"
 "Last-Translator: Loïc Simon <intrarez@pc-est-magique.fr>\n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr "The site is under maintenance: only GRI can access it."
 msgid "Veuillez vous authentifier pour accéder à cette page."
 msgstr "Please log in to access to this page."
 
-#: app/routes/auth/email.py:17 app/routes/auth/routes.py:70
+#: app/routes/auth/email.py:17 app/routes/auth/routes.py:46
 msgid "Compte créé avec succès !"
 msgstr "Account successfully created!"
 
@@ -46,7 +46,7 @@ msgstr "Password"
 msgid "Rester connecté"
 msgstr "Remember me"
 
-#: app/routes/auth/forms.py:20 app/routes/auth/routes.py:103
+#: app/routes/auth/forms.py:20 app/routes/auth/routes.py:79
 #: app/templates/auth/auth_needed.html:21 app/templates/auth/register.html:57
 #: app/templates/auth/reset_password.html:29
 #: app/templates/auth/reset_password_request.html:26
@@ -88,7 +88,7 @@ msgstr "Sign up"
 msgid "Envoyer le mail de réinitialisation"
 msgstr "Send reset mail"
 
-#: app/routes/auth/forms.py:58 app/routes/auth/routes.py:167
+#: app/routes/auth/forms.py:58 app/routes/auth/routes.py:143
 #: app/routes/profile/forms.py:38
 msgid "Nouveau mot de passe"
 msgstr "New password"
@@ -101,31 +101,31 @@ msgstr "New password (validation)"
 msgid "Valider"
 msgstr "Validate"
 
-#: app/routes/auth/routes.py:44 app/routes/main/routes.py:96
+#: app/routes/auth/routes.py:20 app/routes/main/routes.py:96
 msgid "Accès à Internet"
 msgstr "Internet Access"
 
-#: app/routes/auth/routes.py:76
+#: app/routes/auth/routes.py:52
 msgid "Nouveau compte"
 msgstr "New account"
 
-#: app/routes/auth/routes.py:94
+#: app/routes/auth/routes.py:70
 msgid "Nom d'utilisateur inconnu"
 msgstr "Unknown username"
 
-#: app/routes/auth/routes.py:96
+#: app/routes/auth/routes.py:72
 msgid "Mot de passe incorrect"
 msgstr "Wrong password"
 
-#: app/routes/auth/routes.py:100 app/templates/main/connect_check.html:54
+#: app/routes/auth/routes.py:76 app/templates/main/connect_check.html:54
 msgid "Connecté !"
 msgstr "Connected!"
 
-#: app/routes/auth/routes.py:115
+#: app/routes/auth/routes.py:91
 msgid "Vous avez été déconnecté."
 msgstr "You have been signed out."
 
-#: app/routes/auth/routes.py:132
+#: app/routes/auth/routes.py:108
 msgid ""
 "Un email a été envoyé avec les instructions pour réinitialiser le mot de "
 "passe. Pensez à vérifier vos spams."
@@ -133,19 +133,19 @@ msgstr ""
 "An email has been send with password reset instructions. Please check "
 "your spams."
 
-#: app/routes/auth/routes.py:142
+#: app/routes/auth/routes.py:118
 msgid "Mot de passe oublié"
 msgstr "Password Lost"
 
-#: app/routes/auth/routes.py:150
+#: app/routes/auth/routes.py:126
 msgid "Ce lien n'est pas utilisable en étant authentifié."
 msgstr "This link cannot be used by an authenticated user."
 
-#: app/routes/auth/routes.py:155
+#: app/routes/auth/routes.py:131
 msgid "Lien de réinitialisation invalide ou expiré."
 msgstr "Reset link invalid or expired."
 
-#: app/routes/auth/routes.py:163
+#: app/routes/auth/routes.py:139
 msgid "Le mot de passe a été réinitialisé avec succès."
 msgstr "Your password has been successfully reset."
 
@@ -416,8 +416,8 @@ msgstr "Internet access restricted"
 msgid "Test"
 msgstr "Test"
 
-#: app/routes/payments/email.py:21 app/routes/payments/routes.py:295
-#: app/routes/payments/routes.py:358
+#: app/routes/payments/email.py:21 app/routes/payments/routes.py:244
+#: app/routes/payments/routes.py:307
 msgid "Paiement validé !"
 msgstr "Payment validated!"
 
@@ -447,54 +447,54 @@ msgstr "Send a Lydia payment request"
 msgid "Payer par carte bancaire"
 msgstr "Pay with a credit card"
 
-#: app/routes/payments/routes.py:87
+#: app/routes/payments/routes.py:36
 msgid "Mon abonnement Internet"
 msgstr "My Internet subscription"
 
-#: app/routes/payments/routes.py:97 app/routes/payments/routes.py:113
-#: app/routes/payments/routes.py:158
+#: app/routes/payments/routes.py:46 app/routes/payments/routes.py:62
+#: app/routes/payments/routes.py:107
 msgid "Vous avez déjà un abonnement en cours !"
 msgstr "You already have an active subscription!"
 
-#: app/routes/payments/routes.py:102 app/templates/cards/payment.html:5
+#: app/routes/payments/routes.py:51 app/templates/cards/payment.html:5
 #: app/templates/payments/main.html:200 app/templates/payments/main.html:240
 #: app/templates/payments/main.html:287
 msgid "Paiement"
 msgstr "Payment"
 
-#: app/routes/payments/routes.py:117 app/templates/payments/pay.html:132
+#: app/routes/payments/routes.py:66 app/templates/payments/pay.html:132
 msgid "Payer avec Lydia"
 msgstr "Pay with Lydia"
 
-#: app/routes/payments/routes.py:118 app/templates/payments/pay.html:159
+#: app/routes/payments/routes.py:67 app/templates/payments/pay.html:159
 msgid "Payer par virement"
 msgstr "Pay by bank transfer"
 
-#: app/routes/payments/routes.py:119 app/templates/payments/pay.html:186
+#: app/routes/payments/routes.py:68 app/templates/payments/pay.html:186
 msgid "Payer en main propre"
 msgstr "Pay in person"
 
-#: app/routes/payments/routes.py:120 app/templates/payments/pay.html:96
+#: app/routes/payments/routes.py:69 app/templates/payments/pay.html:96
 msgid "Ajouter un paiement"
 msgstr "Add a payment"
 
-#: app/routes/payments/routes.py:305
+#: app/routes/payments/routes.py:254
 msgid "Pas de paiement détecté"
 msgstr "No payment detected"
 
-#: app/routes/payments/routes.py:322
+#: app/routes/payments/routes.py:271
 msgid "Paiement annulé"
 msgstr "Payment cancelled"
 
-#: app/routes/payments/routes.py:331 app/routes/payments/routes.py:337
+#: app/routes/payments/routes.py:280 app/routes/payments/routes.py:286
 msgid "Numéro de paiement invalide"
 msgstr "Invalid payment number"
 
-#: app/routes/payments/routes.py:340
+#: app/routes/payments/routes.py:289
 msgid "Paiement en attente, réessayer"
 msgstr "Payment pending, try again"
 
-#: app/routes/payments/routes.py:343
+#: app/routes/payments/routes.py:292
 msgid "Paiement invalide, réessayer"
 msgstr "Payment invalid, try again"
 

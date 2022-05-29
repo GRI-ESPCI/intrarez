@@ -1,38 +1,14 @@
 """Intranet de la Rez - Authentication Routes"""
 
-import re
-
 import flask
 import flask_login
 from flask_babel import _
-import unidecode
 
 from app import context, db
-from app.routes.auth import bp, forms, email
 from app.models import Rezident
+from app.routes.auth import bp, forms, email
+from app.routes.auth.utils import new_username
 from app.utils import helpers, typing
-
-
-def new_username(prenom: str, nom: str) -> str:
-    """Create a new rezident unique username from a forname and a name.
-
-    Args:
-        prenom: The rezident's forname.
-        nom: The rezident's last name.
-
-    Returns:
-        The first non-existing corresponding username.
-    """
-    pnom = prenom.lower()[0] + nom.lower()[:7]
-    # Exclude non-alphanumerics characters
-    base_username = re.sub(r"\W", "", unidecode.unidecode(pnom), re.A)
-    # Construct first non-existing username
-    username = base_username
-    discr = 1
-    while Rezident.query.filter_by(username=username).first():
-        username = f"{base_username}{discr}"
-        discr += 1
-    return username
 
 
 @bp.route("/auth_needed")
