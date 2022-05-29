@@ -164,8 +164,7 @@ def run_script(name: str) -> None:
     Raises:
         FileNotFoundError: if the given name is not an existing script.
     """
-    if name.endswith(".py"):
-        name = name[:-3]
+    name = name.removesuffix(".py")
     file = os.path.join("scripts", f"{name}.py")
     if not os.path.isfile(file):
         raise FileNotFoundError(

@@ -62,6 +62,8 @@ def run_script() -> typing.RouteReturn:
     """Run an IntraRez script."""
     form = forms.ChoseScriptForm()
     if form.validate_on_submit():
+        script = form.script.data
+        utils.log_action(f"Executing script from GRI menu: {script}")
         # Exécution du script
         _stdin = sys.stdin
         sys.stdin = io.StringIO()   # Block script for wainting for stdin
@@ -69,8 +71,9 @@ def run_script() -> typing.RouteReturn:
             with contextlib.redirect_stdout(io.StringIO()) as stdout:
                 with contextlib.redirect_stderr(sys.stdout):
                     try:
-                        utils.run_script(form.script.data)
-                    except Exception:
+                        utils.run_script(script)
+                    except Exception as exc:
+                        utils.log_action(f" -> ERROR: {exc}", warning=True)
                         output = stdout.getvalue() + traceback.format_exc()
                     else:
                         output = stdout.getvalue()
