@@ -49,66 +49,61 @@ def offers() -> dict[str, dict[str, typing.Any]]:
         offres et peut être choisie par un Rezident.
     """
     return {
-
         "_first": dict(
             name_fr="Offre de bienvenue",
             name_en="Welcoming offer",
             description_fr="Un mois d'accès à Internet offert à votre "
-                           "première connexion !",
+            "première connexion !",
             description_en="One month of free Internet access  when you "
-                           "connect for the first time!",
+            "connect for the first time!",
             price=0.0,
             months=0,
             days=0,
-            active=True,    # NE PAS CHANGER (offre ajoutée automatiquement)
+            active=True,  # NE PAS CHANGER (offre ajoutée automatiquement)
             visible=False,
         ),
-
         "3months": dict(
             name_fr="3 mois",
             name_en="3 months",
             description_fr="2 mois d'abonnement à Internet, puis 1 mois "
-                           "offert pendant lequel un nouvel abonnement peut "
-                           "être pris.",
+            "offert pendant lequel un nouvel abonnement peut "
+            "être pris.",
             description_en="2 months of Internet access, then 1 extra month "
-                           "during which a new subscription can be taken.",
+            "during which a new subscription can be taken.",
             price=4.0,
             months=2,
             days=0,
             active=True,
             visible=True,
         ),
-
         "6months": dict(
             name_fr="6 mois",
             name_en="6 months",
             description_fr="5 mois d'abonnement à Internet, puis 1 mois "
-                           "offert pendant lequel un nouvel abonnement peut "
-                           "être pris.",
+            "offert pendant lequel un nouvel abonnement peut "
+            "être pris.",
             description_en="5 months of Internet access, then 1 extra month "
-                           "during which a new subscription can be taken.",
+            "during which a new subscription can be taken.",
             price=8.0,
             months=5,
             days=0,
             active=True,
             visible=True,
         ),
-
         "12months": dict(
             name_fr="12 mois",
             name_en="12 months",
             description_fr="11 mois d'abonnement à Internet, puis 1 mois "
-                           "offert pendant lequel un nouvel abonnement peut "
-                           "être pris.",
+            "offert pendant lequel un nouvel abonnement peut "
+            "être pris.",
             description_en="11 months of Internet access, then 1 extra month "
-                           "during which a new subscription can be taken.",
+            "during which a new subscription can be taken.",
             price=15.0,
             months=11,
             days=0,
             active=True,
             visible=True,
         ),
-
     }
 
 
@@ -118,9 +113,11 @@ def main():
         if offer:
             # Offer modification
             print(f"Mise à jour de {offer}...")
-            if (offer.price != offer_dict["price"]
+            if (
+                offer.price != offer_dict["price"]
                 or offer.months != offer_dict["months"]
-                or offer.days != offer_dict["days"]):
+                or offer.days != offer_dict["days"]
+            ):
                 # Cannot modify price/delay
                 db.session.rollback()
                 raise ValueError(
@@ -142,7 +139,5 @@ def main():
             db.session.add(offer)
 
     db.session.commit()
-    utils.log_action(
-        f"Updated offers to those in 'update_offers.py' in v{__version__}"
-    )
+    utils.log_action(f"Updated offers to those in 'update_offers.py' in v{__version__}")
     print("Modifications effectuées.")

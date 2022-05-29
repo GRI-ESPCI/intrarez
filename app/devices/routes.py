@@ -36,18 +36,17 @@ def register() -> typing.RouteReturn:
             utils.log_action(
                 f"Registered {device} ({mac_address}, type '{device.type}')"
             )
-            utils.run_script("gen_dhcp.py")       # Update DHCP rules
+            utils.run_script("gen_dhcp.py")  # Update DHCP rules
             flask.flash(_("Appareil enregistré avec succès !"), "success")
             # OK
             if flask.request.args.get("hello"):
                 # First connection: go to connect check
-                return utils.ensure_safe_redirect("main.connect_check",
-                                                  hello=True)
+                return utils.ensure_safe_redirect("main.connect_check", hello=True)
             return utils.redirect_to_next()
 
-    return flask.render_template("devices/register.html",
-                                 title=_("Enregistrer l'appareil"),
-                                 form=form)
+    return flask.render_template(
+        "devices/register.html", title=_("Enregistrer l'appareil"), form=form
+    )
 
 
 @bp.route("/modify", methods=["GET", "POST"])
@@ -78,14 +77,12 @@ def modify(device_id: str | None = None) -> typing.RouteReturn:
             flask.flash(_("Action non implémentée"), "warning")
 
         db.session.commit()
-        utils.log_action(
-            f"Modified {device} (type '{device.type}')"
-        )
+        utils.log_action(f"Modified {device} (type '{device.type}')")
         return utils.redirect_to_next()
 
-    return flask.render_template("devices/modify.html",
-                                 title=_("Modifier un appareil"),
-                                 device=device, form=form)
+    return flask.render_template(
+        "devices/modify.html", title=_("Modifier un appareil"), device=device, form=form
+    )
 
 
 @bp.route("/transfer", methods=["GET", "POST"])
@@ -97,29 +94,30 @@ def transfer() -> typing.RouteReturn:
         # Check not already registered
         device = Device.query.filter_by(mac_address=form.mac.data).first()
         if not device:
-            flask.flash(_("Cet appareil n'est pas encore enregistré !"),
-                        "danger")
+            flask.flash(_("Cet appareil n'est pas encore enregistré !"), "danger")
         elif device.rezident == g.rezident:
             flask.flash(_("Cet appareil vous appartient déjà !"), "danger")
         elif device.rezident.is_banned:
-            flask.flash(_("Cet appareil appartient à un utilisateur banni. "
-                          "Son transfert est donc bloqué pour éviter les "
-                          "tentatives de contournement ; contactez-nous si "
-                          "la demande est légitime."), "danger")
+            flask.flash(
+                _(
+                    "Cet appareil appartient à un utilisateur banni. "
+                    "Son transfert est donc bloqué pour éviter les "
+                    "tentatives de contournement ; contactez-nous si "
+                    "la demande est légitime."
+                ),
+                "danger",
+            )
         else:
             old_rezident = device.rezident
             device.rezident = g.rezident
             db.session.commit()
-            utils.log_action(
-                f"Transferred {device}, formerly owned by {old_rezident}"
-            )
-            utils.run_script("gen_dhcp.py")       # Update DHCP rules
+            utils.log_action(f"Transferred {device}, formerly owned by {old_rezident}")
+            utils.run_script("gen_dhcp.py")  # Update DHCP rules
             flask.flash(_("Appareil transféré avec succès !"), "success")
             # OK
             if flask.request.args.get("hello"):
                 # First connection: go to connect check
-                return utils.ensure_safe_redirect("main.connect_check",
-                                                  hello=True)
+                return utils.ensure_safe_redirect("main.connect_check", hello=True)
             return utils.redirect_to_next()
 
     mac = flask.request.args.get("mac", "")
@@ -128,9 +126,12 @@ def transfer() -> typing.RouteReturn:
         # Block accessing this form to transfer a non-existing device
         return utils.redirect_to_next()
 
-    return flask.render_template("devices/transfer.html",
-                                 title=_("Transférer l'appareil"),
-                                 form=form, device=device)
+    return flask.render_template(
+        "devices/transfer.html",
+        title=_("Transférer l'appareil"),
+        form=form,
+        device=device,
+    )
 
 
 @bp.route("/error")
@@ -166,7 +167,9 @@ def error() -> typing.RouteReturn:
         step = 0
     if step >= len(blabla):
         step = random.randrange(1, len(blabla))
-    return flask.render_template("devices/error.html",
-                                 title=_("Détection d'appareil impossible"),
-                                 reason=messages.get(reason),
-                                 message=blabla[step])
+    return flask.render_template(
+        "devices/error.html",
+        title=_("Détection d'appareil impossible"),
+        reason=messages.get(reason),
+        message=blabla[step],
+    )

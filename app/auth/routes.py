@@ -41,8 +41,7 @@ def auth_needed() -> typing.RouteReturn:
     if not flask.g.internal:
         return utils.ensure_safe_redirect("main.external_home")
 
-    return flask.render_template("auth/auth_needed.html",
-                                 title=_("Accès à Internet"))
+    return flask.render_template("auth/auth_needed.html", title=_("Accès à Internet"))
 
 
 @bp.route("/register", methods=["GET", "POST"])
@@ -73,8 +72,9 @@ def register() -> typing.RouteReturn:
         email.send_account_registered_email(rezident)
         return utils.redirect_to_next()
 
-    return flask.render_template("auth/register.html",
-                                 title=_("Nouveau compte"), form=form)
+    return flask.render_template(
+        "auth/register.html", title=_("Nouveau compte"), form=form
+    )
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -86,8 +86,10 @@ def login() -> typing.RouteReturn:
     form = forms.LoginForm()
     if form.validate_on_submit():
         # Check user / password
-        rezident = (Rezident.query.filter_by(username=form.login.data).first()
-                    or Rezident.query.filter_by(email=form.login.data).first())
+        rezident = (
+            Rezident.query.filter_by(username=form.login.data).first()
+            or Rezident.query.filter_by(email=form.login.data).first()
+        )
         if rezident is None:
             flask.flash(_("Nom d'utilisateur inconnu"), "danger")
         elif not rezident.check_password(form.password.data):
@@ -98,8 +100,7 @@ def login() -> typing.RouteReturn:
             flask.flash(_("Connecté !"), "success")
             return utils.redirect_to_next()
 
-    return flask.render_template("auth/login.html", title=_("Connexion"),
-                                 form=form)
+    return flask.render_template("auth/login.html", title=_("Connexion"), form=form)
 
 
 @bp.route("/logout")
@@ -127,27 +128,31 @@ def reset_password_request() -> typing.RouteReturn:
         rezident = Rezident.query.filter_by(email=form.email.data).first()
         if rezident:
             email.send_password_reset_email(rezident)
-        flask.flash(_("Un email a été envoyé avec les instructions pour "
-                      "réinitialiser le mot de passe. Pensez à vérifier vos "
-                      "spams."), "info")
+        flask.flash(
+            _(
+                "Un email a été envoyé avec les instructions pour "
+                "réinitialiser le mot de passe. Pensez à vérifier vos "
+                "spams."
+            ),
+            "info",
+        )
         return utils.ensure_safe_redirect("auth.login")
 
-    return flask.render_template("auth/reset_password_request.html",
-                                 title=_("Mot de passe oublié"), form=form)
+    return flask.render_template(
+        "auth/reset_password_request.html", title=_("Mot de passe oublié"), form=form
+    )
 
 
 @bp.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_password(token) -> typing.RouteReturn:
     """IntraRez password reset page (link sent by mail)."""
     if flask.g.logged_in:
-        flask.flash(_("Ce lien n'est pas utilisable en étant authentifié."),
-                    "warning")
+        flask.flash(_("Ce lien n'est pas utilisable en étant authentifié."), "warning")
         return utils.redirect_to_next()
 
     rezident = Rezident.verify_reset_password_token(token)
     if not rezident:
-        flask.flash(_("Lien de réinitialisation invalide ou expiré."),
-                    "danger")
+        flask.flash(_("Lien de réinitialisation invalide ou expiré."), "danger")
         return utils.redirect_to_next()
 
     form = forms.ResetPasswordForm()
@@ -155,9 +160,9 @@ def reset_password(token) -> typing.RouteReturn:
         rezident.set_password(form.password.data)
         db.session.commit()
         utils.log_action(f"Reset password of {rezident}")
-        flask.flash(_("Le mot de passe a été réinitialisé avec succès."),
-                    "success")
+        flask.flash(_("Le mot de passe a été réinitialisé avec succès."), "success")
         return utils.ensure_safe_redirect("auth.login")
 
-    return flask.render_template("auth/reset_password.html",
-                                 title=_("Nouveau mot de passe"), form=form)
+    return flask.render_template(
+        "auth/reset_password.html", title=_("Nouveau mot de passe"), form=form
+    )

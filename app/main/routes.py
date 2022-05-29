@@ -27,8 +27,9 @@ def external_home() -> typing.RouteReturn:
     if flask.g.internal:
         return utils.ensure_safe_redirect("auth.auth_needed")
 
-    return flask.render_template("main/external_home.html",
-                                 title=_("Bienvenue sur l'IntraRez !"))
+    return flask.render_template(
+        "main/external_home.html", title=_("Bienvenue sur l'IntraRez !")
+    )
 
 
 @bp.route("/contact", methods=["GET", "POST"])
@@ -40,8 +41,10 @@ def contact() -> typing.RouteReturn:
     form = forms.ContactForm()
     if form.validate_on_submit():
         if (not flask.g.internal) and (not captcha.verify_captcha()):
-            flask.flash(_("Le captcha n'a pas pu être vérifié. "
-                          "Veuillez réessayer."), "danger")
+            flask.flash(
+                _("Le captcha n'a pas pu être vérifié. " "Veuillez réessayer."),
+                "danger",
+            )
         else:
             role_id = flask.current_app.config["GRI_ROLE_ID"]
             webhook = DiscordWebhook(
@@ -55,38 +58,42 @@ def contact() -> typing.RouteReturn:
                 flask.flash(_("Message transmis !"), "success")
                 return utils.ensure_safe_redirect("main.index")
 
-            flask.flash(flask.Markup(_(
-                "Oh non ! Le message n'a pas pu être transmis. N'hésitez pas "
-                "à contacter un GRI aux coordonnées en bas de page.<br/>"
-                "(Erreur : ") + f"<code>{rep.code} / {rep.text}</code>)"),
-                "danger"
+            flask.flash(
+                flask.Markup(
+                    _(
+                        "Oh non ! Le message n'a pas pu être transmis. N'hésitez pas "
+                        "à contacter un GRI aux coordonnées en bas de page.<br/>"
+                        "(Erreur : "
+                    )
+                    + f"<code>{rep.code} / {rep.text}</code>)"
+                ),
+                "danger",
             )
 
-    return flask.render_template("main/contact.html", title=_("Contact"),
-                                 form=form, gris=gris)
+    return flask.render_template(
+        "main/contact.html", title=_("Contact"), form=form, gris=gris
+    )
 
 
 @bp.route("/legal")
 def legal() -> typing.RouteReturn:
     """IntraRez legal page."""
-    return flask.render_template("main/legal.html",
-                                 title=_("Mentions légales"))
+    return flask.render_template("main/legal.html", title=_("Mentions légales"))
 
 
 @bp.route("/changelog")
 def changelog() -> typing.RouteReturn:
     """IntraRez changelog page."""
-    return flask.render_template("main/changelog.html",
-                                 title=_("Notes de mise à jour"),
-                                 datetime=datetime)
+    return flask.render_template(
+        "main/changelog.html", title=_("Notes de mise à jour"), datetime=datetime
+    )
 
 
 @bp.route("/connect_check")
 @context.internal_only
 def connect_check() -> typing.RouteReturn:
     """Connect check page."""
-    return flask.render_template("main/connect_check.html",
-                                 title=_("Accès à Internet"))
+    return flask.render_template("main/connect_check.html", title=_("Accès à Internet"))
 
 
 @bp.route("/banned")
@@ -97,8 +104,9 @@ def banned() -> typing.RouteReturn:
         ban = Ban.query.get(flask.g._ban)
     except AttributeError:
         return utils.redirect_to_next()
-    return flask.render_template("main/banned.html", ban=ban,
-                                 title=_("Accès à Internet restreint"))
+    return flask.render_template(
+        "main/banned.html", ban=ban, title=_("Accès à Internet restreint")
+    )
 
 
 @bp.route("/home")
@@ -106,8 +114,10 @@ def rickroll() -> typing.RouteReturn:
     """The old good days..."""
     if flask.g.logged_in:
         with open("logs/rickrolled.log", "a") as fh:
-            fh.write(f"{datetime.datetime.now()}: rickrolled "
-                     f"{flask.g.rezident.full_name}\n")
+            fh.write(
+                f"{datetime.datetime.now()}: rickrolled "
+                f"{flask.g.rezident.full_name}\n"
+            )
     return flask.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
 
@@ -141,10 +151,13 @@ def test() -> typing.RouteReturn:
 def test_mail(blueprint: str, template: str) -> typing.RouteReturn:
     """Mails test route"""
     from app.email import process_html, html_to_plaintext
-    body = flask.render_template(f"{blueprint}/mails/{template}.html",
-                                 rezident=flask.g.rezident,
-                                 token="sample_t0ken",
-                                 sub=flask.g.rezident.current_subscription)
+
+    body = flask.render_template(
+        f"{blueprint}/mails/{template}.html",
+        rezident=flask.g.rezident,
+        token="sample_t0ken",
+        sub=flask.g.rezident.current_subscription,
+    )
     body = process_html(body)
     if flask.request.args.get("txt"):
         return f"<pre>{flask.escape(html_to_plaintext(body))}</pre>"

@@ -12,8 +12,7 @@ from app.enums import PaymentStatus
 from app.models import Rezident, Payment, Offer
 
 
-def get_payment_url(rezident: Rezident, offer: Offer,
-                    phone: str | None) -> str:
+def get_payment_url(rezident: Rezident, offer: Offer, phone: str | None) -> str:
     """Get URL to send the rezident to to make him pay.
 
     If a payment request is already waiting, it returns its URL, else
@@ -27,9 +26,14 @@ def get_payment_url(rezident: Rezident, offer: Offer,
         The Lydia pay page URL.
     """
     try:
-        payment = next(payment for payment in rezident.payments
-                       if (payment.status == PaymentStatus.waiting
-                           and payment.amount == offer.price))
+        payment = next(
+            payment
+            for payment in rezident.payments
+            if (
+                payment.status == PaymentStatus.waiting
+                and payment.amount == offer.price
+            )
+        )
     except StopIteration:
         # No payment waiting, create one
         return create_payment(rezident, offer, phone)
@@ -41,8 +45,7 @@ def get_payment_url(rezident: Rezident, offer: Offer,
             return build_payment_url(payment.lydia_uuid)
         elif payment.status == PaymentStatus.accepted:
             # Payment made (but callback not called?): validate it
-            return flask.url_for("payments.lydia_validate",
-                                 payment_id=payment.id)
+            return flask.url_for("payments.lydia_validate", payment_id=payment.id)
         else:
             # Payment closed, cancelled...: create a new one
             return create_payment(rezident, offer, phone)
@@ -75,26 +78,29 @@ def create_payment(rezident: Rezident, offer: Offer, phone: str | None) -> str:
             "vendor_token": flask.current_app.config["LYDIA_VENDOR_TOKEN"],
             "amount": format(float(offer.price), ".2f"),
             "currency": "EUR",
-            "recipient": (phone or rezident.email
-                          or f"{rezident.username}@no-email.org"),
+            "recipient": (
+                phone or rezident.email or f"{rezident.username}@no-email.org"
+            ),
             "type": "phone" if phone else "email",
             "payment_method": "lydia" if phone else "cb",
             "order_ref": payment.id,
             "message": _("Offre Internet à la Rez :") + f" {offer.name}",
             "notify_collector": "no",
-            "confirm_url": flask.url_for("payments.lydia_callback_confirm",
-                                         _external=True),
-            "cancel_url": flask.url_for("payments.lydia_callback_cancel",
-                                        _external=True),
+            "confirm_url": flask.url_for(
+                "payments.lydia_callback_confirm", _external=True
+            ),
+            "cancel_url": flask.url_for(
+                "payments.lydia_callback_cancel", _external=True
+            ),
             "display_confirmation": "no",
-            "expire_url": flask.url_for("payments.lydia_callback_cancel",
-                                        _external=True),
-            "end_mobile_url": flask.url_for("payments.lydia_success",
-                                            _external=True),
-            "browser_success_url": flask.url_for("payments.lydia_success",
-                                                 _external=True),
-            "browser_fail_url": flask.url_for("payments.lydia_fail",
-                                              _external=True),
+            "expire_url": flask.url_for(
+                "payments.lydia_callback_cancel", _external=True
+            ),
+            "end_mobile_url": flask.url_for("payments.lydia_success", _external=True),
+            "browser_success_url": flask.url_for(
+                "payments.lydia_success", _external=True
+            ),
+            "browser_fail_url": flask.url_for("payments.lydia_fail", _external=True),
         },
     )
 
@@ -103,8 +109,7 @@ def create_payment(rezident: Rezident, offer: Offer, phone: str | None) -> str:
         payment.status = PaymentStatus.waiting
         payment.lydia_uuid = rep.json()["request_uuid"]
         db.session.commit()
-        return build_payment_url(payment.lydia_uuid,
-                                 method="lydia" if phone else "cb")
+        return build_payment_url(payment.lydia_uuid, method="lydia" if phone else "cb")
     else:
         raise RuntimeError(
             f"Lydia Request Do Failed: {rep.request.body} >>> {rep.text}"
@@ -134,11 +139,14 @@ def update_payment(payment: Payment) -> None:
             f"Lydia Request Check Failed: {rep.request.body} >>> {rep.text}"
         )
 
-    if not check_signature(rep.json().get("signature"),
-                           amount=format(float(payment.amount), ".2f"),
-                           request_uuid=payment.lydia_uuid):
-        flask.flash(_("Signature invalide, impossible de valider le paiement"),
-                    "danger")
+    if not check_signature(
+        rep.json().get("signature"),
+        amount=format(float(payment.amount), ".2f"),
+        request_uuid=payment.lydia_uuid,
+    ):
+        flask.flash(
+            _("Signature invalide, impossible de valider le paiement"), "danger"
+        )
         return
 
     state = rep.json().get("state")
@@ -182,4 +190,4 @@ def check_signature(sig: str, **params: str) -> bool:
     sorted_params = sorted(params.items(), key=lambda kv: kv[0])
     query = "&".join(f"{key}={val}" for key, val in sorted_params)
     raw_sig = query + "&" + flask.current_app.config["LYDIA_PRIVATE_TOKEN"]
-    return (hashlib.md5(raw_sig.encode()).hexdigest() == sig)
+    return hashlib.md5(raw_sig.encode()).hexdigest() == sig

@@ -30,9 +30,7 @@ _premailer = typing.cast(premailer.Premailer, None)
 _textifier = typing.cast(html2text.HTML2Text, None)
 
 
-def _send_email(app: IntraRezApp,
-                template: str,
-                msg: flask_mail.Message) -> None:
+def _send_email(app: IntraRezApp, template: str, msg: flask_mail.Message) -> None:
     # To be called in a separate tread
     with app.app_context():
         try:
@@ -45,13 +43,14 @@ def _send_email(app: IntraRezApp,
             )
 
 
-def send_email(template: str,
-               *,
-               subject: str,
-               recipients: dict[str | None, str],
-               html_body: str,
-               text_body: str | None = None
-    ) -> None:
+def send_email(
+    template: str,
+    *,
+    subject: str,
+    recipients: dict[str | None, str],
+    html_body: str,
+    text_body: str | None = None,
+) -> None:
     """Send an email using Flask-Mail, asynchronously.
 
     Args:
@@ -80,17 +79,14 @@ def send_email(template: str,
         html=html_body,
         extra_headers={
             "List-Unsubscribe": f"<mailto: {sender_mail}?subject=Unsubscribe: "
-                                f"{', '.join(recipients_f.keys())}>"
-        }
+            f"{', '.join(recipients_f.keys())}>"
+        },
     )
 
     # Send mail
     mail_logger.info(f"Sending '{template}' to {msg.recipients}")
     app = typing.cast(IntraRezApp, flask.current_app._get_current_object())
-    threading.Thread(
-        target=_send_email,
-        args=(app, template, msg)
-    ).start()
+    threading.Thread(target=_send_email, args=(app, template, msg)).start()
 
 
 def init_premailer() -> None:

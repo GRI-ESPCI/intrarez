@@ -30,7 +30,7 @@ def send_state_change_email(rezident: Rezident, sub_state: SubState) -> None:
         html_body = flask.render_template(
             f"payments/mails/{template_name}.html",
             rezident=rezident,
-            sub=rezident.current_subscription
+            sub=rezident.current_subscription,
         )
 
     send_email(

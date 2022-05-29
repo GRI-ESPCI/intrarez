@@ -16,13 +16,16 @@ from dotenv import load_dotenv
 import pyinotify
 
 
-logging.basicConfig(level=logging.DEBUG, style="{",
-                    format="{asctime} {levelname}:{name}:{message}")
+logging.basicConfig(
+    level=logging.DEBUG, style="{", format="{asctime} {levelname}:{name}:{message}"
+)
 load_dotenv()
 file = os.getenv("DHCP_HOSTS_FILE")
 if not file or not os.path.isfile(file):
-    raise FileNotFoundError(f"Le ficher à surveiller '{file}' n'existe pas "
-                            "(variable d'environment DHCP_HOSTS_FILE)")
+    raise FileNotFoundError(
+        f"Le ficher à surveiller '{file}' n'existe pas "
+        "(variable d'environment DHCP_HOSTS_FILE)"
+    )
 
 last_event = time.time()
 

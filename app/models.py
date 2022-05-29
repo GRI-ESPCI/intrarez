@@ -16,12 +16,18 @@ from werkzeug import security as wzs
 from app import db
 from app.enums import PaymentStatus, SubState
 from app.tools import typing, utils
-from app.tools.columns import (column, one_to_many, many_to_one, my_enum,
-                               Column, Relationship)
+from app.tools.columns import (
+    column,
+    one_to_many,
+    many_to_one,
+    my_enum,
+    Column,
+    Relationship,
+)
 
 
-Model = typing.cast(type[type], db.Model)   # type checking hack
-Enum = my_enum                              # type checking hack
+Model = typing.cast(type[type], db.Model)  # type checking hack
+Enum = my_enum  # type checking hack
 
 
 class Rezident(flask_login.UserMixin, Model):
@@ -37,6 +43,7 @@ class Rezident(flask_login.UserMixin, Model):
         * get_id(): a method that returns a unique identifier for the
             rezident as a string.
     """
+
     id: Column[int] = column(sa.Integer(), primary_key=True)
     username: Column[str | None] = column(sa.String(64), unique=True)
     nom: Column[str | None] = column(sa.String(64))
@@ -45,8 +52,9 @@ class Rezident(flask_login.UserMixin, Model):
     email: Column[str | None] = column(sa.String(120), unique=True)
     locale: Column[str | None] = column(sa.String(8))
     is_gri: Column[bool] = column(sa.Boolean(), nullable=False, default=False)
-    sub_state: Column[SubState] = column(Enum(SubState), nullable=False,
-                                         default=SubState.trial)
+    sub_state: Column[SubState] = column(
+        Enum(SubState), nullable=False, default=SubState.trial
+    )
     _password_hash: Column[str | None] = column(sa.String(128))
 
     devices: Relationship[list[Device]] = one_to_many("Device.rezident")
@@ -102,8 +110,9 @@ class Rezident(flask_login.UserMixin, Model):
         making the request (connection from outside/GRIs list), it is
         included in this list.
         """
-        all = sorted(self.devices, key=lambda device: device.last_seen_time,
-                     reverse=True)
+        all = sorted(
+            self.devices, key=lambda device: device.last_seen_time, reverse=True
+        )
         if flask.g.internal and self == flask.g.rezident:
             # Really connected from current device: exclude it from other
             return all[1:]
@@ -133,7 +142,7 @@ class Rezident(flask_login.UserMixin, Model):
     @property
     def has_a_room(self) -> bool:
         """Whether the rezident has currently a room rented."""
-        return (self.current_rental is not None)
+        return self.current_rental is not None
 
     @property
     def current_subscription(self) -> Subscription | None:
@@ -149,8 +158,11 @@ class Rezident(flask_login.UserMixin, Model):
         subscriptions.
 
         Sorted from most recent to last recent subscription."""
-        return sorted((sub for sub in self.subscriptions if not sub.is_active),
-                      key=lambda sub: sub.end, reverse=True)
+        return sorted(
+            (sub for sub in self.subscriptions if not sub.is_active),
+            key=lambda sub: sub.end,
+            reverse=True,
+        )
 
     def compute_sub_state(self) -> SubState:
         """Compute the rezidents's subscription state.
@@ -175,7 +187,7 @@ class Rezident(flask_login.UserMixin, Model):
             return SubState.subscribed
 
     def add_first_subscription(self) -> None:
-        """"Add subscription to first offer (free month).
+        """ "Add subscription to first offer (free month).
 
         The subscription starts the day the Rezident registered its first
         device (usually today), and ends today.
@@ -184,9 +196,13 @@ class Rezident(flask_login.UserMixin, Model):
             return
         offer = Offer.first_offer()
         start = self.first_seen.date()
-        sub = Subscription(rezident=self, offer=offer,
-                           payment=None, start=start,
-                           end=datetime.date.today())
+        sub = Subscription(
+            rezident=self,
+            offer=offer,
+            payment=None,
+            start=start,
+            end=datetime.date.today(),
+        )
         db.session.add(sub)
         self.sub_state = SubState.trial
         db.session.commit()
@@ -206,7 +222,7 @@ class Rezident(flask_login.UserMixin, Model):
     @property
     def is_banned(self) -> bool:
         """Whether the rezident is currently under a ban."""
-        return (self.current_ban is not None)
+        return self.current_ban is not None
 
     def set_password(self, password: str) -> None:
         """Save or modify rezident password.
@@ -247,7 +263,7 @@ class Rezident(flask_login.UserMixin, Model):
         return jwt.encode(
             {"reset_password": self.id, "exp": time.time() + expires_in},
             flask.current_app.config["SECRET_KEY"],
-            algorithm="HS256"
+            algorithm="HS256",
         )
 
     @classmethod
@@ -265,9 +281,7 @@ class Rezident(flask_login.UserMixin, Model):
         """
         try:
             id = jwt.decode(
-                token,
-                flask.current_app.config["SECRET_KEY"],
-                algorithms=["HS256"]
+                token, flask.current_app.config["SECRET_KEY"], algorithms=["HS256"]
             )["reset_password"]
         except Exception:
             return
@@ -276,21 +290,17 @@ class Rezident(flask_login.UserMixin, Model):
 
 class Device(Model):
     """A device of a Rezident."""
+
     id: Column[int] = column(sa.Integer(), primary_key=True)
-    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"),
-                                       nullable=False)
+    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"), nullable=False)
     rezident: Relationship[Rezident] = many_to_one("Rezident.devices")
-    mac_address: Column[str] = column(sa.String(17), nullable=False,
-                                      unique=True)
+    mac_address: Column[str] = column(sa.String(17), nullable=False, unique=True)
     name: Column[str | None] = column(sa.String(64))
     type: Column[str | None] = column(sa.String(64))
-    registered: Column[datetime.datetime] = column(sa.DateTime(),
-                                                   nullable=False)
+    registered: Column[datetime.datetime] = column(sa.DateTime(), nullable=False)
     last_seen: Column[datetime.datetime | None] = column(sa.DateTime())
 
-    allocations: Relationship[list[Allocation]] = one_to_many(
-        "Allocation.device"
-    )
+    allocations: Relationship[list[Allocation]] = one_to_many("Allocation.device")
 
     def __repr__(self) -> str:
         """Returns repr(self)."""
@@ -353,9 +363,9 @@ class Device(Model):
 
 class Rental(Model):
     """A rental of a Rezidence room by a Rezident."""
+
     id: Column[int] = column(sa.Integer(), primary_key=True)
-    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"),
-                                       nullable=False)
+    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"), nullable=False)
     rezident: Relationship[Rezident] = many_to_one("Rezident.rentals")
     _room_num: Column[int] = column(sa.ForeignKey("room.num"), nullable=False)
     room: Relationship[Room] = many_to_one("Room.rentals")
@@ -374,16 +384,14 @@ class Rental(Model):
 
 class Room(Model):
     """A Rezidence room."""
+
     num: Column[int] = column(sa.Integer(), primary_key=True)
     floor: Column[int | None] = column(sa.Integer())
     base_ip: Column[str | None] = column(sa.String(4))
-    ips_allocated: Column[int] = column(sa.Integer(), nullable=False,
-                                        default=0)
+    ips_allocated: Column[int] = column(sa.Integer(), nullable=False, default=0)
 
     rentals: Relationship[list[Rental]] = one_to_many("Rental.room")
-    allocations: Relationship[list[Allocation]] = one_to_many(
-        "Allocation.room"
-    )
+    allocations: Relationship[list[Allocation]] = one_to_many("Allocation.room")
 
     def __repr__(self) -> str:
         """Returns repr(self)."""
@@ -416,16 +424,17 @@ class Room(Model):
         rooms = []
         for floor, max_door in doors_per_floor.items():
             for door in range(1, max_door + 1):
-                rooms.append(cls(num=100*floor + door, floor=floor,
-                                 base_ip=f"{floor}.{door}"))
+                rooms.append(
+                    cls(num=100 * floor + door, floor=floor, base_ip=f"{floor}.{door}")
+                )
         return rooms
 
 
 class Allocation(Model):
     """An allocation of an IP address to a tuple Device-Room."""
+
     id: Column[int] = column(sa.Integer(), primary_key=True)
-    _device_id: Column[int] = column(sa.ForeignKey("device.id"),
-                                     nullable=False)
+    _device_id: Column[int] = column(sa.ForeignKey("device.id"), nullable=False)
     device: Relationship[Device] = many_to_one("Device.allocations")
     _room_num: Column[int] = column(sa.ForeignKey("room.num"), nullable=False)
     room: Relationship[Room] = many_to_one("Room.allocations")
@@ -438,17 +447,14 @@ class Allocation(Model):
 
 class Subscription(Model):
     """An subscription to Internet of a Rezident."""
+
     id: Column[int] = column(sa.Integer(), primary_key=True)
-    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"),
-                                       nullable=False)
+    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"), nullable=False)
     rezident: Relationship[Rezident] = many_to_one("Rezident.subscriptions")
-    _offer_slug: Column[str] = column(sa.ForeignKey("offer.slug"),
-                                      nullable=False)
+    _offer_slug: Column[str] = column(sa.ForeignKey("offer.slug"), nullable=False)
     offer: Relationship[Offer] = many_to_one("Offer.subscriptions")
     _payment_id: Column[int | None] = column(sa.ForeignKey("payment.id"))
-    payment: Relationship[Payment | None] = many_to_one(
-        "Payment.subscriptions"
-    )
+    payment: Relationship[Payment | None] = many_to_one("Payment.subscriptions")
     start: Column[datetime.date] = column(sa.Date(), nullable=False)
     end: Column[datetime.date] = column(sa.Date(), nullable=False)
 
@@ -485,13 +491,13 @@ class Subscription(Model):
 
 class Payment(Model):
     """An payment made by a Rezident."""
+
     id: Column[int] = column(sa.Integer(), primary_key=True)
-    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"),
-                                       nullable=False)
-    rezident: Relationship[Rezident] = many_to_one("Rezident.payments",
-                                                   foreign_keys=_rezident_id)
-    amount: Column[float] = column(sa.Numeric(6, 2, asdecimal=False),
-                                   nullable=False)
+    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"), nullable=False)
+    rezident: Relationship[Rezident] = many_to_one(
+        "Rezident.payments", foreign_keys=_rezident_id
+    )
+    amount: Column[float] = column(sa.Numeric(6, 2, asdecimal=False), nullable=False)
     created: Column[datetime.date] = column(sa.DateTime(), nullable=False)
     payed: Column[datetime.date] = column(sa.DateTime())
     status: Column[PaymentStatus] = column(
@@ -500,8 +506,9 @@ class Payment(Model):
     lydia_uuid: Column[str | None] = column(sa.String(32))
     lydia_transaction_id: Column[str | None] = column(sa.String(32))
     _gri_id: Column[int | None] = column(sa.ForeignKey("rezident.id"))
-    gri: Relationship[Rezident] = many_to_one("Rezident.payments_created",
-                                              foreign_keys=_gri_id)
+    gri: Relationship[Rezident] = many_to_one(
+        "Rezident.payments_created", foreign_keys=_gri_id
+    )
 
     subscriptions: Relationship[list[Subscription]] = one_to_many(
         "Subscription.payment"
@@ -514,6 +521,7 @@ class Payment(Model):
 
 class Offer(Model):
     """An offer to subscribe to the Internet connection."""
+
     slug: Column[str] = column(sa.String(32), primary_key=True)
     name_fr: Column[str] = column(sa.String(64), nullable=False)
     name_en: Column[str] = column(sa.String(64), nullable=False)
@@ -527,9 +535,7 @@ class Offer(Model):
     visible: Column[bool] = column(sa.Boolean(), nullable=False, default=True)
     active: Column[bool] = column(sa.Boolean(), nullable=False, default=True)
 
-    subscriptions: Relationship[list[Subscription]] = one_to_many(
-        "Subscription.offer"
-    )
+    subscriptions: Relationship[list[Subscription]] = one_to_many("Subscription.offer")
 
     def __repr__(self) -> str:
         """Returns repr(self)."""
@@ -579,8 +585,9 @@ class Offer(Model):
         locale = flask_babel.get_locale()
         if locale is None:
             raise RuntimeError("Outside of request context")
-        return (self.description_fr if locale.language[:2] == "fr"
-                else self.description_en) or ""
+        return (
+            self.description_fr if locale.language[:2] == "fr" else self.description_en
+        ) or ""
 
     @classmethod
     def first_offer(cls) -> Offer:
@@ -605,9 +612,9 @@ class Offer(Model):
 
 class Ban(Model):
     """A ban of a Rezident from accessing the Internet."""
+
     id: Column[int] = column(sa.Integer(), primary_key=True)
-    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"),
-                                       nullable=False)
+    _rezident_id: Column[int] = column(sa.ForeignKey("rezident.id"), nullable=False)
     rezident: Relationship[Rezident] = many_to_one("Rezident.bans")
     start: Column[datetime.datetime] = column(sa.DateTime(), nullable=False)
     end: Column[datetime.datetime | None] = column(sa.DateTime())

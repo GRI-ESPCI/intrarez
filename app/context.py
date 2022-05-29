@@ -85,13 +85,12 @@ def create_request_context() -> typing.RouteReturn | None:
 
     # Get user
     current_user = typing.cast(
-        flask_login.AnonymousUserMixin | Rezident,
-        flask_login.current_user
+        flask_login.AnonymousUserMixin | Rezident, flask_login.current_user
     )
     g.logged_in = current_user.is_authenticated
     if g.logged_in:
         g.logged_in_user = typing.cast(Rezident, current_user)
-        g.rezident = g.logged_in_user       # May be overridden later if doas
+        g.rezident = g.logged_in_user  # May be overridden later if doas
         g.is_gri = g.rezident.is_gri
     else:
         g.all_good = False
@@ -109,25 +108,29 @@ def create_request_context() -> typing.RouteReturn | None:
             # Not authorized to do things as other rezidents!
             new_args = flask.request.args.copy()
             del new_args["doas"]
-            return flask.redirect(flask.url_for(
-                flask.request.endpoint or "main.index", **new_args
-            ))
+            return flask.redirect(
+                flask.url_for(flask.request.endpoint or "main.index", **new_args)
+            )
 
     # Check maintenance
     if flask.current_app.config["MAINTENANCE"]:
         if g.is_gri:
-            flask.flash(_("Le site est en mode maintenance : seuls les GRI "
-                          "peuvent y accéder."), "warning")
+            flask.flash(
+                _(
+                    "Le site est en mode maintenance : seuls les GRI "
+                    "peuvent y accéder."
+                ),
+                "warning",
+            )
         else:
-            flask.abort(503)    # 503 Service Unavailable
+            flask.abort(503)  # 503 Service Unavailable
 
     # Get IP
     g.remote_ip = flask.current_app.config["FORCE_IP"] or _get_remote_ip()
     if not g.remote_ip:
         # X-Real-Ip header not set by Nginx: application bug?
         if g.is_gri:
-            flask.flash("X-Real-Ip header not present! Check Nginx config!",
-                        "danger")
+            flask.flash("X-Real-Ip header not present! Check Nginx config!", "danger")
         else:
             g.all_good = False
             g.redemption_endpoint = "devices.error"
@@ -174,7 +177,7 @@ def create_request_context() -> typing.RouteReturn | None:
             return None
 
         # Check device owner
-        g.own_device = (g.rezident == g.device.rezident)
+        g.own_device = g.rezident == g.device.rezident
         if g.all_good and not g.own_device:
             # Internal, device but not owned: must transfer
             g.all_good = False
@@ -219,8 +222,9 @@ def _get_mac(remote_ip) -> str | None:
     output = subprocess.run(["/sbin/arp", "-a"], capture_output=True)
     # arp -a liste toutes les correspondances IP - mac connues
     # résultat : lignes "domain (ip) at mac_address ..."
-    match = re.search(rf"^.*? \({remote_ip}\) at ([0-9a-f:]{{17}}).*",
-                      output.stdout.decode(), re.M)
+    match = re.search(
+        rf"^.*? \({remote_ip}\) at ([0-9a-f:]{{17}}).*", output.stdout.decode(), re.M
+    )
     if match:
         return match.group(1)
     else:
@@ -244,13 +248,16 @@ def all_good_only(route: _Route) -> _Route:
     Returns:
         The protected route.
     """
+
     @functools.wraps(route)
     def new_route(*args: _RP.args, **kwargs: _RP.kwargs) -> typing.RouteReturn:
         if g.all_good:
             return route(*args, **kwargs)
         else:
-            return (utils.safe_redirect(g.redemption_endpoint,
-                                        **g.redemption_params) or route())
+            return (
+                utils.safe_redirect(g.redemption_endpoint, **g.redemption_params)
+                or route()
+            )
 
     return new_route
 
@@ -267,13 +274,14 @@ def internal_only(route: _Route) -> _Route:
     Returns:
         The protected route.
     """
+
     @functools.wraps(route)
     def new_route(*args: _RP.args, **kwargs: _RP.kwargs) -> typing.RouteReturn:
         if g.internal:
             return route(*args, **kwargs)
         else:
-            flask.abort(401)    # 401 Unauthorized
-            raise   # never reached, just to tell the type checker
+            flask.abort(401)  # 401 Unauthorized
+            raise  # never reached, just to tell the type checker
 
     return new_route
 
@@ -290,13 +298,15 @@ def logged_in_only(route: _Route) -> _Route:
     Returns:
         The protected route.
     """
+
     @functools.wraps(route)
     def new_route(*args: _RP.args, **kwargs: _RP.kwargs) -> typing.RouteReturn:
         if g.logged_in:
             return route(*args, **kwargs)
         else:
-            flask.flash(_("Veuillez vous authentifier pour accéder "
-                          "à cette page."), "warning")
+            flask.flash(
+                _("Veuillez vous authentifier pour accéder " "à cette page."), "warning"
+            )
             return utils.ensure_safe_redirect("auth.auth_needed")
 
     return new_route
@@ -313,27 +323,29 @@ def gris_only(route: _Route) -> _Route:
     Returns:
         The protected route.
     """
+
     @functools.wraps(route)
     def new_route(*args: _RP.args, **kwargs: _RP.kwargs) -> typing.RouteReturn:
         if g.is_gri:
             return route(*args, **kwargs)
         elif g.logged_in:
-            flask.abort(403)    # 403 Not Authorized
-            raise   # never reached, just to tell the type checker
+            flask.abort(403)  # 403 Not Authorized
+            raise  # never reached, just to tell the type checker
         else:
-            flask.flash(_("Veuillez vous authentifier pour accéder "
-                          "à cette page."), "warning")
+            flask.flash(
+                _("Veuillez vous authentifier pour accéder " "à cette page."), "warning"
+            )
             return utils.ensure_safe_redirect("auth.login")
 
     return new_route
 
 
 def _address_in_range(address: str, start: str, stop: str) -> bool:
-    return (IPv4Address(start) <= IPv4Address(address) <= IPv4Address(stop))
+    return IPv4Address(start) <= IPv4Address(address) <= IPv4Address(stop)
 
 
 def capture() -> typing.RouteReturn | None:
-    """"Redirect request to the adequate page based on its remote IP.
+    """ "Redirect request to the adequate page based on its remote IP.
 
     Function called by the captive portal if the requested address is not one
     of the IntraRez.

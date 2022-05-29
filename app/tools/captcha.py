@@ -22,8 +22,7 @@ def verify_captcha() -> bool:
     verify_endpoint = "https://www.google.com/recaptcha/api/siteverify"
     secret = flask.current_app.config["GOOGLE_RECAPTCHA_SECRET"]
 
-    res = requests.post(verify_endpoint,
-                        data=dict(secret=secret, response=response))
+    res = requests.post(verify_endpoint, data=dict(secret=secret, response=response))
     if not res:
         return False
 

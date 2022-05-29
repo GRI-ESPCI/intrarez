@@ -14,11 +14,10 @@ from app import IntraRezApp
 from app.tools import typing
 
 
-def _execute_webhook(app: IntraRezApp,
-                     webhook: DiscordWebhook) -> None:
+def _execute_webhook(app: IntraRezApp, webhook: DiscordWebhook) -> None:
     # To be called in a separate tread
     with app.app_context():
-        response = webhook.execute()        # type: ignore
+        response = webhook.execute()  # type: ignore
         if not response:
             app.logger.error(
                 f"ATTENTION : Échec lors de l'envoi du webhook {webhook.url} "
@@ -33,6 +32,7 @@ class DiscordHandler(StreamHandler):
         webhook: Webhook URL to use
             (``"https://discord.com/api/webhooks/<server>/<id>"``)
     """
+
     def __init__(self, webhook: str) -> None:
         """Initializes self."""
         super().__init__()
@@ -41,7 +41,9 @@ class DiscordHandler(StreamHandler):
     def emit(self, record: logging.LogRecord) -> requests.Response:
         """Method called to make this handler send a record."""
         content = self.format(record)
-        webhook = DiscordWebhook(url=self.webhook, content=content, rate_limit_retry=True)
+        webhook = DiscordWebhook(
+            url=self.webhook, content=content, rate_limit_retry=True
+        )
         # Send in a separate thread
         app = typing.cast(IntraRezApp, flask.current_app._get_current_object())
         threading.Thread(target=_execute_webhook, args=(app, webhook)).start()
@@ -55,6 +57,7 @@ class InfoErrorFormatter(logging.Formatter):
         error_fmt: Formatter format to use for levels above INFO.
         *args, **kwargs: Passed to :class:`logging.Formatter`
     """
+
     def __init__(self, info_fmt: str, error_fmt: str, *args, **kwargs) -> None:
         """Initializes self."""
         super().__init__(info_fmt, *args, **kwargs)
@@ -80,6 +83,7 @@ class DiscordFormatter(logging.Formatter):
         role_id (str): Optional 18-digit ID used to mention a specific role
             in subclasses using :attr:`DiscordFormatter.role_mention`.
     """
+
     def __init__(self, role_id: str | None = None) -> None:
         """Initializes self."""
         super().__init__()
@@ -91,13 +95,14 @@ class DiscordFormatter(logging.Formatter):
         Truncates message to 1900 characters (Discord limits to 2000).
         """
         msg = record.getMessage()
-        if len(msg) > 1900:     # Discord limitation
+        if len(msg) > 1900:  # Discord limitation
             msg = "[...]\n" + msg[-1900:]
         return msg
 
 
 class DiscordErrorFormatter(DiscordFormatter):
     """:class:`.DiscordFormatter` subclass used to transmit error messages."""
+
     def format(self, record: logging.LogRecord) -> str:
         """Method called to make this formatter format a record.
 
@@ -115,13 +120,15 @@ class DiscordErrorFormatter(DiscordFormatter):
             except AttributeError:
                 pass
 
-        return (f"{self.role_mention}ALED ça a planté ! (chez {remote_ip})\n"
-                f"```{msg}```")
+        return (
+            f"{self.role_mention}ALED ça a planté ! (chez {remote_ip})\n" f"```{msg}```"
+        )
 
 
 # Custom formatter
 class DiscordLoggingFormatter(DiscordFormatter):
     """:class:`.DiscordFormatter` subclass used to transmit actions infos."""
+
     def format(self, record: logging.LogRecord) -> str:
         """Method called to make this formatter format a record.
 
@@ -155,30 +162,31 @@ def configure_logging(app: IntraRezApp) -> None:
         # Alert messages for errors
         discord_errors_handler = DiscordHandler(app.config["ERROR_WEBHOOK"])
         discord_errors_handler.setLevel(logging.ERROR)
-        discord_errors_handler.setFormatter(DiscordErrorFormatter(
-            app.config.get("GRI_ROLE_ID")
-        ))
+        discord_errors_handler.setFormatter(
+            DiscordErrorFormatter(app.config.get("GRI_ROLE_ID"))
+        )
         app.logger.addHandler(discord_errors_handler)
 
     if app.config["LOGGING_WEBHOOK"]:
         # Logging messages for actions
         discord_actions_handler = DiscordHandler(app.config["LOGGING_WEBHOOK"])
-        discord_actions_handler.setLevel(logging.DEBUG if app.debug
-                                         else logging.INFO)
-        discord_actions_handler.setFormatter(DiscordLoggingFormatter(
-            app.config.get("GRI_ROLE_ID")
-        ))
+        discord_actions_handler.setLevel(logging.DEBUG if app.debug else logging.INFO)
+        discord_actions_handler.setFormatter(
+            DiscordLoggingFormatter(app.config.get("GRI_ROLE_ID"))
+        )
         app.actions_logger.addHandler(discord_actions_handler)
 
     # File logging
     if not os.path.exists("logs"):
         os.mkdir("logs")
     file_handler = TimedRotatingFileHandler("logs/intrarez.log", when="D")
-    file_handler.setFormatter(InfoErrorFormatter(
-        "{asctime} {levelname}: {message}",
-        "{asctime} {levelname}: {message} [in {pathname}:{lineno}]",
-        style="{",
-    ))
+    file_handler.setFormatter(
+        InfoErrorFormatter(
+            "{asctime} {levelname}: {message}",
+            "{asctime} {levelname}: {message} [in {pathname}:{lineno}]",
+            style="{",
+        )
+    )
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
 

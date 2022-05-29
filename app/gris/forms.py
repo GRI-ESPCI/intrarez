@@ -9,8 +9,13 @@ from wtforms.fields import html5
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 
-from app.tools.validators import (DataRequired, Optional, Length,
-                                  ValidRezidentID, ValidBanID)
+from app.tools.validators import (
+    DataRequired,
+    Optional,
+    Length,
+    ValidRezidentID,
+    ValidBanID,
+)
 
 
 def scripts_list() -> list[tuple[str, str]]:
@@ -38,27 +43,29 @@ def scripts_list() -> list[tuple[str, str]]:
 
 class ChoseScriptForm(FlaskForm):
     """WTForm used to chose a script to execute."""
-    script = wtforms.SelectField(_l("Script"), choices=scripts_list(),
-                                 validators=[DataRequired()])
+
+    script = wtforms.SelectField(
+        _l("Script"), choices=scripts_list(), validators=[DataRequired()]
+    )
     submit = wtforms.SubmitField(_l("Exécuter"))
 
 
 class BanForm(FlaskForm):
     """WTForm used to ban someone."""
-    rezident = wtforms.HiddenField("", validators=[DataRequired(),
-                                                   ValidRezidentID()])
+
+    rezident = wtforms.HiddenField("", validators=[DataRequired(), ValidRezidentID()])
     ban_id = wtforms.HiddenField("", validators=[Optional(), ValidBanID()])
     infinite = wtforms.BooleanField(_l("Illimité"), default=True)
     hours = html5.IntegerField(_l("Heures"), validators=[Optional()])
     days = html5.IntegerField(_l("Jours"), validators=[Optional()])
     months = html5.IntegerField(_l("Mois"), validators=[Optional()])
-    reason = wtforms.TextField(_l("Motif court"),
-                               validators=[DataRequired(), Length(max=32)])
-    message = wtforms.TextAreaField(_l("Message détaillé"),
-                                    validators=[Optional(), Length(max=2000)])
-    submit = wtforms.SubmitField(
-        _l("Bannez-moi ça les modos || Mettre à jour le ban")
+    reason = wtforms.TextField(
+        _l("Motif court"), validators=[DataRequired(), Length(max=32)]
     )
+    message = wtforms.TextAreaField(
+        _l("Message détaillé"), validators=[Optional(), Length(max=2000)]
+    )
+    submit = wtforms.SubmitField(_l("Bannez-moi ça les modos || Mettre à jour le ban"))
     unban = wtforms.SubmitField(_l("Mettre fin au ban"))
 
     def get_end(self, start: datetime.datetime) -> datetime.datetime | None:

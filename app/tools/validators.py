@@ -10,7 +10,7 @@ from app.models import Rezident, Room, Ban
 from app.tools.typing import JinjaStr
 
 
-class CustomValidator():
+class CustomValidator:
     message = "Invalid field."
 
     def __init__(self, _message: JinjaStr | None = None) -> None:
@@ -23,7 +23,7 @@ class CustomValidator():
             raise wtforms.validators.ValidationError(self._message)
 
     def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
-        raise NotImplementedError       # Implement in subclasses
+        raise NotImplementedError  # Implement in subclasses
 
 
 Optional = wtforms.validators.Optional
@@ -44,9 +44,7 @@ class Email(wtforms.validators.Email):
 
 
 class EqualTo(wtforms.validators.EqualTo):
-    def __init__(self,
-                 fieldname: str,
-                 message: JinjaStr | None = None) -> None:
+    def __init__(self, fieldname: str, message: JinjaStr | None = None) -> None:
         if message is None:
             message = _l("Valeur différente du champ précédent.")
         super().__init__(fieldname, message)
@@ -55,29 +53,30 @@ class EqualTo(wtforms.validators.EqualTo):
 class MacAddress(wtforms.validators.MacAddress):
     def __init__(self, message: JinjaStr | None = None) -> None:
         if message is None:
-            message = _l("Adresse MAC invalide (format attendu : "
-                         "xx:xx:xx:xx:xx:xx).")
+            message = _l(
+                "Adresse MAC invalide (format attendu : " "xx:xx:xx:xx:xx:xx)."
+            )
         super().__init__(message)
 
 
 class Length(wtforms.validators.Length):
-    def __init__(self,
-                 min: int = -1,
-                 max: int = -1,
-                 message: JinjaStr | None = None) -> None:
+    def __init__(
+        self, min: int = -1, max: int = -1, message: JinjaStr | None = None
+    ) -> None:
         if min < 0 and max < 0:
-            raise ValueError("Length validator cannot have both min and max "
-                             "arguments not set or < 0.")
+            raise ValueError(
+                "Length validator cannot have both min and max "
+                "arguments not set or < 0."
+            )
         if message is None:
             if min < 0:
-                message = _l("Doit faire moins de %(max)d caractères.",
-                             max=max)
+                message = _l("Doit faire moins de %(max)d caractères.", max=max)
             elif max < 0:
-                message = _l("Doit faire au moins %(min)d caractères.",
-                             min=min)
+                message = _l("Doit faire au moins %(min)d caractères.", min=min)
             else:
-                message = _l("Doit faire entre %(min)d et %(max)d caractères.",
-                             min=min, max=max)
+                message = _l(
+                    "Doit faire entre %(min)d et %(max)d caractères.", min=min, max=max
+                )
         super().__init__(min, max, message)
 
 
@@ -93,8 +92,7 @@ class ValidRezidentID(CustomValidator):
     message = _l("Rezident ID invalide.")
 
     def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
-        return (field.data.isdigit()
-                and bool(Rezident.query.get(int(field.data))))
+        return field.data.isdigit() and bool(Rezident.query.get(int(field.data)))
 
 
 class ValidRoom(CustomValidator):
@@ -108,8 +106,7 @@ class ValidBanID(CustomValidator):
     message = _l("Ban ID invalide.")
 
     def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
-        return (field.data.isdigit()
-                and bool(Ban.query.get(int(field.data))))
+        return field.data.isdigit() and bool(Ban.query.get(int(field.data)))
 
 
 class PastDate(CustomValidator):
@@ -118,7 +115,7 @@ class PastDate(CustomValidator):
     def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
         if not field.data:
             return True
-        return (field.data <= datetime.date.today())
+        return field.data <= datetime.date.today()
 
 
 class FutureDate(CustomValidator):
@@ -127,7 +124,7 @@ class FutureDate(CustomValidator):
     def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
         if not field.data:
             return True
-        return (field.data >= datetime.date.today())
+        return field.data >= datetime.date.today()
 
 
 class PhoneNumber(CustomValidator):
@@ -135,4 +132,4 @@ class PhoneNumber(CustomValidator):
 
     def validate(self, form: wtforms.Form, field: wtforms.Field) -> bool:
         num = field.data.replace("+33", "0").replace(" ", "")
-        return (num.isdigit() and len(num) == 10 and num.startswith("0"))
+        return num.isdigit() and len(num) == 10 and num.startswith("0")

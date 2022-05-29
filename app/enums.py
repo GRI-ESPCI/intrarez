@@ -7,14 +7,16 @@ __all__ = ["SubState", "PaymentStatus"]
 
 
 class SubState(enum.Enum):
-    """"The subscription state of a Rezident."""
+    """ "The subscription state of a Rezident."""
+
     subscribed = enum.auto()
     trial = enum.auto()
     outlaw = enum.auto()
 
 
 class PaymentStatus(enum.Enum):
-    """"The status of a Payment."""
+    """ "The status of a Payment."""
+
     manual = enum.auto()
     creating = enum.auto()
     waiting = enum.auto()

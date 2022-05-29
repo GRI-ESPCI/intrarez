@@ -40,13 +40,15 @@ except ImportError:
 
 
 def report_mail() -> None:
-    """"Get mail, process it into an Embed and send it to Discord."""
+    """ "Get mail, process it into an Embed and send it to Discord."""
     # Parse email contents from stdin
     mail = email.message_from_file(sys.stdin, policy=email.policy.default)
     if not mail:
         # Not a real mail (no headers)
-        print("Pas de mail dans l'entrée standard (normal si exécution "
-              "manuelle, ce script n'est pas fait pour ça).")
+        print(
+            "Pas de mail dans l'entrée standard (normal si exécution "
+            "manuelle, ce script n'est pas fait pour ça)."
+        )
         return
 
     # Extract email parts
@@ -64,8 +66,7 @@ def report_mail() -> None:
     content = body.get_content() if body else "<no content>"
 
     # Build embed
-    embed = DiscordEmbed(title=subject, description=content[:2000],
-                         color="64b9e9")
+    embed = DiscordEmbed(title=subject, description=content[:2000], color="64b9e9")
     embed.set_author(name=sender)
     embed.set_footer(text=f"Mail à {recipient}")
     embed.set_timestamp(timestamp)
@@ -87,7 +88,9 @@ def report_mail() -> None:
     # Send webhook
     url = flask.current_app.config["MAIL_WEBHOOK"]
     role_id = flask.current_app.config["GRI_ROLE_ID"]
-    webhook = DiscordWebhook(url,  content=f"<@&{role_id}> Nouveau mail !", rate_limit_retry=True)
+    webhook = DiscordWebhook(
+        url, content=f"<@&{role_id}> Nouveau mail !", rate_limit_retry=True
+    )
     webhook.add_embed(embed)
     response = webhook.execute()
 
@@ -103,6 +106,8 @@ def main() -> None:
     try:
         report_mail()
     except Exception:
-        raise RuntimeError("Sorry, your mail could not reach our team. "
-                           "Please use our individual contacts at "
-                           f"{flask.url_for('main.contact', _external=True)}.")
+        raise RuntimeError(
+            "Sorry, your mail could not reach our team. "
+            "Please use our individual contacts at "
+            f"{flask.url_for('main.contact', _external=True)}."
+        )

@@ -24,9 +24,7 @@ def register(app: IntraRezApp) -> None:
         """Initialize a new language."""
         if os.system("pybabel extract -F babel.cfg -k _l -o messages.pot ."):
             raise RuntimeError("extract command failed")
-        if os.system(
-            f"pybabel init -i messages.pot -d app/translations -l {lang}"
-        ):
+        if os.system(f"pybabel init -i messages.pot -d app/translations -l {lang}"):
             raise RuntimeError("init command failed")
         os.remove("messages.pot")
 
@@ -58,16 +56,17 @@ def register(app: IntraRezApp) -> None:
         compilés dans app/static/css/compiled/*.css.
         """
         if which("sass") is None:
-            raise RuntimeError("La commande 'sass' n'est pas installée. "
-                               "Impossible de compiler le SCSS.")
+            raise RuntimeError(
+                "La commande 'sass' n'est pas installée. "
+                "Impossible de compiler le SCSS."
+            )
 
         source_folder = "app/static/scss/"
         compiled_folder = "app/static/css/compiled/"
         if not os.path.exists(compiled_folder):
             os.mkdir(compiled_folder)
 
-        scss_files = [a for a in os.listdir(source_folder)
-                      if a.endswith(".scss")]
+        scss_files = [a for a in os.listdir(source_folder) if a.endswith(".scss")]
         length = len(scss_files)
 
         print("Compilation des fichiers SCSS")
@@ -78,7 +77,7 @@ def register(app: IntraRezApp) -> None:
             css_path = os.path.join(compiled_folder, f"{filename}.css")
             result = subprocess.run(
                 ["sass", "--trace", "--style=compressed", scss_path, css_path],
-                capture_output=True
+                capture_output=True,
             )
 
             print_progressbar(i + 1, length, prefix="Progression :", length=50)

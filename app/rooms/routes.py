@@ -40,14 +40,11 @@ def register() -> typing.RouteReturn:
         def _register_room() -> typing.RouteReturn:
             start = form.start.data
             end = form.end.data
-            rental = Rental(rezident=flask.g.rezident, room=room,
-                            start=start, end=end)
+            rental = Rental(rezident=flask.g.rezident, room=room, start=start, end=end)
             db.session.add(rental)
             db.session.commit()
-            utils.log_action(
-                f"Added {rental} for period {start} – {end}"
-            )
-            utils.run_script("gen_dhcp.py")       # Update DHCP rules
+            utils.log_action(f"Added {rental} for period {start} – {end}")
+            utils.run_script("gen_dhcp.py")  # Update DHCP rules
             flask.flash(_("Chambre enregistrée avec succès !"), "success")
             # OK
             return utils.redirect_to_next()
@@ -60,11 +57,10 @@ def register() -> typing.RouteReturn:
             # The submit button used was not the form one (so it was the
             # warning one): already warned and chose to process, transfer room
             old_rezident = room.current_rental.rezident
-            room.current_rental.end = datetime.date.today()     # = not current
+            room.current_rental.end = datetime.date.today()  # = not current
             db.session.commit()
             utils.log_action(
-                f"Rented {room}, formerly occupied by {old_rezident}",
-                warning=True
+                f"Rented {room}, formerly occupied by {old_rezident}", warning=True
             )
             email.send_room_transferred_email(old_rezident)
             return _register_room()
@@ -72,9 +68,12 @@ def register() -> typing.RouteReturn:
         # Else: Do not validate form, but put a warning message
         already_rented = room.num
 
-    return flask.render_template("rooms/register.html", form=form,
-                                 title=_("Nouvelle location"),
-                                 already_rented=already_rented)
+    return flask.render_template(
+        "rooms/register.html",
+        form=form,
+        title=_("Nouvelle location"),
+        already_rented=already_rented,
+    )
 
 
 @bp.route("/modify", methods=["GET", "POST"])
@@ -88,17 +87,15 @@ def modify() -> typing.RouteReturn:
             rental.start = form.start.data
             rental.end = form.end.data
             db.session.commit()
-            utils.log_action(
-                f"Modified {rental}: {form.start.data} – {form.end.data}"
-            )
+            utils.log_action(f"Modified {rental}: {form.start.data} – {form.end.data}")
             flask.flash(_("Location modifiée avec succès !"), "success")
         else:
             flask.flash(_("Pas de location en cours !"), "danger")
         return utils.redirect_to_next()
 
-    return flask.render_template("rooms/modify.html",
-                                 title=_("Mettre à jour ma location"),
-                                 form=form)
+    return flask.render_template(
+        "rooms/modify.html", title=_("Mettre à jour ma location"), form=form
+    )
 
 
 @bp.route("/terminate", methods=["GET", "POST"])
@@ -119,11 +116,13 @@ def terminate() -> typing.RouteReturn:
         rental = flask.g.rezident.current_rental
         rental.end = form.end.data
         db.session.commit()
-        utils.log_action(
-            f"Terminated {rental} (end date {form.end.data})"
-        )
+        utils.log_action(f"Terminated {rental} (end date {form.end.data})")
         return utils.redirect_to_next()
 
-    return flask.render_template("rooms/terminate.html", form=form,
-                                 title=_("Changer de chambre"),
-                                 room=room.num, today=datetime.date.today())
+    return flask.render_template(
+        "rooms/terminate.html",
+        form=form,
+        title=_("Changer de chambre"),
+        room=room.num,
+        today=datetime.date.today(),
+    )

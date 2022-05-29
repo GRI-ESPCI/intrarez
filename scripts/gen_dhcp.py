@@ -57,8 +57,10 @@ def main() -> None:
     # Écriture dans le fichier
     file = os.getenv("DHCP_HOSTS_FILE") or ""
     if not os.path.isfile(file):
-        raise FileNotFoundError(f"Le ficher d'hôtes DHCP '{file}' n'existe "
-                                "pas (variable d'environment DHCP_HOSTS_FILE)")
+        raise FileNotFoundError(
+            f"Le ficher d'hôtes DHCP '{file}' n'existe "
+            "pas (variable d'environment DHCP_HOSTS_FILE)"
+        )
 
     with open(file, "w") as fp:
         fp.write(
