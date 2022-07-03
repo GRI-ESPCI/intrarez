@@ -2,6 +2,15 @@
 
 Application Flask de l'Intranet de la Rez.
 
+## Fusion avec PC est magique
+
+:warning: **Juillet 2022 : afin de faciliter la passation du développement 
+et pour plus de cohérence, ce projet a été fusionné dans le projet 
+[PC est magique](https://github.com/GRI-ESPCI/pc-est-magique),
+dont il devient un simple module.**
+
+Le développement de ce projet est donc abandonné, et le dépôt archivé.
+
 
 ## Quoi de neuf dans l'IntraRez ?
 
